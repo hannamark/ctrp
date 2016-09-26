@@ -17,8 +17,8 @@ Feature: PO F2 Search and Edit Organization
     And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I provide the full or partial name of the organization I wish to search for
-    And I indicate to not search Aliases
-    And I submit my search request
+    And I indicate to not search Aliases  
+	And I submit my search request
     Then the system should display all organizations that contain the name provided
     And the result should be sorted by Organization Name
     
@@ -82,29 +82,36 @@ Feature: PO F2 Search and Edit Organization
     And I enter the Curator Date <LastUpdateddate>
     And I submit my search request
     Then the system should display Results with organizations that match the search criteria entered
-    And  The organization search results will display the field type
-      |CTRP ID|
-      |CTEP ID|
-      |Source ID|
-      |Context Organization ID|
+    
+    
+     Scenario: #5a Search Organization Results
+    Given I am logged into the CTRP PO application
+     When I complete an organization search
+     Then The the organization search results will display the field type
+     
+      |CTRP Organization ID (Grouping ID)|
+      |CTEP Organization ID|
       |Name|
-      |Source Status|
+      |Source Staus|
       |Source Context|
-      |Processing Status|
-      |Service Request|
+      |Source ID|
       |Family Name|
       |Phone|
       |Email|
-      |Last Updated by|
-      |Last Updated Date|
       |City|
       |State|
       |Country|
       |Postal Code|
+      |Context Org ID (Primary Key)|
+      |Processing Status|
+      |Service Request|
+      |Last Updated By|
+      |Last Updated Date|
       
+  
       And the result should be sorted by Organization Name
 
-   
+
   Scenario:#6 As a Curator, I will get message if no Search Parameter is provided
     Given I know the parameters of organization I wish to search for
     And I am logged in to CTRP PO application
@@ -112,12 +119,13 @@ Feature: PO F2 Search and Edit Organization
     Then I should get message as "At least one selection value must be entered prior to running the search"
     
 
-  Scenario:#7 As a Curator, I can select any organization with Family in a search result and display the detailed organization information
+  Scenario:#7 As a Curator, I can View organization information Details
     Given I want to see the detail information of organization when linked with Family
     And I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     When I select an organization name in the search results
     Then the CTRP Organization Context will be displayed
+      
       |CTRP Organization ID|
       |Context Organization ID|
       |Name|
@@ -138,7 +146,11 @@ Feature: PO F2 Search and Edit Organization
       |Updated By|
       |Family Name|
     
-    And I can click on the Family Name link in <Families> from the CTRP Organization context
+    
+      Scenario:#7a I can view Family name details  
+    Given I am on the edit organization screen
+     And a family name is added to the organization record
+     When I can click on the Family Name link in <Family Name> from the CTRP Organization context
     Then the complete family information details will be displayed including
       
       |Family Name|
@@ -161,33 +173,10 @@ Feature: PO F2 Search and Edit Organization
       And I can delete added organization
       And I can filter selected organizations by using the search box
 
-  Scenario:#8 As a Curator, I can select any organization in a search result and display the detailed organization information
-    Given I want to see the detail information of organization
-    And I am logged in to CTRP PO application
-    And I have selected the option to search for an organization
-    When I select organization name in the search results
-    Then the complete organization information will be displayed including:
-      
-      |CTRP Organization ID|
-      |Context Organization ID|
-      |Name|
-      |Source Context|
-      |Source ID|
-      |Source Status|
-      |Processing Status|
-      |Name Alias|
-      |Address 1|
-      |Address 2|
-      |Country|
-      |State|
-      |City|
-      |Postal Code|
-      |Email|
-      |Phone Number: Phone Number Extension|
-      |Created By|
-      |Updated By|
-      |Family Name|
-     And I can edit all CTRP Organization Fields type
+  Scenario:#8 As a Curator, I can Edit Organization fields 
+    Given I am logged in to CTRP PO application
+    And I am on the Edit Organization screen
+     Then I can edit all CTRP Organization Fields type
      
       |Name|
       |Source Status|
@@ -201,8 +190,6 @@ Feature: PO F2 Search and Edit Organization
       |Postal Code|
       |Email|
       |Phone Number: Phone Number Extension|
-      |Created By|
-      |Updated By|
       |Family Name|
 
   Scenario:#9 As a Curator, when I search I will enter "*" as a wild card when Exact Search is selected
