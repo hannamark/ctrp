@@ -14,7 +14,7 @@ Feature: PO F9 Search for Persons
     |Affiliation|
     |Source Context|
     |Source ID|
-    |Source Status|
+    |Source Status(Active,Inactive, Nullified)|
     |Email|
     |Phone Number|
     |Last Updated Date: (Start Date, End Date)|
