@@ -21,9 +21,10 @@ Feature: PO F11 Edit Person Information
     |Expiration Date|
    And I can add an affiliated Organization
    And I can delete an affiliated organization
-    And I submit my edit request for Person
+    And I click on the save button
    Then the system will save the new updated person record
    
+
      Scenario: #1a reset button functionality
     Given I am on the edit person screen
      When I make update to one or more person parameters
