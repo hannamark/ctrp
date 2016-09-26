@@ -27,10 +27,17 @@ Feature: PO F10 Create a Person Record
     When the added parameters are saved
     Then Then a unique CTRP Person ID <Source ID> will be assigned to the added person
     And a unique Context Person ID <ContextPersonID> will be assigned to the added person
-    And a CTRP person record that contains information type will be created
     
-    |CTRP Person ID|
-    |Context Person ID|
+    
+    
+      Scenario: #1b CTRP Person Record details
+    Given I am on the person search results screen
+     When I select a person to view details
+     Then the edit person screen displays 
+     And I can view CTRP person record type
+    
+    |CTRP Person ID (Grouping ID)|
+    |Context Person ID (Primary Key)|
     |Prefix|
     |First Name|
     |Middle Name|
@@ -39,17 +46,13 @@ Feature: PO F10 Create a Person Record
     |Processing Status|
     |Source Context (CTRP)|
     |Source ID|
-    |Source Status Active|
+    |Source Status|
     |Email|
     |Phone Number-Extension|
     |Created By Created By Date (ctrpcurator 14-Sep-2016 10:53:52 EDT)|
     |Updated By Updated By Date (ctrpcurator 14-Sep-2016 10:53:52 EDT)|
     |Affiliated Organization|
     
-    When I select Reset 
-     Then the information entered on the Add Personscreen fields will not be saved to the trial record 
-      And the Add Person information screen will be refreshed and blank
-     
     
    Scenario:#1b I can Add a Person Affiliated Organization by searching organizations
     Given I am on the Add Person Screen
@@ -67,8 +70,8 @@ Feature: PO F10 Create a Person Record
      And the Effective date can be edited once on edit screen
      When the person is not affiliated with the added organization
      Then the Expiration date will added by the curator 
-    And I can add more than one affiliated organization (Michael I remember we want only one active affiliation?)
-    And I can filter selected organization details-----
+    And I can add more than one affiliated organization* Are we allowing one ore more active affiliations
+    And I can filter selected organization details
     And the affiliation can be deleted by the curator
 
 
@@ -105,46 +108,10 @@ Scenario:#1c Create Person fields's character Limit
     And I enter person first name which is duplicate
     And I enter person last name which is duplicate
     Then I should get warning message "Warning: Person exists in the database. Please verify and create a new Person record." for duplicate Person
+    When I click on the save button
+    Then the created record will be saved
 
-     Scenario: #3 As a curator, I can associate an existing CTEP Person record from CTRP Person Context
-     Given I am on the CTRP Person Context
-     And I can view CTRP Person Records 
-     When I click on the "Associate Person Context" at the botton of the screen
-     Then  When the CTRP system finds a match in a CTEP Context Person Parameters Type
      
-     |First Name|
-     |Last Name|
-     |Email|
-     |Phone Number- Extension|
-     |Affiliation Address|
-     
-     Then Matching CTEP Person will be displayed with the information type
-    
-    |CTRP Person ID|
-    |CTEP Person ID|
-    |First|
-    |Middle|
-    |Last|
-    |Source ID|
-    |Context Person ID|
-    |Source Status|
-    |Source Context|
-    |Processing Status|
-    |Service Request|
-    |Email|
-    |Phone|
-    |Affiliated Orgs|
-    |Last Updated Date|
-    |Last Updated By|
-    |Prefix|
-    |Suffix|
-    
-    And the curator will review the displayed options and select a person to associate
-    And the curator will click on the Associate Selection Button
-    And both contexts will be associated 
-	Then the CTEP Processing Status will be changed from "Incomplete" to "Complete"
-    And the CTEP Service Request will be change from Create to Null
-    And the CTEP CTRP association will be complete
 
 
    

@@ -90,14 +90,14 @@ ListOfOrganizationsPage = function () {
         if (useSslInput.isSelected() != aliass && aliass) {
             useSslInput.isSelected().then(function (selected) {
                 if (selected) {
-                    console.log('if true then check it')
+                    console.log('if true then check it');
                     useSslInput.click();
                 }
             });
         } else {
             useSslInput.isSelected().then(function (selected) {
                 if (!selected) {
-                    console.log('if false then uncheck it')
+                    console.log('if false then uncheck it');
                     useSslInput.click();
                 }
             });
@@ -266,6 +266,13 @@ ListOfOrganizationsPage = function () {
 
     this.clickOrgPersonModelClose = function(){
         search.clickButton(this.orgPersonModelCloseButton,"Organization Person Model Close button on Person Model Search");
+        browser.takeScreenshot().then(function (png) {
+            search.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/PersonModelAfterClickClose' + moment().format('MMMDoYY hmmss') + '.png');
+        });
+        search.alertDialog('DISMISS','');
+        browser.takeScreenshot().then(function (png) {
+            search.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/PersonModelAfterDismiss' + moment().format('MMMDoYY hmmss') + '.png');
+        });
     };
 
     this.setAffiliatedOrgEffectiveDate = function(orgEffectiveDate){

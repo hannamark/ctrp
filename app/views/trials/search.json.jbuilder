@@ -18,6 +18,23 @@ json.trials do
       json.accrual_disease_term trial.accrual_disease_term.present? ? trial.accrual_disease_term.name : nil
       json.research_category trial.research_category.present? ? trial.research_category.name : nil
       json.responsible_party trial.responsible_party.present? ? trial.responsible_party.name : nil
+      json.other_ids  ""
+      if trial.other_ids.present?
+        other_ids = trial.other_ids
+        other_ids_string = ""
+        delimiter = ""
+        other_ids.each do |o|
+          next if o.protocol_id_origin.nil?
+          name = o.protocol_id_origin.name
+          unless name.nil?
+            name.gsub!("Identifier", "")
+            other_ids_string = other_ids_string + delimiter + name + o.protocol_id
+            delimiter = ";  "
+          end
+        end
+        json.other_ids  other_ids_string
+      end
+
     end
   end
 end

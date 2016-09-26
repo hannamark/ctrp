@@ -914,7 +914,7 @@
             } else if (type == 'authority_country') {
                 vm.authority_org = '';
                  TrialService.getAuthorityOrgArr(vm.authority_country).then(function (response) {
-                     var status = data.server_response.status;
+                     var status = response.server_response.status;
 
                      if (status >= 200 && status <= 210) {
                          vm.authorityOrgArr  = response.authorities;
@@ -952,7 +952,7 @@
             }
 
             TrialService.validateStatus({"statuses": noDestroyStatusArr}).then(function(response) {
-                var status = data.server_response.status;
+                var status = response.server_response.status;
 
                 if (status >= 200 && status <= 210) {
                     vm.statusValidationMsgs = response.validation_msgs;

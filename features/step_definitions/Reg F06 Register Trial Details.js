@@ -11,6 +11,7 @@ var projectFunctionsPage = require('../support/projectMethods');
 var trialMenuItemList = require('../support/trialCommonBar');
 var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
+var underscore = require('underscore');
 
 
 module.exports = function () {
@@ -198,31 +199,42 @@ module.exports = function () {
             // browser.sleep(25).then(callback);
         });
     });
-
+/*
     this.Then(/^a comment appears below the field to display the number of characters available to enter into the field$/, function (table, callback) {
         //return browser.sleep(25).then(function () {
         //    characterFieldTable = table.hashes();
+        //    console.log('characterFieldTable');
+        //    console.log(characterFieldTable);
+        //   // characterFieldTable.replace("Number of Characters left", "NumberofCharactersleft");
+        //    var updateTableForSortedColumn = underscore.map(characterFieldTable, function(num)
+        //    {     return (num === 'Number of Characters left') ? 'NumberofCharactersleft' : num });
         //    for (var i = 0; i < characterFieldTable.length; i++) {
-        //        var characters = +characterFieldTable[i].NumberofCharactersleft.match( /\d+/g);
-        //        console.log('Characters');
-        //        console.log(characters);
-        //        var charactersString = characterFieldTable[i].NumberofCharactersleft.match( /[a-zA-Z]+/g);
-        //        var newCharacters = characters - 1 ;
-        //        if(characterFieldTable[i].Field === 'Official Title') {
-        //            addTrial.setAddTrialOfficialTitle('s');
-        //            console.log('New Characters');
-        //            console.log(newCharacters);
-        //            console.log('Characters String');
-        //            console.log(charactersString.join(" "));
-        //            console.log('New Character and string');
-        //            console.log(newCharacters +' '+ charactersString.join(" "));
-        //            expect(addTrial.addTrialOfficialTitleCharacter.getText()).to.eventually.equal(newCharacters + ' ' + charactersString.join(" "));
-        //        }
+        //        console.log('characterFieldTable first column');
+        //        console.log(characterFieldTable[1].Field);
+        //        console.log('characterFieldTable second column AA');
+        //        console.log(updateTableForSortedColumn);
+        //        console.log('characterFieldTable second column');
+        //      //  console.log(characterFieldTable[1].'Number of Characters left');
         //    }
-        //    //   browser.sleep(25).then(callback);
+        //    //    var characters = +characterFieldTable[i].NumberofCharactersleft.match( /\d+/g);
+        //    //    console.log('Characters');
+        //    //    console.log(characters);
+        //    //    var charactersString = characterFieldTable[i].NumberofCharactersleft.match( /[a-zA-Z]+/g);
+        //    //    var newCharacters = characters - 1 ;
+        //    //    if(characterFieldTable[i].Field === 'Official Title') {
+        //    //        addTrial.setAddTrialOfficialTitle('s');
+        //    //        console.log('New Characters');
+        //    //        console.log(newCharacters);
+        //    //        console.log('Characters String');
+        //    //        console.log(charactersString.join(" "));
+        //    //        console.log('New Character and string');
+        //    //        console.log(newCharacters +' '+ charactersString.join(" "));
+        //    //        expect(addTrial.addTrialOfficialTitleCharacter.getText()).to.eventually.equal(newCharacters + ' ' + charactersString.join(" "));
+        //    //    }
+        //    //}
         //});
         callback.pending();
-    });
+    });*/
 
     this.When(/^all the characters mentioned above for field have been entered$/, function (callback) {
         // Write code here that turns the phrase above into concrete actions

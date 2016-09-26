@@ -14,6 +14,10 @@ var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 var helperFunctions = require('../support/helper');
 var Cucumber = this;
+//var context = require(process.cwd() + '/src/e2e/support/context');
+
+//var features = Cucumber.Ast.Features();
+
 
 
 module.exports = function() {
@@ -49,14 +53,17 @@ module.exports = function() {
                 commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
                 trialMenuItem.clickHomeSearchTrial();
                 login.clickWriteMode('On');
-                     if(trialType === 'National') {
-                projectFunctionsRegistry.selectTrials(trialType);}
+                if (featureNameToRun === 'Reg F11 Register Trial Dates and Trial Status' || featureNameToRun === 'Reg F14 Register Trial Review and Submit' ) {
+                    if(trialType === 'National') {
+                        projectFunctionsRegistry.selectTrials(trialType);}
+                    else {
+                        throw "Skipped (Skipping tests due to long execution time)";//Cucumber.PENDING_STEP;
+                            }
+                }
                 else {
-                         throw "Skipped";//Cucumber.PENDING_STEP;
-                       //  assert.fail(0,1,'***** Running the test only for "National Trials". For Externally Peer-Reviewed and Institutional it will fail the test ');
+                    projectFunctionsRegistry.selectTrials(trialType);
                 }
             });
-            // browser.sleep(25).then(callback);
         });
     });
 

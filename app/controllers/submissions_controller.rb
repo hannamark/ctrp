@@ -68,9 +68,9 @@ class SubmissionsController < ApplicationController
 
   # GET /user_trial_submissions/search.json
   def search
+
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
-
     if params[:sort].blank?
       params[:sort] = 'submission_received_date'
     elsif params[:sort] == 'business_days_since_submitted'
@@ -81,25 +81,15 @@ class SubmissionsController < ApplicationController
         params[:order] = 'asc'
       end
     end
-
     params[:order] = 'asc' if params[:order].blank?
 
     @trial_submissions = Submission.matchesTrialSubmissions(params, @@impTrial, @@proTrial)
-
-    submission_types_requested = params[:submission_types]
-    if !submission_types_requested.blank?
-      sub_types_query = []
-      if submission_types_requested[:Amendment]
-        sub_types_query.push("(trials.internal_source_id = #{@@proTrial} AND submissions.submission_num > 1)")
-      end
-      if submission_types_requested[:Original]
-        sub_types_query.push("(trials.internal_source_id = #{@@proTrial} AND submissions.submission_num = 1)")
-      end
-      if submission_types_requested[:Update]
-        sub_types_query.push("(trials.internal_source_id = #{@@impTrial})")
-      end
-      @trial_submissions = @trial_submissions.where(sub_types_query.join(" OR "))
-    end
+    @trial_submissions = get_onhold_statuses @trial_submissions, params[:onhold_statuses]
+    @trial_submissions = get_submission_types_requested @trial_submissions, params[:submission_types]
+    @trial_submissions = get_check_box_selections @trial_submissions, params[:onhold_statuses_reasons], "onhold_code = '{selected}'"
+    @trial_submissions = get_check_box_selections @trial_submissions, params[:trial_milestone_dates], "latest_milestones.{selected} IS NOT NULL"
+    @trial_submissions = get_check_box_selections @trial_submissions, params[:trial_milestone_dates], "latest_milestones.{selected} IS NOT NULL"
+    @trial_submissions = get_check_box_selections @trial_submissions, params[:current_process_statuses], "latest_milestones.current_processing_status_code = '{selected}'"
 
     @userReadAccess  = userReadAccess  current_site_user
     @userWriteAccess = userWriteAccess current_site_user
@@ -119,7 +109,59 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
   end
 
+  def get_onhold_statuses submissions, onhold_statuses_requested
+    if !onhold_statuses_requested.blank?
+
+      ## note here that actual date comparisons are done in model. All dates are active dates
+      ## meaning offhold_dates and onhold_dates are not future dates
+      not_currently_onhold_query = "(trial_onholds.onhold_date IS NULL OR trial_onholds.offhold_date IS NOT NULL)"
+      ever_onhold_query = "(trial_onholds.onhold_date IS NOT NULL)"
+
+      conditions = []
+      if onhold_statuses_requested[:onhold]
+        conditions.push("NOT #{not_currently_onhold_query}")
+      end
+      if onhold_statuses_requested[:not_onhold]
+        conditions.push("#{not_currently_onhold_query}")
+      end
+      if onhold_statuses_requested[:ever_onhold]
+        conditions.push("#{ever_onhold_query}")
+      end
+      submissions = submissions.where(conditions.join(" OR "))
+    end
+    return submissions
+  end
+
+  def get_submission_types_requested submissions, submission_types_requested
+    if !submission_types_requested.blank?
+      conditions = []
+      if submission_types_requested[:amendment]
+        conditions.push("(trials.internal_source_id = #{@@proTrial} AND submissions.submission_num > 1)")
+      end
+      if submission_types_requested[:original]
+        conditions.push("(trials.internal_source_id = #{@@proTrial} AND submissions.submission_num = 1)")
+      end
+      if submission_types_requested[:update]
+        conditions.push("(trials.internal_source_id = #{@@impTrial})")
+      end
+      submissions = submissions.where(conditions.join(" OR "))
+    end
+    return submissions
+  end
+
+  def get_check_box_selections submissions, selections, db_code
+    if !selections.blank?
+      conditions = []
+      selections.select {|_k,v| v == true}.keys.each do  |selection|
+        conditions.push("(#{db_code.dup.sub! '{selected}', selection})")
+      end
+      submissions = submissions.where(conditions.join(" OR "))
+    end
+    return submissions
+  end
+
   def current_site_user
+    user = nil
     auth_string = request.headers['Authorization']
     if !auth_string.blank?
       token = auth_string.split(" ")[1]
@@ -136,21 +178,15 @@ class SubmissionsController < ApplicationController
   end
 
   def userWriteAccess userToUpdate
-     user = current_site_user
-    user && userToUpdate ?
-        ( user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
-            user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
-            user.role == 'ROLE_SUPER' ) : false
+    rolesAllow = ['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_ABSTRACTOR','ROLE_SUPER']
+    user = current_site_user
+    user && userToUpdate ? (rolesAllow.include? user.role) : false
   end
 
   def searchAccess
-    if current_site_user
-      user = current_site_user
-    end
-    user ?
-        ( user.role == 'ROLE_RO' || user.role == 'ROLE_ADMIN' || user.role == 'ROLE_ACCOUNT-APPROVER' ||
-            user.role == 'ROLE_ABSTRACTOR' || user.role == 'ROLE_ABSTRACTOR-SU'  ||
-            user.role == 'ROLE_SUPER' || (isSiteAdminForOrg user, user.organization_id) ) : false
+    rolesAllow = ['ROLE_RO','ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_ABSTRACTOR','ROLE_SUPER']
+    user = current_site_user
+    user ? ( (rolesAllow.include? user.role)  || (isSiteAdminForOrg user, user.organization_id) ) : false
   end
 
   def isSiteAdminForOrg user, orgId

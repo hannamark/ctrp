@@ -27,37 +27,44 @@ Feature: PO F3 Create an Organization
     And I provide the Phone number of the organization <phone Number>
     And I provide Phone Extension of the provided phone number <Phone Number Extension>
     And I provide the email of the organization <email>
+    When I click on the reset button
+    Then the entered parameters will be cleared
+    And I can enter new parameters
     When I click on the save button
     Then a unique CTRP Organization ID <Source ID> will be assigned to the created organization
     And a unique CTRP Context Organization ID <ContextOrgID> will be assigned to the created organization
-    And a CTRP organization record that contains information type will be created
+    And a CTRP organization record will be created
+    
+    
+    Scenario:#7 As a Curator, I can View organization information Details
+    Given I want to see the detail information of organization when linked with Family
+    And I am logged in to CTRP PO application
+    And I have selected the option to search for an organization
+    When I select an organization name in the search results
+    Then the CTRP Organization Context will be displayed
       
-      |CTRP Organization ID|
-      |Context Organization ID|
+      |CTRP Organization ID |# Grouping ID
+      |Context Organization ID|# Primary Key
       |Name|
-      |Source Context: CTRP|
+      |Source Context|
       |Source ID|
-      |Source Status:Active|
-      |Processing Status: Complete|
+      |Source Status|
+      |Processing Status|
       |Name Alias|
-      |address1|
-      |address2|
-      |country|
+      |Address 1|
+      |Address 2|
+      |Country|
       |State|
       |City|
       |Postal Code|
       |Email|
-      |Phone Number|
-      |Phone Number: Extension|
+      |Phone Number: Phone Number Extension|
       |Created By|
       |Updated By|
+      |Family Name|
       
-      When I select Reset 
-     Then the information entered on the Add Organization screen fields will not be saved to the trial record 
-      And the Add Organization information screen will be refreshed and blank
-     
-     
-        Scenario: #3 Create Organization Mandatory fields
+      
+      Scenario: #3 Create Organization Mandatory fields
     Given I am a curator
     And I am logged into the CTRP PO application
      When I have not entered a Organization detail <OrgInfo>
@@ -96,34 +103,45 @@ Feature: PO F3 Create an Organization
     When the entered full name of the organizaton exists in CTRP with an Active Status 
     Then the system should indicate with a warning: "Organization exists in the database. Please verify and create a new Organization record."
     And the curator review the warning and decides to create the Organization record 
+    When the Curator saves the added organization parameters
+    Then the organization will be created
 
   
-     Scenario:#6 As a Curator, I can Edit created Organization
-    Given I am logged in to CTRP PO application
-    And I am on the search Organization results screen
-     When I select an organization I want to edit
-     Then the edit screen will display
-     And I can edit fields type
-     
-      |Name|
-      |Source Status:Active|
-      |Processing Status: Complete|
-      |Name Alias|
-      |address1|
-      |address2|
-      |country|
-      |State|
-      |City|
-      |Postal Code|
-      |Email|
-      |Phone Number|
-      |Phone Number: Extension|
-      
+     Scenario: #6 I can view Associated Organization Grid details  
+    Given I am on the edit organization CTRP Context Tab
+     When an CTRP org is associated to a context type
+     |CTEP|
+     |NLM|
+     Then I can view an associated Organizations grid details type
 
-     When I click on the save button
-     Then the edited information will be saved to the trial records
-     When I select Reset 
-     Then the information entered or edited on the Add Organization screen fields will not be saved to the trial record 
-      And the Add Organization information screen will be refreshed with the existing data
+
+       |CTRP Organization ID|
+       |CTEP Organization ID|
+       |Name|
+       |Source Status|
+       |Source Context|
+       |Source ID|
+       |Family Name|
+       |Phone|
+       |Email|
+       |City|
+       |State|
+       |Country|
+       |Postal Code|
+       |Context Org ID|
+       |Processing Status|
+       |Service Request|
+       |Last Updated by|
+       |Last Updated Date|
+       |Association Start Date|
+       |Delete|
+     
+      
+     And Asscociated Organizations Source Status can be of any Source status
+     And the curator can delete associations 
+    
+    
+    
+     
      
     

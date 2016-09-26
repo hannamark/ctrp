@@ -123,7 +123,7 @@
                 }
             }],
             columnDefs: [
-                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , minWidth: '10', width: '*'},
+                {name: 'submission_num',pinnedLeft: true, displayName: 'Submission Number' , minWidth: '100', width: '*'},
                 {name: 'submission_date',displayName:'Date', minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.submission_date | dateFormat}}</div>'},
                 {field: 'submission_type_list', displayName: 'Type',minWidth: '150', width: '*',enableSorting:true, cellTemplate:'<div class="ui-grid-cell-contents">{{COL_FIELD}}</div>'},

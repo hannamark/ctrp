@@ -13,12 +13,10 @@
 
         vm.userDetails = userDetailObj;
         vm.isCurationEnabled = UserService.isCurationModeEnabled();
-        vm.userDetailsOrig = angular.copy(userDetailObj);
         vm.selectedOrgsArray = [];
         vm.savedSelection = [];
         vm.states = [];
         vm.userRole = UserService.getUserRole();
-        vm.isCurrentUser = UserService.getCurrentUserId() === vm.userDetailsOrig.id;
 
 
         /**** TRIALS *****/
@@ -27,7 +25,7 @@
             return {
                 sort: 'submission_received_date',
                 order: 'asc',
-                rows: 50,
+                rows: 25,
                 start: 1
             }
         };
@@ -74,7 +72,7 @@
             totalItems: null,
             rowHeight: 22,
             paginationPageSizes: [10, 25, 50, 100, 1000],
-            paginationPageSize: 50,
+            paginationPageSize: 25,
             useExternalPagination: true,
             useExternalSorting: true,
             enableFiltering: false,

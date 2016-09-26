@@ -641,14 +641,12 @@ Then the will display the error "A comment must be entered"
       #|Administratively Complete                      |not allowed                       |If current Trial Status is Administratively Complete, Primary Completion Date must be Actual                             |
       #|Complete                                       |not allowed                       |If current Trial Status is Complete, Primary Completion Date must be Actual                             |
     
+     
+     #Scenario Outline: #26 Rules for Status/Dates relationships for "Primary Completion Date"
+    #Given I have selected the option to register a trial <trialType>
+    #And I am on the Trial Dates Section
       #When the trial is a DCP Trial
-      #And the Clinical Research Category type is 
-      
-      #|Expanded Access|
-      #|Observational|
-      #|Ancillary Correlative|
-      
-      #When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "NA" <DateTypeNA> along with the error <DateTypeErrorNA> should be there
+      #Then the  Current Trial Status is <TrialStatusType> for the "Primary Completion Date" below rules for "NA" <DateTypeNA> along with the error <DateTypeErrorNA> should be there
      
       #|TrialStatusType                                |DateTypeNA     | DateTypeErrorNA           |
       #|In Review                                      |allowed        |                           |
@@ -663,14 +661,38 @@ Then the will display the error "A comment must be entered"
       #|Administratively Complete                      |allowed        |                           |
       #|Complete                                       |allowed        |                           |   
       
-                              
+      
+       #Scenario Outline: #27 Rules for Status/Dates relationships for "Primary Completion Date"
+    #Given I have selected the option to register a trial <trialType>
+    #And I am on the Trial Dates Section
+    #When the Clinical Research Category type
+    #|Observational|
+    #|Ancillary Correlative|
+      #Then the  Current Trial Status is <TrialStatusType> for the "Primary Completion Date" below rules for "NA" <DateTypeNA> along with the error <DateTypeErrorNA> should be there
+     
+      #|TrialStatusType                                |DateTypeNA     | DateTypeErrorNA           |
+      #|In Review                                      |allowed        |                           |
+      #|Approved                                       |allowed        |                           |
+      #|Active                                         |allowed        |                           |
+      #|Enrolling by Invitation                        |allowed        |                           |
+      #|Closed to Accrual                              |allowed        |                           |
+      #|Closed to Accrual and Intervention             |allowed        |                           |
+      #|Temporarily Closed to Accrual                  |allowed        |                           |
+      #|Temporarily Closed to Accrual and Intervention |allowed        |                           |
+      #|Withdrawn                                      |allowed        |                           |
+      #|Administratively Complete                      |allowed        |                           |
+      #|Complete                                       |allowed        |                           |   
+       
+       #Scenario Outline: #28 Rules for Status/Dates relationships for "Primary Completion Date"
+    #Given I have selected the option to register a trial <trialType>
+    #And I am on the Trial Dates Section                       
       #And the Clinical Research Category type is "Interventional"
       #When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "NA" <DateTypeNA> along with the error <DateTypeErrorNA> should be there
      
       #|TrialStatusType                                |DateTypeNA         | DateTypeErrorNA           |
       #|In Review                                      |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials |                         |
       #|Approved                                       |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|                           |
-      #|Active                                         |NOTallowed         |Primary Completion Date Type of NA is not available for Interventional Trials|                           |
+      #|Active                                         |NOT allowed         |Primary Completion Date Type of NA is not available for Interventional Trials|                           |
       #|Enrolling by Invitation                        |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|                           |
       #|Closed to Accrual                              |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|                           |
       #|Closed to Accrual and Intervention             |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|                           |
@@ -680,14 +702,17 @@ Then the will display the error "A comment must be entered"
       #|Administratively Complete                      |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|                           |
       #|Complete                                       |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|                           |   
       
-
+ 	
+    #Scenario Outline: #29 Rules for Status/Dates relationships for "Primary Completion Date"
+    #Given I have selected the option to register a trial <trialType>
+    #And I am on the Trial Dates Section
 	 #When the trial is NOT a DCP Trial
       #Then Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "NA" <DateTypeNA> along with the error <DateTypeErrorNA> should be there
      
       #|TrialStatusType                                |DateTypeNA         | DateTypeErrorNA           |
       #|In Review                                      |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |
       #|Approved                                       |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |
-      #|Active                                         |NOTallowed         |Primary Completion Date Type of NA is available only for DCP Trials                           |
+      #|Active                                         |NOT allowed         |Primary Completion Date Type of NA is available only for DCP Trials                           |
       #|Enrolling by Invitation                        |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials                           |
       #|Closed to Accrual                              |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials                           |
       #|Closed to Accrual and Intervention             |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials                           |
@@ -705,7 +730,7 @@ Then the will display the error "A comment must be entered"
       #|Institutional            |
 
 
-       #Scenario Outline: #26 Rules for Status/Dates relationships for "Completion Date"
+       #Scenario Outline: #30 Rules for Status/Dates relationships for "Completion Date"
        #Given I have selected the option to register a trial <trialType>
        #And I am on the Trial Dates Section
    # When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Actual" <DateTypeActual> along with the error <DateTypeActualError> should be there

@@ -56,6 +56,7 @@ json.trials do
       end
       json.other_ids  other_ids_string
     end
+
     #json.current_processing_status trial.processing_status_wrappers.present? ? trial.processing_status_wrappers.last.processing_status.name : nil
     json.research_category trial.research_category.present? ? trial.research_category.name : nil
 

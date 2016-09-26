@@ -328,11 +328,11 @@
                         <div class="col-xs-12 col-sm-5">
                             <textarea class="form-control"
                                 name="biospecimen_desc" id="biospecimen_desc"
-                                maxlength="200" ng-maxlength="200"
+                                maxlength="1000" ng-maxlength="1000"
                                 ng-model="designView.trialDetailObj.biospecimen_desc" rows="3">
                             </textarea>
                             <span ng-show="trial_design_form.biospecimen_desc.$viewValue.length > 0">
-                                {{200 - trial_design_form.biospecimen_desc.$viewValue.length}} characters left
+                                {{1000 - trial_design_form.biospecimen_desc.$viewValue.length}} characters left
                             </span>
                         </div>
                     </div>
