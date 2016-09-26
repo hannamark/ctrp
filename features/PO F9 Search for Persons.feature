@@ -13,7 +13,7 @@ Feature: PO F9 Search for Persons
     |Affiliation|
     |Source Context|
     |Source ID|
-    |Source Status|#(Active,Inactive, Nullified)
+    |Source Status|#(Active,Inactive, Nullified, Pending)
     |Email|
     |Phone Number|
     |Last Updated Date:Start Date, End Date|
