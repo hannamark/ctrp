@@ -6,29 +6,34 @@ Scenario:#1 CTEP Context of a new person record created
     Given I am logged into the CTRP 
     When CTRP receives newly created CTEP person record through Restful Services
     Then a new person record will be created in the CTEP Context 
-    And the new person record will display the field type
+    And a Context Person ID will be sent to CTEP
+     And the Person Processing status will be "InComplete"
+     And the Service Request will be set to "Create"
+       
+       
+      Scenario:#1a CTEP record details fields
+    Given I am on the person search results screen
+     When I select a CTEP person record
+     Then the CTEP selected person record will display the field type in a CTEP tab
       
-      |CTEP Person ID|
-      |Context Person ID (Primary Key)|
-      |Person Registration Type|
+      |Context Person ID|#(Primary Key)
+      |CTRP Person ID|
       |Prefix|
       |Suffix|
       |First Name|
       |Middle Name|
       |Last Name|
-      |Phone|
+      |Phone Number|#(Phone Number"|"Extension)
       |Email|
-      |Person Status|
+      |Source Context|
+      |Source ID|
+      |Source Status|
+      |Person Registration Type|
       |Affiliated Organization CTEP ID|
-      |Service Request (Create)
-      |Processing Status (Incomplete)|
+      |Service Request|#(Create)
+      |Processing Status|#(Incomplete)
       
-      And a Context Person ID will be sent to CTEP
-      And the Person Processing status will be " InComplete"
-      And the Service Request will be set to "Create"
-       
-    
-        
+     
        Scenario:#1a CTEP Person Context Mandatory Fields 
     Given I am logged into the CTRP 
      When CTEP Context of a person record is created
@@ -38,9 +43,9 @@ Scenario:#1 CTEP Context of a new person record created
       |Person Registration Type|
       |First Name|
       |Last Name|
-      |Person Status|
+      |Source Status|
       |Affiliated Organization CTEP ID|
-      |CTEP Service Request|
+      |Service Request|
       |Processing Status|
       
       
@@ -65,23 +70,7 @@ Scenario:#1 CTEP Context of a new person record created
     When When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Context for both "Person Name" and "Phone, email", and Person Affiliation "Address"
     When the CTEP Person does not match any existing CTRP Context person name and phone, email, and Affiliation Address
-    Then the CTRP Person will be created and associated to the CTEP Context with the information type
-      
-      |CTRP Person ID|
-      |Context Person ID|
-      |Prefix|
-      |Suffix|
-      |First Name|
-      |Middle Name|
-      |Last Name|
-      |Phone: Phone Extension|
-      |Email|
-      |Source Context|
-      |Source Status: Active|
-      |Source ID|
-      |Affiliated Organization CTRP ID|
-      |Processing Status (Complete)|
-      
+    Then the CTRP Person will be created and associated to the CTEP Context 
    And both the CTRP and CTEP context will be linked
     When the CTEP Person does match an existing CTRP Context Person name and Phone, email, person Affiliation Address
     Then a warning will be displayed: "Possible Matching CTRP Persons"
@@ -96,20 +85,7 @@ Scenario:#1 CTEP Context of a new person record created
     And both contexts will be displayed in different tabs on the same screen
     And the association record will be added to the person associations table on the CTRP Context screen
     
-    
-    Scenario:#3 CTRP Person Context Mandatory Fields 
-    Given I am logged into the CTRP 
-     When CTRP Context of a person record is created
-     Then the person record fields type are mandatory
-     
-      |CTRP Person ID|
-      |Context Person ID|
-      |First Name|
-      |Last Name|
-      |Person Status|
-      |Affiliated Organization CTRP ID|
-      |Processing Status |
-    
+  
     
     Scenario: #4  CTRP Person information gets updated with the New information received from CTEP
     Given I am on the Search Person Screen
