@@ -9,15 +9,14 @@ Feature: PO F9 Search for Persons
     
     |First Name|
     |Last Name|
-    |Affiliation Organization ID|
     |Context Person ID|
     |Affiliation|
     |Source Context|
     |Source ID|
-    |Source Status(Active,Inactive, Nullified)|
+    |Source Status|#(Active,Inactive, Nullified)
     |Email|
     |Phone Number|
-    |Last Updated Date: (Start Date, End Date)|
+    |Last Updated Date:Start Date, End Date|
     |Updated By:Username|
     |Processing Status|
     |Service Request|
@@ -30,9 +29,11 @@ Feature: PO F9 Search for Persons
     
     |CTRP Person ID|
     |CTEP Person ID|
+    |Prefix|
     |First Name|
     |Middle Name|
     |Last Name|
+    |Suffix|
     |Source Status|
     |Source Context|
     |Source ID|
@@ -44,8 +45,7 @@ Feature: PO F9 Search for Persons
     |Service Request|
     |Last Updated Date|
     |Last Updated By|
-    |Prefix|
-    |Suffix|
+    
     And the result should be sorted by Person Last Name
     
    
