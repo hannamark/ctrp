@@ -53,8 +53,8 @@ Feature: PO F11 Edit Person Information
      And I can search for matching Persons with "ACTIVE" Source Status in "CTEP" context type
       When a CTEP Person information type matches same information in CTEP context
       |First Name|
-      |Middle Name|
       |Last Name|
+      |Email|
       |Affiliated Organization Address|
       
       Then the resulted search will display matching CTEP Person records
@@ -69,8 +69,7 @@ Feature: PO F11 Edit Person Information
       And Persons can be associated only from the CTRP context 
       And all Associated Persons will be displayed on the Edit person CTRP Tab 
       
-      
-      
+     
         Scenario:#5 Associated Persons grid details 
     Given I am on the edit Person CTRP screen
      When a CTRP person is associated with CTEP person recor
