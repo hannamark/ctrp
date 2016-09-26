@@ -15,7 +15,7 @@ Feature: PO F11 Edit Person Information
     |Suffix|
     |Email|
     |Phone Number-Extension|
-    |Source Status|
+    |Source Status|# Active, Inactive, Nullified
     And I change Affiliated Organizations Information Type
     |Effective Date|
     |Expiration Date|
@@ -78,17 +78,17 @@ Feature: PO F11 Edit Person Information
 
     |CTRP Person ID|
     |CTEP Person ID|
+    |Prefix|
     |First Name|
     |Middle Name|
     |Last Name|
+    |Suffix|
     |Source Status|
     |Source Context|
     |Source ID|
     |Email|
     |Phone |
     |Affiliated Orgs|
-    |Prefix|
-    |Suffix|
     |Context person ID|
     |Processing Status|
     |Service Request|
