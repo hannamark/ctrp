@@ -71,32 +71,10 @@ Feature: PO F9 Search for Persons
     |Affiliated Organization Details|
     
     
-    
-    And I can choose to associate person context from that screen
-    And I can view all Person associations displayed with information type
-    And Person associations might have any source status 
-    |CTRP Person ID|
-    |CTEP Person ID|
-    |First Name|
-    |Middle Name|
-    |Last Name|
-    |Source ID|
-    |Context person ID|
-    |Source Status|
-    |Source Context|
-    |Processing Status|
-    |Service Request|
-    |Affiliated Orgs|
-    |Email|
-    |Phone |
-    |Last Updated Date|
-    |Last Updated By|
-    |Prefix|
-    |Suffix|
-    And I can delete person  association
+ 
     
     
-    Scenario:#6 As a curator, I can edit person records
+Scenario:#6 As a curator, I can edit person records
     Given I am logged in to CTRP PO application
     When I select a person from the search person results table
      Then the edit screen will display

@@ -68,5 +68,36 @@ Feature: PO F11 Edit Person Information
       #And BOTH Person Source Status must be "Active"
       And Persons can be associated only from the CTRP context 
       And all Associated Persons will be displayed on the Edit person CTRP Tab 
+      
+      
+      
+        Scenario:#5 Associated Persons grid details 
+    Given I am on the edit Person CTRP screen
+     When a CTRP person is associated with CTEP person recor
+     Then I can view Asscocited person grid details
+
+    |CTRP Person ID|
+    |CTEP Person ID|
+    |First Name|
+    |Middle Name|
+    |Last Name|
+    |Source Status|
+    |Source Context|
+    |Source ID|
+    |Email|
+    |Phone |
+    |Affiliated Orgs|
+    |Prefix|
+    |Suffix|
+    |Context person ID|
+    |Processing Status|
+    |Service Request|
+    |Last Updated Date|
+    |Last Updated By|
+    |Association Start Date|
+    |Delete|
+    
+    And Person associations might have any source status 
+    And I can delete person association
 
 
