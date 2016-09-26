@@ -10,7 +10,7 @@ Feature: PO F10 Create a Person Record
     And the Processing Status will be set to "Complete" 
   
   
-  Scenario Outline:#1a As a Curator, I can create a new Person Record in CTRP
+  Scenario Outline:#2 As a Curator, I can create a new Person Record in CTRP
     Given I am logged in to CTRP PO application
     When I have selected the Add Person function
     And I provide the information Type of the Person I wish to create
@@ -30,7 +30,7 @@ Feature: PO F10 Create a Person Record
     
     
     
-      Scenario: #1b CTRP Person Record details
+      Scenario: #3 CTRP Person Record details
     Given I am on the person search results screen
      When I select a person to view details
      Then the edit person screen displays 
@@ -54,7 +54,7 @@ Feature: PO F10 Create a Person Record
     |Affiliated Organization|
     
     
-   Scenario:#1b I can Add a Person Affiliated Organization by searching organizations
+   Scenario:#4 I can Add a Person Affiliated Organization by searching organizations
     Given I am on the Add Person Screen
      When I search Organizations 
      Then an organization search screen will be displayed
@@ -75,7 +75,7 @@ Feature: PO F10 Create a Person Record
     And the affiliation can be deleted by the curator
 
 
-Scenario:#1c Create Person fields's character Limit 
+Scenario:#5 Create Person fields's character Limit 
     Given I can request the creation of a new Person in CTRP
      When I provide the field name <FieldName>
      Then a comment appears below the Field Type <fieldName> to display the number of characters available to enter into the field <FieldLength>
@@ -90,7 +90,7 @@ Scenario:#1c Create Person fields's character Limit
      |Phone Extension  |30         |
      |Email            |254        |
      
-     Scenario: #1d Create Person Mandatory fields
+     Scenario: #6 CTRP Create Person Mandatory fields
     Given I am a curator
     And I am logged into the CTRP PO application
      When I have not entered a Person Parameters <PersonInfo>
@@ -101,8 +101,8 @@ Scenario:#1c Create Person fields's character Limit
      |Last Name              |Last Name is Required|
      |Affiliated Organization|Affiliated Organization |
    
-   
-  Scenario:#2 As a curator, I will receive a warning message for duplicate names
+ 
+ Scenario:#7 As a curator, I will receive a warning message for duplicate names
     Given I am logged in to CTRP PO application
     And I am on Add Person
     And I enter person first name which is duplicate
