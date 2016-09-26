@@ -22,7 +22,7 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Source Context: CTEP|
     |Source ID|
     |CTEP Organization Type|
-    |Source Status|
+    |Source Status (Active, Inactive, Legacy)|
     |Name|
     |Address|
     |Address2|
@@ -32,11 +32,11 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Postal Code|
     |Country|
     |Email|
-    |Phone|
+    |Phone Number “|” Extension (Single Field)|
     |Funding Mechanism|
     |Context Organization ID (Primary Key)|
-    |Service Request (Create)|
-    |Processing Status (Incomplete)|
+    |Service Request (Create,Update,Merge with CTEP ID)|
+    |Processing Status (Complete,Incomplete)|
     
    
     
@@ -48,13 +48,13 @@ Scenario: #1b CTEP Context Mandatory Fields
     |Source Context: CTEP|
     |Source ID|
     |CTEP Organization Type|
-    |CTEP Organization Status (Active, Inactive, Legacy)|
+    |Source Status|
     |Name|
     |Address|
     |City|
     |Country|
-    |Service Request (Create,Update,Merge with CTEP ID)|
-    |Processing Status (Incomplete, Complete)|
+    |Service Request |
+    |Processing Status|
     
     
       Scenario:#1b As I Curator, I can use the Clone function available on the CTEP screen 
@@ -111,62 +111,20 @@ Scenario: #1b CTEP Context Mandatory Fields
      And I have created an Organization record in CTRP
      When I click on the Associate Organization Context Button <Associate Organization Context> 
      Then the Search Organizations screen opens
-     And I can search for matching organizations with "ACTIVE" Source Status in context type
-     	
-        |CTEP|
-        
-        
+     And I can search for matching organizations with "ACTIVE" Source Status in "CTEP" context type
       When a CTEP organization name, state and country matches the CTRP organization name, state and country
       Then the resulted search will display matching CTEP Organization record with columns type
       And the curator can select the matching CTEP organization to link to CTRP org
       When the curator clicks on Associate Selection Button <AssociateSelection> to associate selection
-      Then the CTRP association is complete
-      And the Processing status will be complete for context type
-      |CTEP|
-      
-      And the Service Request will be NULL for context type
-      |CTEP|
-      
-      And CTEP Organization can be associated to only one CTRP organization
-      And BOTH organizations Source Status must be "Active"
+      Then the CTEP-CTRP association is complete
+       And the CTEP Organization will be displayed on the same Edit Organization screen in a new tab labeled "CTEP"
+    	And the CTEP Processing status will be "complete"
+     And The CTEP Service Request will be "NULL" 
+     And CTEP Organization can be associated to only one CTRP organization
+      #And BOTH organizations Source Status must be "Active"
       And Organizations can be associated only from the CTRP context 
       And all Associated Organizations will be displayed on the Edit organization CTRP Tab 
-      
-        Scenario: #4a Associated Organization details 
-    Given I am on the edit organization CTRP Context Tab
-     When an CTRP org is associated to a context type
-     |CTEP|
-     |NLM|
-     Then I can view an associated Organizations grid details type
-
-
-       |CTRP Organization ID|
-       |CTEP Organization ID|
-       |Name|
-       |Source Status|
-       |Source Context|
-       |Source ID|
-       |Family Name|
-       |Phone|
-       |Email|
-       |City|
-       |State|
-       |Country|
-       |Postal Code|
-       |Context Org ID|
-       |Processing Status|
-       |Service Request|
-       |Last Updated by|
-       |Last Updated Date|
-       |Association Start Date|
-       |Delete|
-     
-      
-     And Asscociated Organizations Source Status can be of any  Source status
-     And the curator can delete associations 
-     And the CTEP Organization will be displayed on the same Edit Organization screen in a new tab labeled "CTEP"
-    
-    
+   
   
     Scenario: #5 As a Curator, I can associate a CTRP organization with an Existing NLM organization
     Given I am a curator 
@@ -174,32 +132,20 @@ Scenario: #1b CTEP Context Mandatory Fields
      And I have created an Organization record in CTRP
      When I click on the Associate Organization Context Button <Associate Organization Context> 
      Then the Search Organizations screen opens
-     And I can search for matching organizations with "ACTIVE" Source Status in context type
-     	
-        |NLM|
-        
+     And I can search for matching organizations with "ACTIVE" Source Status in "NLM" context 
       When an NLM organization name (Sponsor) matches the CTRP organization name
       Then the resulted search will display matching NLM Organization record 
       And the curator can select the matching NLM organization to associate with the CTRP org
       When the curator clicks on Associate Selection Button <AssociateSelection> to associate selection
-      Then the CTRP association is complete
-      And the Processing status will be "complete" for Source context type
-      
-      |NLM|
-      
-      And the Service Request will be NULL for Source context type
-      |NLM|
-      
+      Then the CTRP-NLM association is complete
+      And the NLM Organizations will be displayed on the Edit Organization screen in a new tab called "NLM"
+      And the NLM Processing status will be "complete" 
+      And the NLM Service Request will be NULL 
       And More than one NLM Organizations can be associated to one CTRP organization
-      And all associated organizations Source Status must be "Active" 
+      #And Both organizations Source Status must be "Active" 
       And all Associated Organizations will be displayed on the Edit organization CTRP Tab 
-       And Asscociated Organizations Source Status can be of any status 
-      And the curator can delete associations 
-      And the NLM Organizations will be displayed on the Edit Organization screen in a new tab called "NLM" 
+     
     
-
-    
- 
     Scenario: #6  CTRP Organization information gets updated with the New Address information received from CTEP
     Given I am on the Search Organizations Screen
     When CTEP updated organization information is sent to CTRP via Restful service
@@ -258,13 +204,19 @@ Scenario: #1b CTEP Context Mandatory Fields
     Given I am logged into the CTEP
      When A trial is imported with a Sponsor Name that does not exist in the NLM Context
      Then CTRP automatically creates an NLM Context with an "Incomplete" Processing Status and "Create" Service Request with information type
+     And a Unique Context Org ID will be assigned to the NLM context
+     And an NLM Org Status will be "Active"
      
-     |Source Context: NLM|
+       Scenario: #9a NLM Fields List
+    Given I am on view organization NLM tab 
+     Then I can view NLM fields details
+
+	 |Source Context: NLM|
      |Name (Sponsor)|
      |NLM Context Organization ID|
-     |NLM Organization Status: Active|
-     |Service Request (Create)|
-     |Processing Status (Incomplete)|
+     |Source Status|
+     |Service Request|
+     |Processing Status|
 
     Scenario:#10 I can search a NLM Organization to be associated with an Organization in the CTRP Context 
     Given I am logged into the CTRP 
