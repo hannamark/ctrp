@@ -48,29 +48,7 @@ Feature: PO F9 Search for Persons
     |Suffix|
     And the result should be sorted by Person Last Name
     
-     Scenario:#2 I can view person details in CTRP Context tab
-    Given I am on the search person results screen
-     When I select a person to view in CTRP Context
-    Then the edit person screen display CTRP records type of the selected person 
-    
-    |CTRP Person ID|
-    |CTRP Context Person ID|
-    |Prefix|
-    |First Name|
-    |Middle Name|
-    |Last Name|
-    |Suffix|
-    |Source Context: CTRP|
-    |Source ID|
-    |Source Status: Active|
-    |Email|
-    |Phone Number-Extension|
-    |Processing Status|
-    |Created By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
-    |Updated By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
-    |Affiliated Organization Details|
-    
-    
+   
   Scenario:#2 As a Curator, I will get a message if searched with no parameters
     Given I am logged in to CTRP PO application
     And I am on the search persons screen
