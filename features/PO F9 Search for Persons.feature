@@ -6,9 +6,10 @@ Feature: PO F9 Search for Persons
       And I am logged in to CTRP PO application
     And I am on the search persons screen
     And I can search with one or more parameters type
+    
     |First Name|
     |Last Name|
-    |Affiliation Organization ID
+    |Affiliation Organization ID|
     |Context Person ID|
     |Affiliation|
     |Source Context|
@@ -22,28 +23,36 @@ Feature: PO F9 Search for Persons
     |Service Request|
     
     And I submit my search request for Person Search
-    Then the search results should display the following sorted by Last Name:
+    
+      Scenario:#1a Search Person Results 
+    Given I am on the search person results screen
+     And the search results should display the following columns 
+    
     |CTRP Person ID|
     |CTEP Person ID|
     |First Name|
     |Middle Name|
     |Last Name|
-    |Source ID|
-    |Context person ID|
     |Source Status|
     |Source Context|
-    |Processing Status|
-    |Service Request|
+    |Source ID|
     |Affiliated Orgs|
     |Email|
     |Phone |
+    |Context Person ID|
+    |Processing Status|
+    |Service Request|
     |Last Updated Date|
     |Last Updated By|
     |Prefix|
     |Suffix|
-
-   When I select a person to view in CTRP Context
-   Then CTRP records of the selected person details type will display in the edit mode
+    And the result should be sorted by Person Last Name
+    
+     Scenario:#2 I can view person details in CTRP Context tab
+    Given I am on the search person results screen
+     When I select a person to view in CTRP Context
+    Then the edit person screen display CTRP records type of the selected person 
+    
     |CTRP Person ID|
     |CTRP Context Person ID|
     |Prefix|
@@ -51,15 +60,18 @@ Feature: PO F9 Search for Persons
     |Middle Name|
     |Last Name|
     |Suffix|
-    |Processing Status|
     |Source Context: CTRP|
     |Source ID|
     |Source Status: Active|
     |Email|
     |Phone Number-Extension|
+    |Processing Status|
     |Created By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
     |Updated By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
-    |Add Affiliated Organization Details|
+    |Affiliated Organization Details|
+    
+    
+    
     And I can choose to associate person context from that screen
     And I can view all Person associations displayed with information type
     And Person associations might have any source status 
