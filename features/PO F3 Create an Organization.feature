@@ -107,6 +107,40 @@ Feature: PO F3 Create an Organization
     Then the organization will be created
 
   
+     Scenario: #6 I can view Associated Organization Grid details  
+    Given I am on the edit organization CTRP Context Tab
+     When an CTRP org is associated to a context type
+     |CTEP|
+     |NLM|
+     Then I can view an associated Organizations grid details type
+
+
+       |CTRP Organization ID|
+       |CTEP Organization ID|
+       |Name|
+       |Source Status|
+       |Source Context|
+       |Source ID|
+       |Family Name|
+       |Phone|
+       |Email|
+       |City|
+       |State|
+       |Country|
+       |Postal Code|
+       |Context Org ID|
+       |Processing Status|
+       |Service Request|
+       |Last Updated by|
+       |Last Updated Date|
+       |Association Start Date|
+       |Delete|
+     
+      
+     And Asscociated Organizations Source Status can be of any Source status
+     And the curator can delete associations 
+    
+    
     
      
      
