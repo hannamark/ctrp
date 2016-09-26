@@ -112,6 +112,8 @@ Scenario:#1 CTEP Context of a new person record created
     And the CTEP "Processing Status" will be set to "Incomplete"
     Then CTEP Context will be updated automatically with the new information received from the Restful service
     When the CTEP context update include a New Person Name
+    |First Name|
+    |Last Name|
     And the CTEP Organization is Active
     Then the CTRP Context field type is not automatically updated
     And the CTRP Processing Status will be "pending"
