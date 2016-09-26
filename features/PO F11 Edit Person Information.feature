@@ -55,8 +55,9 @@ Feature: PO F11 Edit Person Information
       When a CTEP Person information type matches same information in CTEP context
       |First Name|
       |Last Name|
-      |Email|
-      |Affiliated Organization Address|
+      |Affiliated Organization State|
+      |Affiliated Organization Country|
+     
       
       Then the resulted search will display matching CTEP Person records
       And the curator can select the matching CTEP Person to link to CTRP person 
