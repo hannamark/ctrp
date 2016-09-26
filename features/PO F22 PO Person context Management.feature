@@ -19,10 +19,10 @@ Scenario:#1 CTEP Context of a new person record created
       |Context Person ID|#(Primary Key)
       |CTRP Person ID|
       |Prefix|
-      |Suffix|
       |First Name|
       |Middle Name|
       |Last Name|
+      |Suffix|
       |Phone Number|#(Phone Number"|"Extension)
       |Email|
       |Source Context|
