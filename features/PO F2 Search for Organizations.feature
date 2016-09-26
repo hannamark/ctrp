@@ -108,8 +108,7 @@ Feature: PO F2 Search and Edit Organization
       |Last Updated By|
       |Last Updated Date|
       
-  
-      And the result should be sorted by Organization Name
+  And the result should be sorted by Organization Name
 
 
   Scenario:#6 As a Curator, I will get message if no Search Parameter is provided
@@ -144,26 +143,8 @@ Feature: PO F2 Search and Edit Organization
       And I can delete added organization
       And I can filter selected organizations by using the search box
 
-  Scenario:#8 As a Curator, I can Edit Organization fields 
-    Given I am logged in to CTRP PO application
-    And I am on the Edit Organization screen
-     Then I can edit all CTRP Organization Fields type
-     
-      |Name|
-      |Source Status|
-      |Processing Status|
-      |Name Alias|
-      |Address 1|
-      |Address 2|
-      |Country|
-      |State|
-      |City|
-      |Postal Code|
-      |Email|
-      |Phone Number: Phone Number Extension|
-      |Family Name|
-
-  Scenario:#9 As a Curator, when I search I will enter "*" as a wild card when Exact Search is selected
+ 
+  Scenario:#8 As a Curator, when I search I will enter "*" as a wild card when Exact Search is selected
     Given I want to search for an Organization with wild card
     And I am logged in to CTRP PO application
     And I am on a Organization search screen
@@ -171,7 +152,7 @@ Feature: PO F2 Search and Edit Organization
     When I enter "*" in a search field
     Then Organization Search Results will display all found organizations
 
-  Scenario:#10 As a Curator, I can clear all my search selections
+  Scenario:#9 As a Curator, I can clear all my search selections
     Given I am logged in to CTRP PO application
     And I have selected the option to search for an organization
     And I want to clear the organization search fields
