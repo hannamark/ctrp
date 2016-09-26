@@ -84,7 +84,7 @@ Feature: PO F2 Search and Edit Organization
     Then the system should display Results with organizations that match the search criteria entered
     
     
-     Scenario: #5a Search Organization Results
+     Scenario: #5a As a Curator Search Organization Results
     Given I am logged into the CTRP PO application
      When I complete an organization search
      Then The the organization search results will display the field type

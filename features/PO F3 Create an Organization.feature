@@ -43,8 +43,8 @@ Feature: PO F3 Create an Organization
     When I select an organization name in the search results
     Then the CTRP Organization Context will be displayed
       
-      |CTRP Organization ID (Grouping ID)|
-      |Context Organization ID (Primary Key)|
+      |CTRP Organization ID |# Grouping ID
+      |Context Organization ID|# Primary Key
       |Name|
       |Source Context|
       |Source ID|
