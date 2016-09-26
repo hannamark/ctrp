@@ -118,36 +118,7 @@ Feature: PO F2 Search and Edit Organization
     And I searched without providing any search parameters
     Then I should get message as "At least one selection value must be entered prior to running the search"
     
-
-  Scenario:#7 As a Curator, I can View organization information Details
-    Given I want to see the detail information of organization when linked with Family
-    And I am logged in to CTRP PO application
-    And I have selected the option to search for an organization
-    When I select an organization name in the search results
-    Then the CTRP Organization Context will be displayed
-      
-      |CTRP Organization ID|
-      |Context Organization ID|
-      |Name|
-      |Source Context|
-      |Source ID|
-      |Source Status|
-      |Processing Status|
-      |Name Alias|
-      |Address 1|
-      |Address 2|
-      |Country|
-      |State|
-      |City|
-      |Postal Code|
-      |Email|
-      |Phone Number: Phone Number Extension|
-      |Created By|
-      |Updated By|
-      |Family Name|
-    
-    
-      Scenario:#7a I can view Family name details  
+      Scenario:#7 I can view Family name details  
     Given I am on the edit organization screen
      And a family name is added to the organization record
      When I can click on the Family Name link in <Family Name> from the CTRP Organization context
