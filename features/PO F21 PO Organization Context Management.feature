@@ -22,7 +22,7 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Source Context: CTEP|
     |Source ID|
     |CTEP Organization Type|
-    |Source Status (Active, Inactive, Legacy)|
+    |Source Status|
     |Name|
     |Address|
     |Address2|
@@ -32,11 +32,11 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Postal Code|
     |Country|
     |Email|
-    |Phone Number “|” Extension (Single Field)|
+    |Phone Number “|” Extension |#Single Field
     |Funding Mechanism|
-    |Context Organization ID (Primary Key)|
-    |Service Request (Create,Update,Merge with CTEP ID)|
-    |Processing Status (Complete,Incomplete)|
+    |Context Organization ID |#Primary Key
+    |Service Request |
+    |Processing Status|
     
    
     
@@ -172,7 +172,7 @@ Scenario: #1b CTEP Context Mandatory Fields
      Then I can view NLM fields details
 
 	 |Source Context: NLM|
-     |Name (Sponsor)|
+     |Name|# Sponsor
      |NLM Context Organization ID|
      |Source Status|
      |Service Request|
