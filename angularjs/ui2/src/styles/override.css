@@ -1330,6 +1330,11 @@ uib-accordion form.form-horizontal {
     max-width: 1300px;
 }
 
+[uib-typeahead-popup].dropdown-menu {
+    height: 200px;
+    overflow-y: auto;
+}
+
 md-tabs.md-dynamic-height md-tab-content.md-active {
     padding-top: 20px;
 }
