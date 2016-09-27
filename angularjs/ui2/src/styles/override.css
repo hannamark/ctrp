@@ -836,6 +836,10 @@ h5 {
     background: #f4f4f4;
 }
 
+.ui-grid-pager-control input {
+    width: auto;
+}
+
 .ui-grid-row .ui-grid-cell, .ui-grid-row:last-child .ui-grid-cell {
     border-bottom: 1px solid #EEE;
     border-bottom-width: 1px !important; /* Remove '!important' once known CSS bug in angulur ui grid is fixed */

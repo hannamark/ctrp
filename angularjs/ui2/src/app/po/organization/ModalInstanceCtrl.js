@@ -21,14 +21,16 @@
         vm.ok = function() {
             vm.disableBtn = true;
 
-            /* Review Error Handling */
             OrgService.deleteOrg(orgId).then(function(data) {
                 var status = data.status;
 
-                if (status > 206) {
-                    vm.modalTitle = 'Deletion failed';
-                    timeoutCloseModal(data.data.family || data.data.person);
-                } else {
+                if (status >= 200 && status <= 210) {
+                    if (status > 206) {
+                        vm.modalTitle = 'Deletion failed';
+                        timeoutCloseModal(data.data.family || data.data.person);
+                        return;
+                    }
+
                     vm.modalTitle = 'Deletion is successful';
                     timeoutCloseModal('Permanently deleted', data.status); //204 for successful deletion
                 }
