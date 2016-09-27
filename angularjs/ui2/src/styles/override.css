@@ -770,6 +770,10 @@ h5 {
     padding-right: 30px;
 }
 
+.has-feedback .form-control.def-pad-right {
+    padding-right: 8px;
+}
+
 .feedback-height-sm {
     line-height: 25px;
 }
