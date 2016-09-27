@@ -57,6 +57,8 @@ SourceStatus.create(code: 'ACT', source_context_id: ctep_context.id, name: 'Acti
 SourceStatus.create(code: 'INACT', source_context_id: ctep_context.id, name: 'InActive', record_status: 'Active') if SourceStatus.find_by_code_and_source_context_id('INACT', ctep_context.id).nil?
 SourceStatus.create(code: 'LEG', source_context_id: ctep_context.id, name: 'Legacy', record_status: 'Active') if SourceStatus.find_by_code_and_source_context_id('LEG', ctep_context.id).nil?
 
+SourceStatus.create(code: 'ACT', source_context_id: nlm_context.id, name: 'Active', record_status: 'Active') if SourceStatus.find_by_code_and_source_context_id('ACT', nlm_context.id).nil?
+SourceStatus.create(code: 'INACT', source_context_id: nlm_context.id, name: 'InActive', record_status: 'Active') if SourceStatus.find_by_code_and_source_context_id('INACT', nlm_context.id).nil?
 
 
 FamilyRelationship.find_or_create_by(code: 'ORG').update( name: 'Organizational')
