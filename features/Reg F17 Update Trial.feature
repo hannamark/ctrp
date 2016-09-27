@@ -36,14 +36,75 @@ And the Submission method is Registry
 And Submission type is Update
 
 
-  Scenario: #1a I can Update Participating Sites Recruitment Status and Date
+  Scenario: #2 As a Trial Owner, I can Update Participating Sites Recruitment Status, Date and general contact
 Given I am logged into the CTRP Registration application
 And I search for a Trial which has been accepted and has a Participating site added to it
 And I have selected the Update option
-Then I can view participating site section with Participating Name, Participating Sites Recruitment Status and Date
-And I can Update Participating Sites Recruitment Status and Date
+Then I can view participating sites details
+     
+     |CTRP Org ID|#(Group ID)
+     |CTRP Organization Name|
+     |Principal Investigator|# (Last Name, First Name)
+     |Local Trial Identifier|
+     |Program Code|
+     |Current Site Recruitment Status|
+     |Current Site Recruitment Status Date|
+     |Primary Contact|# (Last Name, First Name)
+     |Email|
+     |Phone Number-Extension|
+     
+When I select a participating site to edit
+Then an edit site pop up screen displays with field type
+     |NCI ID|
+     |Lead Org Trial Identifier|
+     |Official Title|
+     |Organization Name|
+     |Local Trial Identifier|
+     |Site Principal Investigator|
+     |Site Specific Program Code|
+     |Trial Recruitment Status:Status Date-Status|
+     
+And only the participating site fields type will be editable
+     |Current Site Recruitment Status|
+     |Current Site Recruitment Status Date|
+     |General Contact|
+When I click on the save button
+Then the updated participating site details will be saved in the trial record
 
-Scenario: #1b I can reset entered updates
+Scenario: #3 As a CTRP User, I can add a site contact
+Given I am on the Add Participating Site feature
+And I can select Contact Type 
+|Site Investigator|
+|Person|
+|General|
+
+Scenario: #4 I can add contact when contact type is Site investigator
+Given I am on the Contact Screen
+When the contact type selected is Site Investigator 
+Then I can select the available site principal Investigator 
+And the email address will be populated
+And Phone Number and Extention will be populated
+And the populated parameters can be edited
+
+Scenario: #5 I can add contact when contact type is Person
+Given I am on the Contact Screen
+When the contact type selected is Person 
+Then I can select a person by conducting a Person Search 
+And Contact person name will be selected 
+And the email address will be populated
+And Phone Number and Extention will be populated
+And the populated parameters can be edited
+
+Scenario: #6 I can add contact when contact type is General
+Given I am on the Contact Screen
+When the contact type selected is General
+Then I must enter a contact name information
+And I must enter an Email Address
+And I must enter a Phone Number and Extention
+And the entered parameters can be edited
+
+
+Scenario: #7 I can reset entered updates
 Given I am logged into the CTRP Registration application
 And I am on the Trial Update screen
 When I update fields on the Trial Update screen
@@ -52,7 +113,7 @@ Then all fields updated will be cancelled
 And the new changes will not be saved
 
 
-Scenario: #2 I search my trials and select the update option
+Scenario: #8 I search my trials and select the update option
 Given I am logged into the CTRP Registration application
 And I have selected the option to search my trials in CTRP 
 And I am the Trial owner
@@ -67,7 +128,7 @@ And the "Current Verification Date" will be updated in the Trial Data Verificati
 And an email entitled "Updated Trial" will be sent to the trial owner (Locate Email list on the shared drive under Functional/registration as: CTRP System Generated Emails)
 
 
-  Scenario: #3 Documents Displayed during Update after an Original Submission
+  Scenario: #9 Documents Displayed during Update after an Original Submission
     Given I am logged into the CTRP Registration application
      When I have selected the option to search My Trials in CTRP
      And I am the Trial Owner
@@ -92,7 +153,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       
 
 
-    Scenario:#4 Documents Displayed during Updated after an Amendment
+    Scenario:#10 Documents Displayed during Updated after an Amendment
     Given I am logged into the CTRP Registration application
      When I have selected the option to search My Trials in CTRP
      And I am the Trial Owner
@@ -115,7 +176,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |TSR- Current TSR (Generated after Trial Summary report Date Milestone)   |   
       
 
-         Scenario:#5 Delete option should not be included for existing documents 
+         Scenario:#11 Delete option should not be included for existing documents 
     Given I am logged into the CTRP Registration application
      When I update a trial 
      Then I can see the most current documents
