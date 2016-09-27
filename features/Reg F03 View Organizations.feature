@@ -83,7 +83,7 @@ As a Trial Submitter or a Site Admin, I am able to View Organizations
      |Source Context: NLM|
     |CTRP Organization ID|
     |Name: Sponsor Name|
-    |NLM Organization Status: Active|
+    |Source Status: Active|
    
   And I should not be allowed to edit organization parameters
 And I should not view, edit or delete comments added by curators

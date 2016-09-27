@@ -29,9 +29,9 @@ var scientificTrialDesign = function(){
      * Trial Design object(s)
      ***********************************/
 
-    this.trialDesignHeader = element(by.css('.sub-bordered.ng-binding'));
+    this.trialDesignHeader = element(by.id('trial_design_hdr'));
 
-
+    //Fields
     this.researchCategoryLst = element(by.id('research_category'));
     this.primaryPurposeLst = element(by.id('primary_purpose'));
     this.secondaryPurposeLst = element(by.id('secondary_purpose'));
@@ -52,7 +52,13 @@ var scientificTrialDesign = function(){
     this.targetEnrollmentTxt = element(by.id('target_enrollment'));
     this.finalEnrollmentTxt = element(by.id('final_enrollment'));
 
-    this.accrualsView = element(by.css('.col-xs-12.col-sm-2.form-text.ng-binding'));
+    this.accrualsView = element(by.id('accruals'));
+
+    //Observational
+    this.studyModelLst = element(by.id('study_model'));
+    this.timePerspectiveLst = element(by.id('time_perspective'));
+    this.bioSpecimenRetentionLst = element(by.id('biospecimen_retention'));
+    this.bioSpecimenDescriptionTxt = element(by.id('biospecimen_desc'));
 
     //Masking Roles
     this.maskingRolesSubjectCheck = element(by.id('masking_role_subject'));
@@ -65,6 +71,63 @@ var scientificTrialDesign = function(){
     this.descriptionOfOtherSecondaryPurposeTxt = element(by.id('description_other2'));
     this.descriptionOfOtherStudyModelTxt = element(by.id('study_model_other'));
     this.descriptionOfOtherTimePerspectiveTxt = element(by.id('time_perspective_other'));
+
+    //Labels for Fields
+    //Interventional
+    this.clinicalResearchCategoryLbl = element(by.id('clinical_research_cat_lbl'));
+    this.primaryPurposeLbl = element(by.id('primary_purpose_lbl'));
+    this.secondaryPurposeLbl = element(by.id('sp_lbl'));
+    this.trialPhaseLbl = element(by.id('trial_phase_lbl'));
+    this.isThisAPilotLbl = element(by.id('is_this_pilot_lbl'));
+    this.interventionModelLbl = element(by.id('intervention_model_lbl'));
+    this.maskingLbl = element(by.id('maskings_lbl'));
+    this.allocationLbl = element(by.id('allocation_lbl'));
+    this.studyClassificationLbl = element(by.id('study_classification_labl'));
+    this.numberOfArmsLbl = element(by.id('number_arms_groups_lbl'));
+    this.targetEnrollmentLbl = element(by.id('target_enrollment_lbl'));
+    this.finalEnrollmentLbl = element(by.id('final_enrollment_lbl'));
+    this.accrualsLbl = element(by.id('accruals_lbl'));
+
+    //Observantional
+    this.studyModelLbl = element(by.id('study_model_lbl'));
+    this.timePerspectiveLbl = element(by.id('tp_lbl'));
+    this.bioSpecimenRetentionLbl = element(by.id('bio_specimen_retention_lbl'));
+    this.bioSpecimenDescriptionLbl = element(by.id('bio_specimen_desc_lbl'));
+
+    this.verifyTrialDesignLables = function (clinicalRCType, clinicalRCLbl, primaryPurps, secondryPurps, trialPhas, isThisPilot, InterventionModl, maskng, allocatn, studyClssifctn, studyModl, tmePerspectv, biospeciReten, biospeciDesc, nmbrOfArmsGrp, targetEnrollmnt, finalEnrollmntCT, accrualsLbl){
+        if (clinicalRCType === 'Interventional' || clinicalRCType === 'Expanded Access'){
+            helper.getVerifyLabel(this.clinicalResearchCategoryLbl, clinicalRCLbl, "Clinical Research Category:");
+            helper.getVerifyLabel(this.primaryPurposeLbl, primaryPurps, "Primary Purpose:");
+            helper.getVerifyLabel(this.secondaryPurposeLbl, secondryPurps, "Secondary Purpose:");
+            helper.getVerifyLabel(this.trialPhaseLbl, trialPhas, "Trial Phase:");
+            helper.getVerifyLabel(this.isThisAPilotLbl, isThisPilot, "Is this a pilot?:");
+            //Interventional or Expanded Access
+            helper.getVerifyLabel(this.interventionModelLbl, InterventionModl, "Intervention Model:");
+            helper.getVerifyLabel(this.maskingLbl, maskng, "Masking:");
+            helper.getVerifyLabel(this.allocationLbl, allocatn, "Allocation:");
+            helper.getVerifyLabel(this.studyClassificationLbl, studyClssifctn, "Study Classification:");
+
+            helper.getVerifyLabel(this.numberOfArmsLbl, nmbrOfArmsGrp, "Number of Arms/Groups:");
+            helper.getVerifyLabel(this.targetEnrollmentLbl, targetEnrollmnt, "Target Enrollment:");
+            helper.getVerifyLabel(this.finalEnrollmentLbl, finalEnrollmntCT, "Final Enrollment for CT.gov:");
+            helper.getVerifyLabel(this.accrualsLbl, accrualsLbl, "Accruals:");
+        } else if (clinicalRCType === 'Observational' || clinicalRCType === 'Ancillary Correlative'){
+            helper.getVerifyLabel(this.clinicalResearchCategoryLbl, clinicalRCLbl, "Clinical Research Category:");
+            helper.getVerifyLabel(this.primaryPurposeLbl, primaryPurps, "Primary Purpose:");
+            helper.getVerifyLabel(this.trialPhaseLbl, trialPhas, "Trial Phase:");
+            helper.getVerifyLabel(this.isThisAPilotLbl, isThisPilot, "Is this a pilot?:");
+            //Observational or Ancillary Correlative
+            helper.getVerifyLabel(this.studyModelLbl, studyModl, "Study Model:");
+            helper.getVerifyLabel(this.timePerspectiveLbl, tmePerspectv, "Time Perspective:");
+            helper.getVerifyLabel(this.bioSpecimenRetentionLbl, biospeciReten, "Bio-specimen Retention:");
+            helper.getVerifyLabel(this.bioSpecimenDescriptionLbl, biospeciDesc, "Bio-specimen Description:");
+        }
+        helper.getVerifyLabel(this.numberOfArmsLbl, nmbrOfArmsGrp, "Number of Arms/Groups:");
+        helper.getVerifyLabel(this.targetEnrollmentLbl, targetEnrollmnt, "Target Enrollment:");
+        helper.getVerifyLabel(this.finalEnrollmentLbl, finalEnrollmntCT, "Final Enrollment for CT.gov:");
+        helper.getVerifyLabel(this.accrualsLbl, accrualsLbl, "Accruals:");
+
+    };
 
 
     /***********************************
@@ -127,41 +190,34 @@ var scientificTrialDesign = function(){
     this.setFinalEnrollmentForCT = function(number){
         helper.setValue(this.finalEnrollmentTxt, number, 'Final Enrollment for CT.gov Text -');
     };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    this.clickLookupTrial = function(){
-        helper.clickButton(this.lookupTrialBtn, "Add Look Up Trial - Button");
+    this.selectStudyModel = function(optionA)  {
+        helper.selectValueFromList(this.studyModelLst, optionA, "Study Model - List field");
     };
 
-    this.checkAssociatedTrialPageTitle = function (titleTXT, listOrDetails){
-        if (listOrDetails === 'list'){
-            this.waitForElement(self.associatedPageTitleList, 'Waiting For Page title');
-            self.associatedPageTitleList.isDisplayed().then(function(result) {
-                if (result) {
-                    expect(self.associatedPageTitleList.getText()).to.eventually.equal(titleTXT);
-                }
-            });
-        } else if (listOrDetails === 'details'){
-            this.waitForElement(self.associatedPageTitleDetails, 'Waiting For Page title');
-            self.associatedPageTitleDetails.isDisplayed().then(function(result) {
-                if (result) {
-                    expect(self.associatedPageTitleDetails.getText()).to.eventually.equal(titleTXT);
-                }
-            });
-        }
+    this.selectTimePerspective = function(optionA)  {
+        helper.selectValueFromList(this.timePerspectiveLst, optionA, "Time Perspective - List field");
     };
+
+    this.selectBioSpecimenRetention = function(optionA)  {
+        helper.selectValueFromList(this.bioSpecimenRetentionLst, optionA, "Bio-specimen Retention - List field");
+    };
+
+    this.setBioSpecimenDescription = function(txt)  {
+        helper.setValue(this.bioSpecimenDescriptionTxt, txt, "Bio-specimen Retention - Text field");
+    };
+
+    this.checkTrialDesignPageTitle = function (titleTXT){
+        this.waitForElement(self.trialDesignHeader, 'Waiting For Page title');
+        self.trialDesignHeader.isDisplayed().then(function(result) {
+            if (result) {
+                expect(self.trialDesignHeader.getText()).to.eventually.equal(titleTXT);
+            }
+        });
+    };
+
+
+
+
 
     this.findAssociatedTrialToVerifyEditCopyDelete = function(expTrialIdentifier, what, exIdentifierTypeVf, exTrialTypeVf, exOfficialTtleVf){
         this.waitForAssociatedTrailDetailsElement(self.tableTBodyRowAColA, "List of Associated Trials Table");
@@ -283,13 +339,7 @@ var scientificTrialDesign = function(){
         browser.sleep(250);
     };
 
-    this.verifyAssociatedTrialDetailsLables = function (){
-        var lbl = new Array("Identifier Type:", "Trial Identifier:", "Research Category:", "Official Title:");
-        helper.getVerifyLabel(this.outcomeMeasureTypeLbl, lbl[0], "Identifier Type");
-        commonFunctions.verifyTxtByIndex(self.titleLbl, lbl[1], '0', 'Trial Identifier');
-        commonFunctions.verifyTxtByIndex(self.timeFrameLbl, lbl[2], '1', 'Research Category');
-        helper.getVerifyLabel(this.descriptionLbl, lbl[3], "Official Title");
-    };
+
 
     this.verifyCharLeft = function(charLeft, index){
         this.waitForElement(self.characterLeftLbl.get(index), 'Waiting For Page title');

@@ -84,3 +84,71 @@ Scenario:#5 Delete option should not be included for existing documents
      When I Amend a trial 
      Then I can see the most current documents
      And the delete option should not be included for existing documents
+
+Scenario: #6 As a Trial Owner, I can Amend Participating Sites Recruitment Status, Date and general contact
+Given I am logged into the CTRP Registration application
+And I search for a Trial which has been abstracted and has a Participating site added to it
+And I have selected the Amend option
+Then I can view participating sites details
+     
+     |CTRP Org ID|#(Group ID)
+     |CTRP Organization Name|
+     |Principal Investigator|# (Last Name, First Name)
+     |Local Trial Identifier|
+     |Program Code|
+     |Current Site Recruitment Status|
+     |Current Site Recruitment Status Date|
+     |Primary Contact|# (Last Name, First Name)
+     |Email|
+     |Phone Number-Extension|
+     
+When I select a participating site to edit
+Then an edit site pop up screen displays with field type
+     |NCI ID|
+     |Lead Org Trial Identifier|
+     |Official Title|
+     |Organization Name|
+     |Local Trial Identifier|
+     |Site Principal Investigator|
+     |Site Specific Program Code|
+     |Trial Recruitment Status:Status Date-Status|
+     
+And only the participating site fields type will be editable
+     |Current Site Recruitment Status|
+     |Current Site Recruitment Status Date|
+     |General Contact|
+When I click on the save button
+Then the updated participating site details will be saved in the trial record
+
+Scenario: #7 As a CTRP User, I can add a site contact
+Given I am on the Add Participating Site feature
+And I can select Contact Type 
+|Site Investigator|
+|Person|
+|General|
+
+Scenario: #8 I can add contact when contact type is Site investigator
+Given I am on the Contact Screen
+When the contact type selected is Site Investigator 
+Then I can select the available site principal Investigator 
+And the email address will be populated
+And Phone Number and Extention will be populated
+And the populated parameters can be edited
+
+Scenario: #9 I can add contact when contact type is Person
+Given I am on the Contact Screen
+When the contact type selected is Person 
+Then I can select a person by conducting a Person Search 
+And Contact person name will be selected 
+And the email address will be populated
+And Phone Number and Extention will be populated
+And the populated parameters can be edited
+
+Scenario: #10 I can add contact when contact type is General
+Given I am on the Contact Screen
+When the contact type selected is General
+Then I must enter a contact name information
+And I must enter an Email Address
+And I must enter a Phone Number and Extention
+And the entered parameters can be edited
+
