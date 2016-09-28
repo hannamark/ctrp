@@ -29,7 +29,7 @@ Feature: PO F10 Create a Person Record
     And a unique Context Person ID <ContextPersonID> will be assigned to the added person
     
     
-    Scenario:#7 Person Source Status CTRP available list
+    Scenario:#2a Person Source Status CTRP available list
     Given I am logged into the PO application
      When I am on the edit Person screen
      Then the person source status type will be available 
