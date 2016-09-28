@@ -57,9 +57,12 @@
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.name) || orgDetailView.showUniqueWarning}">
                                 <label for="organization_name" class="control-label col-xs-12 col-sm-3">Name:</label>
                                 <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
-                                    <input type="text" restriction-field class="form-control input-sm" name="name" id="organization_name" maxlength="160" ng-model="orgDetailView.curOrg.name" auto-focus required ng-blur="orgDetailView.checkUniqueOrganization()">
-                                    <span class="form-control-feedback" ng-show="orgDetailView.curOrg.name.length"></span>
-                                    <span class="help-block" ng-show="organization_form.name.$error.required">Name is Required</span>
+                                    <input type="text" restriction-field class="form-control input-sm" name="name" id="organization_name"
+                                        maxlength="160" ng-model="orgDetailView.curOrg.name"
+                                        auto-focus required
+                                        ng-blur="orgDetailView.checkUniqueOrganization()">
+                                    <span ng-show="organization_form.name.$dirty">{{160 - orgDetailView.curOrg.name.length}} characters left</span>
+                                    <span class="help-block" ng-show="organization_form.name.$dirty && organization_form.name.$error.required">Name is Required</span>
                                     <div class="has-error" ng-show="orgDetailView.showUniqueWarning && orgDetailView.curOrg.name.length > 0 && organization_form.name.$dirty">
                                         <span class="help-block">
                                             Warning: Organization exists in the database. Please verify and create a new Organization record.
@@ -237,6 +240,7 @@
                                         <label class="control-label col-xs-12 col-sm-3">Email:</label>
                                         <div class="col-xs-12 col-sm-3" ng-if="orgDetailView.curOrgEditable">
                                             <input type="email" restriction-field class="form-control input-sm" id="email" maxlength="254" ng-model="orgDetailView.curOrg.email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
+                                            <span ng-show="organization_form.email.$dirty"> {{254 - orgDetailView.curOrg.email.length}} characters left</span>
                                             <span class="form-control-feedback" ng-show="organization_form.email.$viewValue.length" ng-class="!(organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                         </div>
                                         <div class="col-xs-12 col-sm-3 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.email}}</div>
