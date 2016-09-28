@@ -86,6 +86,8 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
      |CTRP Organization Name|
      |Investigators (Last Name, First Name)|
      |Primary Contact (Last Name, First Name)|
+     |Email|
+     |Phone Number-Extension|
      |Local Trial Identifier|
      |Program Code|
      |Current Site Recruitment Status|
