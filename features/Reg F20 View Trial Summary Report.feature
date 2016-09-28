@@ -158,7 +158,7 @@ And I can view TSR document
      
       |TSR Section    |Field                                 |Field Required |Display Rule when Field Blank|
       |Trial Design   |Primary purpose                       |Required       |Display "No data available"  |
-      |               |Description og Other Primary Purpose  |Not Required   |Field not Displayed          |  
+      |               |Description of Other Primary Purpose  |Not Required   |Field not Displayed          |  
       |               |Trial Phase                           |Required       |Display "No data available"  |  
       |               |Study Model                           |Required       |Display "No data available"  |  
       |               |Time Perspective                      |Required       |Display "No data available"  |  

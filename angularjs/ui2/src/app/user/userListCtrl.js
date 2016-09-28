@@ -38,7 +38,7 @@
         }; //initial User Search Parameters
 
         var optionOrg = {
-            name: 'organization_name',
+            name: 'user_org_name',
             displayName: 'Organizational Affiliation',
             enableSorting: true,
             minWidth: '210',
@@ -62,7 +62,7 @@
         };
 
         var optionEmail = {
-            name: 'receive_email_notifications',
+            name: 'receive_emails',
             displayName: 'e-mails',
             enableSorting: true,
             width: '120'
@@ -190,7 +190,7 @@
                 vm.gridOptions.useExternalSorting = true;
                 vm.requireSelection = false;
                 if (!vm.searchParams.organization_id) {
-                    vm.searchParams.organization_name = vm.organization_name;
+                    vm.searchParams.user_org_name = vm.organization_name;
                 }
 
                 /**
@@ -257,7 +257,7 @@
 
         vm.removeOrgChoice = function () {
             vm.userChosenOrg = null;
-            vm.organization_name = vm.searchParams.organization_name = vm.searchParams.organization_id = undefined;
+            vm.organization_name = vm.searchParams.user_org_name = vm.searchParams.organization_id = undefined;
         };
 
         /* remove ownership */

@@ -57,9 +57,12 @@
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.name) || orgDetailView.showUniqueWarning}">
                                 <label for="organization_name" class="control-label col-xs-12 col-sm-3">Name:</label>
                                 <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
-                                    <input type="text" restriction-field class="form-control input-sm" name="name" id="organization_name" maxlength="160" ng-model="orgDetailView.curOrg.name" auto-focus required ng-blur="orgDetailView.checkUniqueOrganization()">
-                                    <span class="form-control-feedback" ng-show="orgDetailView.curOrg.name.length"></span>
-                                    <span class="help-block" ng-show="organization_form.name.$error.required">Name is Required</span>
+                                    <input type="text" restriction-field class="form-control input-sm" name="name" id="organization_name"
+                                        maxlength="160" ng-model="orgDetailView.curOrg.name"
+                                        auto-focus required
+                                        ng-blur="orgDetailView.checkUniqueOrganization()">
+                                    <span ng-show="organization_form.name.$dirty">{{160 - orgDetailView.curOrg.name.length}} characters left</span>
+                                    <span class="help-block" ng-show="organization_form.name.$dirty && organization_form.name.$error.required">Name is Required</span>
                                     <div class="has-error" ng-show="orgDetailView.showUniqueWarning && orgDetailView.curOrg.name.length > 0 && organization_form.name.$dirty">
                                         <span class="help-block">
                                             Warning: Organization exists in the database. Please verify and create a new Organization record.
@@ -221,7 +224,7 @@
                                     <div class="col-xs-12 col-sm-2" ng-if="orgDetailView.curOrgEditable">
                                         <input type="text" restriction-field class="form-control input-sm" id="city" ng-model="orgDetailView.curOrg.city" required name="city">
                                         <span class="form-control-feedback" ng-show="orgDetailView.curOrg.city.length"></span>
-                                        <span class="help-block" ng-show="organization_form.city.$error.required">City is Required</span>
+                                        <span class="help-block" ng-show="organization_form.city.$dirty && organization_form.city.$error.required">City is Required</span>
                                     </div>
                                     <div class="col-xs-12 col-sm-2 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.city}}</div>
                                     <label class="control-label has-feedback col-xs-12 col-sm-2">Postal Code:</label>
@@ -235,21 +238,30 @@
                                 <div class="form-group has-feedback required" ng-class="{'has-error': (organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) && organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone))}">
                                     <div class="row">
                                         <label class="control-label col-xs-12 col-sm-3">Email:</label>
-                                        <div class="col-xs-12 col-sm-3" ng-if="orgDetailView.curOrgEditable">
+                                        <div class="col-xs-12 col-sm-2" ng-if="orgDetailView.curOrgEditable">
                                             <input type="email" restriction-field class="form-control input-sm" id="email" maxlength="254" ng-model="orgDetailView.curOrg.email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
                                             <span class="form-control-feedback" ng-show="organization_form.email.$viewValue.length" ng-class="!(organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                            <span ng-show="organization_form.email.$dirty"> {{254 - orgDetailView.curOrg.email.length}} characters left</span>
                                         </div>
                                         <div class="col-xs-12 col-sm-3 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.email}}</div>
                                         <label class="control-label col-xs-12 col-sm-1">Phone:</label>
                                         <div class="col-xs-12 col-sm-2" ng-if="orgDetailView.curOrgEditable">
                                             <input type="text" restriction-field class="form-control input-sm" id="phone" name="phone" maxlength="30" ng-model="orgDetailView.curOrg.phone" placeholder="Phone" ng-required="!orgDetailView.curOrg.email" ng-blur="orgDetailView.isValidPhoneNumber()">
                                             <span ng-show="orgDetailView.curOrg.phone.length" class="form-control-feedback" ng-class="(orgDetailView.curOrg.phone.length > 0 && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                                            <span ng-show="organization_form.phone.$dirty">{{30 - orgDetailView.curOrg.phone.length}} characters left</span>
                                             <div class="has-error" ng-show="orgDetailView.curOrg.phone.length && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid">
                                                 <span class="help-block">
                                                     Warning: Phone number invalid for the selected Country.
                                                  </span>
                                             </div>
                                         </div>
+                                        <div class="col-xs-12 col-sm-1">
+                                            <input type="text" class="form-control input-sm" id="extension" name="extension" maxlength="30" ng-model="orgDetailView.curOrg.extension" placeholder="Extension">
+                                            <div ng-show="organization_form.extension.$dirty">
+                                                {{30 - orgDetailView.curOrg.extension.length}} characters left
+                                            </div>
+                                        </div>
+
                                         <div class="col-xs-12 col-sm-2 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.phone}}</div>
                                     </div>
                                     <div class="row" ng-show="organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone) &&
@@ -263,6 +275,75 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+
+                            <div class="form-group has-feedback required">
+                                <div class="row">
+                                    <label class="control-label col-xs-12 col-sm-3">Email:</label>
+                                    <div class="col-xs-12 col-sm-3" ng-if="orgDetailView.curOrgEditable">
+                                        <input type="email" restriction-field class="form-control input-sm" id="email" maxlength="254" ng-model="orgDetailView.curOrg.email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
+                                        <span class="form-control-feedback" ng-show="organization_form.email.$viewValue.length" ng-class="!(organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-3 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.email}}</div>
+                                    <label class="control-label col-xs-12 col-sm-1">Phone:</label>
+                                    <div class="col-xs-12 col-sm-2" ng-if="orgDetailView.curOrgEditable">
+                                        <input type="text" restriction-field class="form-control input-sm" id="phone" name="phone" maxlength="30" ng-model="orgDetailView.curOrg.phone" placeholder="Phone" ng-required="!orgDetailView.curOrg.email" ng-blur="orgDetailView.isValidPhoneNumber()">
+                                        <span ng-show="orgDetailView.curOrg.phone.length" class="form-control-feedback" ng-class="(orgDetailView.curOrg.phone.length > 0 && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                                        <div class="has-error" ng-show="orgDetailView.curOrg.phone.length && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid">
+                                                <span class="help-block">
+                                                    Warning: Phone number invalid for the selected Country.
+                                                 </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-2 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.phone}}</div>
+                                </div>
+                                <div class="row" ng-show="organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone) &&
+                                    organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) &&
+                                    organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone) && orgDetailView.curOrgEditable"
+                                     ng-class="{'has-error': (organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) &&
+                                    organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone))}">
+                                    <div class="col-xs-12 col-sm-3"></div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <span class="help-block">Either Phone or Email is Required</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group has-feedback required" ng-class="{'has-error': (organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) && organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone))}">
+                                <div class="row">
+                                    <label class="control-label col-xs-12 col-sm-3">Email:</label>
+                                    <div class="col-xs-12 col-sm-3" ng-if="orgDetailView.curOrgEditable">
+                                        <input type="email" restriction-field class="form-control input-sm" id="email" maxlength="254" ng-model="orgDetailView.curOrg.email" placeholder="Email" name="email" ng-required="!orgDetailView.curOrg.phone">
+                                        <span class="form-control-feedback" ng-show="organization_form.email.$viewValue.length" ng-class="!(organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-3 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.email}}</div>
+                                    <label class="control-label col-xs-12 col-sm-1">Phone:</label>
+                                    <div class="col-xs-12 col-sm-2" ng-if="orgDetailView.curOrgEditable">
+                                        <input type="text" restriction-field class="form-control input-sm" id="phone" name="phone" maxlength="30" ng-model="orgDetailView.curOrg.phone" placeholder="Phone" ng-required="!orgDetailView.curOrg.email" ng-blur="orgDetailView.isValidPhoneNumber()">
+                                        <span ng-show="orgDetailView.curOrg.phone.length" class="form-control-feedback" ng-class="(orgDetailView.curOrg.phone.length > 0 && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                                        <div class="has-error" ng-show="orgDetailView.curOrg.phone.length && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid">
+                                                <span class="help-block">
+                                                    Warning: Phone number invalid for the selected Country.
+                                                 </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-2 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.phone}}</div>
+                                </div>
+                                <div class="row" ng-show="organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone) &&
+                                    organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) &&
+                                    organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone) && orgDetailView.curOrgEditable"
+                                     ng-class="{'has-error': (organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email) &&
+                                    organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone))}">
+                                    <div class="col-xs-12 col-sm-3"></div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <span class="help-block">Either Phone or Email is Required</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                                 <div class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">Fax:</label>
                                     <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">

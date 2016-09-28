@@ -25,10 +25,20 @@ Feature: PO F10 Create a Person Record
     
     And I can Add a Person Affiliated Organization by searching organizations
     When the added parameters are saved
-    Then Then a unique CTRP Person ID <Source ID> will be assigned to the added person
+    Then Then a unique CTRP Person ID <Source ID> will be assigned to the added person  
     And a unique Context Person ID <ContextPersonID> will be assigned to the added person
     
     
+    Scenario:#2a Person Source Status CTRP available list
+    Given I am logged into the PO application
+     When I am on the edit Person screen
+     Then the person source status type will be available 
+     
+     |Active|
+     |Inactive|
+     |Pending|
+     |Nullified|
+
     
       Scenario: #3 CTRP Person Record details
     Given I am on the person search results screen
