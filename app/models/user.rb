@@ -85,7 +85,7 @@ class  User < ActiveRecord::Base
       column_str = "user_org.name"
     elsif column == "organization_family"
       column_str = "families.name"
-    elseif column != "site_admin"
+    elsif column != "site_admin"
       column_str = "users.#{column}"
     end
 
