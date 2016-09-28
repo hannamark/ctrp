@@ -202,14 +202,14 @@ end
       # Pagination/sorting params initialization
       params[:start] = 1 if params[:start].blank?
       sortBy = params[:sort]
-      if sortBy == 'organization_name'
+      if sortBy == 'user_org_name'
         sortBy = 'user_org.name'
       end
 
       if params[:trial_id].present? && !params[:trial_id].nil?
-        @users = User.users_own_trial(params[:trial_id])
+        @users = User.matches_join().users_own_trial(params[:trial_id])
       else
-        @users = User.all
+        @users = User.matches_join()
       end
 
       if (abstractionAccess current_user)
@@ -246,7 +246,7 @@ end
       @users = @users.matches_wc('email', params[:email]) if params[:email].present? unless @users.blank?
       @users = @users.matches_wc('site_admin', params[:site_admin])  if !params[:site_admin].nil? unless @users.blank?
       @users = @users.matches_wc('user_status_id', params[:user_status_id]) if params[:user_status_id].present? unless @users.blank?
-      @users = @users.matches_wc('organization_name', params[:organization_name])  if params[:organization_name].present? unless @users.blank?
+      @users = @users.matches_wc('user_org_name', params[:user_org_name])  if params[:user_org_name].present? unless @users.blank?
       @users = @users.matches_wc('organization_family', params[:organization_family])  if params[:organization_family].present? unless @users.blank?
       @users = @users.matches_wc('organization_id', params[:organization_id])  if params[:organization_id].present? unless @users.blank?
 
@@ -379,7 +379,7 @@ end
   def user_params
     params.require(:user).permit(:username, :email, :zipcode, :first_name, :last_name,
                                  :middle_name, :receive_email_notifications,  :updated_at, :created_at, :role,
-                                 :street_address, :organization_id, :country, :state, :prs_organization_name, :city,
+                                 :street_address, :organization_id, :user_org_name, :country, :state, :prs_organization_name, :city,
                                  :phone, :phone_ext, :user_status_id, :status_date)
   end
 end
