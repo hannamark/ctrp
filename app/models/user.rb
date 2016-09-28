@@ -46,6 +46,8 @@
 #  index_users_on_user_status_id        (user_status_id)
 #  index_users_on_username              (username) UNIQUE
 #
+# rubocop:disable ClassLength
+#
 
 class  User < ActiveRecord::Base
   # Include default devise modules. Others available are:
@@ -53,7 +55,7 @@ class  User < ActiveRecord::Base
   #devise  :registerable,
   #       :recoverable, :trackable, :validatable,
    #      :confirmable, :lockable, :timeoutable, :omniauthable
-  devise   :timeoutable,  :validatable
+  devise :timeoutable, :validatable
   belongs_to :organization
   belongs_to :user_status
   has_many :trial_ownerships, -> { order 'trial_ownerships.id' }
@@ -83,7 +85,7 @@ class  User < ActiveRecord::Base
       column_str = "user_org.name"
     elsif column == "organization_family"
       column_str = "families.name"
-    else column != "site_admin"
+    elseif column != "site_admin"
       column_str = "users.#{column}"
     end
 
@@ -199,23 +201,6 @@ class  User < ActiveRecord::Base
     ROLES
   end
 
-  def get_all_users_by_role
-    users = []
-    if !self.role.blank?
-      # A Super Admin User can see all the Users and can approve access to the user
-      if self.role == "ROLE_SUPER" && self.organization_id.blank?
-        users = User.all
-       elsif self.role == "ROLE_SUPER"   && !self.organization_id.blank? #self.role == "ROLE_SITE-SU"
-        # A Site Admin User can see all the Users in its respective organization and
-        # also can approve the user's site admin privileges
-        unless self.organization_id.nil?
-          users = User.all.select{|x| x.organization_id==self.organization_id}
-        end
-      end
-    end
-    users
-  end
-
   def process_approval
     # When an ADMIN approves of the user request for privileges, the role is updated
     # if it is not already chosen and the status is changed
@@ -237,87 +222,36 @@ class  User < ActiveRecord::Base
       return []
     end
 
-    write_mode_json = case self.role
-                        when "ROLE_RO"
-                          [{po_write_mode: false},
-                           {registry_write_mode: false},
-                           {user_write_mode: true},
-                           {pa_write_mode: false}]
-                        when  "ROLE_SUPER"
-                          [{po_write_mode: true},
-                           {registry_write_mode: true},
-                           {user_write_mode: true},
-                           {pa_write_mode: true}]
-                        when  "ROLE_ADMIN"
-                          [{po_write_mode: true},
-                           {registry_write_mode: true},
-                           {user_write_mode: true},
-                           {pa_write_mode: true}]
-                        when  "ROLE_CURATOR"
-                          [{po_write_mode: true},
-                           {registry_write_mode: false},
-                           {user_write_mode: true},
-                           {pa_write_mode: false}]
-                        when  "ROLE_TRIAL-SUBMITTER"
-                          [{po_write_mode: false},
-                           {registry_write_mode: true},
-                           {user_write_mode: true},
-                           {pa_write_mode: false}]
-                        when  "ROLE_ACCRUAL-SUBMITTER"
-                          [{po_write_mode: false},
-                           {registry_write_mode: false},
-                           {user_write_mode: true},
-                           {pa_write_mode: false}]
-                        when  "ROLE_SITE-SU"
-                          [{po_write_mode: false},
-                           {registry_write_mode: true},
-                           {user_write_mode: true},
-                           {pa_write_mode: false}]
-                        when  "ROLE_ABSTRACTOR"
-                          [{po_write_mode: false},
-                           {registry_write_mode: true},
-                           {user_write_mode: true},
-                           {pa_write_mode: true}]
-                        when  "ROLE_ABSTRACTOR-SU"
-                          [{po_write_mode: false},
-                           {registry_write_mode: true},
-                           {user_write_mode: true},
-                           {pa_write_mode: true}]
-                        when  "ROLE_ACCOUNT-APPROVER"
-                          [{po_write_mode: false},
-                           {registry_write_mode: false},
-                           {user_write_mode: true},
-                           {pa_write_mode: false}]
-                      end
+    case self.role
+      when "ROLE_RO"
+        privileges_json = [{po_write_mode: false}, {registry_write_mode: false}, {user_write_mode: true}, {pa_write_mode: false}]
+      when  "ROLE_SUPER"
+        privileges_json = [{po_write_mode: true}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: true}]
+      when  "ROLE_ADMIN"
+        privileges_json = [{po_write_mode: true}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: true}]
+      when  "ROLE_CURATOR"
+        privileges_json = [{po_write_mode: true}, {registry_write_mode: false}, {user_write_mode: true}, {pa_write_mode: false}]
+      when  "ROLE_TRIAL-SUBMITTER"
+        privileges_json = [{po_write_mode: false}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: false}]
+      when  "ROLE_ACCRUAL-SUBMITTER"
+        privileges_json = [{po_write_mode: false}, {registry_write_mode: false}, {user_write_mode: true}, {pa_write_mode: false}]
+      when  "ROLE_SITE-SU"
+        privileges_json = [{po_write_mode: false}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: false}]
+      when  "ROLE_ABSTRACTOR"
+        privileges_json = [{po_write_mode: false}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: true}]
+      when  "ROLE_ABSTRACTOR-SU"
+        privileges_json = [{po_write_mode: false}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: true}]
+      when  "ROLE_ACCOUNT-APPROVER"
+        privileges_json = [{po_write_mode: false}, {registry_write_mode: false}, {user_write_mode: true}, {pa_write_mode: false}]
+    end
+
+    return privileges_json
   end
 
   def ldap_before_save
     Rails.logger.info "In ldap_before_save"
     self.email = Devise::LDAP::Adapter.get_ldap_param(self.username,"mail").first
     Rails.logger.info "In ldap_before_save email = #{email.inspect}"
-  end
-
-  def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
-    data = access_token.info
-    user = User.where(:provider => access_token.provider, :uid => access_token.uid ).first
-    if user
-      return user
-    else
-      registered_user = User.where(:email => access_token.info.email).first
-      if registered_user
-        return registered_user
-      else
-        user = User.new(provider:access_token.provider,
-                        username: data["email"],
-                        email: data["email"],
-                        uid: access_token.uid ,
-                        password: Devise.friendly_token[0,20]
-        )
-        user.skip_confirmation!
-        user.save
-        user
-      end
-    end
   end
 
   def self.custom_find_by_username(username_value)

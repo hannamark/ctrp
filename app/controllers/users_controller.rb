@@ -6,14 +6,11 @@ class UsersController < ApplicationController
 
   # GET /users
   # GET /users.json
+  #currently unused
   def index
     # The Current User logged in
     Rails.logger.info "@user = #{@user.inspect}"
     @users = []
-    unless @user.blank?
-      @users = @user.get_all_users_by_role
-      #Rails.logger.info "UserController,index @users = #{@users.inspect}"
-    end
   end
 
   def show
