@@ -2,7 +2,7 @@
     <li ng-class="{ active: headerView.navbarIsActive('main.defaultContent') }">
         <a tabindex="1" ui-sref="main.defaultContent" ui-sref-opts="{reload:true}">Home<span class="sr-only">(current)</span></a>
     </li>
-    <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.dashboards, main.paTrialSearch, main.pamTrialSearchList, main.pa.trialOverview, main.pa.resultsReporting, main.pa.govImport') }">
+    <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.dashboards, main.pamTrialSearchList, main.pa.resultsReporting, main.pa.govImport') }">
         <a tabindex="2" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dashboards <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
             <li><a ui-sref="main.pamTrialSearchList" ui-sref-opts="{reload:true}">Abstraction Dashboard</a></li>
@@ -26,7 +26,7 @@
             <li><a ui-sref="main.people" ui-sref-opts="{reload:true}">Search Persons</a></li>
         </ul>
     </li>
-    <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.trials, main.addTrial') }">
+    <li class="dropdown" ng-class="{ active: headerView.navbarIsActive('main.trials, main.paTrialSearch, main.addTrial') }">
         <a tabindex="5" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Trials<span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
             <li><a ui-sref="main.trials" ui-sref-opts="{reload:true}">Search Trials (Reg)</a></li>

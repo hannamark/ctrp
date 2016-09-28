@@ -1,8 +1,8 @@
 @PA @global
 Feature:  PAS F02 Add and Edit Trial Design 
 As a CTRP PA Abstractor, I can add and edit Trial Design 
-
-Scenario Outline: #1 I can change Clinical research Category for a trial
+@runthis
+Scenario: #1 I can change Clinical research Category for a trial
   Given I am logged into the CTRP Protocol Abstraction application
     And I have selected a trial
     And I am on the Trial Design screen
@@ -14,10 +14,6 @@ Scenario Outline: #1 I can change Clinical research Category for a trial
     |Observational              |
     |Ancillary Correlative      |
   
- Feature:  PAS F02 Add and Edit Trial Design 
-As a CTRP PA Abstractor, I can add and edit Trial Design 
-  
- 
  Scenario:#1a Fields displayed when Clinical Research Category is set to "Interventional" or "Expanded Access"
     Given I am on the Trial Design Screen
      When the Clinical Research Category Selected type is
@@ -256,18 +252,18 @@ Examples:
   |Allocation            |Allocation is Required               |
   |Target Enrollment     |Target Enrollment is Required        |
   
-  #Scenario Outline:#8a Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source NEW Sep 2016
-#Given I am on the Trial Design Screen
-  #And the Clinical research Category is Observational
-  #And the Information Source is 'Protocol'
- #When The Trial Design field <TrialDesignField> is not entered
-  #And I have seleted the save Button
- #Then an error message <TrialDesignErrorMessage> will be displayed
-#Examples:
+  Scenario Outline:#8a Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source NEW Sep 2016
+  Given I am on the Trial Design Screen
+  And the Clinical research Category is Observational
+  And the Information Source is 'Protocol'
+ When The Trial Design field <TrialDesignField> is not entered
+  And I have seleted the save Button
+ Then an error message <TrialDesignErrorMessage> will be displayed
+Examples:
 
- # |TrialDesignField           |TrialDesignErrorMessage         |
- # |Study Model                |Study Model is Required       |
-  #|Time Perspective           |Time Perspective           |
+  |TrialDesignField           |TrialDesignErrorMessage         |
+  |Study Model                |Study Model is Required       |
+  |Time Perspective           |Time Perspective           |
 
 
 Scenario Outline:#9 Observational Trial Design Mandatory Fields rules for IMPORT Information Source
@@ -284,7 +280,7 @@ Examples:
   |Trial Phase           |Trial Phase is Required           |
 
 
-Scenario Outline: #10 I can update and edit Trial Design for a Expanded Access Clinical Research Category trial
+Scenario: #10 I can update and edit Trial Design for a Expanded Access Clinical Research Category trial
 Given I am logged into the CTRP Protocol Abstraction application
   And I have selected a trial
   And I am on the Trial Design screen

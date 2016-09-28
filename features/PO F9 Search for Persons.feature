@@ -1,7 +1,7 @@
 @Global
 Feature: PO F9 Search for Persons
 
-  Scenario Outline:#1 As a Curator, search for persons with multiple parameters
+  Scenario:#1 As a Curator, search for persons with multiple parameters
     Given I know multiple parameters of the person I wish to search for
       And I am logged in to CTRP PO application
     And I am on the search persons screen

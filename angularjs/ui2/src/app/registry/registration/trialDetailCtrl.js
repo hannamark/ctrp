@@ -353,8 +353,9 @@
             outerTrial.trial = vm.curTrial;
             console.info('outer trial: ', outerTrial);
             TrialService.upsertTrial(outerTrial).then(function(response) {
-                /* Review Error Handling */
-                if (response.server_response.status < 300) {
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
                     var docCount = uploadDocuments(response.id);
                     // Poll docUploadedCount every 100 ms until upload finishes
                     var intvl = setInterval(function() {

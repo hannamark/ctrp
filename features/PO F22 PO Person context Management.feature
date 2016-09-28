@@ -68,11 +68,11 @@ Scenario:#1 CTEP Context of a new person record created
     And I select Source context as CTEP
     Then I can view Persons in the CTEP Context with "Processing Status" of "Incomplete" and Service request of "Create"
     When When the Curator clicks on the "Clone" button
-    Then the CTRP system will search Active CTRP Context for both "Person Name" and "Phone, email", and Person Affiliation "Address"
-    When the CTEP Person does not match any existing CTRP Context person name and phone, email, and Affiliation Address
+    Then the CTRP system will search Active CTRP Context for both "First Name", "Last Name", and Person Affiliation "State" and "Country"
+    When the CTEP Person does not match any existing CTRP Context person First name, Last Name, Affiliation state and country
     Then the CTRP Person will be created and associated to the CTEP Context 
    And both the CTRP and CTEP context will be linked
-    When the CTEP Person does match an existing CTRP Context Person name and Phone, email, person Affiliation Address
+    When the CTEP Person does match an existing CTRP Context "First Name", "Last Name", and Person Affiliation "State" and "Country"
     Then a warning will be displayed: "Possible Matching CTRP Persons"
     And A list of CTRP Context Person ID will be displayed to show matching person ID
     And the curator will search matching ID(s) provided in the CTRP context

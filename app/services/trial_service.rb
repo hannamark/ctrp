@@ -445,7 +445,7 @@ class TrialService
     is_FDA_contained = false
     @trial.oversight_authorities.each do |oa|
       if !is_US_contained
-        is_US_contained = oa.country.present? and (oa.country.downcase!.include?('united states') || oa.country.present? and oa.country.downcase!.include?('us'))
+        is_US_contained = !oa.country.nil? and (!oa.country.nil? and oa.country.downcase.include?('united states') || !oa.country.nil? and oa.country.downcase.include?('us'))
       end
 
       if !is_FDA_contained

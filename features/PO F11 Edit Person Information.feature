@@ -15,7 +15,7 @@ Feature: PO F11 Edit Person Information
     |Suffix|
     |Email|
     |Phone Number-Extension|
-    |Source Status|# Active, Inactive, Nullified
+    |Source Status|# Active, Inactive, Nullified, Pending
     And I change Affiliated Organizations Information Type
     |Effective Date|
     |Expiration Date|

@@ -135,8 +135,9 @@
         form.$setUntouched();
         CommentService.createComment(vm.comment).then(function(response) {
           vm.comment.content = '';
-          /* Review Error Handling */
-          if (response.server_response.status == 201) {
+          var status = response.server_response.status;
+
+          if (status >= 200 && status <= 210) {
             fetchComments(); //fetch the latest comments
             toggleCommentFormShown(); //wait half second
             showToastr('Comment created', 'right');
@@ -153,11 +154,12 @@
           var editedComment = angular.copy(vm.commentList[commentObjIndex]);
           editedComment.content = newContent;
           CommentService.updateComment(editedComment).then(function(response) {
-            /* Review Error Handling */
-            if (response.server_response.status == 200) {
-              // fetchComments();
-              showToastr('Comment updated', 'right');
-            }
+                var status = data.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    // fetchComments();
+                    showToastr('Comment updated', 'right');
+                }
           }).catch(function(err) {
             //TODO: throw a toastr
             $log.error('error in updating comment: ' + newContent);

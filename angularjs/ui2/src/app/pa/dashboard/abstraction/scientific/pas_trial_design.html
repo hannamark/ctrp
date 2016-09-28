@@ -343,7 +343,7 @@
                         <label for="num_arms" class="control-label col-xs-12 col-sm-4" id="number_arms_groups_lbl">Number of Arms/Groups:</label>
                         <div class="col-xs-12 col-sm-2">
                             <input type="number" min="0" name="num_arms" id="num_arms"
-                                class="form-control input-sm"
+                                class="form-control input-sm def-pad-right"
                                 ng-required="designView.isInfoSourceProtocol && (designView.isInterventional || designView.isExpandedAccess || designView.isObservational)"
                                 ng-model="designView.trialDetailObj.num_of_arms" placeholder="">
                                 <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.num_arms) && trial_design_form.num_arms.$error">
@@ -358,7 +358,7 @@
                         <label for="target_enrollment" class="control-label col-xs-12 col-sm-4" id="target_enrollment_lbl">Target Enrollment:</label>
                         <div class="col-xs-12 col-sm-2">
                             <input type="number" min="0" name="target_enrollment" id="target_enrollment"
-                                class="form-control input-sm"
+                                class="form-control input-sm def-pad-right"
                                 ng-required="designView.isInfoSourceProtocol"
                                 ng-model="designView.trialDetailObj.target_enrollment" placeholder="">
                                 <span ng-messages="ctrpbtn.trial_design_form.needsAttention(trial_design_form.target_enrollment) && trial_design_form.target_enrollment.$error">

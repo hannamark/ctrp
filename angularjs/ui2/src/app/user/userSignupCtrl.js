@@ -92,9 +92,18 @@
         };
 
         var upsertUserSignup = function (userObj) {
-            /* Review Error Handling */
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj).then(function (data) {
-                if (data["server_response"] === 422 || data["server_response"]["status"] === 422) {
+                var status = data.server_response.status || data.status;
+
+                if (status >= 200 && status <= 210) {
+                    toastr.success('Sign Up Success', 'You have been signed up');
+                    vm.userObj = new UserObj();
+                    vm.exitSignUpForm();
+                    vm.signUpComplete = true;
+                }
+
+                /* The error code (422 in this case) should be handled by the interceptor so the code below is not needed. Commenting out for now */
+                /*
                     toastr.error('Sign Up failed', 'Login error', { timeOut: 0});
                     for (var key in data) {
                         if (data.hasOwnProperty(key)) {
@@ -104,14 +113,10 @@
                         }
                     }
                     $state.go('main.signup');
-                } else {
-                    toastr.success('Sign Up Success', 'You have been signed up');
-                    vm.userObj = new UserObj();
-                    vm.exitSignUpForm();
-                    vm.signUpComplete = true;
-                }
+                */
             }).catch(function (err) {
                 $log.error('error in log in: ' + JSON.stringify(err));
+                $state.go('main.signup');
             });
         };
     }
