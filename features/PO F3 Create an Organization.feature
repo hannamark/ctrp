@@ -86,7 +86,7 @@ Feature: PO F3 Create an Organization
     And I am on the Add Organization Screen
      Then a comment appears below the field <Field> to display the number of characters available <Number of Characters left> to enter into the field
      | Field                | Number of Characters left  |
-     |Organization Name     |254        |
+     |Organization Name     |160        |
      |Phone Number          |30         |
      |Phone Extension       |30         |
      |Email                 |254        |
@@ -141,7 +141,17 @@ Feature: PO F3 Create an Organization
      And the curator can delete associations 
     
     
-    
+      Scenario:#7 Organization Source Status CTRP available list
+    Given I am logged into the PO application
+     When I am on the edit organization screen
+     Then the organization source status type will be available 
+     
+     |Active|
+     |Inactive|
+     |Pending|
+     |Nullified|
+
+
      
      
     

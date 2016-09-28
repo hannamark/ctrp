@@ -24,7 +24,16 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |CTEP Organization Type|
     |Source Status|
     |Name|
-    |Address|
+    |Address|Scenario:#2a Person Source Status CTRP available list
+    Given I am logged into the PO application
+     When I am on the edit Person screen
+     Then the person source status type will be available 
+     
+     |Active|
+     |Inactive|
+     |Pending|
+     |Nullified|
+
     |Address2|
     |Address3|
     |City|
@@ -38,7 +47,24 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Service Request |
     |Processing Status|
     
-   
+     Scenario: #1a' Phone Number and phone number extension mapping
+    Given I am on the CTRP PO application
+     When CTRP receives newly created CTEP Organization record through Restful Services
+     And phone number, phone extension will be received from CTEP as a single field type
+      |Phone Number “|” Extension |
+     Then phone number field received from CTEP should be mapped in two separate fields in CTRP
+     |Phone Number|
+     |Phone Number Extension|
+
+Scenario:#1a" Organization Source Status CTEP available list
+    Given I am logged into the PO application
+     When I am on the CTEP Org tab
+     Then the organization source status type will be available 
+     
+     |Active|
+     |Inactive|
+     |Legacy|
+
     
 Scenario: #1b CTEP Context Mandatory Fields
     Given I am logged into the CTRP 
