@@ -300,8 +300,10 @@
                 errorMsg = 'Both Protocol ID Origin and a Protocol ID are Required';
                 return errorMsg;
             }
-            // var idObj = _.findWhere(addedOtherIds, {'protocol_id': protocolId});
+            console.info('protocolIdOriginCode: ', protocolIdOriginCode);
+            console.info('protocolId: ', protocolId);
             var idObj = _.findWhere(addedOtherIds, {'protocol_id_origin_id': protocolIdOriginId});
+            // var idObj2 = _.findWhere(addedOtherIds, {'protocol_id': protocolId});
             var codeArr = ['OTH', 'ONCT', 'DNCI']; // these code allow duplicates
             if (angular.isDefined(idObj) && !_.contains(codeArr, protocolIdOriginCode)) {
                 errorMsg = (idObj.protocol_id_origin_name || idObj.identifierName) + ' already exists';
@@ -322,6 +324,11 @@
             }
             if (protocolIdOriginCode === 'ONCT' && _.findIndex(addedOtherIds, {'protocol_id': protocolId, 'protocol_id_origin_id': protocolIdOriginId}) > -1) {
                 errorMsg = 'Obsolete ClinicalTrials.gov Identifier must be unique';
+                return errorMsg;
+            }
+
+            if (protocolIdOriginCode === 'OTH' && _.findIndex(addedOtherIds, {'protocol_id': protocolId, 'protocol_id_origin_id': protocolIdOriginId}) > -1) {
+                errorMsg = 'Other Identifier must be unique';
                 return errorMsg;
             }
 

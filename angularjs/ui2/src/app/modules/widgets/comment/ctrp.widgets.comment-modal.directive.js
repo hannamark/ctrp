@@ -118,8 +118,9 @@
       function postComment() {
         CommentService.createComment($scope.comment).then(function(response) {
           $scope.comment.content = '';
-          /* Review Error Handling */
-          if (response.server_response.status == 201) {
+          var status = response.server_response.status;
+
+          if (status >= 200 && status <= 210) {
             fetchComments(); //fetch the latest comments
             $scope.toggleCommentFormShown();
             showToastr('Comment created', 'right');

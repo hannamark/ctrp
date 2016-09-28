@@ -27,12 +27,28 @@ And the trial milestone "Submission Received Date" will be added with the date o
 
 Scenario:#2a  NLM Context will be created for an Imported trial  
     Given I am logged into the CTRP
+    When a trial has been imported with a "Sponsor Name" that exists in the NLM Context in CTRP
+    And the NLM context is mapped to a CTRP Organization Context
+    Then the CTRP Organization will be used as 
+    
+    |Trial Sponsor|
+    |Trial Funding Source|
+    |Lead Org|
+     
+     When a trial has been imported with a "Sponsor Name" that exists in the NLM Context in CTRP
+    And the NLM context is not mapped to a CTRP Organization Context
+    Then the information type will be NULL until the NLM Organization context is affiliated to a CTRP Organization Context
+    
+    |Trial Sponsor: Null|
+    |Trial Funding Source: Null|
+    |Lead org: Null|
+    
      When a trial has been imported with a "Sponsor Name" that does not exist in the NLM Context in the CTRP
      And that "Sponsor Name" does not match an organization name "Agency" name in CTRP
      Then an NLM Context with an NLM Context Status of "Active" will be automatically created in CTRP
      And the processing status is "Incomplete"
      And the service Request is "Create"
-
+  
 
 Scenario: #3 I can import an Expanded Access trial by NCT ID from ClinicalTrials.gov
 Given I have selected the option to Import an Industrial or Other Trial

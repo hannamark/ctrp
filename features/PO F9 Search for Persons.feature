@@ -1,107 +1,54 @@
 @Global
 Feature: PO F9 Search for Persons
 
-  Scenario Outline:#1 As a Curator, search for persons with multiple parameters
+  Scenario:#1 As a Curator, search for persons with multiple parameters
     Given I know multiple parameters of the person I wish to search for
       And I am logged in to CTRP PO application
     And I am on the search persons screen
     And I can search with one or more parameters type
+    
     |First Name|
     |Last Name|
-    |Affiliation Organization ID
     |Context Person ID|
     |Affiliation|
     |Source Context|
     |Source ID|
-    |Source Status|
+    |Source Status|#(Active,Inactive, Nullified, Pending)
     |Email|
     |Phone Number|
-    |Last Updated Date: (Start Date, End Date)|
+    |Last Updated Date:Start Date, End Date|
     |Updated By:Username|
     |Processing Status|
     |Service Request|
     
     And I submit my search request for Person Search
-    Then the search results should display the following sorted by Last Name:
+    
+      Scenario:#1a Search Person Results 
+    Given I am on the search person results screen
+     And the search results should display the following columns 
+    
     |CTRP Person ID|
     |CTEP Person ID|
+    |Prefix|
     |First Name|
     |Middle Name|
     |Last Name|
-    |Source ID|
-    |Context person ID|
+    |Suffix|
     |Source Status|
     |Source Context|
-    |Processing Status|
-    |Service Request|
+    |Source ID|
     |Affiliated Orgs|
     |Email|
     |Phone |
-    |Last Updated Date|
-    |Last Updated By|
-    |Prefix|
-    |Suffix|
-
-   When I select a person to view in CTRP Context
-   Then CTRP records of the selected person details type will display in the edit mode
-    |CTRP Person ID|
-    |CTRP Context Person ID|
-    |Prefix|
-    |First Name|
-    |Middle Name|
-    |Last Name|
-    |Suffix|
-    |Processing Status|
-    |Source Context: CTRP|
-    |Source ID|
-    |Source Status: Active|
-    |Email|
-    |Phone Number-Extension|
-    |Created By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
-    |Updated By:ctrpcurator (14-Sep-2016 10:53:52 EDT)|
-    |Add Affiliated Organization Details|
-    And I can choose to associate person context from that screen
-    And I can view all Person associations displayed with information type
-    And Person associations might have any source status 
-    |CTRP Person ID|
-    |CTEP Person ID|
-    |First Name|
-    |Middle Name|
-    |Last Name|
-    |Source ID|
-    |Context person ID|
-    |Source Status|
-    |Source Context|
+    |Context Person ID|
     |Processing Status|
     |Service Request|
-    |Affiliated Orgs|
-    |Email|
-    |Phone |
     |Last Updated Date|
     |Last Updated By|
-    |Prefix|
-    |Suffix|
-    And I can delete person  association
     
+    And the result should be sorted by Person Last Name
     
-    Scenario:#6 As a curator, I can edit person records
-    Given I am logged in to CTRP PO application
-    When I select a person from the search person results table
-     Then the edit screen will display
-     And I can edit all fields except
-     
-     |CTRP Person ID|
-     |Context Person ID|
-     |Source ID|
-     |Source Context|
-     When I click on the save button
-     Then the edited information will be saved to the trial records
-     When I select Reset 
-     Then the information entered or edited on the Add person fields will not be saved to the trial record 
-      And the Add person records screen will be refreshed with the existing data
-     
-    
-    
+   
   Scenario:#2 As a Curator, I will get a message if searched with no parameters
     Given I am logged in to CTRP PO application
     And I am on the search persons screen

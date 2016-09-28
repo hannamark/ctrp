@@ -19,7 +19,7 @@
         /*************** implementations below ****************/
 
         function request(config) {
-            config.timeout = 15000; //15 seconds timeout
+            config.timeout = 150000; //150 seconds timeout
             var token = LocalCacheService.getCacheWithKey('token');
             //console.log('token is: ' + token);
             if (token) {

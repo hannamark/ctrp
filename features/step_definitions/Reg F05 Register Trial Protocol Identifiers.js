@@ -138,7 +138,7 @@ module.exports = function() {
             addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', arg1)).click();
             addTrial.setAddTrialProtocolID('NCT55556666');
             addTrial.clickAddTrialAddProtocolButton();
-            expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1 + ': NCT55556666 already exists')).to.become('true');
+            expect(projectFunctionsRegistry.verifyTrialValidationMessage(arg1 + ' must be unique')).to.become('true');
             expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT55556666')).to.become('true');
             expect(projectFunctionsRegistry.verifyAddTrialOtherTrialIdentifierTable('NCT44442222')).to.become('true');
             // browser.sleep(25).then(callback);

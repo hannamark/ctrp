@@ -1,5 +1,5 @@
 @PO @Global
-Feature: PO F6 Curator review of a Pending Organization--------------Review Nullification Scenario and #5
+Feature: PO F6 Curator review of a Pending Organization
 
   Scenario: #1 As a PO Curator, I can display all Organizations with Pending status----CTRP becasue we don't have pending in CTEP Context or NLM
     Given I am logged in as a CTRP Curator

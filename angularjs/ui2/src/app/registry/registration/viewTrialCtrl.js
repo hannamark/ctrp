@@ -15,7 +15,8 @@
         vm.curTrial = trialDetailObj;
         vm.documents = [];
         vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
-
+        console.info('curTrial: ', vm.curTrial);
+        console.info('ind_ides: ', vm.curTrial.ind_ides);
         vm.addMySite = function () {
             $state.go('main.addParticipatingSite', {trialId: vm.curTrial.id});
         };

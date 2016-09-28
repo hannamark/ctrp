@@ -50,15 +50,14 @@
             newPerson.id = vm.curPerson.id || '';
             newPerson.person = vm.curPerson;
 
-            /* Review Error Handling */
             PersonService.upsertPerson(newPerson).then(function (response) {
-                var statusCode = response.status || response.server_response.status;
-                if (newPerson.new && statusCode === 201) {
+                var status = response.status || response.server_response.status;
+                if (newPerson.new && status === 201) {
                     // created
                     showToastr(vm.curPerson.lname);
                     vm.curPerson.new = false;
                     $state.go('main.personDetail', {personId: response.data.id});
-                } else if (statusCode === 200) {
+                } else if (status === 200) {
                     // updated
                     vm.curPerson = response.data;
                     showToastr(vm.curPerson.lname);
@@ -67,7 +66,7 @@
                     // To make sure setPristine() is executed after all $watch functions are complete
                     $timeout(function() {
                        $scope.person_form.$setPristine();
-                   }, 1);
+                    }, 1);
                 }
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));

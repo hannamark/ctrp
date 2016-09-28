@@ -58,10 +58,14 @@ class TrialsController < ApplicationController
     Rails.logger.info "params in update: #{params}"
 
     edit_type = params[:trial][:edit_type]
+    if edit_type == 'update'
+      @trial.verification_date = Date.today
+    end
     trial_service = TrialService.new({trial: @trial})
     if edit_type == 'amend'
       trial_json = trial_service.get_json
     end
+
 
     respond_to do |format|
       if @trial.update(trial_params)
@@ -288,14 +292,23 @@ class TrialsController < ApplicationController
   def search
     # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
+
     if params[:trial_ownership].blank?
       params[:rows] = 20 if params[:rows].blank?
     else
       params[:rows] = nil
     end
 
-    params[:sort] = 'lead_protocol_id' if params[:sort].blank?
-    params[:order] = 'asc' if params[:order].blank?
+    if params[:searchType] == "Saved Drafts"
+        params[:sort] = 'lead_protocol_id' if params[:sort].blank?
+        params[:order] = 'asc' if params[:order].blank?
+    else
+      #"My Trials" or "All Trials"
+      params[:sort] = 'nci_id' if params[:sort].blank?
+      params[:order] = 'desc' if params[:order].blank?
+    end
+
+
 
     if params[:trial_ownership].present?
 
@@ -333,6 +346,8 @@ class TrialsController < ApplicationController
       @trials = @trials.is_not_draft if params[:searchType] == 'All Trials'
       @trials = @trials.is_draft(@current_user.username) if params[:searchType] == 'Saved Drafts'
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
+
+       #@trials = @trials.filter(@trials, {:phases => params[:phases], :purposes => params[:purposes]})
 
       @trials.each do |trial|
         trial.current_user = @current_user

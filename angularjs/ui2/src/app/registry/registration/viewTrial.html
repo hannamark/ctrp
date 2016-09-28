@@ -238,29 +238,31 @@
                     </div>
                 </div>
 
-                <h5 ng-if="viewTrialView.curTrial.ind_ides.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">FDA IND/IDE Information for applicable trials:</h5>
-
-                <div ng-if="viewTrialView.curTrial.ind_ides.length > 0 && viewTrialView.curTrial.is_owner" class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3"></label>
-                    <div class=" col-xs-12 col-sm-8">
-                        <table class="table table-bordered table-striped table-condensed">
-                            <thead>
-                                <th>IND/IDE Types</th>
-                                <th>IND/IDE Number</th>
-                                <th>IND/IDE Grantor</th>
-                                <th>IND/IDE Holder Type</th>
-                                <th>NIH Institution, NCI Division/Program Code (if applicable)</th>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="indIde in viewTrialView.curTrial.ind_ides track by $index">
-                                <td class="col-md-2">{{indIde.ind_ide_type}}</td>
-                                <td class="col-md-2">{{indIde.ind_ide_number}}</td>
-                                <td class="col-md-2">{{indIde.grantor}}</td>
-                                <td class="col-md-3">{{indIde.holder_type.name}}</td>
-                                <td class="col-md-3">{{indIde.nih_nci}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div ng-show="viewTrialView.curTrial.ind_ides.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">
+                <!-- <h5 ng-if="viewTrialView.curTrial.ind_ides.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">FDA IND/IDE Information for applicable trials:</h5> -->
+                    <h5 class="border_bottom">FDA IND/IDE Information for applicable trials:</h5>
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-3"></label>
+                        <div class=" col-xs-12 col-sm-8">
+                            <table class="table table-bordered table-striped table-condensed">
+                                <thead>
+                                    <th>IND/IDE Types</th>
+                                    <th>IND/IDE Number</th>
+                                    <th>IND/IDE Grantor</th>
+                                    <th>IND/IDE Holder Type</th>
+                                    <th>NIH Institution, NCI Division/Program Code (if applicable)</th>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="indIde in viewTrialView.curTrial.ind_ides track by $index">
+                                    <td class="col-md-2">{{indIde.ind_ide_type}}</td>
+                                    <td class="col-md-2">{{indIde.ind_ide_number}}</td>
+                                    <td class="col-md-2">{{indIde.grantor}}</td>
+                                    <td class="col-md-3">{{indIde.holder_type.name}}</td>
+                                    <td class="col-md-3">{{indIde.nih_nci}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -332,13 +334,13 @@
                         {{viewTrialView.curTrial.data_monitor_indicator}}
                     </div>
                 </div>
-                <div ng-show="viewTrialView.documents.length > 0">
+                <div ng-show="viewTrialView.documents.length > 0  && (viewTrialView.curTrial.is_owner || viewTrialView.curTrial.internal_source.code === 'IMP')">
                 <!-- <h5 ng-if="viewTrialView.curTrial.trial_documents.length > 0 && (viewTrialView.curTrial.is_owner || viewTrialView.curTrial.internal_source.code === 'IMP')" class="border-bottom">Trial Related Documents:</h5> -->
-                    <h5>Trial Related Documents: {{viewTrialView.documents.length}}</h5>
+                    <h5 class="border_bottom">Trial Related Documents:</h5>
                     <div class="form-group" ng-repeat="doc in viewTrialView.documents">
                         <label class="control-label col-xs-12 col-sm-3">{{doc.file_type}}</label>
                         <div class="col-xs-12 col-sm-9 form-text" ng-repeat="f in doc.list">
-                        <a href="{{viewTrialView.downloadBaseUrl}}/{{f.id}}">{{f.file_name}}</a>
+                        <a href="{{viewTrialView.downloadBaseUrl}}/{{f.id}}">{{f.file_name}}</a>  <span>{{f.document_subtype}}</span>
                         </div>
                     </div>
                 </div>

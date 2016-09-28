@@ -770,6 +770,10 @@ h5 {
     padding-right: 30px;
 }
 
+.has-feedback .form-control.def-pad-right {
+    padding-right: 8px;
+}
+
 .feedback-height-sm {
     line-height: 25px;
 }
@@ -834,6 +838,10 @@ h5 {
 .ui-grid-pager-panel {
     border-top: 1px solid #d4d4d4;
     background: #f4f4f4;
+}
+
+.ui-grid-pager-control input {
+    width: auto;
 }
 
 .ui-grid-row .ui-grid-cell, .ui-grid-row:last-child .ui-grid-cell {
@@ -1320,6 +1328,11 @@ uib-accordion form.form-horizontal {
     margin-left: auto;
     margin-right: auto;
     max-width: 1300px;
+}
+
+[uib-typeahead-popup].dropdown-menu {
+    height: 200px;
+    overflow-y: auto;
 }
 
 md-tabs.md-dynamic-height md-tab-content.md-active {

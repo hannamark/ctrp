@@ -25,7 +25,6 @@ class Ws::ApiTrialsController < Ws::BaseApiController
 
 
   before_filter only: [:create] do
-    p "#########################"
     Rails.logger.info("Restfulservices=> current user #@current_user");
     val_errors = Array.new()
 
@@ -77,13 +76,16 @@ class Ws::ApiTrialsController < Ws::BaseApiController
     if params[:idType] == "nci"
       @trial = Trial.find_by_nci_id(params[:id])
     else
-      response_body = "Expected id types are nci,pa,dcp,ctep but currently trial is being identifed"
-      render xml: response_body, status: :bad_request
-      response_logging(@trial,"404",response_body)
+
+      response_body = Array.new
+      response_body.push "Expected id types are nci,pa,dcp,ctep but currently trial is being identifed"
+      render xml: response_body.to_xml, status: :bad_request
+      response_logging(@trial,"404",response_body.to_xml)
     end
-    response_body = "Given trial with NCI_ID does not exist in CTRP "
-    render xml: response_body , status: :not_found unless @trial.present?
-    response_logging(@trial,"404",response_body)
+    response_body = Array.new
+    response_body.push "Given trial with NCI_ID does not exist in CTRP "
+    render xml: response_body.to_xml , status: :not_found unless @trial.present?
+    response_logging(@trial,"404",response_body.to_xml)
 
   end
 
