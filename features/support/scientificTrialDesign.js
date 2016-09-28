@@ -94,41 +94,6 @@ var scientificTrialDesign = function(){
     this.bioSpecimenRetentionLbl = element(by.id('bio_specimen_retention_lbl'));
     this.bioSpecimenDescriptionLbl = element(by.id('bio_specimen_desc_lbl'));
 
-    this.verifyTrialDesignLables = function (clinicalRCType, clinicalRCLbl, primaryPurps, secondryPurps, trialPhas, isThisPilot, InterventionModl, maskng, allocatn, studyClssifctn, studyModl, tmePerspectv, biospeciReten, biospeciDesc, nmbrOfArmsGrp, targetEnrollmnt, finalEnrollmntCT, accrualsLbl){
-        if (clinicalRCType === 'Interventional' || clinicalRCType === 'Expanded Access'){
-            helper.getVerifyLabel(this.clinicalResearchCategoryLbl, clinicalRCLbl, "Clinical Research Category:");
-            helper.getVerifyLabel(this.primaryPurposeLbl, primaryPurps, "Primary Purpose:");
-            helper.getVerifyLabel(this.secondaryPurposeLbl, secondryPurps, "Secondary Purpose:");
-            helper.getVerifyLabel(this.trialPhaseLbl, trialPhas, "Trial Phase:");
-            helper.getVerifyLabel(this.isThisAPilotLbl, isThisPilot, "Is this a pilot?:");
-            //Interventional or Expanded Access
-            helper.getVerifyLabel(this.interventionModelLbl, InterventionModl, "Intervention Model:");
-            helper.getVerifyLabel(this.maskingLbl, maskng, "Masking:");
-            helper.getVerifyLabel(this.allocationLbl, allocatn, "Allocation:");
-            helper.getVerifyLabel(this.studyClassificationLbl, studyClssifctn, "Study Classification:");
-
-            helper.getVerifyLabel(this.numberOfArmsLbl, nmbrOfArmsGrp, "Number of Arms/Groups:");
-            helper.getVerifyLabel(this.targetEnrollmentLbl, targetEnrollmnt, "Target Enrollment:");
-            helper.getVerifyLabel(this.finalEnrollmentLbl, finalEnrollmntCT, "Final Enrollment for CT.gov:");
-            helper.getVerifyLabel(this.accrualsLbl, accrualsLbl, "Accruals:");
-        } else if (clinicalRCType === 'Observational' || clinicalRCType === 'Ancillary Correlative'){
-            helper.getVerifyLabel(this.clinicalResearchCategoryLbl, clinicalRCLbl, "Clinical Research Category:");
-            helper.getVerifyLabel(this.primaryPurposeLbl, primaryPurps, "Primary Purpose:");
-            helper.getVerifyLabel(this.trialPhaseLbl, trialPhas, "Trial Phase:");
-            helper.getVerifyLabel(this.isThisAPilotLbl, isThisPilot, "Is this a pilot?:");
-            //Observational or Ancillary Correlative
-            helper.getVerifyLabel(this.studyModelLbl, studyModl, "Study Model:");
-            helper.getVerifyLabel(this.timePerspectiveLbl, tmePerspectv, "Time Perspective:");
-            helper.getVerifyLabel(this.bioSpecimenRetentionLbl, biospeciReten, "Bio-specimen Retention:");
-            helper.getVerifyLabel(this.bioSpecimenDescriptionLbl, biospeciDesc, "Bio-specimen Description:");
-        }
-        helper.getVerifyLabel(this.numberOfArmsLbl, nmbrOfArmsGrp, "Number of Arms/Groups:");
-        helper.getVerifyLabel(this.targetEnrollmentLbl, targetEnrollmnt, "Target Enrollment:");
-        helper.getVerifyLabel(this.finalEnrollmentLbl, finalEnrollmntCT, "Final Enrollment for CT.gov:");
-        helper.getVerifyLabel(this.accrualsLbl, accrualsLbl, "Accruals:");
-
-    };
-
 
     /***********************************
      * Trial Design Required Message
@@ -214,6 +179,33 @@ var scientificTrialDesign = function(){
             }
         });
     };
+
+    this.verifyTrialDesignLables = function (clinicalRCType, clinicalRCLbl, primaryPurps, secondryPurps, trialPhas, isThisPilot, InterventionModl, maskng, allocatn, studyClssifctn, studyModl, tmePerspectv, biospeciReten, biospeciDesc, nmbrOfArmsGrp, targetEnrollmnt, finalEnrollmntCT, accrualsLbl){
+        helper.getVerifyLabel(this.clinicalResearchCategoryLbl, clinicalRCLbl, "Clinical Research Category:");
+        helper.getVerifyLabel(this.primaryPurposeLbl, primaryPurps, "Primary Purpose:");
+        helper.getVerifyLabel(this.secondaryPurposeLbl, secondryPurps, "Secondary Purpose:");
+        helper.getVerifyLabel(this.trialPhaseLbl, trialPhas, "Trial Phase:");
+        helper.getVerifyLabel(this.isThisAPilotLbl, isThisPilot, "Is this a pilot?:");
+        if (clinicalRCType === 'Interventional' || clinicalRCType === 'Expanded Access'){
+            //Interventional or Expanded Access
+            helper.getVerifyLabel(this.interventionModelLbl, InterventionModl, "Intervention Model:");
+            helper.getVerifyLabel(this.maskingLbl, maskng, "Masking:");
+            helper.getVerifyLabel(this.allocationLbl, allocatn, "Allocation:");
+            helper.getVerifyLabel(this.studyClassificationLbl, studyClssifctn, "Study Classification:");
+        } else if (clinicalRCType === 'Observational' || clinicalRCType === 'Ancillary Correlative'){
+            //Observational or Ancillary Correlative
+            helper.getVerifyLabel(this.studyModelLbl, studyModl, "Study Model:");
+            helper.getVerifyLabel(this.timePerspectiveLbl, tmePerspectv, "Time Perspective:");
+            helper.getVerifyLabel(this.bioSpecimenRetentionLbl, biospeciReten, "Bio-specimen Retention:");
+            helper.getVerifyLabel(this.bioSpecimenDescriptionLbl, biospeciDesc, "Bio-specimen Description:");
+        }
+        helper.getVerifyLabel(this.numberOfArmsLbl, nmbrOfArmsGrp, "Number of Arms/Groups:");
+        helper.getVerifyLabel(this.targetEnrollmentLbl, targetEnrollmnt, "Target Enrollment:");
+        helper.getVerifyLabel(this.finalEnrollmentLbl, finalEnrollmntCT, "Final Enrollment for CT.gov:");
+        helper.getVerifyLabel(this.accrualsLbl, accrualsLbl, "Accruals:");
+    };
+
+
 
 
 

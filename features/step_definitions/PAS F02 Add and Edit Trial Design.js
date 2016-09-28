@@ -58,6 +58,8 @@ var scientificTrialDesc = require('../support/scientificTrialDesc');
 var scientificOutcome = require('../support/scientificOutcomeMeasures');
 //Scientific Associated Trial
 var scientificAssociatedTrial = require('../support/scientificAssociatedTrials');
+//Scientific Trial Design
+var scientificTrialDesign = require('../support/scientificTrialDesign');
 //
 var projectFunctionsPage= require('../support/projectMethods');
 var addTrialPage = require('../support/registerTrialPage');
@@ -85,6 +87,7 @@ module.exports = function() {
     var trialDesc = new scientificTrialDesc();
     var outcome = new scientificOutcome();
     var associated = new scientificAssociatedTrial();
+    var trialDesign = new scientificTrialDesign();
     var searchOrg = new OrgPage();
     var organizationSearch = new orgSearch();
     var addTrial = new addTrialPage();
@@ -93,22 +96,91 @@ module.exports = function() {
     var searchTableHeader = '';
     var randNmbr = Math.floor(Math.random()*(95-77+1)+77);
     var leadProtocolID = 'CTRP_01_1789';
-    var leadProtocolIDA = 'CTRP_01_1781';
-    var leadProtocolIDB = 'CTRP_01_1797';
-    var nctIDA = 'NCT00334282';
-    var nctIDB = 'NCT02348710';
-    var nciIDA = 'NCI-2015-01997';
-    var nciIDB = 'NCI-2011-02309';
-    var nciIDNotFound = 'NCI-2016-NOTFOUND';
-    var nciIDRejected = 'NCI-2017-01010';
+    var pageTtitle = 'Trial Design';
+    var briefSummary ='Test Brief Summary';
+    var objectives = 'Test Objectives';
+    var detailedDescription = 'Test Detailed Description';
+    var briefTitle = 'Test Brief Title Multi-Dose Phase II Trial of Rosuvastatin to Lower Circulating Tissue Factor Bearing Microparticles in Metastatic Breast Cancer title';
+    var charLftStr = 'Test Brief Title Multi-Dose Phase II Trial of Rosuvastatin to Lower Circulating Tissue Factor verify';
+    var decrCharLft = '4982 characters left';
+    var decrCharLftObjective = '31985 characters left';
+    var decrCharLftObjectiveA = '31800 characters left';
+    var decrCharLftDetail = '31975 characters left';
+    var decrCharLftDetailA = '31800 characters left';
+    var noCharLft = '0 characters left';
+    var errorMSGBT = 'Brief Title is Required';
+    var errorMSGBS = 'Summary is Required';
+    var clinicalResearchCategoryValue = '';
+    var clinicalResearchCategoryNewValue = '';
     var optionA = '';
     var optionB = '';
-    var pageTitle = 'List of Associated Trials';
-    var pageTitleA = 'Associated Trial Details';
-    var identifierTypeA = 'NCI';
-    var identifierTypeB = 'NCT';
-    var trialTypeA = 'Interventional';
-    var officialTitleA = 'A Randomised, Double-blind, Placebo Controlled, Multi-center Phase III Study to Evaluate the Efficacy and Safety of Pazopanib (GW786034) Compared to Placebo in Patients With Locally Advanced and/or Metastatic Renal Cell Carcinoma';
+    var optionC = '';
+    var optionD = '';
+
+    /*
+     Scenario: #1 I can change Clinical research Category for a trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I have selected a trial
+     And I am on the Trial Design screen
+     When I view the prefilled Clinical Research Category value
+     Then I can select a different value
+
+     |Interventional             |
+     |Expanded Access            |
+     |Observational              |
+     |Ancillary Correlative      |
+     */
+
+    this.Given(/^I am on the Trial Design screen$/, function () {
+        return browser.sleep(25).then(function() {
+            leftNav.clickScientificTrialDesign();
+            leftNav.checkPanelTitle(pageTtitle, '6');
+        });
+    });
+
+    this.When(/^I view the prefilled Clinical Research Category value$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesign.researchCategoryLst.$('option:checked').getText().then(function (value) {
+                var crntCRCValue = '' + value + '';
+                function retCRCVal() {
+                    return crntCRCValue;
+                }
+                clinicalResearchCategoryValue = retCRCVal();
+                console.log('System Identified [' + clinicalResearchCategoryValue + '] as the current Clinical Research Category value');
+            });
+        });
+    });
+
+    this.Then(/^I can select a different value$/, function (table) {
+        return browser.sleep(25).then(function() {
+            var clinicalRCVal = table.raw();
+            optionCRCValues = clinicalRCVal.toString().replace(/,/g, "\n", -1);
+            console.log('Value(s) in the data table:[' + optionCRCValues +']');
+            var optionCRC = optionCRCValues.toString().split("\n");
+                optionA = optionCRC[0]; //Interventional
+                optionB = optionCRC[1]; //Expanded Access
+                optionC = optionCRC[2]; //Observational
+                optionD = optionCRC[3]; //Ancillary Correlative
+
+            if (clinicalResearchCategoryValue === optionA) {
+                trialDesign.selectClinicalResearchCategory(optionB);
+                var pasNewCRCValue = optionB; //Expanded Access
+                function retNewCRCValue() {
+                    return pasNewCRCValue;
+                }
+                clinicalResearchCategoryNewValue = retNewCRCValue();
+                verifyCurrentCRC(clinicalResearchCategoryNewValue, "Verifying Clinical Research Category Selected Value from the list");
+            }
+
+            function verifyCurrentCRC(expectCRC, errorMessage) {
+                helper.getVerifyListValue(trialDesign.researchCategoryLst, expectCRC, errorMessage);
+            }
+        });
+    });
+
+
+
+
 
 
 
