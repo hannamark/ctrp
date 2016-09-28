@@ -71,14 +71,14 @@ And only the participating site fields type will be editable
 When I click on the save button
 Then the updated participating site details will be saved in the trial record
 
-Scenario: #3 As a CTRP User, I can add a site contact
+Scenario: #3 As a CTRP User, I can Update a site contact
 Given I am on the Add Participating Site feature
 And I can select Contact Type 
 |Site Investigator|
 |Person|
 |General|
 
-Scenario: #4 I can add contact when contact type is Site investigator
+Scenario: #4 I can update contact when contact type is Site investigator
 Given I am on the Contact Screen
 When the contact type selected is Site Investigator 
 Then I can select the available site principal Investigator 
@@ -86,7 +86,7 @@ And the email address will be populated
 And Phone Number and Extention will be populated
 And the populated parameters can be edited
 
-Scenario: #5 I can add contact when contact type is Person
+Scenario: #5 I can Update contact when contact type is Person
 Given I am on the Contact Screen
 When the contact type selected is Person 
 Then I can select a person by conducting a Person Search 
@@ -95,7 +95,7 @@ And the email address will be populated
 And Phone Number and Extention will be populated
 And the populated parameters can be edited
 
-Scenario: #6 I can add contact when contact type is General
+Scenario: #6 I can Update contact when contact type is General
 Given I am on the Contact Screen
 When the contact type selected is General
 Then I must enter a contact name information

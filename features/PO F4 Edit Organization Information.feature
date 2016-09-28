@@ -9,8 +9,8 @@ Feature: PO F4 I can edit and Associate Organization Context
      And I can edit fields type
      
       |Name|
-      |Source Status:Active|
-      |Processing Status: Complete|
+      |Source Status|# Active, Inactive, Pending, Nullified
+      |Processing Status|
       |Name Alias|
       |address1|
       |address2|

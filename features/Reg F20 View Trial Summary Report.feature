@@ -147,7 +147,7 @@ And I can view TSR document
      |               |Masking                               |Required        |                                  |Display "No data available" 
      |               |Masking Roles                         |Required        |Conditional if Masking is not Open|Display "No data available" 
      |               |Allocation                            |Required        |                                  |Display "No data available" 
-     |               |Classification                        |Required        |                                  |Display "No data available" 
+     |               |Study Classification                  |Required        |                                  |Display "No data available" 
      |               |Target Enrollment                     |Required        |                                  |Display "No data available" 
     
          
