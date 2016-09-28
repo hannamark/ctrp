@@ -7,24 +7,30 @@
 
     angular.module('ctrp.app.registry').controller('psDetailCtrl', psDetailCtrl);
 
-    psDetailCtrl.$inject = ['psDetailObj', 'trialDetailObj', 'userDetailObj', 'TrialService', 'toastr', '$state',
-        'srStatusObj', 'DateService', '$timeout'];
+    psDetailCtrl.$inject = ['psDetailObj', 'trialDetailObj', 'userDetailObj', 'PersonService', 'TrialService', 'PATrialService', '$scope', 'toastr', '$state',
+        'srStatusObj', 'DateService', '$timeout', 'centralContactTypes'];
 
-    function psDetailCtrl(psDetailObj, trialDetailObj, userDetailObj, TrialService, toastr, $state,
-                          srStatusObj, DateService, $timeout) {
+    function psDetailCtrl(psDetailObj, trialDetailObj, userDetailObj, PersonService, TrialService, PATrialService, $scope, toastr, $state,
+                          srStatusObj, DateService, $timeout, centralContactTypes) {
 
         var vm = this;
         vm.curPs = psDetailObj || {};
         vm.curPs = vm.curPs.data || vm.curPs;
+        vm.curPsOriginal = angular.copy(vm.curPs);
         vm.curTrial = trialDetailObj || vm.curPs.trial;
         vm.curUser = userDetailObj;
+        vm.centralContactTypes = centralContactTypes.types;
+        vm.centralContactTypes.shift(); // Remove 'None' value as done in PA
+        vm.curPs.contact_type = vm.curPs.contact_type ? vm.curPs.contact_type : 'General';
         vm.availableOrgs = [];
         vm.srStatusArr = srStatusObj;
         vm.status_date_opened = false;
         vm.addedStatuses = [];
         vm.srsNum = 0;
         vm.selectedPiArray = [];
+        vm.selectedPersonContactArray = [];
         vm.editMode = false; // Flag used in manage sites screen
+        vm.selectedInvContact;
 
         vm.updatePs = function() {
             // Prevent multiple submissions
@@ -47,6 +53,9 @@
                     vm.curPs.site_rec_status_wrappers_attributes.push(status);
                 });
             }
+
+            // Delete temp. UI property 'person.fullname'
+            configurePsInvList('delete');
 
             // An outer param wrapper is needed for nested attributes to work
             var outerPs= {};
@@ -190,6 +199,11 @@
                 setSitePi();
                 appendStatuses();
             }
+
+            configurePsInvList();
+            watchContactTypeSelection();
+            watchInvContactSelection();
+            watchPersonContactSelection()
         }
 
         // Redirect to search page if this user is not allowed to mange sites
@@ -269,6 +283,78 @@
                 vm.srsNum++;
             }
             vm.validateStatus();
+        }
+
+        /* Add temporary first name/last name property for each investigator 'person' object */
+        function configurePsInvList(configType) {
+            var invList = vm.curPs.participating_site_investigators;
+
+            if (configType === 'delete') {
+                _.each(invList, function(inv) {
+                    delete inv.person.fullname;
+                });
+            } else {
+                _.each(invList, function(inv) {
+                    inv.person['fullname'] = PersonService.extractFullName(inv.person);
+                });
+            }
+        }
+
+        /* Watches */
+        function watchContactTypeSelection() {
+            $scope.$watch(function() {return vm.curPs.contact_type;}, function(newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    vm.curPs.contact_name = null;
+                    vm.curPs.contact_phone = null;
+                    vm.curPs.extension = null;
+                    vm.curPs.contact_email = null;
+                    vm.selectedInvContact = null;
+                }
+
+                if (newVal === 'General') {
+
+                }
+
+                if (newVal === 'Person') {
+
+                }
+
+                if (newVal === 'PI') {
+
+                }
+            });
+        }
+
+        function watchInvContactSelection() {
+            $scope.$watch(function() {return vm.selectedInvContact;}, function(newVal, oldVal) {
+                var selectedInv;
+
+                if (newVal) {
+                    selectedInv = newVal;
+                    vm.curPs.contact_phone = vm.curPs.contact_phone ? vm.curPs.contact_phone : selectedInv.person.phone
+                    vm.curPs.extension = vm.curPs.extension ? vm.curPs.extension : selectedInv.person.extension;
+                    vm.curPs.contact_email = vm.curPs.contact_email ? vm.curPs.contact_email : selectedInv.person.email;
+                } else {
+                    vm.curPs.contact_phone = null;
+                    vm.curPs.extension = null;
+                    vm.curPs.contact_email = null;
+                }
+            });
+        }
+
+        function watchPersonContactSelection() {
+            $scope.$watch(function() {return vm.selectedPersonContactArray;}, function(newVal, oldVal) {
+                var selectedPerson;
+
+                if (newVal.length) {
+                    selectedPerson = newVal[0];
+                    console.log('selected person obj is: ', newVal);
+                    vm.curPs.contact_name = PersonService.extractFullName(selectedPerson);
+                    vm.curPs.contact_phone = selectedPerson.phone;
+                    vm.curPs.extension = selectedPerson.extension;
+                    vm.curPs.contact_email = selectedPerson.email;
+                }
+            });
         }
     }
 })();

@@ -204,6 +204,7 @@
                 resolve: {
                     TrialService: 'TrialService',
                     UserService: 'UserService',
+                    PATrialService: 'PATrialService',
                     psDetailObj: function($q) {
                         var deferred = $q.defer();
                         deferred.resolve(null);
@@ -217,6 +218,9 @@
                     },
                     srStatusObj: function(TrialService) {
                         return TrialService.getSrStatuses();
+                    },
+                    centralContactTypes: function(PATrialService) {
+                        return PATrialService.getCentralContactTypes();
                     }
                 },
                 ncyBreadcrumb: {
@@ -233,6 +237,7 @@
                 resolve: {
                     TrialService: 'TrialService',
                     UserService: 'UserService',
+                    PATrialService: 'PATrialService',
                     psDetailObj: function($q) {
                         var deferred = $q.defer();
                         deferred.resolve(null);
@@ -246,6 +251,9 @@
                     },
                     srStatusObj: function(TrialService) {
                         return TrialService.getSrStatuses();
+                    },
+                    centralContactTypes: function(PATrialService) {
+                        return PATrialService.getCentralContactTypes();
                     }
                 },
                 ncyBreadcrumb: {
@@ -262,6 +270,7 @@
                 resolve: {
                     TrialService: 'TrialService',
                     UserService: 'UserService',
+                    PATrialService: 'PATrialService',
                     psDetailObj: function($stateParams, TrialService) {
                         return TrialService.getParticipatingSiteById($stateParams.psId);
                     },
@@ -273,6 +282,9 @@
                     },
                     srStatusObj: function(TrialService) {
                         return TrialService.getSrStatuses();
+                    },
+                    centralContactTypes: function(PATrialService) {
+                        return PATrialService.getCentralContactTypes();
                     }
                 },
                 ncyBreadcrumb: {
