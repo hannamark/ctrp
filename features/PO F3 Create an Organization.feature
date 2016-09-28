@@ -86,7 +86,7 @@ Feature: PO F3 Create an Organization
     And I am on the Add Organization Screen
      Then a comment appears below the field <Field> to display the number of characters available <Number of Characters left> to enter into the field
      | Field                | Number of Characters left  |
-     |Organization Name     |254        |
+     |Organization Name     |160        |
      |Phone Number          |30         |
      |Phone Extension       |30         |
      |Email                 |254        |
