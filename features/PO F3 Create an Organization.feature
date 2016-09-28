@@ -141,7 +141,17 @@ Feature: PO F3 Create an Organization
      And the curator can delete associations 
     
     
-    
+      Scenario:#7 Organization Source Status CTRP available list
+    Given I am logged into the PO application
+     When I am on the edit organization screen
+     Then the organization source status type will be available 
+     
+     |Active|
+     |Inactive|
+     |Pending|
+     |Nullified|
+
+
      
      
     
