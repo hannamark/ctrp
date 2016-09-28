@@ -1,4 +1,4 @@
-@PA @global
+@PA  @global
 Feature: PAA F09 Add and Edit Trial Collaborators
 
 As any CTRP PA User, I can add and edit Trial Collaborators
