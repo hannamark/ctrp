@@ -38,7 +38,16 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Service Request |
     |Processing Status|
     
-   
+     Scenario: #1a' Phone Number and phone number extension mapping
+    Given I am on the CTRP PO application
+     When CTRP receives newly created CTEP Organization record through Restful Services
+     And phone number, phone extension will be received from CTEP as a single field type
+      |Phone Number “|” Extension |
+     Then phone number field received from CTEP should be mapped in two separate fields in CTRP
+     |Phone Number|
+     |Phone Number Extension|
+
+
     
 Scenario: #1b CTEP Context Mandatory Fields
     Given I am logged into the CTRP 
