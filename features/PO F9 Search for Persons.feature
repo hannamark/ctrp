@@ -20,8 +20,17 @@ Feature: PO F9 Search for Persons
     |Updated By:Username|
     |Processing Status|
     |Service Request|
-    
     And I submit my search request for Person Search
+      
+      
+      Scenario:#1* I can search person by affiliation anf CTRP Org ID (Jira CTRPAUM 189)
+    Given I am on the search person screen
+    And Affiliation search field <Affiliation> should allow searching by 
+   |Affiliation Name|
+   |Org CTRP_ID |
+   When the user enters the CTRP_ID of an organization in the <Affiliation> field, 
+   Then the search results should retrieve all Person records that are affiliated with the Organization (as specified by its ID).
+
     
       Scenario:#1a Search Person Results 
     Given I am on the search person results screen
