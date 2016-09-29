@@ -207,15 +207,22 @@ class OrganizationsController < ApplicationController
     @organizations = Organization.find_by_id()
   end
 
-  #Method to check for Uniqueness while creating organizations - check on name & source context. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
-  def unique
-    is_unique = true
+  def countOrgsWithSameName
     count = 0
-
     #Get count of organization record with the same name - can be the existing record (if the user is on the edit screen)
     if params.has_key?(:org_name) && params.has_key?(:source_context_id)
       count = Organization.where("lower(name)=?", params[:org_name].downcase).where("source_context_id=?", params[:source_context_id]).count;
     end
+    p "asdasdasd"
+    p count
+    p "sdasd"
+    return count
+  end
+
+  #Method to check for Uniqueness while creating organizations - check on name & source context. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
+  def unique
+    count = countOrgsWithSameName
+    is_unique = true
 
     if params[:org_exists] == true
       @dbOrg = Organization.find(params[:org_id])
