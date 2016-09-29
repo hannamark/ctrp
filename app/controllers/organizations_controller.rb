@@ -222,7 +222,9 @@ class OrganizationsController < ApplicationController
       #if on the Edit screen, then check for name changes and ignore if database & screen names are the same.
       #if params[:org_name] == @dbOrg.name, both are equal. Must not warn
       #However if on the edit screen and the user types in a name that is the same as another org, then complain, both are different. Must warn.
-      (params[:org_name] == @dbOrg.name || count == 0? is_unique = true : is_unique = false) unless @dbOrg == nil
+      if !@dbOrg.nil? && !(params[:org_name] == @dbOrg.name || count == 0)
+        is_unique = false
+      end
     elsif params[:org_exists] == false && count > 0
       is_unique = false
     end
