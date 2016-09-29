@@ -1158,7 +1158,7 @@ AppSetting.find_or_create_by(code: 'SR_STATUS_TRANSITION').update(name: 'Site Re
 
 AppSetting.find_or_create_by(code: 'CLINICAL_TRIALS_IMPORT_URL').update(name: 'ClinicalTrials.gov import URL', value: 'https://clinicaltrials.gov/show/NCT********?displayxml=true')
 
-AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL').update(name: 'NCI Thesaurus URL', value: 'http://evs.nci.nih.gov/ftp1/NCI_Thesaurus/Branches/')
+AppSetting.find_or_create_by(code: 'NCI_THESAURUS_URL').update(name: 'NCI Thesaurus URL', value: 'https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/Branches/')
 
 AppSetting.find_or_create_by(code: 'NCI_THESAURUS_FILES').update(name: 'NCI Thesaurus files', value: 'see big value', big_value: 'Neoplasm.zip')
 
