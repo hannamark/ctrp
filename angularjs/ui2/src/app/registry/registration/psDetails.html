@@ -164,11 +164,11 @@
                         <input type="hidden" name="ts_dummy" ng-model="psDetailView.dummyField" ng-required="psDetailView.srsNum === 0">
                         <input type="hidden" name="ts_dummy2" ng-model="psDetailView.statusValidationMsgs" validate-trial-status>
                         <span class="help-block" ng-show="ctrpbtn.ps_form.needsAttention(ps_form.ts_dummy)">
-                            Site Recruitment Status is required
+                            Site Recruitment Status is Required
                         </span>
 
                         <div class="add-association-error" ng-show="psDetailView.showAddStatusError">
-                            Status Date and Status are required
+                            Status Date and Status are Required
                         </div>
 
                         <table class="table table-bordered table-striped table-condensed" ng-show="psDetailView.addedStatuses.length > 0">
