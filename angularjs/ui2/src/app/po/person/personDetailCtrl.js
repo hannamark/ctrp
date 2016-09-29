@@ -23,6 +23,7 @@
         vm.savedSelection = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
+        var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
         vm.formTitleLabel = 'Add Person'; //default form title
         var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
 
@@ -245,8 +246,12 @@
          * @return {void}
          */
         function createFormTitleLabel() {
-            vm.formTitleLabel = vm.curPersonEditable && !vm.curPerson.new ? 'Edit Person' : 'View Person';
-            vm.formTitleLabel = vm.curPerson.new ? 'Add Person' : vm.formTitleLabel;
+            globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
+            vm.formTitleLabel = 'View Person';
+            if (globalWriteModeEnabled) {
+                vm.formTitleLabel = vm.curPersonEditable && !vm.curPerson.new ? 'Edit Person' : 'View Person';
+                vm.formTitleLabel = vm.curPerson.new ? 'Add Person' : vm.formTitleLabel;
+            }
         }
 
 
