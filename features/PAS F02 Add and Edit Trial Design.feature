@@ -105,7 +105,7 @@ Given I am logged into the CTRP Protocol Abstraction application
   |Masking      |
   |Open         |
   |Single Blind |
-  |Double       |
+  |Double Blind |
   And I can select a value for Allocation:
   |Allocation                  |
   |Randomized Controlled Trial |
@@ -116,8 +116,9 @@ Given I am logged into the CTRP Protocol Abstraction application
   |Safety                            |
   |Efficacy                          |
   |Safety/Efficacy                   |
-  |Bioavailability                   |
-  |Bioequivalence                    |
+  |Bio-availability                   |
+  |Bio-equivalence                    |
+  |Pharmacokinetics                  |
   |Pharmacodynamics                  |
   |Pharmacokinetics/Pharmacodynamics |
   |NA                                |
@@ -164,7 +165,7 @@ Given I am on the Trial Design screen
   And the Clinical Research Category is Interventional
  When Masking field selected
 
-  |Blind        |
+  |Single Blind        |
   |Double Blind |
 
  Then Masking Roles(s) displays
@@ -189,11 +190,11 @@ Given I am logged into the CTRP Protocol Abstraction application
   And I can select a value for Study Model:
   |Study Model                   |
   |Cohort                        |
-  |Case-control                  |
-  |Case-only                     |
-  |Case-crossover                |
-  |Ecologic or community studies |
-  |Family-based                  |
+  |Case-Control                  |
+  |Case-Only                     |
+  |Case-Crossover                |
+  |Ecologic or Community studies |
+  |Family-Based                  |
   |Other                         |
   And I can select a value for Time Perspective:
   |Time Perspective |
