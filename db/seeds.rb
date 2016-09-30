@@ -512,6 +512,11 @@ AppSetting.find_or_create_by(code: 'NIH_NCI_PROG_PA').update(name: 'NCI Division
 
 AppSetting.find_or_create_by(code: 'SAMPLING_METHOD_PA').update(name: 'Sampling Method', value: 'Probability Sample,Non-Probability Sample', big_value: 'see value')
 
+AppSetting.find_or_create_by(code: 'FILE_STORAGE_DIR').update(name: 'Storage directory for uploaded files', value: '../../../storage/trial', big_value: 'see value')
+
+AppSetting.find_or_create_by(code: 'FILE_CACHE_DIR').update(name: 'Cache directory for uploaded files', value: '../../../storage/tmp', big_value: 'see value')
+
+
 trial_status_transition = '{
                              "STATUSZERO": {
                                "INR": {"valid": "Yes"},
