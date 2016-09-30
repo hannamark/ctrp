@@ -69,8 +69,8 @@ Scenario Outline:#3 FDA IND/IDE Information Validation check rule
            
      
       |INDIDEholder  |Error  |
-      |NIH           |NIH Istitution is Required  |
-      |NCI           |NCI Division/Program Code is Required  |
+      |NIH           |NIH Institution is Required  |
+      |NCI           |NCI Division/Program is Required  |
 
       
    Examples:
