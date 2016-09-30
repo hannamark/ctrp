@@ -110,6 +110,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group" ng-show="!personDetailView.curPerson.new">
+                            <label class="control-label col-xs-12 col-sm-3">CTRP Context Person ID:</label>
+                            <div class="col-xs-12 col-sm-3">
+                                <div class="form-text">{{personDetailView.curPerson.ctrp_id}}</div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="!personDetailView.curPerson.new">
+                            <label class="control-label col-xs-12 col-sm-3">Processing Status:</label>
+                            <div class="col-xs-12 col-sm-3">
+                                <div class="form-text">{{personDetailView.curPerson.processing_status}}</div>
+                            </div>
+                        </div>
                         <div class="form-group has-feedback required" ng-class="{'has-error': (person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email) && person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone))}">
                             <div class="row">
                                 <label for="email" class="control-label col-xs-12 col-sm-3">Email:</label>
@@ -227,9 +239,9 @@
                                     <button type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="personDetailView.resetForm()">
                                         <i class="glyphicon glyphicon-remove"></i> Reset
                                     </button>
-                                    <button  type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
+                                    <!-- <button  type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
                                         <i class="glyphicon glyphicon-trash"></i> Delete This Person
-                                    </button>
+                                    </button> -->
                                 </div>
                             </div>
                         </div>
