@@ -153,41 +153,40 @@ class OrganizationsController < ApplicationController
       # ctrp_ids is used for retrieving the cluster of orgs when searching by source_id
       ctrp_ids = Organization.matches_wc('source_id', params[:source_id],@current_user.role).pluck(:ctrp_id) if params[:source_id].present?
       @organizations = filterSearch Organization.all,  ctrp_ids
-      if params[:rows] != nil
-        @organizations = @organizations.page(params[:start]).per(params[:rows])
-      end
     end
   end
 
   def filterSearch resultOrgs,  ctrp_ids
     if params[:alias]
-      resultOrgs = resultOrgs.matches_name_wc(params[:name],params[:wc_search]) if params[:name].present? unless resultOrgs.blank?
+      resultOrgs = resultOrgs.matches_name_wc(params[:name],params[:wc_search]) if params[:name].present? && !resultOrgs.blank?
     else
-      resultOrgs = resultOrgs.matches_wc('name', params[:name],params[:wc_search]) if params[:name].present? unless resultOrgs.blank?
+      resultOrgs = resultOrgs.matches_wc('name', params[:name],params[:wc_search]) if params[:name].present? && !resultOrgs.blank?
     end
-    resultOrgs = resultOrgs.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present? unless resultOrgs.blank?
+    resultOrgs = resultOrgs.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present? && !resultOrgs.blank?
     if @current_user && (['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR'].include? @current_user.role)
-      resultOrgs = resultOrgs.with_source_status(params[:source_status]) if params[:source_status].present? unless resultOrgs.blank?
-      resultOrgs = resultOrgs.with_source_context(params[:source_context]) if params[:source_context].present? unless resultOrgs.blank?
+      resultOrgs = resultOrgs.with_source_status(params[:source_status]) if params[:source_status].present? && !resultOrgs.blank?
+      resultOrgs = resultOrgs.with_source_context(params[:source_context]) if params[:source_context].present? && !resultOrgs.blank?
     else # TODO need constant for Active
-      resultOrgs = resultOrgs.with_source_status("Active") unless resultOrgs.blank?
-      resultOrgs = resultOrgs.with_source_context("CTRP") unless resultOrgs.blank?
+      resultOrgs = resultOrgs.with_source_status("Active") if !resultOrgs.blank?
+      resultOrgs = resultOrgs.with_source_context("CTRP") if !resultOrgs.blank?
     end
-    resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2 unless resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.without_family() if params[:no_family].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('address', params[:address],params[:wc_search]) if params[:address].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('address2', params[:address2],params[:wc_search]) if params[:address2].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('city', params[:city],params[:wc_search]) if params[:city].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('state_province', params[:state_province],params[:wc_search]) if params[:state_province].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.matches('country', params[:country]) if params[:country].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('postal_code', params[:postal_code],params[:wc_search]) if params[:postal_code].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.matches('processing_status', params[:processing_status]) if params[:processing_status].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.with_service_request(params[:service_request]) if params[:service_request].present? unless resultOrgs.blank?
-    resultOrgs = resultOrgs.sort_by_col(params[:sort], params[:order]) unless resultOrgs.blank?
+    resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2 && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.without_family() if params[:no_family].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('address', params[:address],params[:wc_search]) if params[:address].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('address2', params[:address2],params[:wc_search]) if params[:address2].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('city', params[:city],params[:wc_search]) if params[:city].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('state_province', params[:state_province],params[:wc_search]) if params[:state_province].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches('country', params[:country]) if params[:country].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('postal_code', params[:postal_code],params[:wc_search]) if params[:postal_code].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches('processing_status', params[:processing_status]) if params[:processing_status].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.with_service_request(params[:service_request]) if params[:service_request].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.sort_by_col(params[:sort], params[:order]) if !resultOrgs.blank?
+    resultOrgs = resultOrgs.page(params[:start]).per(params[:rows]) if params[:rows] != nil &&  !resultOrgs.blank?
+    return resultOrgs
   end
 
   def clone
