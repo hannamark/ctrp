@@ -31,6 +31,7 @@
         vm.selectedPersonContactArray = [];
         vm.editMode = false; // Flag used in manage sites screen
         vm.selectedInvContact;
+        vm.invContactArray = [];
 
         vm.updatePs = function() {
             // Prevent multiple submissions
@@ -54,8 +55,8 @@
                 });
             }
 
-            // Delete temp. UI property 'person.fullname'
-            configurePsInvList('delete');
+            /* Set PI as contact in curPs.participating_site_investigators if needed */
+            setContactPiAsContact();
 
             // An outer param wrapper is needed for nested attributes to work
             var outerPs= {};
@@ -70,7 +71,7 @@
                     if (vm.isManageScreen) {
                         $state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
                     } else {
-                        $state.go('main.viewTrial', {trialId: response.trial.id});
+                        //$state.go('main.viewTrial', {trialId: response.trial.id});
                     }
                     toastr.success('Participating Site ' + vm.curPs.id + ' has been recorded', 'Operation Successful!');
                 }
@@ -78,6 +79,7 @@
                 console.log('error in updating trial ' + JSON.stringify(outerPs));
             }).finally(function() {
                 vm.disableBtn = false;
+                configurePsInvList();
             });
         };
 
@@ -201,6 +203,18 @@
             }
 
             configurePsInvList();
+
+            _.each(vm.curPs.participating_site_investigators, function(inv) {
+                if (inv.set_as_contact) {
+                    var invContact = inv;
+                    _.each(vm.invContactArray, function(contactPi) {
+                        if (contactPi.id === invContact.id) {
+                            vm.selectedInvContact = contactPi;
+                        }
+                    });
+                }
+            });
+
             watchContactTypeSelection();
             watchInvContactSelection();
             watchPersonContactSelection()
@@ -285,19 +299,21 @@
             vm.validateStatus();
         }
 
-        /* Add temporary first name/last name property for each investigator 'person' object */
-        function configurePsInvList(configType) {
+        /* Create UI relevant array with obj properties needed in the UI */
+        function configurePsInvList() {
             var invList = vm.curPs.participating_site_investigators;
 
-            if (configType === 'delete') {
-                _.each(invList, function(inv) {
-                    delete inv.person.fullname;
-                });
-            } else {
-                _.each(invList, function(inv) {
-                    inv.person['fullname'] = PersonService.extractFullName(inv.person);
-                });
-            }
+            _.each(invList, function(inv) {
+                var invObj = {
+                    id: inv.id,
+                    name: inv.person.fname + ' ' + inv.person.lname,
+                    email: inv.person.email,
+                    phone: inv.person.phone,
+                    extension: inv.person.extension
+                };
+
+                vm.invContactArray.push(invObj);
+            });
         }
 
         /* Watches */
@@ -311,16 +327,8 @@
                     vm.selectedInvContact = null;
                 }
 
-                if (newVal === 'General') {
-
-                }
-
-                if (newVal === 'Person') {
-
-                }
-
                 if (newVal === 'PI') {
-
+                    console.log('pi: ', oldVal, newVal);
                 }
             });
         }
@@ -329,15 +337,19 @@
             $scope.$watch(function() {return vm.selectedInvContact;}, function(newVal, oldVal) {
                 var selectedInv;
 
-                if (newVal) {
-                    selectedInv = newVal;
-                    vm.curPs.contact_phone = vm.curPs.contact_phone ? vm.curPs.contact_phone : selectedInv.person.phone
-                    vm.curPs.extension = vm.curPs.extension ? vm.curPs.extension : selectedInv.person.extension;
-                    vm.curPs.contact_email = vm.curPs.contact_email ? vm.curPs.contact_email : selectedInv.person.email;
-                } else {
-                    vm.curPs.contact_phone = null;
-                    vm.curPs.extension = null;
-                    vm.curPs.contact_email = null;
+                if (vm.curPs.contact_type === 'PI') {
+                    if (newVal) {
+                        selectedInv = newVal;
+                        vm.curPs.contact_name = vm.curPs.contact_name ? vm.curPs.contact_name : selectedInv.name;
+                        vm.curPs.contact_phone = vm.curPs.contact_phone ? vm.curPs.contact_phone : selectedInv.phone;
+                        vm.curPs.extension = vm.curPs.extension ? vm.curPs.extension : selectedInv.extension;
+                        vm.curPs.contact_email = vm.curPs.contact_email ? vm.curPs.contact_email : selectedInv.email;
+                    } else {
+                        vm.curPs.contact_name = null;
+                        vm.curPs.contact_phone = null;
+                        vm.curPs.extension = null;
+                        vm.curPs.contact_email = null;
+                    }
                 }
             });
         }
@@ -348,13 +360,26 @@
 
                 if (newVal.length) {
                     selectedPerson = newVal[0];
-                    console.log('selected person obj is: ', newVal);
                     vm.curPs.contact_name = PersonService.extractFullName(selectedPerson);
                     vm.curPs.contact_phone = selectedPerson.phone;
-                    vm.curPs.extension = selectedPerson.extension;
+                    vm.curPs.extension = selectedPerson.extension ? selectedPerson.extension : null;
                     vm.curPs.contact_email = selectedPerson.email;
                 }
             });
+        }
+
+        function setContactPiAsContact() {
+            var selectedInv = vm.selectedInvContact;
+
+            if (selectedInv) {
+                _.each(vm.curPs.participating_site_investigators, function(inv) {
+                    if (selectedInv.id === inv.id) {
+                        inv.set_as_contact = true;
+                    } else {
+                        inv.set_as_contact = false;
+                    }
+                });
+            }
         }
     }
 })();
