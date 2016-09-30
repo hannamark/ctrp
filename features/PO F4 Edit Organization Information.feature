@@ -9,7 +9,7 @@ Feature: PO F4 I can edit and Associate Organization Context
      And I can edit fields type
      
       |Name|
-      |Source Status|# Active, Inactive, Pending, Nullified
+      |Source Status|# Active, Inactive, Pending
       |Processing Status|
       |Name Alias|
       |address1|
@@ -21,7 +21,7 @@ Feature: PO F4 I can edit and Associate Organization Context
       |Email|
       |Phone Number|
       |Phone Number: Extension|
-      
+     And Source Status"Nullified" can be allowed only from the search Org results 
 	When I click on the save button
      Then the edited information will be saved to the trial records
      And my name should be listed as last update <Update By> with the current date and time "ctrpadmin (13-Sep-2016 12:26:23 EDT)" 

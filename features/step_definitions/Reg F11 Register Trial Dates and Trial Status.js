@@ -1058,5 +1058,8 @@ module.exports = function () {
         });
     });
 
+    this.Given(/^I am on the Trial Status Section$/, function (callback) {
+        callback();
+    });
 
 };

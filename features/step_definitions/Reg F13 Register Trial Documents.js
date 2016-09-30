@@ -69,6 +69,18 @@ module.exports = function () {
         });
     });
 
+    this.Given(/^I have noted the message$/, function (string) {
+        return browser.sleep(25).then(function () {
+            addTrial.addTrialDocumentNoteMessage.get(0).getText().then(function (value1) {
+                addTrial.addTrialDocumentNoteMessage.get(1).getText().then(function (value2) {
+                    var finalString = value1 + '\n' + value2;
+                    expect(string).to.equal(finalString, 'Verification of Note Message in Document Section');
+                });
+            });
+        });
+    });
+
+
     this.When(/^I have selected a file to attach as the Protocol Document$/, function () {
         return browser.sleep(25).then(function () {
             trialDoc.trialRelatedFileUpload('reg', '1', testSampleDocxFile);

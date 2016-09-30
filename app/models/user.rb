@@ -218,9 +218,6 @@ class  User < ActiveRecord::Base
 
   def get_write_mode
     privileges_json = []
-    if self.role.nil?
-      return []
-    end
 
     case self.role
       when "ROLE_RO"

@@ -12,6 +12,7 @@ var trialMenuItemList = require('../support/trialCommonBar');
 var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var underscore = require('underscore');
+var assert = require('assert');
 
 
 module.exports = function () {
@@ -199,46 +200,59 @@ module.exports = function () {
             // browser.sleep(25).then(callback);
         });
     });
-/*
-    this.Then(/^a comment appears below the field to display the number of characters available to enter into the field$/, function (table, callback) {
-        //return browser.sleep(25).then(function () {
-        //    characterFieldTable = table.hashes();
-        //    console.log('characterFieldTable');
-        //    console.log(characterFieldTable);
-        //   // characterFieldTable.replace("Number of Characters left", "NumberofCharactersleft");
-        //    var updateTableForSortedColumn = underscore.map(characterFieldTable, function(num)
-        //    {     return (num === 'Number of Characters left') ? 'NumberofCharactersleft' : num });
-        //    for (var i = 0; i < characterFieldTable.length; i++) {
-        //        console.log('characterFieldTable first column');
-        //        console.log(characterFieldTable[1].Field);
-        //        console.log('characterFieldTable second column AA');
-        //        console.log(updateTableForSortedColumn);
-        //        console.log('characterFieldTable second column');
-        //      //  console.log(characterFieldTable[1].'Number of Characters left');
-        //    }
-        //    //    var characters = +characterFieldTable[i].NumberofCharactersleft.match( /\d+/g);
-        //    //    console.log('Characters');
-        //    //    console.log(characters);
-        //    //    var charactersString = characterFieldTable[i].NumberofCharactersleft.match( /[a-zA-Z]+/g);
-        //    //    var newCharacters = characters - 1 ;
-        //    //    if(characterFieldTable[i].Field === 'Official Title') {
-        //    //        addTrial.setAddTrialOfficialTitle('s');
-        //    //        console.log('New Characters');
-        //    //        console.log(newCharacters);
-        //    //        console.log('Characters String');
-        //    //        console.log(charactersString.join(" "));
-        //    //        console.log('New Character and string');
-        //    //        console.log(newCharacters +' '+ charactersString.join(" "));
-        //    //        expect(addTrial.addTrialOfficialTitleCharacter.getText()).to.eventually.equal(newCharacters + ' ' + charactersString.join(" "));
-        //    //    }
-        //    //}
-        //});
-        callback.pending();
-    });*/
+
+    this.Then(/^a comment appears below the field to display the number of characters available to enter into the field$/, function (table) {
+        return browser.sleep(25).then(function () {
+            characterFieldTable = table.hashes();
+            for (var i = 0; i < characterFieldTable.length; i++) {
+                characterFieldTable[i].NumberOfCharactersLeft = characterFieldTable[i]['Number of Characters left']; //Adding this step to convert the column name from 'Number of Characters left' TO NumberOfCharactersleft
+                var characters = +characterFieldTable[i].NumberOfCharactersLeft.match( /\d+/g);
+                var charactersString = characterFieldTable[i].NumberOfCharactersLeft.match( /[a-zA-Z]+/g);
+                var newCharacters = characters - 1 ;
+                var charactersLengthTable = newCharacters +' '+ charactersString.join(" ");
+                if(characterFieldTable[i].Field === 'Official Title') {
+                    addTrial.setAddTrialOfficialTitle('s');
+                    expect(addTrial.addTrialOfficialTitleCharacter.getText()).to.eventually.equal(charactersLengthTable, 'Verification of Character Length failed');
+                } else if(characterFieldTable[i].Field === 'Describe "Other" Primary Purpose (When Primary Purpose is selected as Other)') {
+                    addTrial.selectAddTrialPrimaryPurpose('Other');
+                    addTrial.setAddTrialPrimaryPurposeOtherDescription('s');
+                    expect(addTrial.addTrialPrimaryPurposeDescriptionCharacter.getText()).to.eventually.equal(charactersLengthTable, 'Verification of Character Length failed');
+                } else if(characterFieldTable[i].Field === 'Describe "Other" Secondary Purpose (When Secondary Purpose is selected as Other)') {
+                    addTrial.selectAddTrialSecondaryPurpose('Other');
+                    addTrial.setAddTrialSecondaryPurposeOtherDescription('s');
+                    expect(addTrial.addTrialSecondaryPurposeDescriptionCharacter.getText()).to.eventually.equal(charactersLengthTable, 'Verification of Character Length failed');
+                } else if(characterFieldTable[i].Field === 'Lead Organization Trial Identifier'){
+                    addTrial.setAddTrialLeadProtocolIdentifier('s');
+                    expect(addTrial.addTrialLeadOrgIdentifierCharacter.getText()).to.eventually.equal(charactersLengthTable, 'Verification of Character Length failed');
+                } else if(characterFieldTable[i].Field === 'Other Trial Identifier'){
+                    addTrial.setAddTrialProtocolID('s');
+                    expect(addTrial.addTrialOtherTrialIdentifierCharacter.getText()).to.eventually.equal(charactersLengthTable, 'Verification of Character Length failed');
+                } else if(characterFieldTable[i].Field === 'Investigator Title'){
+                    addTrial.selectAddTrialResponsibleParty('Principal Investigator');
+                    addTrial.setAddTrialInvestigatorTitle('s');
+                    expect(addTrial.addTrialInvestigatorTitleCharacter.getText()).to.eventually.equal(charactersLengthTable, 'Verification of Character Length failed');
+                    addTrial.selectAddTrialResponsibleParty('Sponsor-Investigator');
+                    addTrial.setAddTrialInvestigatorTitle('s');
+                    expect(addTrial.addTrialInvestigatorTitleCharacter.getText()).to.eventually.equal(charactersLengthTable, 'Verification of Character Length failed');
+                } else if(characterFieldTable[i].Field === 'Why Study Stopped'){
+                    addTrial.selectAddTrialStatus('Withdrawn');
+                    addTrial.setAddTrialWhyStudyStopped('s');
+                    assert.fail(0,1,'Character counter for Why Study Stopped is not there');
+                   // expect(addTrial.addTrialWhyStudyStoppedCharacter.getText()).to.eventually.equal(charactersLengthTable, 'Verification of Character Length failed');
+                } else if(characterFieldTable[i].Field === 'Comment'){
+                    addTrial.setAddTrialStatusComment('s');
+                    assert.fail(0,1,'Character counter for Status Comment field is not there');
+                   // expect(addTrial.addTrialStatusCommentCharacter.getText()).to.eventually.equal(charactersLengthTable, 'Verification of Character Length failed');
+                }
+                else  {
+                    assert.fail(0,1,'No Step defined for given character length --> ' + characterFieldTable[i].Field + ',' + characterFieldTable[i].NumberOfCharactersLeft + ' <-- Please add a step for it.');
+                }
+            }
+        });
+    });
 
     this.When(/^all the characters mentioned above for field have been entered$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        callback();
     });
 
 };

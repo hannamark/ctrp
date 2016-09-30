@@ -161,6 +161,7 @@ var registerTrial = function(){
 
     /**Validation message**/
     this.addTrialValidationMessage = element.all(by.css('.add-association-error'));
+    this.addTrialDocumentNoteMessage = element.all(by.css('.text-left.text-block'));
 
     /**Date fields**/
     this.addTrialDateFields = element.all(by.css('.glyphicon.glyphicon-calendar'));
@@ -289,7 +290,14 @@ var registerTrial = function(){
 
 
     /** Character Limit**/
+    this.addTrialLeadOrgIdentifierCharacter = element(by.binding('30 - trialDetailView.curTrial.lead_protocol_id.length'));
+    this.addTrialOtherTrialIdentifierCharacter = element(by.binding('30 - trialDetailView.protocol_id.length'));
     this.addTrialOfficialTitleCharacter = element(by.binding('600 - trial_form.official_title.$viewValue.length'));
+    this.addTrialPrimaryPurposeDescriptionCharacter = element(by.binding('200 - trial_form.primary_purpose_other.$viewValue.length'));
+    this.addTrialSecondaryPurposeDescriptionCharacter = element(by.binding('1000 - trial_form.secondary_purpose_other.$viewValue.length'));
+    this.addTrialInvestigatorTitleCharacter = element(by.binding('254 - trialDetailView.curTrial.investigator_title.length '));
+    this.addTrialWhyStudyStoppedCharacter = element();
+    this.addTrialStatusCommentCharacter = element();
 
     var helper = new helperFunctions();
     var self = this;
