@@ -266,7 +266,7 @@
             var curSourceStatusObj = {name: '', id: ''};
 
             if (vm.curPerson.new) {
-                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}) || curSourceStatusObj;
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT', source_context_id: vm.curPerson.source_context_id}) || curSourceStatusObj;
                 //only show active status for new Person
                 vm.sourceStatusArr = [curSourceStatusObj];
             } else {
