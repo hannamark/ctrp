@@ -7,24 +7,31 @@
 
     angular.module('ctrp.app.registry').controller('psDetailCtrl', psDetailCtrl);
 
-    psDetailCtrl.$inject = ['psDetailObj', 'trialDetailObj', 'userDetailObj', 'TrialService', 'toastr', '$state',
-        'srStatusObj', 'DateService', '$timeout'];
+    psDetailCtrl.$inject = ['psDetailObj', 'trialDetailObj', 'userDetailObj', 'PersonService', 'TrialService', 'PATrialService', '$scope', 'toastr', '$state',
+        'srStatusObj', 'DateService', '$timeout', 'centralContactTypes'];
 
-    function psDetailCtrl(psDetailObj, trialDetailObj, userDetailObj, TrialService, toastr, $state,
-                          srStatusObj, DateService, $timeout) {
+    function psDetailCtrl(psDetailObj, trialDetailObj, userDetailObj, PersonService, TrialService, PATrialService, $scope, toastr, $state,
+                          srStatusObj, DateService, $timeout, centralContactTypes) {
 
         var vm = this;
         vm.curPs = psDetailObj || {};
         vm.curPs = vm.curPs.data || vm.curPs;
+        vm.curPsOriginal = angular.copy(vm.curPs);
         vm.curTrial = trialDetailObj || vm.curPs.trial;
         vm.curUser = userDetailObj;
+        vm.centralContactTypes = centralContactTypes.types;
+        vm.centralContactTypes.shift(); // Remove 'None' value as done in PA
+        vm.curPs.contact_type = vm.curPs.contact_type ? vm.curPs.contact_type : 'General';
         vm.availableOrgs = [];
         vm.srStatusArr = srStatusObj;
         vm.status_date_opened = false;
         vm.addedStatuses = [];
         vm.srsNum = 0;
         vm.selectedPiArray = [];
+        vm.selectedPersonContactArray = [];
         vm.editMode = false; // Flag used in manage sites screen
+        vm.selectedInvContact;
+        vm.invContactArray = [];
 
         vm.updatePs = function() {
             // Prevent multiple submissions
@@ -48,6 +55,9 @@
                 });
             }
 
+            /* Set PI as contact in curPs.participating_site_investigators if needed */
+            setContactPiAsContact();
+
             // An outer param wrapper is needed for nested attributes to work
             var outerPs= {};
             outerPs.new = vm.curPs.new;
@@ -61,7 +71,7 @@
                     if (vm.isManageScreen) {
                         $state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
                     } else {
-                        $state.go('main.viewTrial', {trialId: response.trial.id});
+                        //$state.go('main.viewTrial', {trialId: response.trial.id});
                     }
                     toastr.success('Participating Site ' + vm.curPs.id + ' has been recorded', 'Operation Successful!');
                 }
@@ -69,6 +79,7 @@
                 console.log('error in updating trial ' + JSON.stringify(outerPs));
             }).finally(function() {
                 vm.disableBtn = false;
+                configurePsInvList();
             });
         };
 
@@ -190,6 +201,23 @@
                 setSitePi();
                 appendStatuses();
             }
+
+            configurePsInvList();
+
+            _.each(vm.curPs.participating_site_investigators, function(inv) {
+                if (inv.set_as_contact) {
+                    var invContact = inv;
+                    _.each(vm.invContactArray, function(contactPi) {
+                        if (contactPi.id === invContact.id) {
+                            vm.selectedInvContact = contactPi;
+                        }
+                    });
+                }
+            });
+
+            watchContactTypeSelection();
+            watchInvContactSelection();
+            watchPersonContactSelection()
         }
 
         // Redirect to search page if this user is not allowed to mange sites
@@ -269,6 +297,89 @@
                 vm.srsNum++;
             }
             vm.validateStatus();
+        }
+
+        /* Create UI relevant array with obj properties needed in the UI */
+        function configurePsInvList() {
+            var invList = vm.curPs.participating_site_investigators;
+
+            _.each(invList, function(inv) {
+                var invObj = {
+                    id: inv.id,
+                    name: inv.person.fname + ' ' + inv.person.lname,
+                    email: inv.person.email,
+                    phone: inv.person.phone,
+                    extension: inv.person.extension
+                };
+
+                vm.invContactArray.push(invObj);
+            });
+        }
+
+        /* Watches */
+        function watchContactTypeSelection() {
+            $scope.$watch(function() {return vm.curPs.contact_type;}, function(newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    vm.curPs.contact_name = null;
+                    vm.curPs.contact_phone = null;
+                    vm.curPs.extension = null;
+                    vm.curPs.contact_email = null;
+                    vm.selectedInvContact = null;
+                }
+
+                if (newVal === 'PI') {
+                    console.log('pi: ', oldVal, newVal);
+                }
+            });
+        }
+
+        function watchInvContactSelection() {
+            $scope.$watch(function() {return vm.selectedInvContact;}, function(newVal, oldVal) {
+                var selectedInv;
+
+                if (vm.curPs.contact_type === 'PI') {
+                    if (newVal) {
+                        selectedInv = newVal;
+                        vm.curPs.contact_name = vm.curPs.contact_name ? vm.curPs.contact_name : selectedInv.name;
+                        vm.curPs.contact_phone = vm.curPs.contact_phone ? vm.curPs.contact_phone : selectedInv.phone;
+                        vm.curPs.extension = vm.curPs.extension ? vm.curPs.extension : selectedInv.extension;
+                        vm.curPs.contact_email = vm.curPs.contact_email ? vm.curPs.contact_email : selectedInv.email;
+                    } else {
+                        vm.curPs.contact_name = null;
+                        vm.curPs.contact_phone = null;
+                        vm.curPs.extension = null;
+                        vm.curPs.contact_email = null;
+                    }
+                }
+            });
+        }
+
+        function watchPersonContactSelection() {
+            $scope.$watch(function() {return vm.selectedPersonContactArray;}, function(newVal, oldVal) {
+                var selectedPerson;
+
+                if (newVal.length) {
+                    selectedPerson = newVal[0];
+                    vm.curPs.contact_name = PersonService.extractFullName(selectedPerson);
+                    vm.curPs.contact_phone = selectedPerson.phone;
+                    vm.curPs.extension = selectedPerson.extension ? selectedPerson.extension : null;
+                    vm.curPs.contact_email = selectedPerson.email;
+                }
+            });
+        }
+
+        function setContactPiAsContact() {
+            var selectedInv = vm.selectedInvContact;
+
+            if (selectedInv) {
+                _.each(vm.curPs.participating_site_investigators, function(inv) {
+                    if (selectedInv.id === inv.id) {
+                        inv.set_as_contact = true;
+                    } else {
+                        inv.set_as_contact = false;
+                    }
+                });
+            }
         }
     }
 })();
