@@ -595,6 +595,8 @@ class TrialService
     rollback_params[:nci_specific_comment] = trial_history.snapshot['nci_specific_comment']
     rollback_params[:send_trial_flag] = trial_history.snapshot['send_trial_flag']
 
+
+
     # Delete existing children and reconstruct children from snapshot
     other_ids_attributes = []
     @trial.other_ids.each do |other_id|
@@ -1139,6 +1141,8 @@ class TrialService
     CtrpMailerWrapper.send_email(mail_template, @trial)
   end
 
+
+
   def import_params (xml, current_user)
     import_params = {}
 
@@ -1336,38 +1340,59 @@ class TrialService
   end
 
   # Maps the ClinicalTrials.gov status to CTRP status code
+
   def map_status (ct_status)
-    case ct_status
-      when 'Not yet recruiting'
-        ctrp_status_code = 'INR'
-      when 'Withdrawn'
-        ctrp_status_code = 'WIT'
-      when 'Recruiting'
-        ctrp_status_code = 'ACT'
-      when 'Enrolling by Invitation'
-        ctrp_status_code = 'EBI'
-      when 'Suspended'
-        ctrp_status_code = 'TCL'
-      when 'Active, not recruiting'
-        ctrp_status_code = 'CAC'
-      when 'Terminated'
-        ctrp_status_code = 'ACO'
-      when 'Completed'
-        ctrp_status_code = 'COM'
-      when 'Available'
-        ctrp_status_code = 'AVA'
-      when 'No longer available'
-        ctrp_status_code = 'NLA'
-      when 'Temporarily not available'
-        ctrp_status_code = 'TNA'
-      when 'Approved for marketing'
-        ctrp_status_code = 'AFM'
-      else
-        ctrp_status_code = ''
+   import_trial_statuses = CtGovImportExport.import_trial_statuses
+   return change_code(import_trial_statuses,TrialStatus,ct_status)
+  end
+
+  def map_phase (ct_phase)
+    import_phases = CtGovImportExport.import_phases
+    return change_code(import_phases,Phase,ct_phase)
+  end
+
+  def map_allocation (ct_allocation)
+    import_allocations = CtGovImportExport.import_allocations
+    return change_code(import_allocations,Allocation,ct_allocation)
+  end
+
+  def map_study_classification (ct_study_classification)
+    import_study_classifications = CtGovImportExport.import_study_classifications
+    return change_code(import_study_classifications,StudyClassification,ct_study_classification)
+  end
+
+  def map_intervention_model (ct_intervention_model)
+    import_intervention_models = CtGovImportExport.import_intervention_models
+    return change_code(import_intervention_models,InterventionModel,ct_intervention_model)
+  end
+
+  def map_primary_purpose (ct_primary_purpose)
+    import_primary_purposes = CtGovImportExport.import_primary_purposes
+    return change_code(import_primary_purposes,PrimaryPurpose,ct_primary_purpose)
+  end
+
+  def change_code(records,model,_ct_gov_val)
+    _ctrp_record = records.find_by_from(_ct_gov_val)
+    _ctrp_record.nil? ? _ctrp_val = _ctrp_record.to : _ctrp_val = nil
+    _ctrp_val.nil? ?  _ctrp_code = model.find_by_name(_ctrp_val).code : _ctrp_code =''
+    return _ctrp_code
+  end
+
+  def map_masking (ct_masking)
+    if ct_masking.include? 'Open'
+      ctrp_masking_code = 'OP'
+    elsif ct_masking.include? 'Single Blind'
+      ctrp_masking_code = 'SB'
+    elsif ct_masking.include? 'Double Blind'
+      ctrp_masking_code = 'DB'
+    else
+      ctrp_masking_code = ''
     end
 
-    return ctrp_status_code
+    return ctrp_masking_code
   end
+
+
 
   def convert_date (ct_date)
     splits = ct_date.split(' ')
@@ -1403,130 +1428,6 @@ class TrialService
 
     return '01-' + month + '-' + splits[1]
   end
-
-  def map_phase (ct_phase)
-    case ct_phase
-      when 'N/A'
-        ctrp_phase_code = 'NA'
-      when 'Phase 0'
-        ctrp_phase_code = '0'
-      when 'Phase 1'
-        ctrp_phase_code = 'I'
-      when 'Phase 1/Phase 2'
-        ctrp_phase_code = 'I/II'
-      when 'Phase 2'
-        ctrp_phase_code = 'II'
-      when 'Phase 2/Phase 3'
-        ctrp_phase_code = 'II/III'
-      when 'Phase 3'
-        ctrp_phase_code = 'III'
-      when 'Phase 4'
-        ctrp_phase_code = 'IV'
-      else
-        ctrp_phase_code = 'NA'
-    end
-
-    return ctrp_phase_code
-  end
-
-  def map_allocation (ct_allocation)
-    case ct_allocation
-      when 'N/A'
-        ctrp_allocation_code = 'NA'
-      when 'Randomized'
-        ctrp_allocation_code = 'RCT'
-      when 'Nonrandomized'
-        ctrp_allocation_code = 'NRT'
-      else
-        ctrp_allocation_code = ''
-    end
-
-    return ctrp_allocation_code
-  end
-
-  def map_study_classification (ct_study_classification)
-    case ct_study_classification
-      when 'N/A'
-        ctrp_study_classification_code = 'NA'
-      when 'Safety Study'
-        ctrp_study_classification_code = 'SF'
-      when 'Efficacy Study'
-        ctrp_study_classification_code = 'EFF'
-      when 'Safety/Efficacy Study'
-        ctrp_study_classification_code = 'SFEFF'
-      when 'Bio-equivalence Study'
-        ctrp_study_classification_code = 'BEQ'
-      when 'Bio-availability Study'
-        ctrp_study_classification_code = 'BAV'
-      when 'Pharmacokinetics Study'
-        ctrp_study_classification_code = 'PD'
-      when 'Pharmacodynamics Study'
-        ctrp_study_classification_code = 'PK'
-      when 'Pharmacokinetics/dynamics Study'
-        ctrp_study_classification_code = 'PKPD'
-      else
-        ctrp_study_classification_code = ''
-    end
-
-    return ctrp_study_classification_code
-  end
-
-  def map_intervention_model (ct_intervention_model)
-    case ct_intervention_model
-      when 'Single Group Assignment'
-        ctrp_intervention_model_code = 'SG'
-      when 'Parallel Assignment'
-        ctrp_intervention_model_code = 'PL'
-      when 'Cross-over Assignment'
-        ctrp_intervention_model_code = 'CO'
-      when 'Factorial Assignment'
-        ctrp_intervention_model_code = 'FT'
-      else
-        ctrp_intervention_model_code = ''
-    end
-
-    return ctrp_intervention_model_code
-  end
-
-  def map_masking (ct_masking)
-    if ct_masking.include? 'Open'
-      ctrp_masking_code = 'OP'
-    elsif ct_masking.include? 'Single Blind'
-      ctrp_masking_code = 'SB'
-    elsif ct_masking.include? 'Double Blind'
-      ctrp_masking_code = 'DB'
-    else
-      ctrp_masking_code = ''
-    end
-
-    return ctrp_masking_code
-  end
-
-  def map_primary_purpose (ct_primary_purpose)
-    case ct_primary_purpose
-      when 'Treatment'
-        ctrp_primary_purpose_code = 'TRM'
-      when 'Prevention'
-        ctrp_primary_purpose_code = 'PRV'
-      when 'Diagnostic'
-        ctrp_primary_purpose_code = 'DIA'
-      when 'Supportive Care'
-        ctrp_primary_purpose_code = 'SUP'
-      when 'Screening'
-        ctrp_primary_purpose_code = 'SCR'
-      when 'Health Services Research '
-        ctrp_primary_purpose_code = 'HSR'
-      when 'Basic Science'
-        ctrp_primary_purpose_code = 'BSC'
-      when 'Other'
-        ctrp_primary_purpose_code = 'OTH'
-      else
-        ctrp_primary_purpose_code = ''
-    end
-
-    return ctrp_primary_purpose_code
-  end
-
 
 
 end

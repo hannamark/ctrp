@@ -1252,6 +1252,99 @@ AppSetting.find_or_create_by(code: 'Federated_USER_FUNCTIONS').update(descriptio
 
 ########## SEEDING APP SETTINGS ENDS ##########
 
+########## SEEDING CTGOV IMPORT EXPORT STARTS ##########
+
+CtGovImportExport.find_or_create_by(from:'N/A', to:'N/A',import_or_export:'import' ,model:'Allocation')
+CtGovImportExport.find_or_create_by(from:'Randomized', to:'Randomized Controlled Trial',import_or_export:'import' ,model:'Allocation')
+CtGovImportExport.find_or_create_by(from:'Nonrandomized', to:'Non-Randomized Trial',import_or_export:'import' ,model:'Allocation')
+
+
+CtGovImportExport.find_or_create_by(from:'N/A', to:'N/A',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Safety Study', to:'Safety',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Efficacy Study', to:'Efficacy',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Safety/Efficacy Study', to:'Safety/Efficacy',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Bio-availability Stud', to:'Bioavailability',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Bio-equivalence Study', to:'Bioequivalence',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacodynamics Study', to:'Pharmacodynamics',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacokinetics Study', to:'Pharmacokinetics',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacokinetics/dynamics Study', to:'Pharmacokinetics/Pharmacodynamics',import_or_export:'import' ,model:'StudyClassification')
+
+CtGovImportExport.find_or_create_by(from:'Single Group Assignment', to:'Single Group',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Parallel Assignment', to:'Parallel',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Cross-over Assignment', to:'Cross-Over',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Factorial Assignment', to:'Factorial',import_or_export:'import' ,model:'InterventionModel')
+
+CtGovImportExport.find_or_create_by(from:'Treatment', to:'Treatment',import_or_export:'import' ,model:'PrimaryPurpose')
+CtGovImportExport.find_or_create_by(from:'Prevention', to:'Prevention',import_or_export:'import' ,model:'PrimaryPurpose')
+CtGovImportExport.find_or_create_by(from:'Supportive Care', to:'Supportive Care',import_or_export:'import' ,model:'PrimaryPurpose')
+CtGovImportExport.find_or_create_by(from:'Screening', to:'Screening',import_or_export:'import' ,model:'PrimaryPurpose')
+CtGovImportExport.find_or_create_by(from:'Diagnostic', to:'Diagnostic',import_or_export:'import' ,model:'PrimaryPurpose')
+CtGovImportExport.find_or_create_by(from:'Health Services Research', to:'Health Services Research',import_or_export:'import' ,model:'PrimaryPurpose')
+CtGovImportExport.find_or_create_by(from:'Basic Science', to:'Basic Science',import_or_export:'import' ,model:'PrimaryPurpose')
+CtGovImportExport.find_or_create_by(from:'Other', to:'Other',import_or_export:'import' ,model:'PrimaryPurpose')
+
+
+CtGovImportExport.find_or_create_by(from:'Submitted', to:'Approved',import_or_export:'import' ,model:'Board Approval Status')
+CtGovImportExport.find_or_create_by(from:'Approved', to:'Approved',import_or_export:'import' ,model:'Board Approval Status')
+CtGovImportExport.find_or_create_by(from:'Submitted', to:'Pending',import_or_export:'import' ,model:'Board Approval Status')
+CtGovImportExport.find_or_create_by(from:'Pending', to:'Pending',import_or_export:'import' ,model:'Board Approval Status')
+CtGovImportExport.find_or_create_by(from:'Submitted', to:'Exempt',import_or_export:'import' ,model:'Board Approval Status')
+CtGovImportExport.find_or_create_by(from:'Exempt', to:'Exempt',import_or_export:'import' ,model:'Board Approval Status')
+CtGovImportExport.find_or_create_by(from:'Submitted', to:'Approved',import_or_export:'import' ,model:'Board Approval Status')
+CtGovImportExport.find_or_create_by(from:'Denied', to:'Denied',import_or_export:'import' ,model:'Board Approval Status')
+CtGovImportExport.find_or_create_by(from:'Submission Not required', to:'Not required',import_or_export:'import' ,model:'Board Approval Status')
+
+
+CtGovImportExport.find_or_create_by(from:'Not yet recruiting', to:'In Review',import_or_export:'import' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(from:'Withdrawn', to:'Withdrawn',import_or_export:'import' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(from:'Recruiting', to:'Active',import_or_export:'import' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(from:'Enrolling by Invitation', to:'Enrolling by Invitation',import_or_export:'import' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(from:'Suspended', to:'Temporarily Closed to Accrual',import_or_export:'import' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(from:'Active, not recruiting', to:'Closed to Accrual',import_or_export:'import' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(from:'Terminated', to:'Administratively Complete',import_or_export:'import' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(from:'Completed', to:'Completed',import_or_export:'import' ,model:'Trial Status')
+
+
+CtGovImportExport.find_or_create_by(to:'Not yet recruiting', from:'In Review',import_or_export:'export' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(to:'Withdrawn', from:'Withdrawn',import_or_export:'export' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(to:'Recruiting', from:'Active',import_or_export:'export' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(to:'Enrolling by Invitation', from:'Enrolling by Invitation',import_or_export:'export' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(to:'Suspended', from:'Temporarily Closed to Accrual',import_or_export:'export' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(to:'Active, not recruiting', from:'Closed to Accrual',import_or_export:'export' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(to:'Terminated', from:'Administratively Complete',import_or_export:'export' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(to:'Completed', from:'Completed',import_or_export:'export' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(to:'Not yet recruiting', from:'Approved',import_or_export:'export' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(to:'Suspended', from:'Temporarily Closed to Accrual and Intervention',import_or_export:'export' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(to:'Active, not recruiting', from:'Closed to Accrual and Intervention',import_or_export:'export' ,model:'Trial Status')
+
+
+CtGovImportExport.find_or_create_by(from:'Phase 0', to:'O',import_or_export:'import' ,model:'Phase')
+CtGovImportExport.find_or_create_by(from:'Phase 1', to:'I',import_or_export:'import' ,model:'Phase')
+CtGovImportExport.find_or_create_by(from:'Phase 1/2', to:'I/II',import_or_export:'import' ,model:'Phase')
+CtGovImportExport.find_or_create_by(from:'Phase 2', to:'II',import_or_export:'import' ,model:'Phase')
+CtGovImportExport.find_or_create_by(from:'Phase 2/3', to:'II/III',import_or_export:'import' ,model:'Phase')
+CtGovImportExport.find_or_create_by(from:'Phase 3', to:'III',import_or_export:'import' ,model:'Phase')
+CtGovImportExport.find_or_create_by(from:'Phase 4', to:'IV',import_or_export:'import' ,model:'Phase')
+CtGovImportExport.find_or_create_by(from:'N/A', to:'N/A',import_or_export:'import' ,model:'Phase')
+
+CtGovImportExport.find_or_create_by(to:'Phase 0', from:'O',import_or_export:'export' ,model:'Phase')
+CtGovImportExport.find_or_create_by(to:'Phase 1', from:'I',import_or_export:'export' ,model:'Phase')
+CtGovImportExport.find_or_create_by(to:'Phase 1/2', from:'I/II',import_or_export:'export' ,model:'Phase')
+CtGovImportExport.find_or_create_by(to:'Phase 2', from:'II',import_or_export:'export' ,model:'Phase')
+CtGovImportExport.find_or_create_by(to:'Phase 2/3', from:'II/III',import_or_export:'export' ,model:'Phase')
+CtGovImportExport.find_or_create_by(to:'Phase 3', from:'III',import_or_export:'export' ,model:'Phase')
+CtGovImportExport.find_or_create_by(to:'Phase 4', from:'IV',import_or_export:'export' ,model:'Phase')
+CtGovImportExport.find_or_create_by(to:'N/A', from:'N/A',import_or_export:'export' ,model:'Phase')
+
+
+
+
+########## SEEDING CTGOV IMPORT EXPORT ENDS ##########
+
+
+
+
+
 ########## SEEDING MAIL TEMPLATES STARTS ##########
 
 MailTemplate.find_or_create_by(
