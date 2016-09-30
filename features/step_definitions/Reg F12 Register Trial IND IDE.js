@@ -232,18 +232,36 @@ module.exports = function () {
 
 
     this.When(/^I have selected the (.*) Type as$/, function (INDIDEholder, table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        callback();
     });
 
     this.Given(/^I don’t provide the NIH Institution or NCI Division\/Program$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        callback();
     });
 
-    this.Then(/^I should get the error message as (.*)$/, function (Error, table, callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^I should get the error message as (.*)$/, function (Error, table) {
+        return browser.sleep(25).then(function () {
+            NIHNCIErrorTable = table.hashes();
+            for (var i = 0; i < NIHNCIErrorTable.length; i++) {
+                if(NIHNCIErrorTable[i].INDIDEholder === 'NIH') {
+                    addTrial.selectAddTrialFDAIND_IDETypes('IND');
+                    addTrial.setAddTrialFDAIND_IDENumber('67678');
+                    addTrial.selectAddTrialFDAIND_IDEGrantor('CBER');
+                    addTrial.selectAddTrialFDAIND_IDEHolderType(NIHNCIErrorTable[i].INDIDEholder);
+                    addTrial.clickAddTrialAddIND_IDEButton();
+                    expect(projectFunctionsRegistry.verifyTrialValidationMessage(NIHNCIErrorTable[i].Error)).to.become('true','validation');
+                }
+                if(NIHNCIErrorTable[i].INDIDEholder === 'NCI') {
+                    addTrial.selectAddTrialFDAIND_IDETypes('IND');
+                    addTrial.setAddTrialFDAIND_IDENumber('67678');
+                    addTrial.selectAddTrialFDAIND_IDEGrantor('CBER');
+                    addTrial.selectAddTrialFDAIND_IDEHolderType(NIHNCIErrorTable[i].INDIDEholder);
+                    addTrial.clickAddTrialAddIND_IDEButton();
+                    expect(projectFunctionsRegistry.verifyTrialValidationMessage(NIHNCIErrorTable[i].Error)).to.become('true');
+                }
+
+            }
+        });
     });
 
 };
