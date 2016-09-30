@@ -149,7 +149,8 @@ Feature: PO F3 Create an Organization
      |Active|
      |Inactive|
      |Pending|
-     |Nullified|
+   
+   And the source status "Nullified" will be available only from the search Org results
 
 
      
