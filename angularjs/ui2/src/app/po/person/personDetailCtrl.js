@@ -181,6 +181,7 @@
             setTabIndex();
             watchGlobalWriteModeChanges();
             watchOrgReceiver();
+            watchSourceContext();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
             }
@@ -273,7 +274,6 @@
                 vm.sourceStatusArr = sourceStatusObj;
                 curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) || curSourceStatusObj;
             }
-
             vm.curSourceStatusName = curSourceStatusObj.name;
             vm.curPerson.source_status_id = curSourceStatusObj.id;
         }
@@ -313,6 +313,18 @@
 
             }, true);
         } //watchOrgReceiver
+
+        function watchSourceContext() {
+            $scope.$watch(function() {
+                return vm.curPerson.source_context_id;
+            }, function(newVal, oldVal) {
+                newVal = newVal || 1;
+                vm.sourceStatusArrSelected = vm.sourceStatusArr.filter(function(s) {
+                    // do not show nullified source status!
+                    return s.source_context_id === newVal && s.name.indexOf('Null') == -1;
+                });
+            }, true);
+        }
 
 
 
