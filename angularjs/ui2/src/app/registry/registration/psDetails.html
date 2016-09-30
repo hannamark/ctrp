@@ -282,7 +282,7 @@
 
                         <!-- Phone Number -->
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.phone) && ps_form.phone.$error && ctrpbtn.ps_form.needsAttention(ps_form.email) && ps_form.email.$error}">
-                            <label for="phone" class="control-label col-xs-12 col-sm-3">Contact Phone Number:{{psDetailView.curPs.contact_phone}}</label>
+                            <label for="phone" class="control-label col-xs-12 col-sm-3">Contact Phone Number:</label>
                             <div class="col-xs-12 col-sm-3">
                                 <input type="text" id="phone" name="phone" maxlength="30" ng-model="psDetailView.curPs.contact_phone" class="form-control input-sm" placeholder="Phone" ng-required="!psDetailView.curPs.contact_email.length">
                                 <span ng-show="ps_form.phone.$viewValue.length" class="form-control-feedback" ng-class="!psDetailView.curPs.contact_phone.length && ctrpbtn.ps_form.needsAttention(ps_form.email) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
