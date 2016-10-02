@@ -88,6 +88,8 @@ exports.config = {
         'features/Reg\ F13\ Register\ Trial\ Documents.feature',
         'features/Reg\ F14\ Register\ Trial\ Review\ and\ Submit.feature',
         'features/Reg\ F15\ Register\ Trial\ Save\ as\ Draft.feature',
+        'features/Reg\ F16\ Import\ Trial.feature',
+        'features/Reg\ F21\ Verify\ Trial\ Data.feature',
 
         /************* PAS Features ************/
         'features/PAS\ F01\ Add\ and\ Edit\ Trial\ Descriptions.feature',
