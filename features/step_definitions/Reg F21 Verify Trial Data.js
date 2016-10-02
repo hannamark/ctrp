@@ -82,7 +82,7 @@ module.exports = function () {
     var getDBConnection = '';
 
     this.Given(/^I am in the CTRP Registration application$/, function () {
-        return  browser.sleep(25).then(function () {
+        return browser.sleep(25).then(function () {
             browser.driver.wait(function () {
                 console.log('wait here');
                 return true;
@@ -95,11 +95,11 @@ module.exports = function () {
     });
 
     this.Given(/^I have selected the option to search my trials in CTRP \(trials where I am listed as owner\)$/, function () {
-        return  browser.sleep(25).then(function () {
+        return browser.sleep(25).then(function () {
             projectFunctionsRegistry.createTrial(userCtrpTrialSubmitter, trialTypeNational, leadOrgIdentifierNational, clinicalIdentifierID, '', '', officialTitleNT, phaseNT, '', researchCategory, primaryPurposeNT, secondaryPurpose,
-    accrualDisease, leadOrgNT, principalInvNT, sponsorOrgNT, dataTableOrg, programCode, grantOption, grantFundingMechanism, grantInstituteCode, grantSerialNumber, grantNCIDivisionCode, trialStatus, trialComment, trialWhyStudyStopped,
-    INDIDEOption, INDIDEType, INDIDENumber, INDIDEGrantor, INDIDEHolder, INDIDEInstitution, responsibleParty, trialOversightCountry, trialOversightOrg, FDARegulatedIndicator, section801Indicator, dataMonitoringIndicator,
-    protocolDoc, IRBDoc, participatingSiteDoc, informedConsentDoc, otherDoc, submitTrial);
+                accrualDisease, leadOrgNT, principalInvNT, sponsorOrgNT, dataTableOrg, programCode, grantOption, grantFundingMechanism, grantInstituteCode, grantSerialNumber, grantNCIDivisionCode, trialStatus, trialComment, trialWhyStudyStopped,
+                INDIDEOption, INDIDEType, INDIDENumber, INDIDEGrantor, INDIDEHolder, INDIDEInstitution, responsibleParty, trialOversightCountry, trialOversightOrg, FDARegulatedIndicator, section801Indicator, dataMonitoringIndicator,
+                protocolDoc, IRBDoc, participatingSiteDoc, informedConsentDoc, otherDoc, submitTrial);
             browser.driver.wait(function () {
                 console.log('wait here');
                 return true;
@@ -131,14 +131,14 @@ module.exports = function () {
     });
 
     this.When(/^I select the Verify Data option on one of my trial from the trial results available actions$/, function () {
-        return  browser.sleep(25).then(function () {
-                searchTrial.clickSearchTrialActionButton();
+        return browser.sleep(25).then(function () {
+            searchTrial.clickSearchTrialActionButton();
             searchTrial.clickSearchTrialsVerifyDataButton();
         });
     });
 
     this.Then(/^the Trial Verification Data information will be displayed including$/, function (table) {
-        return  browser.sleep(25).then(function () {
+        return browser.sleep(25).then(function () {
             //   var TrialDataFieldTable = table.raw();
             //verifyTrialData.viewTDFieldsLabel.getText().then(function(value){
             //    console.log('Table trial data');
@@ -163,28 +163,28 @@ module.exports = function () {
     });
 
     this.When(/^I click on the Save Verification Record Button$/, function () {
-        return  browser.sleep(25).then(function () {
-verifyTrialData.clickAddTDSaveButton();
+        return browser.sleep(25).then(function () {
+            verifyTrialData.clickAddTDSaveButton();
 
         });
     });
 
     this.When(/^I click on the "([^"]*)" button for "([^"]*)"$/, function (arg1, arg2) {
-        return  browser.sleep(25).then(function () {
+        return browser.sleep(25).then(function () {
             verifyTrialData.getTDDialogText(arg2);
-verifyTrialData.clickAcceptTDDialogButton();
+            verifyTrialData.clickAcceptTDDialogButton();
         });
     });
 
     this.Then(/^the current Verification Date will be saved with today's date$/, function () {
-        return  browser.sleep(25).then(function () {
+        return browser.sleep(25).then(function () {
             verifyTrialData.getTDVerificationDate(moment().format('DD-MMM-YYYY'));
 
         });
     });
 
     this.Then(/^I can view the current Verification Date displayed on the Trial Data Verification Screen$/, function (table) {
-        return  browser.sleep(25).then(function () {
+        return browser.sleep(25).then(function () {
             nciIDNT.then(function (trialNciIDNT) {
                 verifyTrialData.getTDNCIID(trialNciIDNT);
             });
@@ -202,7 +202,7 @@ verifyTrialData.clickAcceptTDDialogButton();
     });
 
     this.Given(/^I am on the Trial Data Verification Screen$/, function () {
-        return  browser.sleep(25).then(function () {
+        return browser.sleep(25).then(function () {
             browser.driver.wait(function () {
                 console.log('wait here');
                 return true;
@@ -242,28 +242,32 @@ verifyTrialData.clickAcceptTDDialogButton();
                     expect(projectFunctions.inSearchResults(trialNciIDNT)).to.eventually.equal('true', 'Verify Trial is present in Search Result');
                     searchTrial.clickSearchTrialActionButton();
                     searchTrial.clickSearchTrialsVerifyDataButton();
-                    currentVerificationDate =  verifyTrialData.viewTDVerificationDate.getText();
+                    currentVerificationDate = verifyTrialData.viewTDVerificationDate.getText();
                 });
             });
         });
     });
 
     this.When(/^When I click on the Save Verification Record Button$/, function () {
-        verifyTrialData.clickAddTDSaveButton();
+        return browser.sleep(25).then(function () {
+            verifyTrialData.clickAddTDSaveButton();
+        });
     });
 
     this.When(/^I click on the "([^"]*)" Button for "([^"]*)"$/, function (arg1, arg2) {
-        verifyTrialData.getTDDialogText(arg2);
-        verifyTrialData.clickCancelTDDialogButton();
+        return browser.sleep(25).then(function () {
+            verifyTrialData.getTDDialogText(arg2);
+            verifyTrialData.clickCancelTDDialogButton();
+        });
     });
 
     this.Then(/^the Last Verified Date will not be changed$/, function () {
-        currentVerificationDate.then(function(value){
-            verifyTrialData.getTDVerificationDate(value);
-        })
+        return browser.sleep(25).then(function () {
+            currentVerificationDate.then(function (value) {
+                verifyTrialData.getTDVerificationDate(value);
+            });
+        });
     });
-
-
 
 
 };
