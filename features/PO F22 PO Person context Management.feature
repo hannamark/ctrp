@@ -138,6 +138,7 @@ Scenario:#1 CTEP Context of a new person record created
     And The CTRP Curator will be able to identify by searching CTEP Person with Service Request "Update"
     When CTRP Curator will determine the updates for the CTRP Context
     Then the CTRP Processing Status will be "Complete"
+    And the  And the CTEP "Processing Status" will be set to "Complete"
      
 
      Scenario:#5 Curator can identify when two persons are to be merged 
