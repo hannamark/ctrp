@@ -288,6 +288,17 @@ ActiveRecord::Schema.define(version: 20160930152929) do
     t.integer  "parent_id"
   end
 
+  create_table "ct_gov_import_exports", force: :cascade do |t|
+    t.string   "from",             limit: 255
+    t.string   "to",               limit: 255
+    t.string   "import_or_export", limit: 255
+    t.string   "model",            limit: 255
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "uuid",             limit: 255
+    t.integer  "lock_version",                 default: 0
+  end
+
   create_table "ctep_org_types", force: :cascade do |t|
     t.string   "code",          limit: 255
     t.string   "name",          limit: 255
@@ -1744,6 +1755,7 @@ ActiveRecord::Schema.define(version: 20160930152929) do
   create_sequence "citations_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "collaborators_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "comments_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "ct_gov_import_exports_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ctep_org_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "diseases_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "evaluation_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

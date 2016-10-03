@@ -202,12 +202,6 @@
             outerPS.participating_site = vm.currentParticipatingSite;
             vm.currentParticipatingSite.trial_id = trialDetailObj.id;
 
-/*
-            if (vm.tabIndex === 2) {
-                vm.watchContactType();
-            }
-*/
-
             vm.deleteInvestigator();
 
             TrialService.upsertParticipatingSite(outerPS).then(function(response) {

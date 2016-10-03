@@ -249,8 +249,6 @@ Examples:
   |Primary Purpose       |Primary Purpose is Required       |
   |Trial Phase           |Trial Phase is Required           |
   |Number of Arms/Groups |Number of Arms/Groups is Required |
-  |Masking               |Masking is Required                  |
-  |Allocation            |Allocation is Required               |
   |Target Enrollment     |Target Enrollment is Required        |
   
   Scenario Outline:#8a Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source NEW Sep 2016
