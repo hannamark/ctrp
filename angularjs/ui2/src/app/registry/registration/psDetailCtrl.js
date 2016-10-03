@@ -30,6 +30,7 @@
         vm.selectedPiArray = [];
         vm.selectedPersonContactArray = [];
         vm.editMode = false; // Flag used in manage sites screen
+        vm.addMode = false;
         vm.selectedInvContact;
         vm.invContactArray = [];
 
@@ -69,11 +70,20 @@
 
                 if (status >= 200 && status <= 210) {
                     if (vm.isManageScreen) {
-                        $state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
+                        //$state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
+                        vm.editMode = false;
+                        vm.addMode = false;
                     } else {
-                        //$state.go('main.viewTrial', {trialId: response.trial.id});
+                        $state.go('main.viewTrial', {trialId: response.trial.id});
                     }
                     toastr.success('Participating Site ' + vm.curPs.id + ' has been recorded', 'Operation Successful!');
+
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       $scope.ps_form.$setPristine();
+                   }, 1);
+
+                   // Response needs to refresh PS list
                 }
             }).catch(function(err) {
                 console.log('error in updating trial ' + JSON.stringify(outerPs));
@@ -168,22 +178,26 @@
 
         vm.addPs = function() {
             vm.editMode = false;
+            vm.addMode = true;
             vm.curPs = {};
             vm.curPs.new = true;
             vm.addedStatuses = [];
             vm.srsNum = 0;
             vm.selectedPiArray = [];
             setDefaultOrg();
+            setupAddEditPs();
         };
 
         vm.editPs = function(psIdx) {
             vm.editMode = true;
+            vm.addMode = false;
             vm.curPs = vm.curTrial.sitesu_sites[psIdx];
             vm.addedStatuses = [];
             vm.srsNum = 0;
             vm.selectedPiArray = [];
             setSitePi();
             appendStatuses();
+            setupAddEditPs();
         };
 
         activate();
@@ -191,17 +205,27 @@
         /****************************** implementations **************************/
 
         function activate() {
+            var isManagerAddEdit;
+
             allowPermittedAction();
             appendNewPsFlag();
             setManageScreenFlag();
             populateOrgs();
             setDefaultOrg();
 
+            isManagerAddEdit = vm.isManageScreen && (vm.addMode || vm.editMode);
+
             if (!vm.curPs.new) {
                 setSitePi();
                 appendStatuses();
             }
 
+            if (!vm.isManageScreen) {
+                setupAddEditPs();
+            }
+        }
+
+        function setupAddEditPs() {
             configurePsInvList();
 
             _.each(vm.curPs.participating_site_investigators, function(inv) {
