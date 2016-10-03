@@ -9,11 +9,11 @@ And I have selected the option to search my trials in CTRP (trials where I am li
 When I select the Verify Data option on one of my trial from the trial results available actions
 Then the Trial Verification Data information will be displayed including
 
-|NCI Trial Identifier|
-|ClinicalTrials.gov Identifier|
-|Lead Organization Trial Identifier|
-|Official Title|
-|Current Verification Date|
+|NCI Trial Identifier (Always display even when data is missing)|
+|ClinicalTrials.gov Identifier(Always display even when data is missing) |
+|Lead Organization Trial Identifier(Always display even when data is missing) |
+|Official Title (Always display even when data is missing) |
+|Current Verification Date (Always display even when data is missing)|
 
 When I click on the Save Verification Record Button
 And I click on the "OK" button for "Are you sure you would like to save a Data Verification record with today's date"
