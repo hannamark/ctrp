@@ -21,15 +21,7 @@ Scenario:#1 CTEP Context of a new person record created
       |Prefix|
       |First Name|
       |Middle Name|
-      |Last Name|Scenario:#2a Person Source Status CTRP available list
-    Given I am logged into the PO application
-     When I am on the edit Person screen
-     Then the person source status type will be available 
-     
-     |Active|
-     |Inactive|
-     |Pending|
-     |Nullified|
+      |Last Name|
       |Suffix|
       |Phone Number|
       |Phone Number Extension|
@@ -42,6 +34,16 @@ Scenario:#1 CTEP Context of a new person record created
       |Service Request|#(Create)
       |Processing Status|#(Incomplete)
       
+        Scenario:#1aa Peron Registration Type Values 
+    Given I am on the CTEP Person record Tab
+     And I can view Person Registration Type fields
+     
+     |Investigator|
+     |Non Physician Investigator|
+     |Associate Plus|
+     |Associate|
+     |Associate Basic|
+
        Scenario:#1a' Person Source Status CTEP available list
     Given I am logged into the PO application
      When I am on the CTEP Person Tab
@@ -50,8 +52,7 @@ Scenario:#1 CTEP Context of a new person record created
      |Active|
      |Inactive|
     
-     
-       Scenario:#1a" CTEP Person Context Mandatory Fields 
+      Scenario:#1a" CTEP Person Context Mandatory Fields 
     Given I am logged into the CTRP 
      When CTEP Context of a person record is created
      Then the person record fields type are mandatory
