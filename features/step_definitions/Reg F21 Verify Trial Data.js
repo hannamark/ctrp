@@ -14,12 +14,12 @@ var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
 var helperFunctions = require('../support/helper');
 var moment = require('moment');
-var mailVerificationPage = require('../support/mailVerification');
 var databaseConnection = require('../support/databaseConnection');
 var searchTrialPage = require('../support/searchTrialPage');
 var abstractionCommonMethods = require('../support/abstractionCommonMethods');
 var loginPage = require('../support/LoginPage');
 var trialDataVerificationPage = require('../support/registerVerifyTrialDataPage');
+var assert = require('assert');
 
 
 module.exports = function () {
@@ -27,10 +27,6 @@ module.exports = function () {
     var addTrial = new addTrialPage();
     var projectFunctions = new projectFunctionsPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
-    var trialDoc = new abstractionTrialRelatedDocument();
-    var helper = new helperFunctions();
-    var emailVerify = new mailVerificationPage();
-    var dbConnect = new databaseConnection();
     var searchTrial = new searchTrialPage();
     var login = new loginPage();
     var commonFunctions = new abstractionCommonMethods();
@@ -40,7 +36,7 @@ module.exports = function () {
     var userCtrpTrialSubmitter = 'ctrptrialsubmitter';
     var trialTypeNational = 'National';
     var leadOrgIdentifierNational = 'SSLdOrg ';
-    var clinicalIdentifierID = 'NCT22446688';
+    var clinicalIdentifierIDonUpdate = 'NCT22446688';
     var officialTitleNT = 'Trial Created by Cuke Test script - SS.';
     var phaseNT = 'I/II';
     var researchCategory = 'Observational';
@@ -96,7 +92,7 @@ module.exports = function () {
 
     this.Given(/^I have selected the option to search my trials in CTRP \(trials where I am listed as owner\)$/, function () {
         return browser.sleep(25).then(function () {
-            projectFunctionsRegistry.createTrial(userCtrpTrialSubmitter, trialTypeNational, leadOrgIdentifierNational, clinicalIdentifierID, '', '', officialTitleNT, phaseNT, '', researchCategory, primaryPurposeNT, secondaryPurpose,
+            projectFunctionsRegistry.createTrial(userCtrpTrialSubmitter, trialTypeNational, leadOrgIdentifierNational, '', '', '', officialTitleNT, phaseNT, '', researchCategory, primaryPurposeNT, secondaryPurpose,
                 accrualDisease, leadOrgNT, principalInvNT, sponsorOrgNT, dataTableOrg, programCode, grantOption, grantFundingMechanism, grantInstituteCode, grantSerialNumber, grantNCIDivisionCode, trialStatus, trialComment, trialWhyStudyStopped,
                 INDIDEOption, INDIDEType, INDIDENumber, INDIDEGrantor, INDIDEHolder, INDIDEInstitution, responsibleParty, trialOversightCountry, trialOversightOrg, FDARegulatedIndicator, section801Indicator, dataMonitoringIndicator,
                 protocolDoc, IRBDoc, participatingSiteDoc, informedConsentDoc, otherDoc, submitTrial);
@@ -139,25 +135,118 @@ module.exports = function () {
 
     this.Then(/^the Trial Verification Data information will be displayed including$/, function (table) {
         return browser.sleep(25).then(function () {
-            //   var TrialDataFieldTable = table.raw();
-            //verifyTrialData.viewTDFieldsLabel.getText().then(function(value){
-            //    console.log('Table trial data');
-            //    console.log(TrialDataFieldTable);
-            //    console.log('screen trial data');
-            //    console.log(value);
-            //    expect(value).to.eql(TrialDataFieldTable, 'Verification of Trial Data Field Label');
-            //});
             nciIDNT.then(function (trialNciIDNT) {
                 verifyTrialData.getTDNCIID(trialNciIDNT);
             });
-            otherIDNT.then(function (trialOtherIDNT) {
-                verifyTrialData.getTDNCTID(trialOtherIDNT.toString());
+            verifyTrialData.viewTDNCTID.isPresent().then(function(state){
+                if(state){
+                    verifyTrialData.viewTDNCTID.isDisplayed().then(function(displayValue){
+                        if(displayValue){
+                            otherIDNT.then(function (trialOtherIDNT) {
+                                console.log('value of NCT ID');
+                                console.log(trialOtherIDNT);
+                                verifyTrialData.getTDNCTID(trialOtherIDNT.toString());
+                            });
+                        } else {
+                            assert.fail(0,1, 'Clinical Trial Identifier field is not Displayed in the Screen');
+                        }
+
+                    });
+                } else {
+                    assert.fail(0,1, 'Clinical Trial Identifier field is not Present in the Screen');
+                }
             });
             leadProtocolIDNT.then(function (trialLeadProtocolIDNT) {
                 verifyTrialData.getTDLeadOrgId(trialLeadProtocolIDNT);
             });
             trialOfficialTitleNT.then(function (trialOfficialTitleNT) {
                 verifyTrialData.getTDOfficialTitle(trialOfficialTitleNT);
+            });
+            verifyTrialData.viewTDVerificationDate.isPresent().then(function(state){
+                if(state){
+                    verifyTrialData.viewTDVerificationDate.isDisplayed().then(function(displayValue){
+                        if(!displayValue){
+                            assert.fail(0,1, 'Current Verification Date field is not Displayed in the Screen');
+                        }
+                    });
+                } else {
+                    assert.fail(0,1, 'Current Verification Date field is not Present in the Screen');
+                }
+            });
+            nciIDNT.then(function(value) {
+                trialMenuItem.clickTrials();
+                trialMenuItem.clickListSearchTrialLink();
+                searchTrial.setSearchTrialProtocolID(value);
+                searchTrial.clickSearchTrialSearchButton();
+                searchTrial.clickSearchTrialMyTrials();
+                expect(projectFunctions.inSearchResults(value)).to.eventually.equal('true', 'Verify Trial is present in Search Result');
+                searchTrial.clickSearchTrialActionButton();
+                searchTrial.clickSearchTrialsUpdateButton();
+
+
+                addTrial.addTrialVerifyOtherTrialIdentifierTable.filter(function (name) {
+                    return name.getText().then(function (text) {
+                        console.log('text is' + text + 'Item to be verified' + clinicalIdentifierIDonUpdate);
+                        return text === clinicalIdentifierIDonUpdate;
+                    });
+                }).then(function (filteredElements) {
+                    console.log('filtered elements' + filteredElements);
+                    // Only the elements that passed the filter will be here. This is an array.
+                    if (filteredElements.length > 0) {
+                        // element.all(by.css('.glyphicon.glyphicon-remove-circle')).get(0).click();
+                        addTrial.addTrialRemoveOtherTrialIdentifier.click();
+                        //addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'ClinicalTrials.gov Identifier')).click();
+                        //addTrial.setAddTrialProtocolID(clinicalIdentifierIDonUpdate);
+                        //addTrial.clickAddTrialAddProtocolButton();
+                    }
+                    else {
+                        addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'ClinicalTrials.gov Identifier')).click();
+                        addTrial.setAddTrialProtocolID(clinicalIdentifierIDonUpdate);
+                        addTrial.clickAddTrialAddProtocolButton();
+                    }
+                });
+
+                addTrial.clickAddTrialReviewButton();
+                trialMenuItem.clickTrials();
+                trialMenuItem.clickListSearchTrialLink();
+                searchTrial.setSearchTrialProtocolID(value);
+                searchTrial.clickSearchTrialSearchButton();
+                searchTrial.clickSearchTrialMyTrials();
+                expect(projectFunctions.inSearchResults(value)).to.eventually.equal('true', 'Verify Trial is present in Search Result');
+                searchTrial.clickSearchTrialActionButton();
+                searchTrial.clickSearchTrialsVerifyDataButton();
+                verifyTrialData.getTDNCIID(value);
+                verifyTrialData.viewTDNCTID.isPresent().then(function(state){
+                    if(state){
+                        verifyTrialData.viewTDNCTID.isDisplayed().then(function(displayValue){
+                            if(displayValue){
+                                    verifyTrialData.getTDNCTID(clinicalIdentifierIDonUpdate);
+                            } else {
+                                assert.fail(0,1, 'Clinical Trial Identifier field is not Displayed in the Screen second test');
+                            }
+
+                        });
+                    } else {
+                        assert.fail(0,1, 'Clinical Trial Identifier field is not Present in the Screen second test');
+                    }
+                });
+                leadProtocolIDNT.then(function (trialLeadProtocolIDNT) {
+                    verifyTrialData.getTDLeadOrgId(trialLeadProtocolIDNT);
+                });
+                trialOfficialTitleNT.then(function (trialOfficialTitleNT) {
+                    verifyTrialData.getTDOfficialTitle(trialOfficialTitleNT);
+                });
+                verifyTrialData.viewTDVerificationDate.isPresent().then(function(state){
+                    if(state){
+                        verifyTrialData.viewTDVerificationDate.isDisplayed().then(function(displayValue){
+                            if(!displayValue){
+                                assert.fail(0,1, 'Current Verification Date field is not Displayed in the Screen');
+                            }
+                        });
+                    } else {
+                        assert.fail(0,1, 'Current Verification Date field is not Present in the Screen');
+                    }
+                });
             });
         });
     });
@@ -188,9 +277,7 @@ module.exports = function () {
             nciIDNT.then(function (trialNciIDNT) {
                 verifyTrialData.getTDNCIID(trialNciIDNT);
             });
-            otherIDNT.then(function (trialOtherIDNT) {
-                verifyTrialData.getTDNCTID(trialOtherIDNT.toString());
-            });
+            verifyTrialData.getTDNCTID(clinicalIdentifierIDonUpdate);
             leadProtocolIDNT.then(function (trialLeadProtocolIDNT) {
                 verifyTrialData.getTDLeadOrgId(trialLeadProtocolIDNT);
             });
