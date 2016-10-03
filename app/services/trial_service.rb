@@ -1325,36 +1325,11 @@ class TrialService
 
   def convert_date (ct_date)
     splits = ct_date.split(' ')
-
-    case splits[0]
-      when 'January'
-        month = 'Jan'
-      when 'February'
-        month = 'Feb'
-      when 'March'
-        month = 'Mar'
-      when 'April'
-        month = 'Apr'
-      when 'May'
-        month = 'May'
-      when 'June'
-        month = 'Jun'
-      when 'July'
-        month = 'Jul'
-      when 'August'
-        month = 'Aug'
-      when 'September'
-        month = 'Sep'
-      when 'October'
-        month = 'Oct'
-      when 'November'
-        month = 'Nov'
-      when 'December'
-        month = 'Dec'
-      else
-        month = ''
+    if ['January','February','March','April','May','June','July','August','September','October','November','December'].include? splits[0]
+      month = splits[0].slice(0...3)
+    else
+      month = ''
     end
-
     return '01-' + month + '-' + splits[1]
   end
 

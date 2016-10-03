@@ -134,10 +134,12 @@ Scenario:#1 CTEP Context of a new person record created
     |Last Name|
     And the CTEP Organization is Active
     Then the CTRP Context field type is not automatically updated
-    And the CTRP Processing Status will be "pending"
+    And the CTRP Processing Status will be "Incomplete"
     And The CTRP Curator will be able to identify by searching CTEP Person with Service Request "Update"
     When CTRP Curator will determine the updates for the CTRP Context
     Then the CTRP Processing Status will be "Complete"
+    And the CTEP "Processing Status" will be set to "Complete"
+    And the CTEP "service request" will be set to "NULL" 
      
 
      Scenario:#5 Curator can identify when two persons are to be merged 

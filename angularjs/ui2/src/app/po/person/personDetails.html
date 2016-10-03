@@ -162,10 +162,16 @@
                                 {{personDetailView.curPerson.updated_by}} ({{personDetailView.curPerson.person_updated_date}})
                             </div>
                         </div>
-                        <div class="form-group has-feedback required" ng-if="personDetailView.curPersonEditable" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
+                        <div class="form-group has-feedback required"
+                            ng-if="personDetailView.curPersonEditable"
+                            restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN"
+                            ng-class="{'has-error': ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0 && personDetailView.curPersonEditable)}">
                             <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
                             <div class="col-xs-12 col-sm-9">
                                 <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
+                                <span class="help-block" ng-show="ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0 && personDetailView.curPersonEditable)">
+                                    Organization Affiliation is Required
+                                </span>
                             </div>
                         </div>
                         <div class="form-group" ng-if="personDetailView.curPersonEditable">

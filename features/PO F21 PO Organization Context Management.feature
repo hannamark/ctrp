@@ -33,7 +33,6 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Country|
     |Email|
     |Phone Number “|” Extension |#Single Field
-    |Funding Mechanism|
     |Context Organization ID |#Primary Key
     |Service Request |
     |Processing Status|
@@ -158,7 +157,9 @@ Scenario: #1b CTEP Context Mandatory Fields
     And the CTEP Organization is Active
     Then the CTRP Context field type is not automatically updated
     And the CTRP Processing Status will be "Incomplete"
-   
+   When the CTRP Processing Status will be set to "Complete"
+   Then the CTEP Processing Status will be set to "Complete"
+   And the CTEP Service Request will be set to "Null"
    
  
    Scenario: #5 As a CTRP PO Curator I can approve or deny a CTRP request for creating a new organization in CTRP
