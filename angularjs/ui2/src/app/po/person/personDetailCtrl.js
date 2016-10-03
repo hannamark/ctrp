@@ -319,6 +319,10 @@
                 return vm.curPerson.source_context_id;
             }, function(newVal, oldVal) {
                 newVal = newVal || 1;
+                var context = _.findWhere(vm.sourceContextArr, {id: newVal});
+                if (!!context && context.code === 'CTRP' && vm.curPerson.new) {
+                    vm.curPerson.processing_status = 'Complete' // default to Complete for CTRP person
+                }
                 vm.sourceStatusArrSelected = vm.sourceStatusArr.filter(function(s) {
                     // do not show nullified source status!
                     return s.source_context_id === newVal && s.name.indexOf('Null') == -1;
