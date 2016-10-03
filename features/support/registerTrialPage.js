@@ -84,6 +84,9 @@ var registerTrial = function(){
     this.addTrialWhyStudyStoppedTable = element.all(by.binding('status.why_stopped'));
     this.addTrialErrorWarningTable = element.all(by.css('.col-md-4.status-error'));
     this.addTrialRemoveTrialStatus = element(by.css('table[ng-show="trialDetailView.addedStatuses.length > 0"]')).all(by.css('.glyphicon.glyphicon-remove-circle'));
+    this.addTrialStatusWhyDeletedReason = element(by.model('model.why_deleted'));
+    this.addTrialStatusWhyDeletedCommit = element(by.id('commit_deletion_comment'));
+    this.addTrialStatusDeletedStatus = element.all(by.css('.animated-item.deleted-text'));
 
 
     /** Trial Dates **/
@@ -540,6 +543,14 @@ var registerTrial = function(){
 
     this.clickAddTrialAddStatusButton = function(){
         helper.clickButton(this.addTrialAddStatusButton,"Add Trial Status Add button");
+    };
+
+    this.setAddTrialStatusDeleteReason = function(trialStatusDeleteReason)  {
+        helper.setValue(this.addTrialStatusWhyDeletedReason ,trialStatusDeleteReason,"Add Trial Status Delete Reason field");
+    };
+
+    this.clickAddTrialStatusDeleteCommitButton = function(){
+        helper.clickButton(this.addTrialStatusWhyDeletedCommit,"Add Trial Status Delete Commit button");
     };
 
     /********** Trial Dates **********/
