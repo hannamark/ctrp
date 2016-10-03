@@ -13,7 +13,7 @@ When from the Board Approval Status I have selected the ï¿½ Approvedï¿½ from the
   |Exempt|
   |Denied|
   |Not required|
-  |Not Yet Submitted|
+  
 And I have entered a Board Approval Number
 And I have entered a Board Name
 And I have selected a Board Affiliation using the organization lookup
@@ -29,7 +29,7 @@ When I have selected either of the Board Approval Statusï¿½ of ï¿½ Pendingï¿½, ï
   |Exempt|
   |Denied|
   |Not required|
-  |Not yet Submitted|
+ 
 And I have entered a Board Name
 And I have selected a Board Affiliation using the organization lookup
 Then the Board Approval Status , Board Name, Board Affiliation will be associated with the trial along with the Board Affiliationï¿½s address (street, city, state, zip, country), Phone # and e-mail address
@@ -44,7 +44,7 @@ When from the Board Approval Status I have selected the Not Requiredï¿½ from the
   |Exempt|
   |Denied|
   |Not required|
-  |Not yet Submitted|
+  
 Then the Board Approval Status will be associated with the trial
 
 Scenario: #4 Save Regulatory Information - Human Subject Safety 
