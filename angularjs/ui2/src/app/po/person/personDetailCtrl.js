@@ -181,6 +181,7 @@
             setTabIndex();
             watchGlobalWriteModeChanges();
             watchOrgReceiver();
+            watchSourceContext();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
             }
@@ -265,7 +266,7 @@
             var curSourceStatusObj = {name: '', id: ''};
 
             if (vm.curPerson.new) {
-                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}) || curSourceStatusObj;
+                curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {code: 'ACT', source_context_id: vm.curPerson.source_context_id}) || curSourceStatusObj;
                 //only show active status for new Person
                 vm.sourceStatusArr = [curSourceStatusObj];
             } else {
@@ -273,7 +274,6 @@
                 vm.sourceStatusArr = sourceStatusObj;
                 curSourceStatusObj = _.findWhere(vm.sourceStatusArr, {id: vm.curPerson.source_status_id}) || curSourceStatusObj;
             }
-
             vm.curSourceStatusName = curSourceStatusObj.name;
             vm.curPerson.source_status_id = curSourceStatusObj.id;
         }
@@ -313,6 +313,22 @@
 
             }, true);
         } //watchOrgReceiver
+
+        function watchSourceContext() {
+            $scope.$watch(function() {
+                return vm.curPerson.source_context_id;
+            }, function(newVal, oldVal) {
+                newVal = newVal || 1;
+                var context = _.findWhere(vm.sourceContextArr, {id: newVal});
+                if (!!context && context.code === 'CTRP' && vm.curPerson.new) {
+                    vm.curPerson.processing_status = 'Complete' // default to Complete for CTRP person
+                }
+                vm.sourceStatusArrSelected = vm.sourceStatusArr.filter(function(s) {
+                    // do not show nullified source status!
+                    return s.source_context_id === newVal && s.name.indexOf('Null') == -1;
+                });
+            }, true);
+        }
 
 
 

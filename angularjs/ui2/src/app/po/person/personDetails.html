@@ -100,13 +100,19 @@
                                 {{personDetailView.curPerson.source_id}}
                             </div>
                         </div>
+                        <div class="form-group has-feedback required" >
+                            <label class="control-label col-xs-12 col-sm-3">Processing Status:</label>
+                            <div class="col-xs-12 col-sm-3">
+                                <div class="form-text">{{personDetailView.curPerson.processing_status}}</div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status:</label>
                             <div class="col-xs-12 col-sm-6">
                                 <!--TODO: if editable -->
                                 <div ng-if="!personDetailView.curPersonEditable" class="form-text">{{personDetailView.curSourceStatusName}}</div>
                                 <div ng-if="personDetailView.curPersonEditable">
-                                    <select ng-init="personDetailView.curPerson.source_status_id" restriction-field class="form-control input-sm" id="source_status" ng-model="personDetailView.curPerson.source_status_id" ng-options="status.id as status.name for status in personDetailView.sourceStatusArr"></select>
+                                    <select ng-init="personDetailView.curPerson.source_status_id" restriction-field class="form-control input-sm" id="source_status" ng-model="personDetailView.curPerson.source_status_id" ng-options="status.id as status.name for status in personDetailView.sourceStatusArrSelected"></select>
                                 </div>
                             </div>
                         </div>
@@ -114,12 +120,6 @@
                             <label class="control-label col-xs-12 col-sm-3">CTRP Context Person ID:</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="form-text">{{personDetailView.curPerson.ctrp_id}}</div>
-                            </div>
-                        </div>
-                        <div class="form-group" ng-show="!personDetailView.curPerson.new">
-                            <label class="control-label col-xs-12 col-sm-3">Processing Status:</label>
-                            <div class="col-xs-12 col-sm-3">
-                                <div class="form-text">{{personDetailView.curPerson.processing_status}}</div>
                             </div>
                         </div>
                         <div class="form-group has-feedback required" ng-class="{'has-error': (person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email) && person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone))}">
@@ -162,10 +162,16 @@
                                 {{personDetailView.curPerson.updated_by}} ({{personDetailView.curPerson.person_updated_date}})
                             </div>
                         </div>
-                        <div class="form-group" ng-if="personDetailView.curPersonEditable" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
+                        <div class="form-group has-feedback required"
+                            ng-if="personDetailView.curPersonEditable"
+                            restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN"
+                            ng-class="{'has-error': ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0 && personDetailView.curPersonEditable)}">
                             <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
                             <div class="col-xs-12 col-sm-9">
                                 <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
+                                <span class="help-block" ng-show="ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0 && personDetailView.curPersonEditable)">
+                                    Organization Affiliation is Required
+                                </span>
                             </div>
                         </div>
                         <div class="form-group" ng-if="personDetailView.curPersonEditable">

@@ -6,13 +6,14 @@ As any CTRP PA User, I can add and edit Regulatory Information � Human Subject
 Scenario: #1 I can add and edit Regulatory Information - Human Subject Safety for a Regulated Trial with board status approved
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information� Human Subject Safety screen
-When from the Board Approval Status I have selected the �Submitted, Approved� from the list of:
+When from the Board Approval Status I have selected the � Approved� from the list of:
   |Select a status|
-  |Submitted, pending|
-  |Submitted, approved|
-  |Submitted, exempt|
-  |Submitted, denied|
-  |Submission not required|
+  |Approved|
+  |Pending|
+  |Exempt|
+  |Denied|
+  |Not required|
+  
 And I have entered a Board Approval Number
 And I have entered a Board Name
 And I have selected a Board Affiliation using the organization lookup
@@ -21,13 +22,14 @@ Then the Board Approval Status , Board Approval Number, Board Name, Board Affili
 Scenario: #2 I can add and edit Regulatory Information - Human Subject Safety for a Regulated Trial with board status pending, board status denied, or board status exempt
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information� Human Subject Safety screen
-When I have selected either of the Board Approval Status� of �Submitted, Pending�, �Submitted, Denied�, or �Submitted, Exempt� from the list of:
+When I have selected either of the Board Approval Status� of � Pending�, � Denied�, or � Exempt� from the list of:
   |Select a status|
-  |Submitted, pending|
-  |Submitted, approved|
-  |Submitted, exempt|
-  |Submitted, denied|
-  |Submission not required|
+  |Approved|
+  |Pending|
+  |Exempt|
+  |Denied|
+  |Not required|
+ 
 And I have entered a Board Name
 And I have selected a Board Affiliation using the organization lookup
 Then the Board Approval Status , Board Name, Board Affiliation will be associated with the trial along with the Board Affiliation�s address (street, city, state, zip, country), Phone # and e-mail address
@@ -35,13 +37,14 @@ Then the Board Approval Status , Board Name, Board Affiliation will be associate
 Scenario: #3 I can add and edit Regulatory Information - Human Subject Safety for a Regulated Trial with board status of Not Required
 Given I am logged into the CTRP Protocol Abstraction application
 And I am on the Trial Regulatory Information� Human Subject Safety screen
-When from the Board Approval Status I have selected the �Submission Not Required� from the list of:
-  |Select a status|
-  |Submitted, pending|
-  |Submitted, approved|
-  |Submitted, exempt|
-  |Submitted, denied|
-  |Submission not required|
+When from the Board Approval Status I have selected the Not Required� from the list of:
+ |Select a status|
+  |Approved|
+  |Pending|
+  |Exempt|
+  |Denied|
+  |Not required|
+  
 Then the Board Approval Status will be associated with the trial
 
 Scenario: #4 Save Regulatory Information - Human Subject Safety 
@@ -100,9 +103,9 @@ Then the following fields <Board Approval Status>, <Board Approval Number>, <Boa
 Examples:
 |Status                 |Board Approval Status|Board Approval Number|Board Affiliation and Address|Board Name|
 |Select a status        |Displayed            |Hidden  		        |Hidden                       |Hidden    |
-|Submitted, approved    |Displayed            |Displayed            |Displayed                    |Displayed |
-|Submitted, exempt      |Displayed            |Hidden               |Displayed                    |Displayed |
-|Submitted, pending     |Displayed            |Hidden               |Displayed                    |Displayed |
-|Submitted, denied      |Displayed            |Hidden               |Displayed                    |Displayed |
-|Submission not required|Displayed            |Hidden               |Hidden                       |Hidden    |
+|Approved               |Displayed            |Displayed            |Displayed                    |Displayed |
+|Exempt                 |Displayed            |Hidden               |Displayed                    |Displayed |
+|Pending                |Displayed            |Hidden               |Displayed                    |Displayed |
+|Denied                 |Displayed            |Hidden               |Displayed                    |Displayed |
+|Not required           |Displayed            |Hidden               |Hidden                       |Hidden    |
 
