@@ -513,89 +513,18 @@ class TrialService
     rollback_params = {}
     # Parameters for reconstructing children
     rollback_params2 = {}
-    rollback_params[:id] = trial_history.snapshot['id']
-    rollback_params[:nci_id] = trial_history.snapshot['nci_id']
-    rollback_params[:lead_protocol_id] = trial_history.snapshot['lead_protocol_id']
-    rollback_params[:official_title] = trial_history.snapshot['official_title']
-    rollback_params[:pilot] = trial_history.snapshot['pilot']
-    rollback_params[:primary_purpose_other] = trial_history.snapshot['primary_purpose_other']
-    rollback_params[:secondary_purpose_other] = trial_history.snapshot['secondary_purpose_other']
-    rollback_params[:program_code] = trial_history.snapshot['program_code']
-    rollback_params[:grant_question] = trial_history.snapshot['grant_question']
-    rollback_params[:start_date] = trial_history.snapshot['start_date']
-    rollback_params[:start_date_qual] = trial_history.snapshot['start_date_qual']
-    rollback_params[:primary_comp_date] = trial_history.snapshot['primary_comp_date']
-    rollback_params[:primary_comp_date_qual] = trial_history.snapshot['primary_comp_date_qual']
-    rollback_params[:comp_date] = trial_history.snapshot['comp_date']
-    rollback_params[:comp_date_qual] = trial_history.snapshot['comp_date_qual']
-    rollback_params[:ind_ide_question] = trial_history.snapshot['ind_ide_question']
-    rollback_params[:intervention_indicator] = trial_history.snapshot['intervention_indicator']
-    rollback_params[:sec801_indicator] = trial_history.snapshot['sec801_indicator']
-    rollback_params[:data_monitor_indicator] = trial_history.snapshot['data_monitor_indicator']
-    rollback_params[:history] = trial_history.snapshot['history']
-    rollback_params[:study_source_id] = trial_history.snapshot['study_source_id']
-    rollback_params[:phase_id] = trial_history.snapshot['phase_id']
-    rollback_params[:primary_purpose_id] = trial_history.snapshot['primary_purpose_id']
-    rollback_params[:secondary_purpose_id] = trial_history.snapshot['secondary_purpose_id']
-    rollback_params[:responsible_party_id] = trial_history.snapshot['responsible_party_id']
-    rollback_params[:lead_org_id] = trial_history.snapshot['lead_org_id']
-    rollback_params[:pi_id] = trial_history.snapshot['pi_id']
-    rollback_params[:sponsor_id] = trial_history.snapshot['sponsor_id']
-    rollback_params[:investigator_id] = trial_history.snapshot['investigator_id']
-    rollback_params[:research_category_id] = trial_history.snapshot['research_category_id']
-    rollback_params[:accrual_disease_term_id] = trial_history.snapshot['accrual_disease_term_id']
-    rollback_params[:investigator_title] = trial_history.snapshot['investigator_title']
-    rollback_params[:investigator_aff_id] = trial_history.snapshot['investigator_aff_id']
-    rollback_params[:is_draft] = trial_history.snapshot['is_draft']
-    rollback_params[:process_priority] = trial_history.snapshot['process_priority']
-    rollback_params[:process_comment] = trial_history.snapshot['process_comment']
-    rollback_params[:xml_required] = trial_history.snapshot['xml_required']
-    rollback_params[:acronym] = trial_history.snapshot['acronym']
-    rollback_params[:keywords] = trial_history.snapshot['keywords']
-    rollback_params[:nih_nci_div] = trial_history.snapshot['nih_nci_div']
-    rollback_params[:nih_nci_prog] = trial_history.snapshot['nih_nci_prog']
-    rollback_params[:send_trial] = trial_history.snapshot['send_trial']
-    rollback_params[:board_approval_num] = trial_history.snapshot['board_approval_num']
-    rollback_params[:brief_title] = trial_history.snapshot['brief_title']
-    rollback_params[:brief_summary] = trial_history.snapshot['brief_summary']
-    rollback_params[:detailed_description] = trial_history.snapshot['detailed_description']
-    rollback_params[:objective] = trial_history.snapshot['objective']
-    rollback_params[:target_enrollment] = trial_history.snapshot['target_enrollment']
-    rollback_params[:final_enrollment] = trial_history.snapshot['final_enrollment']
-    rollback_params[:accruals] = trial_history.snapshot['accruals']
-    rollback_params[:accept_vol] = trial_history.snapshot['accept_vol']
-    rollback_params[:min_age] = trial_history.snapshot['min_age']
-    rollback_params[:max_age] = trial_history.snapshot['max_age']
-    rollback_params[:assigned_to_id] = trial_history.snapshot['assigned_to_id']
-    rollback_params[:board_approval_status_id] = trial_history.snapshot['board_approval_status_id']
-    rollback_params[:intervention_model_id] = trial_history.snapshot['intervention_model_id']
-    rollback_params[:masking_id] = trial_history.snapshot['masking_id']
-    rollback_params[:allocation_id] = trial_history.snapshot['allocation_id']
-    rollback_params[:study_classification_id] = trial_history.snapshot['study_classification_id']
-    rollback_params[:gender_id] = trial_history.snapshot['gender_id']
-    rollback_params[:min_age_unit_id] = trial_history.snapshot['min_age_unit_id']
-    rollback_params[:max_age_unit_id] = trial_history.snapshot['max_age_unit_id']
-    rollback_params[:num_of_arms] = trial_history.snapshot['num_of_arms']
-    rollback_params[:verification_date] = trial_history.snapshot['verification_date']
-    rollback_params[:sampling_method] = trial_history.snapshot['sampling_method']
-    rollback_params[:study_pop_desc] = trial_history.snapshot['study_pop_desc']
-    rollback_params[:board_name] = trial_history.snapshot['board_name']
-    rollback_params[:board_affiliation_id] = trial_history.snapshot['board_affiliation_id']
-    rollback_params[:masking_role_caregiver] = trial_history.snapshot['masking_role_caregiver']
-    rollback_params[:masking_role_investigator] = trial_history.snapshot['masking_role_investigator']
-    rollback_params[:masking_role_outcome_assessor] = trial_history.snapshot['masking_role_outcome_assessor']
-    rollback_params[:masking_role_subject] = trial_history.snapshot['masking_role_subject']
-    rollback_params[:study_model_other] = trial_history.snapshot['study_model_other']
-    rollback_params[:time_perspective_other] = trial_history.snapshot['time_perspective_other']
-    rollback_params[:study_model_id] = trial_history.snapshot['study_model_id']
-    rollback_params[:time_perspective_id] = trial_history.snapshot['time_perspective_id']
-    rollback_params[:biospecimen_retention_id] = trial_history.snapshot['biospecimen_retention_id']
-    rollback_params[:biospecimen_desc] = trial_history.snapshot['biospecimen_desc']
-    rollback_params[:internal_source_id] = trial_history.snapshot['internal_source_id']
-    rollback_params[:nci_specific_comment] = trial_history.snapshot['nci_specific_comment']
-    rollback_params[:send_trial_flag] = trial_history.snapshot['send_trial_flag']
-
-
+    [:id,:nci_id,:lead_protocol_id,:official_title,:pilot,:primary_purpose_other,:secondary_purpose_other,:program_code,:grant_question,
+     :start_date,:start_date_qual,:primary_comp_date,:primary_comp_date_qual,:comp_date,:comp_date_qual,:ind_ide_question,:intervention_indicator,
+    :sec801_indicator,:data_monitor_indicator,:history,:study_source_id,:phase_id,:primary_purpose_id,:secondary_purpose_id,:responsible_party_id,
+    :lead_org_id,:pi_id,:sponsor_id,:investigator_id,:research_category_id,:accrual_disease_term_id,:investigator_title,:investigator_aff_id,
+     :is_draft,:process_priority,:process_comment,:xml_required,:acronym,:keywords,:nih_nci_div,:nih_nci_prog,:send_trial,:board_approval_num,:brief_title,
+    :brief_summary,:detailed_description,:objective,:target_enrollment,:final_enrollment,:accruals,:accept_vol,:min_age,:max_age,:assigned_to_id,
+    :board_approval_status_id,:intervention_model_id,:masking_id,:allocation_id,:study_classification_id,:gender_id,:min_age_unit_id,:max_age_unit_id,
+    :num_of_arms,:verification_date,:sampling_method,:study_pop_desc,:board_name,:board_affiliation_id,:masking_role_caregiver,:masking_role_investigator,
+    :masking_role_outcome_assessor,:masking_role_subject,:study_model_other,:time_perspective_other,:study_model_id,:time_perspective_id,:biospecimen_retention_id,
+    :biospecimen_desc,:internal_source_id,:nci_specific_comment,:send_trial_flag].each do |attr|
+       rollback_params[attr] = trial_history.snapshot[attr]
+     end
 
     # Delete existing children and reconstruct children from snapshot
     other_ids_attributes = []
@@ -1396,36 +1325,11 @@ class TrialService
 
   def convert_date (ct_date)
     splits = ct_date.split(' ')
-
-    case splits[0]
-      when 'January'
-        month = 'Jan'
-      when 'February'
-        month = 'Feb'
-      when 'March'
-        month = 'Mar'
-      when 'April'
-        month = 'Apr'
-      when 'May'
-        month = 'May'
-      when 'June'
-        month = 'Jun'
-      when 'July'
-        month = 'Jul'
-      when 'August'
-        month = 'Aug'
-      when 'September'
-        month = 'Sep'
-      when 'October'
-        month = 'Oct'
-      when 'November'
-        month = 'Nov'
-      when 'December'
-        month = 'Dec'
-      else
-        month = ''
+    if ['January','February','March','April','May','June','July','August','September','October','November','December'].include? splits[0]
+      month = splits[0].slice(0...3)
+    else
+      month = ''
     end
-
     return '01-' + month + '-' + splits[1]
   end
 
