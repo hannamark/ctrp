@@ -37,8 +37,8 @@ Feature: PO F10 Create a Person Record
      |Active|
      |Inactive|
      |Pending|
-     |Nullified|
-
+     
+     And Source status can be "Nullify" only in the search results for person screen
     
       Scenario: #3 CTRP Person Record details
     Given I am on the person search results screen

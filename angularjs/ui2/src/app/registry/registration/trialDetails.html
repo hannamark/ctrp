@@ -265,11 +265,11 @@
                             <label class="control-label col-xs-12 col-sm-3">Describe "Other" Secondary Purpose:</label>
                             <div class=" col-xs-12 col-sm-6">
                                 <textarea restriction-field class="form-control input-sm" id="secondary_purpose_other"
-                                    name="secondary_purpose_other" maxlength="200"
+                                    name="secondary_purpose_other" maxlength="1000"
                                     ng-model="trialDetailView.curTrial.secondary_purpose_other"
                                     ng-disabled="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1" required></textarea>
                                 <span class="help-block" ng-show="trialDetailView.curTrial.secondary_purpose_other.length && trial_form.secondary_purpose_other.$dirty">
-                                    {{200 - trial_form.secondary_purpose_other.$viewValue.length}} characters left
+                                    {{1000 - trial_form.secondary_purpose_other.$viewValue.length}} characters left
                                 </span>
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.secondary_purpose_other)">
                                     Other Secondary Purpose is Required
@@ -579,7 +579,7 @@
                                 </span>
 
                                 <div class="add-association-error" ng-show="trialDetailView.showAddStatusError && trialDetailView.why_stopped_disabled">
-                                    Status Date and Status are required
+                                    Status Date and Status are Required
                                 </div>
                                 <div class="add-association-error" ng-show="trialDetailView.showAddStatusError && !trialDetailView.why_stopped_disabled">
                                     Status Date, Status and Why Study Stopped are Required

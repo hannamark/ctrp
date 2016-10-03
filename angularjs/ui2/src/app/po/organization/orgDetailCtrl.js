@@ -86,6 +86,7 @@
 
         vm.resetForm = function() {
             angular.copy(vm.masterCopy,vm.curOrg);
+            vm.curOrg.processing_status = !!orgDetailObj ? orgDetailObj.processing_status : 'Complete';
             vm.addedNameAliases = [];
             appendNameAliases();
             listenToStatesProvinces();

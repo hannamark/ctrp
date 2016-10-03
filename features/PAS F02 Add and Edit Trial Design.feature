@@ -96,31 +96,32 @@ Given I am logged into the CTRP Protocol Abstraction application
   |no              |
   And I can select a value for Intervention Model type
   |Intervention Model |
-  |Single Group       |
-  |Parallel           |
-  |Cross-Over         |
-  |Factorial          |
+  |Single Group Assignment|
+  |Parallel Assignment |
+  |Crossover Assignment|
+  |Factorial Assignment|
   And I can add or edit a value for Number of Arms/Groups
   And I can select a value for Masking:
   |Masking      |
-  |Open         |
+  |Open Label   |
   |Single Blind |
-  |Double       |
+  |Double Blind |
   And I can select a value for Allocation:
   |Allocation                  |
-  |Randomized Controlled Trial |
-  |Non-Randomized Trial        |
-  |NA                          |
+  |Randomized |
+  |Non-Randomized        |
+  |N/A                          |
   And I can select a value for Study Classification:
   |Study Classification              |
-  |Safety                            |
-  |Efficacy                          |
-  |Safety/Efficacy                   |
-  |Bioavailability                   |
-  |Bioequivalence                    |
-  |Pharmacodynamics                  |
-  |Pharmacokinetics/Pharmacodynamics |
-  |NA                                |
+  |Safety Study                      |
+  |Safety/Efficacy Study             |
+  |Efficacy Study                    |
+  |Bio-equivalence Study                    |
+  |Bio-availability Study   |
+  |Pharmacokinetics Study                  |
+  |Pharmacodynamics Study                  |
+  |Pharmacokinetics/dynamics Study |
+  |N/A                                |
   And I can add or edit a value for Target Enrollment
   And I can add or edit a value for Final Enrollment for ClinicalTrials.gov
   And the value of Accruals will be displayed
@@ -164,7 +165,7 @@ Given I am on the Trial Design screen
   And the Clinical Research Category is Interventional
  When Masking field selected
 
-  |Blind        |
+  |Single Blind        |
   |Double Blind |
 
  Then Masking Roles(s) displays
@@ -189,20 +190,20 @@ Given I am logged into the CTRP Protocol Abstraction application
   And I can select a value for Study Model:
   |Study Model                   |
   |Cohort                        |
-  |Case-control                  |
-  |Case-only                     |
-  |Case-crossover                |
-  |Ecologic or community studies |
-  |Family-based                  |
+  |Case-Control                  |
+  |Case-Only                     |
+  |Case-Crossover                |
+  |Ecologic or Community         |
+  |Family-Based                  |
   |Other                         |
   And I can select a value for Time Perspective:
   |Time Perspective |
-  |Prospective      |
   |Retrospective    |
+  |Prospective      |
   |Cross\sectional  |
   |Other            |
   And I can select a value for Bio-specimen Retention:
-  |Bio-specimen Retention |
+  |Biospecimen Retention |
   |None Retained          |
   |Samples with DNA       |
   |Samples Without DNA    |
@@ -248,8 +249,6 @@ Examples:
   |Primary Purpose       |Primary Purpose is Required       |
   |Trial Phase           |Trial Phase is Required           |
   |Number of Arms/Groups |Number of Arms/Groups is Required |
-  |Masking               |Masking is Required                  |
-  |Allocation            |Allocation is Required               |
   |Target Enrollment     |Target Enrollment is Required        |
   
   Scenario Outline:#8a Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source NEW Sep 2016

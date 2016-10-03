@@ -84,6 +84,9 @@ var registerTrial = function(){
     this.addTrialWhyStudyStoppedTable = element.all(by.binding('status.why_stopped'));
     this.addTrialErrorWarningTable = element.all(by.css('.col-md-4.status-error'));
     this.addTrialRemoveTrialStatus = element(by.css('table[ng-show="trialDetailView.addedStatuses.length > 0"]')).all(by.css('.glyphicon.glyphicon-remove-circle'));
+    this.addTrialStatusWhyDeletedReason = element(by.model('model.why_deleted'));
+    this.addTrialStatusWhyDeletedCommit = element(by.id('commit_deletion_comment'));
+    this.addTrialStatusDeletedStatus = element.all(by.css('.animated-item.deleted-text'));
 
 
     /** Trial Dates **/
@@ -161,6 +164,7 @@ var registerTrial = function(){
 
     /**Validation message**/
     this.addTrialValidationMessage = element.all(by.css('.add-association-error'));
+    this.addTrialDocumentNoteMessage = element.all(by.css('.text-left.text-block'));
 
     /**Date fields**/
     this.addTrialDateFields = element.all(by.css('.glyphicon.glyphicon-calendar'));
@@ -289,7 +293,14 @@ var registerTrial = function(){
 
 
     /** Character Limit**/
+    this.addTrialLeadOrgIdentifierCharacter = element(by.binding('30 - trialDetailView.curTrial.lead_protocol_id.length'));
+    this.addTrialOtherTrialIdentifierCharacter = element(by.binding('30 - trialDetailView.protocol_id.length'));
     this.addTrialOfficialTitleCharacter = element(by.binding('600 - trial_form.official_title.$viewValue.length'));
+    this.addTrialPrimaryPurposeDescriptionCharacter = element(by.binding('200 - trial_form.primary_purpose_other.$viewValue.length'));
+    this.addTrialSecondaryPurposeDescriptionCharacter = element(by.binding('1000 - trial_form.secondary_purpose_other.$viewValue.length'));
+    this.addTrialInvestigatorTitleCharacter = element(by.binding('254 - trialDetailView.curTrial.investigator_title.length '));
+    this.addTrialWhyStudyStoppedCharacter = element();
+    this.addTrialStatusCommentCharacter = element();
 
     var helper = new helperFunctions();
     var self = this;
@@ -532,6 +543,14 @@ var registerTrial = function(){
 
     this.clickAddTrialAddStatusButton = function(){
         helper.clickButton(this.addTrialAddStatusButton,"Add Trial Status Add button");
+    };
+
+    this.setAddTrialStatusDeleteReason = function(trialStatusDeleteReason)  {
+        helper.setValue(this.addTrialStatusWhyDeletedReason ,trialStatusDeleteReason,"Add Trial Status Delete Reason field");
+    };
+
+    this.clickAddTrialStatusDeleteCommitButton = function(){
+        helper.clickButton(this.addTrialStatusWhyDeletedCommit,"Add Trial Status Delete Commit button");
     };
 
     /********** Trial Dates **********/
