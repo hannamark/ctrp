@@ -5,17 +5,23 @@ class SourceStatusesController < ApplicationController
   # GET /source_statuses
   # GET /source_statuses.json
   def index
-    org_source_status_access = (current_ctrp_user_role_details @current_user.role)['org_source_status_access']
+    @source_statuses = SourceStatus.all
+  end
+
+  # GET /source_statuses/search
+  # GET /source_statuses/search.json
+  def search
+    search_type = params[:view_type] == 'search' ? 'org_source_status_search_access' : 'org_source_status_access'
+    search_context = params[:view_context] && params[:view_context].length > 1 ? params[:view_context] : 'CTRP'
+    org_source_status_access = (current_ctrp_user_role_details @current_user.role)[search_type]
     if org_source_status_access
       @source_statuses = SourceStatus.source_statuses_with_active_record_status
-                             .where("source_context_id=?", SourceContext.find_by_code('CTRP').id)
+                             .where("source_context_id=?", SourceContext.find_by_code(search_context).id)
                              .order(code: :asc)
                              .select { |status| org_source_status_access.split(",").include? status["code"] }
-      #@source_statuses = SourceStatus.all
     else
       #TODO need to use constant for Active
-      #@source_statuses = SourceStatus.all
-      @source_statuses = [SourceStatus.ctrp_context_source_statuses.find_by_code("ACT")]
+      @source_statuses = [SourceStatus.ctrp_context_source_statuses.find_by_name("Active")]
 
     end
   end

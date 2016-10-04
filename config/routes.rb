@@ -69,7 +69,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :source_statuses
+    resources :source_statuses do
+      collection do
+        post 'search'
+      end
+    end
     resources :service_requests
     resources :org_funding_mechanisms
     resources :ctep_org_types

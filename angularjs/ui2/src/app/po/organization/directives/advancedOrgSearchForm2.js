@@ -308,7 +308,19 @@
                         $scope.searchParams.endDate = '';
                 }
             };
-
+            
+            $scope.getSourceStatusArr = function() {
+                OrgService.getSourceStatuses({view_type: "search", view_context: $scope.searchParams.source_context}).then(function (statuses) {
+                    var status = statuses.server_response.status;
+                    if (status >= 200 && status <= 210) {
+                        if (statuses && angular.isArray(statuses)) {
+                            statuses.sort(Common.a2zComparator());
+                            $scope.sourceStatuses = statuses;
+                        }
+                        $scope.searchParams.source_status = "";
+                    }
+                });
+            };
 
             activate();
 
@@ -343,16 +355,7 @@
                 });
 
                 //get source statuses
-                OrgService.getSourceStatuses().then(function (statuses) {
-                    var status = statuses.server_response.status;
-
-                    if (status >= 200 && status <= 210) {
-                        if (statuses && angular.isArray(statuses)) {
-                            statuses.sort(Common.a2zComparator());
-                            $scope.sourceStatuses = statuses;
-                        }
-                    }
-                });
+                $scope.getSourceStatusArr();
 
                 OrgService.getServiceRequests().then(function (requests) {
                     var status = requests.server_response.status;

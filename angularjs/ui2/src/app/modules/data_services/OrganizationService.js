@@ -371,8 +371,8 @@
          * retrieve source statuses from backend service
          * @return {promise}
          */
-        function getSourceStatuses() {
-            return PromiseTimeoutService.getData(URL_CONFIGS.SOURCE_STATUSES);
+        function getSourceStatuses(searchParams) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SOURCE_STATUSES, searchParams);
         } //getSourceStatuses
 
 

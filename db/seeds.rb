@@ -1205,46 +1205,54 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                      {
                                         "id": "ROLE_RO",
                                         "name": "Read Only",
-                                        "assign_access": ""
+                                        "assign_access": "",
+                                        "org_source_status_search_access": "ACT"
                                      },
                                      {
                                         "id": "ROLE_ACCOUNT-APPROVER",
                                         "name": "Account Approver",
-                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
+                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST",
+                                        "org_source_status_search_access": "ACT"
                                      },
                                      {
                                         "id": "ROLE_CURATOR",
                                         "name": "Curator",
                                         "assign_access": "",
-                                        "org_source_status_access": "ACT,PEND,INACT"
+                                        "org_source_status_access": "ACT,PEND,INACT",
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
                                      },
                                      {
                                         "id": "ROLE_ABSTRACTOR",
                                         "name": "Abstractor",
                                         "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU",
-                                        "org_source_status_access": "ACT,PEND,INACT"
+                                        "org_source_status_access": "ACT,PEND,INACT",
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
                                      },
                                      {
                                         "id": "ROLE_SUPER",
                                         "name": "Super",
                                         "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU",
-                                        "org_source_status_access": "ACT,PEND,INACT"
+                                        "org_source_status_access": "ACT,PEND,INACT",
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
                                      },
                                      {
                                         "id": "ROLE_ADMIN",
                                         "name": "Admin",
                                         "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST",
-                                        "org_source_status_access": "ACT,PEND,INACT"
+                                        "org_source_status_access": "ACT,PEND,INACT",
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
                                      },
                                      {
                                         "id": "ROLE_TRIAL-SUBMITTER",
                                         "name": "Trial Submitter",
-                                        "assign_access": ""
+                                        "assign_access": "",
+                                        "org_source_status_search_access": "ACT"
                                      },
                                      {
                                         "id": "ROLE_SITE-SU",
                                         "name": "Site Administrator",
-                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU",
+                                        "org_source_status_search_access": "ACT"
                                      },
                                      {
                                         "id": "ROLE_SERVICE-REST",
