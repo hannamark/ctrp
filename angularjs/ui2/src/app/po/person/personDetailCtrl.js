@@ -22,6 +22,7 @@
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.sourceContextArr = sourceContextObj;
         vm.savedSelection = [];
+        vm.associatedPersonContexts = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
         var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
