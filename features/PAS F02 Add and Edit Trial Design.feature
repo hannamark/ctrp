@@ -49,8 +49,8 @@ Scenario:#1c Fields displayed when Clinical Research Category is set to "Observa
   |Is this a pilot?|
   |Study Model|
   |Time Perspective|
-  |Bio-Specimen Retention|
-  |Bio-Specimen Description|
+  |Bio-specimen Retention|
+  |Bio-specimen Description|
   |Number of Arms/Groups|
   |Target Enrollment|
   |Final Enrollment for CT.gov|

@@ -364,6 +364,9 @@ header img {
 .top-offset-lg {
 	margin-top: 185px;
 }
+.bottom-offset-xss {
+    margin-bottom: 15px;
+}
 .bottom-offset-xs {
 	margin-bottom: 25px;
 }
