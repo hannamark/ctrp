@@ -40,11 +40,9 @@
 
         //_, $anchorScroll,
         function ctrpAdvancedOrgSearchController($scope) {
-
             var fromStateName = $state.fromState.name || '';
             var curStateName = $state.$current.name || '';
             $scope.searchParams = OrgService.getInitialOrgSearchParams();
-            $scope.watchCountrySelection = OrgService.watchCountrySelection();
             $scope.selectedRows = [];
             $scope.sourceContextArr = [];
             $scope.sourceStatuses = [];
@@ -71,6 +69,11 @@
             $scope.curationModeEnabled = angular.isDefined($scope.curationMode) ? $scope.curationMode : $scope.curationModeEnabled;
             $scope.usedInModal = angular.isDefined($scope.usedInModal) ? $scope.usedInModal : false;
             $scope.showGrid = angular.isDefined($scope.showGrid) ? $scope.showGrid : false;
+
+            $scope.watchCountrySelection = function () {
+                $scope.searchParams.state_province = "";
+                return OrgService.watchCountrySelection();
+            };
 
             $scope.typeAheadNameSearch = function () {
                 var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
