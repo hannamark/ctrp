@@ -9,7 +9,7 @@
         <div class="row">
             <form class="form form-horizontal" role="form" name="ps_form" novalidate ctrp-submit="psDetailView.updatePs()" unsaved-changes>
                 <div class="bottom-offset-xss" ng-show="psDetailView.isManageScreen && !(psDetailView.editMode || psDetailView.addMode)">
-                    <div class="col-sm-12" ng-show="psDetailView.curTrial.sitesu_sites.length > 0" >
+                    <div class="col-sm-12" ng-show="psDetailView.curTrial.participating_sites.length > 0" >
                         <h5>List of Participating Sites:</h5>
                         <table class="table table-bordered table-striped table-condensed">
                             <thead>
@@ -21,7 +21,7 @@
                                 <th>Edit</th>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="ps in psDetailView.curTrial.sitesu_sites track by $index">
+                                <tr ng-repeat="ps in psDetailView.curTrial.participating_sites track by $index">
                                     <td class="col-md-3">{{ps.organization.name}}</td>
                                     <td class="col-md-2">{{ps.protocol_id}}</td>
                                     <td class="col-md-2">{{ps.site_pi.lname + (ps.site_pi.lname ? ', ' : ' ') + ps.site_pi.fname}}</td>
@@ -308,7 +308,7 @@
                             <button type="button" restriction-field class="btn btn-warning pull-right" ng-click="psDetailView.reload()" ng-disabled="psDetailView.disableBtn">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
-                            <button type="button" class="btn btn-warning pull-right" restriction-field ng-click="psDetailView.reload()" ng-disabled="psDetailView.disableBtn">
+                            <button type="button" class="btn btn-warning pull-right" restriction-field ng-show="psDetailView.isManageScreen" ng-click="psDetailView.reload()" ng-disabled="psDetailView.disableBtn">
                                 <i class="glyphicon glyphicon-arrow-left"></i> Back to Participating Sites List
                             </button>
                         </div>
