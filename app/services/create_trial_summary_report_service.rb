@@ -122,11 +122,11 @@ class CreateTrialSummaryReportService
 
     #outcome measures
     #generate_outcome_measures_table
-    outcome_measure_type_id = OutcomeMeasureType.find_by_name("Primary").id
+    outcome_measure_type_id = OutcomeMeasureType.find_by_code("PRI").id
     generate_outcome_measures_table(outcome_measure_type_id,"Primary Outcome Measures")
     line_break   = @document.table(1, 1) 
 
-    outcome_measure_type_id = OutcomeMeasureType.find_by_name("Secondary").id
+    outcome_measure_type_id = OutcomeMeasureType.find_by_code("SEC").id
     generate_outcome_measures_table(outcome_measure_type_id,"Secondary Outcome Measures")
     line_break   = @document.table(1, 1) 
 

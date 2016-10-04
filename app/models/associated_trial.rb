@@ -68,7 +68,7 @@ class AssociatedTrial < TrialBase
       # Rails.logger.info "parent_trial nci_id: #{@parent_trial.nci_id}"
       # Rails.logger.info "child_trial.id: #{@child_trial.id}"
 
-      identifier_type_id = IdentifierType.find_by_name('NCI').id
+      identifier_type_id = IdentifierType.find_by_code('NCI').id
       isExisted = AssociatedTrial.search_trial_associations(@child_trial.nci_id, identifier_type_id, @parent_trial.id).count > 0
 
       if (!isExisted)
