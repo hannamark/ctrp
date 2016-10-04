@@ -111,6 +111,9 @@
                                         ng-init="personDetailView.processStatusArr[0]"
                                         ng-required="!personDetailView.curPerson.new && personDetailView.curSourceContextName === 'CTRP'"
                                         ng-options="status.name as status.name for status in personDetailView.processStatusArr">
+                                        <option value="">
+                                            Select a processing status
+                                        </option>
                                     </select>
                                     <span class="help-block" ng-show="ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new">
                                         Processing Status is Required
@@ -129,6 +132,7 @@
                                         class="form-control input-sm" id="source_status"
                                         ng-model="personDetailView.curPerson.source_status_id"
                                         ng-options="status.id as status.name for status in personDetailView.sourceStatusArrSelected">
+                                        
                                     </select>
                                 </div>
                             </div>
