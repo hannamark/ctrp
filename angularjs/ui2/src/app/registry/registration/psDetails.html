@@ -9,25 +9,38 @@
         <div class="row">
             <form class="form form-horizontal" role="form" name="ps_form" novalidate ctrp-submit="psDetailView.updatePs()" unsaved-changes>
                 <div class="bottom-offset-xss" ng-show="psDetailView.isManageScreen && !(psDetailView.editMode || psDetailView.addMode)">
-                    <div class="col-sm-12" ng-show="psDetailView.curTrial.participating_sites.length > 0" >
+                    <div class="col-sm-12 table-responsive" ng-show="psDetailView.curTrial.participating_sites.length > 0" >
                         <h5>List of Participating Sites:</h5>
                         <table class="table table-bordered table-striped table-condensed">
                             <thead>
-                                <th>Organization Name</th>
-                                <th>Local Trial Identifier</th>
-                                <th>Site Principal Investigator</th>
-                                <th>Site Specific Program Code</th>
-                                <th>Current Status</th>
+                                <th>CTRP ID</th>
+                                <th>CTRP Organization Name</th>
+                                <th>Principal Investigator</th>
+                                <th>Local Trial Id</th>
+                                <th>Program Code</th>
+                                <th>Site Recruitment Status</th>
+                                <th>Primary Contact</th>
+                                <th>Email</th>
+                                <th>Phone</th>
                                 <th>Edit</th>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="ps in psDetailView.curTrial.participating_sites track by $index">
-                                    <td class="col-md-3">{{ps.organization.name}}</td>
-                                    <td class="col-md-2">{{ps.protocol_id}}</td>
-                                    <td class="col-md-2">{{ps.site_pi.lname + (ps.site_pi.lname ? ', ' : ' ') + ps.site_pi.fname}}</td>
-                                    <td class="col-md-2">{{ps.program_code}}</td>
-                                    <td class="col-md-2">{{ps.current_status_name}}</td>
-                                    <td class="col-md-1">
+                                    <td class="col-sm-1">{{ps.organization.id}}</td>
+                                    <td class="coll-sm-2">{{ps.organization.name}}</td>
+                                    <td class="coll-sm-1">{{ps.view_investigators}}</td>
+                                    <td class="coll-sm-1">{{ps.protocol_id}}</td>
+                                    <td class="coll-sm-1">{{ps.program_code}}</td>
+                                    <td class="coll-sm-1">{{ps.current_status_name}}</td>
+                                    <td class="coll-sm-1">{{ps.contact_name}}</td>
+                                    <td class="coll-sm-1">{{ps.contact_email}}</td>
+                                    <td class="coll-sm-2">
+                                        {{ps.contact_phone}}
+                                        <span ng-show="ps.extension">
+                                            ext. {{ps.extension}}
+                                        </span>
+                                    </td>
+                                    <td class="coll-sm-1">
                                         <button type="button" restriction-field class="btn btn-primary" ng-click="psDetailView.editPs($index)">
                                             <i class="glyphicon glyphicon-edit"></i>
                                         </button>
@@ -305,7 +318,7 @@
                             <button type="submit" restriction-field class="btn btn-primary pull-right" id="submit_btn" ng-disabled="psDetailView.disableBtn">
                                 <i class="glyphicon glyphicon-ok"></i> Save
                             </button>
-                            <button type="button" restriction-field class="btn btn-warning pull-right" ng-click="psDetailView.reload()" ng-disabled="psDetailView.disableBtn">
+                            <button type="button" restriction-field class="btn btn-warning pull-right" ng-click="psDetailView.reset()" ng-disabled="psDetailView.disableBtn">
                                 <i class="glyphicon glyphicon-remove"></i> Reset
                             </button>
                             <button type="button" class="btn btn-warning pull-right" restriction-field ng-show="psDetailView.isManageScreen" ng-click="psDetailView.reload()" ng-disabled="psDetailView.disableBtn">
