@@ -132,7 +132,7 @@
                                         class="form-control input-sm" id="source_status"
                                         ng-model="personDetailView.curPerson.source_status_id"
                                         ng-options="status.id as status.name for status in personDetailView.sourceStatusArrSelected">
-                                        
+
                                     </select>
                                 </div>
                             </div>
@@ -213,7 +213,7 @@
                                         <tbody>
                                         <tr ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                             <td>{{org.id}}</td>
-                                            <td>{{org.name}}</td>
+                                            <td><a ui-sref="main.orgDetail({orgId: org.id})">{{org.name}}</a></td>
                                             <td>
                                                 <div class="input-group add-on date datepicker">
                                                     <input type="text" class="form-control input-sm" restriction-field
