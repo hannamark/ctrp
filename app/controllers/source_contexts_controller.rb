@@ -10,7 +10,7 @@ class SourceContextsController < ApplicationController
        @source_contexts = SourceContext.all
     else
       #TODO need to use constant for 'CTRP'
-      @source_contexts = [SourceContext.find_by_name("CTRP")]
+      @source_contexts = [SourceContext.find_by_code("CTRP")]
     end
   end
 

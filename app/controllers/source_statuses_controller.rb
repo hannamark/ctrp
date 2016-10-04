@@ -15,7 +15,7 @@ class SourceStatusesController < ApplicationController
     else
       #TODO need to use constant for Active
       #@source_statuses = SourceStatus.all
-      @source_statuses = [SourceStatus.ctrp_context_source_statuses.find_by_name("Active")]
+      @source_statuses = [SourceStatus.ctrp_context_source_statuses.find_by_code("ACT")]
 
     end
   end
