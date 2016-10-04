@@ -16,6 +16,7 @@
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
+        vm.curPerson.processing_status = 'Complete';
         vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
@@ -24,12 +25,19 @@
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
         var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
+        vm.processStatusArr = OrgService.getProcessingStatuses();
         vm.formTitleLabel = 'Add Person'; //default form title
+        vm.affiliatedOrgError = false; // flag for empty org affiliations
         var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
-
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
+            console.info('updating person');
+            if (vm.savedSelection.length === 0) {
+                console.info('returning from!');
+                vm.affiliatedOrgError = true;
+                return;
+            }
             vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
                 //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
