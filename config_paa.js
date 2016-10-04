@@ -64,7 +64,8 @@ exports.config = {
         'features/PAA\ F06\ Add\ and\ Edit\ Trial\ Status.Feature',
         'features/PAA\ F07\ Add\ and\ Edit\ Trial\ Funding.Feature',
         'features/PAA\ F08\ Add\ and\ Edit\ Trial\ Participating\ Sites.Feature',
-        'features/PAA\ F09\ Add\ and\ Edit\ Trial\ Collaborators.Feature'
+        'features/PAA\ F09\ Add\ and\ Edit\ Trial\ Collaborators.Feature',
+        'features/PAA\ F10\ Add\ and\ Edit\ Trial\ Related\ Documents.Feature'
     ],
 
     cucumberOpts: {

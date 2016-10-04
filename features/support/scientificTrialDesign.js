@@ -448,18 +448,15 @@ var scientificTrialDesign = function(){
 
     //Save and Reset
 
-    this.clickSaveAssociated = function(){
-        helper.clickButton(this.saveAssociatedBtn, "Save - Button");
+    this.clickSaveTrialDesign = function(){
+        helper.clickButton(this.saveTrialDesignBtn, "Save - Button");
         helper.wait_for(300);
     };
 
-    this.clickResetAssociated = function(){
-        helper.clickButton(self.resetAssociatedBtn, "Reset - Button");
+    this.clickResetTrialDesign = function(){
+        helper.clickButton(self.resetTrialDesignBtn, "Reset - Button");
     };
 
-    this.clickBackToAssociatedTrialList = function(){
-        helper.clickButton(this.backToAssociatedTrialsListBtn, "Back to Associated Trial List page");
-    };
 };
 
 module.exports = scientificTrialDesign;
