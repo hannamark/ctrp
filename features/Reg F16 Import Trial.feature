@@ -34,7 +34,7 @@ Scenario:#2a  NLM Context will be created for an Imported trial
     |Trial Sponsor|
     |Trial Funding Source|
     |Lead Org|
-     
+    
      When a trial has been imported with a "Sponsor Name" that exists in the NLM Context in CTRP
     And the NLM context is not mapped to a CTRP Organization Context
     Then the information type will be NULL until the NLM Organization context is affiliated to a CTRP Organization Context
@@ -49,7 +49,16 @@ Scenario:#2a  NLM Context will be created for an Imported trial
      And the processing status is "Incomplete"
      And the service Request is "Create"
   
-
+  
+  Scenario:#2a Organization Source Status NLM available list
+    Given I am logged into the CTRP Application
+     When an NLM Organization is created in the CTRP 
+     Then the available organization source status will be
+     
+     |Active|
+     |Inactive|
+    
+     
 Scenario: #3 I can import an Expanded Access trial by NCT ID from ClinicalTrials.gov
 Given I have selected the option to Import an Industrial or Other Trial
 And I am on the Import ClinicalTrials.gov Trials screen

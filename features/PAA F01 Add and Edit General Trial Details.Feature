@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PAA F01 Add and Edit General Trial Details
 
 As any CTRP PA User, I can enter general trial details
@@ -63,8 +63,7 @@ Scenario: #4 I can associate an organization as the Lead Organization on a clini
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 And I have selected organization look-up
-When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (Lead, IRB) are displayed
-Then I can select an organization from the list or search for an organization
+Then I can search for an organization and select one from the list 
 And the selected organization will be associated to the trail as the Lead Organization
 
 Scenario: #5 I can associate a person as the Principal Investigator on a clinical trial
@@ -78,8 +77,7 @@ Scenario: #6 I can associate an organization as the Sponsor Organization on a cl
 Given I have selected a trial to abstract 
 And I am on the General Trial Details screen
 And I have selected Sponsor organization look-up
-When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, IRB) are displayed
-Then I can select an organization from the list or search for an organization
+Then I can select an organization from the list 
 And the selected organization will be associated to the trail as the Sponsor
 
 Scenario: #7 I can associate the Primary Investigator as the Central Contact or for the trial

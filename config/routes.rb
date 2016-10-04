@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :ct_gov_import_exports
+
   get 'validation_rule/index'
 
   get 'validation_rule/show'

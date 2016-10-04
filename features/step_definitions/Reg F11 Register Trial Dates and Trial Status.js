@@ -12,11 +12,17 @@ var addTrialPage = require('../support/registerTrialPage');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
 var moment = require('moment');
 var assert = require('assert');
+var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
+var searchTrialPage = require('../support/searchTrialPage');
+var trialMenuItemList = require('../support/trialCommonBar');
 
 module.exports = function () {
     var addTrial = new addTrialPage();
     var projectFunctions = new projectFunctionsPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
+    var trialDoc = new abstractionTrialRelatedDocument();
+    var searchTrial = new searchTrialPage();
+    var trialMenuItem = new trialMenuItemList();
 
     /*********************
      * Validation message *
@@ -581,57 +587,235 @@ module.exports = function () {
 
     this.When(/^When I add a trial status$/, function () {
         return browser.sleep(25).then(function () {
-            addTrial.clickAddTrialDateField('0');
-            addTrial.clickAddTrialDateToday();
-            addTrial.selectAddTrialStatus('In Review');
-            addTrial.setAddTrialStatusComment('Status Comment cuke');
-            addTrial.clickAddTrialAddStatusButton();
-            //browser.sleep(25).then(callback);
+            var userWhoWillCreateTrial = 'ctrptrialsubmitter';
+            var storeLeadProtocolId = 'Ld ID' + typeOfTrial.substring(0, 3) + moment().format('MMMDoYY hmm');
+            projectFunctionsRegistry.createOrgforTrial('leadOrgSS', typeOfTrial, '0',userWhoWillCreateTrial );
+            /** Stores the value of Lead Org **/
+            storeLeadOrg = cukeOrganization.then(function (value) {
+                console.log('This is the Lead Organization that is added' + value);
+                return value;
+            });
+        browser.driver.wait(function () {
+            console.log('wait here');
+            return true;
+        }, 10).then(function () {
+
+            /****** Create Principal Investigator ********/
+            projectFunctionsRegistry.createPersonforTrial('prinInvSS', typeOfTrial, '0', userWhoWillCreateTrial);
+
+            /** Stores the value of Principal Investigator **/
+            storePI = cukePerson.then(function (value) {
+                console.log('This is the Principal Investigator that is added' + value);
+                return value;
+            });
+            browser.driver.wait(function () {
+                console.log('wait here');
+                return true;
+            }, 10).then(function () {
+
+                /****** Create Sponsor Organization ********/
+                projectFunctionsRegistry.createOrgforTrial('sponOrg', typeOfTrial, '1', userWhoWillCreateTrial);
+
+                /** Stores the value of Sponsor Org **/
+                storeSponsorOrg = cukeOrganization.then(function (value) {
+                    console.log('This is the Sponsor Organization that is added' + value);
+                    return value;
+                });
+                browser.driver.wait(function () {
+                    console.log('wait here');
+                    return true;
+                }, 10).then(function () {
+
+                    /****** Create Data Table 4 Funding Source Organization ********/
+                    projectFunctionsRegistry.createOrgforTrial('dataTblOrg', typeOfTrial, '2', userWhoWillCreateTrial);
+
+                    /** Stores the value of Data Table 4 Funding Source Org **/
+                    storeFundingSrcOrg = cukeOrganization.then(function (value) {
+                        console.log('This is the Funding Source Organization that is added' + value);
+                        return value;
+                    });
+
+                    /**** Trial Identifiers ****/
+                        //  storeLeadProtocolId.then(function (value) {
+                    console.log('This is the Lead Organization Trial Identifier that is added' + storeLeadProtocolId);
+                    addTrial.setAddTrialLeadProtocolIdentifier(storeLeadProtocolId);
+                    //  });
+
+                    /**** Trial Details ****/
+                    addTrial.setAddTrialOfficialTitle('Trial Created by Cuke Test script - SS.' + ' ' + moment().format('MMMDoYY'));
+                    addTrial.selectAddTrialPhase('I');
+                    addTrial.selectAddTrialResearchCategory('Interventional');
+                    addTrial.selectAddTrialPrimaryPurpose('Screening');
+                    addTrial.selectAddTrialAccrualDiseaseTerminology('SDC');
+
+                    /**** Lead Organization/Principal Investigator ****/
+                    /***** This will add the Lead Org  if Lead org is not there ******/
+                    addTrial.addTrialLeadOrganization.getAttribute('value').then(function (value) {
+                        console.log('value of Lead Org"' + value + '"is this');
+                        if (value === '') {
+
+                            storeLeadOrg.then(function (value) {
+                                projectFunctionsRegistry.selectOrgforTrial(value, '0');
+                            });
+                        }
+                    });
+
+                    /***** This will add the Principal Investigator if PI is not there ******/
+                    addTrial.addTrialPrincipalInvestigator.getAttribute('value').then(function (value) {
+                        console.log('value of PI"' + value + '"is this');
+                        if (value.trim() === '') {
+                            storePI.then(function (value) {
+                                projectFunctionsRegistry.selectPerForTrial(value, '0');
+                            });
+                        }
+                    });
+
+                    /**** Sponsor ****/
+                    /***** This will add the Sponsor Org if Sponsor Org is not there ******/
+                    addTrial.addTrialSponsor.getAttribute('value').then(function (value) {
+                        console.log('value of Sponsor Org"' + value + '"is this');
+                        if (value === '') {
+                            storeSponsorOrg.then(function (value) {
+                                projectFunctionsRegistry.selectOrgforTrial(value, '1');
+                            });
+                        }
+                    });
+
+                    /**** Data Table 4 Information ****/
+                    /***** This will add the Funding Source Org if it is not there******/
+                    addTrial.addTrialDataTable4FundingSourceValues.getAttribute('value').then(function (value) {
+                        console.log('value of data table Org"' + value + '"is this');
+                        if (value === '') {
+
+                            storeFundingSrcOrg.then(function (value) {
+                                projectFunctionsRegistry.selectOrgforTrial(value, '2');
+                            });
+                        }
+                    });
+
+                    /**** NIH Grant Information (for NIH funded Trials) ****/
+                    addTrial.selectAddTrialFundedByNCIOption('no');
+
+                    /**** Trial Status ****/
+                    addTrial.clickAddTrialDateField('0');
+                    addTrial.clickAddTrialDateToday();
+                    addTrial.selectAddTrialStatus('Approved');
+                    addTrial.setAddTrialStatusComment('Status Comment cuke');
+                    addTrial.clickAddTrialAddStatusButton();
+
+                    /**** Trial Dates ****/
+                    addTrial.clickAddTrialDateField(1);
+                    addTrial.clickAddTrialDateFieldPreviousMonth('10');
+                    addTrial.selectAddTrialStartDateOption('0');
+                    addTrial.clickAddTrialDateField(2);
+                    addTrial.clickAddTrialDateToday();
+                    addTrial.selectAddTrialPrimaryCompletionDateOption('0');
+                    addTrial.clickAddTrialDateField(3);
+                    addTrial.clickAddTrialDateFieldNextMonth('10');
+                    addTrial.selectAddTrialCompletionDateOption('1');
+
+                    /**** FDA IND/IDE Information for applicable trials ****/
+                    addTrial.selectAddTrialFDAIND_IDEOption('no');
+
+
+                    trialDoc.trialRelatedFileUpload('reg', '1', 'testSampleDocFile.docx');
+                    trialDoc.trialRelatedFileUpload('reg', '2', 'testSampleXlsFile.xls');
+                });
+            });
+        });
         });
     });
 
     this.Then(/^a new trial status will appear in the Trial Status History$/, function () {
         return browser.sleep(25).then(function () {
-            projectFunctionsRegistry.verifyAddTrialStatusInformation('In Review', moment().format('DD-MMM-YYYY'), 'Status Comment cuke', '', '');
+            projectFunctionsRegistry.verifyAddTrialStatusInformation('Approved', moment().format('DD-MMM-YYYY'), 'Status Comment cuke', '', 'WARNING: Interim status [In Review] is missing');
             //browser.sleep(25).then(callback);
         });
     });
 
     this.When(/^I click on the delete button in the Actions column for a selected status$/, function () {
         return browser.sleep(25).then(function () {
-            projectFunctionsRegistry.clickDeleteTrialStatusInformation('In Review');
+            projectFunctionsRegistry.clickDeleteTrialStatusInformation('Approved');
             //browser.sleep(25).then(callback);
         });
     });
 
     this.Then(/^Please provide a comment box will be displayed$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+       callback();
     });
 
-    this.Given(/^I must provide a comment explaining why deleting this trial status$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^I must provide a comment explaining why deleting this trial status$/, function () {
+        return browser.sleep(25).then(function () {
+            addTrial.setAddTrialStatusDeleteReason('Delete Reason');
+        });
     });
 
     this.When(/^the comment is entered in the provided box$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+        callback();
     });
 
-    this.Given(/^click on the delete button$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^click on the delete button$/, function () {
+        return browser.sleep(25).then(function () {
+            addTrial.clickAddTrialStatusDeleteCommitButton();
+        });
     });
 
-    this.Then(/^the selected status will be marked as deleted$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^the selected status will be marked as deleted$/, function () {
+        return browser.sleep(25).then(function () {
+            var deletedRowValue = moment().format('DD-MMM-YYYY') + ' Approved ' + 'Status Comment cuke. Delete Reason';
+            addTrial.addTrialStatusDeletedStatus.getText().then(function(value){
+                //console.log('value of deleted row in screen :');
+                //console.log(value);
+                //console.log('provided delete value');
+                //console.log(deletedRowValue);
+                expect(value).to.eql([deletedRowValue]);
+            });
+        });
     });
 
-    this.Given(/^the record will be deleted after the trial is submitted$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Given(/^the record will be deleted after the trial is submitted$/, function () {
+        return browser.sleep(25).then(function () {
+            expect(addTrial.addTrialReviewButton.isPresent()).to.eventually.equal(true, 'Verify In Review Button is present');
+            expect(addTrial.addTrialSubmitButton.isPresent()).to.eventually.equal(false ,'Verify Submit Button is NOT present');
+            addTrial.clickAddTrialDateField('0');
+            addTrial.clickAddTrialDateToday();
+            addTrial.selectAddTrialStatus('In Review');
+            addTrial.setAddTrialStatusComment('Adding new Trial Status after Deleting -Approved- Trial Status');
+            addTrial.clickAddTrialAddStatusButton();
+            expect(addTrial.addTrialReviewButton.isPresent()).to.eventually.equal(false, 'Verify In Review Button is NOT present');
+            expect(addTrial.addTrialSubmitButton.isPresent()).to.eventually.equal(true, 'Verify Submit Button is present');
+            addTrial.addTrialAddStatusTable.getText().then(function(value){
+                //console.log('value of Status Table in screen :');
+                //console.log(value);
+                var statusTblApprovedStatus = moment().format('DD-MMM-YYYY') + ' Approved ' + 'Status Comment cuke. Delete Reason';
+                var statusTableInReviewStatus = moment().format('DD-MMM-YYYY') + ' In Review ' + 'Adding new Trial Status after Deleting -Approved- Trial Status';
+                //console.log('expected value of Status Table');
+                //console.log([statusTblApprovedStatus, statusTableInReviewStatus]);
+                expect(value).to.eql([statusTblApprovedStatus, statusTableInReviewStatus]);
+            });
+            addTrial.clickAddTrialReviewButton();
+            addTrial.getViewTrialStatusDate(moment().format('DD-MMM-YYYY'));
+            addTrial.getViewTrialStatus('In Review');
+            nciID = addTrial.viewTrialNCIID.getText();
+            nciID.then(function(value) {
+                trialMenuItem.clickTrials();
+                trialMenuItem.clickListSearchTrialLink();
+                searchTrial.setSearchTrialProtocolID(value);
+                searchTrial.clickSearchTrialSearchButton();
+                searchTrial.clickSearchTrialMyTrials();
+                expect(projectFunctions.inSearchResults(value)).to.eventually.equal('true', 'Verify Trial is present in Search Result');
+                searchTrial.clickSearchTrialActionButton();
+                searchTrial.clickSearchTrialsUpdateButton();
+            });
+            addTrial.addTrialAddStatusTable.getText().then(function(value){
+                //console.log('value of Status Table in screen :');
+                //console.log(value);
+                var statusTbl = moment().format('DD-MMM-YYYY') + ' In Review ' + 'Adding new Trial Status after Deleting -Approved- Trial Status';
+                //console.log('expected value of Status Table');
+                //console.log(statusTbl);
+                expect(value).to.eql([statusTbl]);
+            });
+        });
     });
 
     this.Given(/^I am on the Trial Dates Section$/, function (callback) {
@@ -1058,5 +1242,8 @@ module.exports = function () {
         });
     });
 
+    this.Given(/^I am on the Trial Status Section$/, function (callback) {
+        callback();
+    });
 
 };

@@ -69,9 +69,9 @@ class Organization < ActiveRecord::Base
   validates :city, presence: true
 
   validates :phone, length: {maximum: 60}
+  validates :extension, length: {maximum: 30}
   validates :email, length: {maximum: 254}
 
-  before_validation :check_conditional_fields
   before_destroy :check_for_family
   before_destroy :check_for_person
 

@@ -513,87 +513,18 @@ class TrialService
     rollback_params = {}
     # Parameters for reconstructing children
     rollback_params2 = {}
-    rollback_params[:id] = trial_history.snapshot['id']
-    rollback_params[:nci_id] = trial_history.snapshot['nci_id']
-    rollback_params[:lead_protocol_id] = trial_history.snapshot['lead_protocol_id']
-    rollback_params[:official_title] = trial_history.snapshot['official_title']
-    rollback_params[:pilot] = trial_history.snapshot['pilot']
-    rollback_params[:primary_purpose_other] = trial_history.snapshot['primary_purpose_other']
-    rollback_params[:secondary_purpose_other] = trial_history.snapshot['secondary_purpose_other']
-    rollback_params[:program_code] = trial_history.snapshot['program_code']
-    rollback_params[:grant_question] = trial_history.snapshot['grant_question']
-    rollback_params[:start_date] = trial_history.snapshot['start_date']
-    rollback_params[:start_date_qual] = trial_history.snapshot['start_date_qual']
-    rollback_params[:primary_comp_date] = trial_history.snapshot['primary_comp_date']
-    rollback_params[:primary_comp_date_qual] = trial_history.snapshot['primary_comp_date_qual']
-    rollback_params[:comp_date] = trial_history.snapshot['comp_date']
-    rollback_params[:comp_date_qual] = trial_history.snapshot['comp_date_qual']
-    rollback_params[:ind_ide_question] = trial_history.snapshot['ind_ide_question']
-    rollback_params[:intervention_indicator] = trial_history.snapshot['intervention_indicator']
-    rollback_params[:sec801_indicator] = trial_history.snapshot['sec801_indicator']
-    rollback_params[:data_monitor_indicator] = trial_history.snapshot['data_monitor_indicator']
-    rollback_params[:history] = trial_history.snapshot['history']
-    rollback_params[:study_source_id] = trial_history.snapshot['study_source_id']
-    rollback_params[:phase_id] = trial_history.snapshot['phase_id']
-    rollback_params[:primary_purpose_id] = trial_history.snapshot['primary_purpose_id']
-    rollback_params[:secondary_purpose_id] = trial_history.snapshot['secondary_purpose_id']
-    rollback_params[:responsible_party_id] = trial_history.snapshot['responsible_party_id']
-    rollback_params[:lead_org_id] = trial_history.snapshot['lead_org_id']
-    rollback_params[:pi_id] = trial_history.snapshot['pi_id']
-    rollback_params[:sponsor_id] = trial_history.snapshot['sponsor_id']
-    rollback_params[:investigator_id] = trial_history.snapshot['investigator_id']
-    rollback_params[:research_category_id] = trial_history.snapshot['research_category_id']
-    rollback_params[:accrual_disease_term_id] = trial_history.snapshot['accrual_disease_term_id']
-    rollback_params[:investigator_title] = trial_history.snapshot['investigator_title']
-    rollback_params[:investigator_aff_id] = trial_history.snapshot['investigator_aff_id']
-    rollback_params[:is_draft] = trial_history.snapshot['is_draft']
-    rollback_params[:process_priority] = trial_history.snapshot['process_priority']
-    rollback_params[:process_comment] = trial_history.snapshot['process_comment']
-    rollback_params[:xml_required] = trial_history.snapshot['xml_required']
-    rollback_params[:acronym] = trial_history.snapshot['acronym']
-    rollback_params[:keywords] = trial_history.snapshot['keywords']
-    rollback_params[:nih_nci_div] = trial_history.snapshot['nih_nci_div']
-    rollback_params[:nih_nci_prog] = trial_history.snapshot['nih_nci_prog']
-    rollback_params[:send_trial] = trial_history.snapshot['send_trial']
-    rollback_params[:board_approval_num] = trial_history.snapshot['board_approval_num']
-    rollback_params[:brief_title] = trial_history.snapshot['brief_title']
-    rollback_params[:brief_summary] = trial_history.snapshot['brief_summary']
-    rollback_params[:detailed_description] = trial_history.snapshot['detailed_description']
-    rollback_params[:objective] = trial_history.snapshot['objective']
-    rollback_params[:target_enrollment] = trial_history.snapshot['target_enrollment']
-    rollback_params[:final_enrollment] = trial_history.snapshot['final_enrollment']
-    rollback_params[:accruals] = trial_history.snapshot['accruals']
-    rollback_params[:accept_vol] = trial_history.snapshot['accept_vol']
-    rollback_params[:min_age] = trial_history.snapshot['min_age']
-    rollback_params[:max_age] = trial_history.snapshot['max_age']
-    rollback_params[:assigned_to_id] = trial_history.snapshot['assigned_to_id']
-    rollback_params[:board_approval_status_id] = trial_history.snapshot['board_approval_status_id']
-    rollback_params[:intervention_model_id] = trial_history.snapshot['intervention_model_id']
-    rollback_params[:masking_id] = trial_history.snapshot['masking_id']
-    rollback_params[:allocation_id] = trial_history.snapshot['allocation_id']
-    rollback_params[:study_classification_id] = trial_history.snapshot['study_classification_id']
-    rollback_params[:gender_id] = trial_history.snapshot['gender_id']
-    rollback_params[:min_age_unit_id] = trial_history.snapshot['min_age_unit_id']
-    rollback_params[:max_age_unit_id] = trial_history.snapshot['max_age_unit_id']
-    rollback_params[:num_of_arms] = trial_history.snapshot['num_of_arms']
-    rollback_params[:verification_date] = trial_history.snapshot['verification_date']
-    rollback_params[:sampling_method] = trial_history.snapshot['sampling_method']
-    rollback_params[:study_pop_desc] = trial_history.snapshot['study_pop_desc']
-    rollback_params[:board_name] = trial_history.snapshot['board_name']
-    rollback_params[:board_affiliation_id] = trial_history.snapshot['board_affiliation_id']
-    rollback_params[:masking_role_caregiver] = trial_history.snapshot['masking_role_caregiver']
-    rollback_params[:masking_role_investigator] = trial_history.snapshot['masking_role_investigator']
-    rollback_params[:masking_role_outcome_assessor] = trial_history.snapshot['masking_role_outcome_assessor']
-    rollback_params[:masking_role_subject] = trial_history.snapshot['masking_role_subject']
-    rollback_params[:study_model_other] = trial_history.snapshot['study_model_other']
-    rollback_params[:time_perspective_other] = trial_history.snapshot['time_perspective_other']
-    rollback_params[:study_model_id] = trial_history.snapshot['study_model_id']
-    rollback_params[:time_perspective_id] = trial_history.snapshot['time_perspective_id']
-    rollback_params[:biospecimen_retention_id] = trial_history.snapshot['biospecimen_retention_id']
-    rollback_params[:biospecimen_desc] = trial_history.snapshot['biospecimen_desc']
-    rollback_params[:internal_source_id] = trial_history.snapshot['internal_source_id']
-    rollback_params[:nci_specific_comment] = trial_history.snapshot['nci_specific_comment']
-    rollback_params[:send_trial_flag] = trial_history.snapshot['send_trial_flag']
+    [:id,:nci_id,:lead_protocol_id,:official_title,:pilot,:primary_purpose_other,:secondary_purpose_other,:program_code,:grant_question,
+     :start_date,:start_date_qual,:primary_comp_date,:primary_comp_date_qual,:comp_date,:comp_date_qual,:ind_ide_question,:intervention_indicator,
+    :sec801_indicator,:data_monitor_indicator,:history,:study_source_id,:phase_id,:primary_purpose_id,:secondary_purpose_id,:responsible_party_id,
+    :lead_org_id,:pi_id,:sponsor_id,:investigator_id,:research_category_id,:accrual_disease_term_id,:investigator_title,:investigator_aff_id,
+     :is_draft,:process_priority,:process_comment,:xml_required,:acronym,:keywords,:nih_nci_div,:nih_nci_prog,:send_trial,:board_approval_num,:brief_title,
+    :brief_summary,:detailed_description,:objective,:target_enrollment,:final_enrollment,:accruals,:accept_vol,:min_age,:max_age,:assigned_to_id,
+    :board_approval_status_id,:intervention_model_id,:masking_id,:allocation_id,:study_classification_id,:gender_id,:min_age_unit_id,:max_age_unit_id,
+    :num_of_arms,:verification_date,:sampling_method,:study_pop_desc,:board_name,:board_affiliation_id,:masking_role_caregiver,:masking_role_investigator,
+    :masking_role_outcome_assessor,:masking_role_subject,:study_model_other,:time_perspective_other,:study_model_id,:time_perspective_id,:biospecimen_retention_id,
+    :biospecimen_desc,:internal_source_id,:nci_specific_comment,:send_trial_flag].each do |attr|
+       rollback_params[attr] = trial_history.snapshot[attr]
+     end
 
     # Delete existing children and reconstruct children from snapshot
     other_ids_attributes = []
@@ -1139,6 +1070,8 @@ class TrialService
     CtrpMailerWrapper.send_email(mail_template, @trial)
   end
 
+
+
   def import_params (xml, current_user)
     import_params = {}
 
@@ -1336,156 +1269,42 @@ class TrialService
   end
 
   # Maps the ClinicalTrials.gov status to CTRP status code
+
   def map_status (ct_status)
-    case ct_status
-      when 'Not yet recruiting'
-        ctrp_status_code = 'INR'
-      when 'Withdrawn'
-        ctrp_status_code = 'WIT'
-      when 'Recruiting'
-        ctrp_status_code = 'ACT'
-      when 'Enrolling by Invitation'
-        ctrp_status_code = 'EBI'
-      when 'Suspended'
-        ctrp_status_code = 'TCL'
-      when 'Active, not recruiting'
-        ctrp_status_code = 'CAC'
-      when 'Terminated'
-        ctrp_status_code = 'ACO'
-      when 'Completed'
-        ctrp_status_code = 'COM'
-      when 'Available'
-        ctrp_status_code = 'AVA'
-      when 'No longer available'
-        ctrp_status_code = 'NLA'
-      when 'Temporarily not available'
-        ctrp_status_code = 'TNA'
-      when 'Approved for marketing'
-        ctrp_status_code = 'AFM'
-      else
-        ctrp_status_code = ''
-    end
-
-    return ctrp_status_code
-  end
-
-  def convert_date (ct_date)
-    splits = ct_date.split(' ')
-
-    case splits[0]
-      when 'January'
-        month = 'Jan'
-      when 'February'
-        month = 'Feb'
-      when 'March'
-        month = 'Mar'
-      when 'April'
-        month = 'Apr'
-      when 'May'
-        month = 'May'
-      when 'June'
-        month = 'Jun'
-      when 'July'
-        month = 'Jul'
-      when 'August'
-        month = 'Aug'
-      when 'September'
-        month = 'Sep'
-      when 'October'
-        month = 'Oct'
-      when 'November'
-        month = 'Nov'
-      when 'December'
-        month = 'Dec'
-      else
-        month = ''
-    end
-
-    return '01-' + month + '-' + splits[1]
+   import_trial_statuses = CtGovImportExport.import_trial_statuses
+   return change_code(import_trial_statuses,TrialStatus,ct_status)
   end
 
   def map_phase (ct_phase)
-    case ct_phase
-      when 'N/A'
-        ctrp_phase_code = 'NA'
-      when 'Phase 0'
-        ctrp_phase_code = '0'
-      when 'Phase 1'
-        ctrp_phase_code = 'I'
-      when 'Phase 1/Phase 2'
-        ctrp_phase_code = 'I/II'
-      when 'Phase 2'
-        ctrp_phase_code = 'II'
-      when 'Phase 2/Phase 3'
-        ctrp_phase_code = 'II/III'
-      when 'Phase 3'
-        ctrp_phase_code = 'III'
-      when 'Phase 4'
-        ctrp_phase_code = 'IV'
-      else
-        ctrp_phase_code = 'NA'
-    end
-
-    return ctrp_phase_code
+    import_phases = CtGovImportExport.import_phases
+    return change_code(import_phases,Phase,ct_phase)
   end
 
   def map_allocation (ct_allocation)
-    case ct_allocation
-      when 'N/A'
-        ctrp_allocation_code = 'NA'
-      when 'Randomized'
-        ctrp_allocation_code = 'RCT'
-      when 'Nonrandomized'
-        ctrp_allocation_code = 'NRT'
-      else
-        ctrp_allocation_code = ''
-    end
-
-    return ctrp_allocation_code
+    import_allocations = CtGovImportExport.import_allocations
+    return change_code(import_allocations,Allocation,ct_allocation)
   end
 
   def map_study_classification (ct_study_classification)
-    case ct_study_classification
-      when 'N/A'
-        ctrp_study_classification_code = 'NA'
-      when 'Safety Study'
-        ctrp_study_classification_code = 'SF'
-      when 'Efficacy Study'
-        ctrp_study_classification_code = 'EFF'
-      when 'Safety/Efficacy Study'
-        ctrp_study_classification_code = 'SFEFF'
-      when 'Bio-equivalence Study'
-        ctrp_study_classification_code = 'BEQ'
-      when 'Bio-availability Study'
-        ctrp_study_classification_code = 'BAV'
-      when 'Pharmacokinetics Study'
-        ctrp_study_classification_code = 'PD'
-      when 'Pharmacodynamics Study'
-        ctrp_study_classification_code = 'PK'
-      when 'Pharmacokinetics/dynamics Study'
-        ctrp_study_classification_code = 'PKPD'
-      else
-        ctrp_study_classification_code = ''
-    end
-
-    return ctrp_study_classification_code
+    import_study_classifications = CtGovImportExport.import_study_classifications
+    return change_code(import_study_classifications,StudyClassification,ct_study_classification)
   end
 
   def map_intervention_model (ct_intervention_model)
-    case ct_intervention_model
-      when 'Single Group Assignment'
-        ctrp_intervention_model_code = 'SG'
-      when 'Parallel Assignment'
-        ctrp_intervention_model_code = 'PL'
-      when 'Cross-over Assignment'
-        ctrp_intervention_model_code = 'CO'
-      when 'Factorial Assignment'
-        ctrp_intervention_model_code = 'FT'
-      else
-        ctrp_intervention_model_code = ''
-    end
+    import_intervention_models = CtGovImportExport.import_intervention_models
+    return change_code(import_intervention_models,InterventionModel,ct_intervention_model)
+  end
 
-    return ctrp_intervention_model_code
+  def map_primary_purpose (ct_primary_purpose)
+    import_primary_purposes = CtGovImportExport.import_primary_purposes
+    return change_code(import_primary_purposes,PrimaryPurpose,ct_primary_purpose)
+  end
+
+  def change_code(records,model,_ct_gov_val)
+    _ctrp_record = records.find_by_from(_ct_gov_val)
+    _ctrp_record.nil? ? _ctrp_val = _ctrp_record.to : _ctrp_val = nil
+    _ctrp_val.nil? ?  _ctrp_code = model.where(name: _ctrp_val).pluck(:code) : _ctrp_code =''
+    return _ctrp_code
   end
 
   def map_masking (ct_masking)
@@ -1502,31 +1321,17 @@ class TrialService
     return ctrp_masking_code
   end
 
-  def map_primary_purpose (ct_primary_purpose)
-    case ct_primary_purpose
-      when 'Treatment'
-        ctrp_primary_purpose_code = 'TRM'
-      when 'Prevention'
-        ctrp_primary_purpose_code = 'PRV'
-      when 'Diagnostic'
-        ctrp_primary_purpose_code = 'DIA'
-      when 'Supportive Care'
-        ctrp_primary_purpose_code = 'SUP'
-      when 'Screening'
-        ctrp_primary_purpose_code = 'SCR'
-      when 'Health Services Research '
-        ctrp_primary_purpose_code = 'HSR'
-      when 'Basic Science'
-        ctrp_primary_purpose_code = 'BSC'
-      when 'Other'
-        ctrp_primary_purpose_code = 'OTH'
-      else
-        ctrp_primary_purpose_code = ''
+
+
+  def convert_date (ct_date)
+    splits = ct_date.split(' ')
+    if ['January','February','March','April','May','June','July','August','September','October','November','December'].include? splits[0]
+      month = splits[0].slice(0...3)
+    else
+      month = ''
     end
-
-    return ctrp_primary_purpose_code
+    return '01-' + month + '-' + splits[1]
   end
-
 
 
 end

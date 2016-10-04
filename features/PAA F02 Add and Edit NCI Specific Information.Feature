@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PAA F02 Add and Edit NCI Specific Information
 
 As any CTRP PA User, I can enter NCI Specific Information
@@ -14,7 +14,7 @@ Scenario: #2 I can associate one or more organizations as the Specific Funding S
 Given I have selected a trial to abstract
 And I am on the NCI Specific Information page screen
 And I have selected funding source organization look-up
-When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, IRB) are displayed
+And I have selected an organization
 Then the selected organization will be associated to the trial as Specific Funding Source
 
 Scenario: #3 I can unassociate one or more organizations from the Specific Funding Source for a clinical trial

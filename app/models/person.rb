@@ -50,6 +50,7 @@ class Person < ActiveRecord::Base
   validates :lname, presence: true
   validates :lname, length: {maximum: 62}
   validates :phone, length: {maximum: 60}
+  validates :extension, length: {maximum: 30}
   validates :email, length: {maximum: 254}
 
   before_validation :check_phone_or_email

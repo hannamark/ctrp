@@ -1331,7 +1331,7 @@ uib-accordion form.form-horizontal {
 }
 
 [uib-typeahead-popup].dropdown-menu {
-    height: 200px;
+    max-height: 200px;
     overflow-y: auto;
 }
 

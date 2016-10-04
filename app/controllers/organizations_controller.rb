@@ -104,8 +104,7 @@ class OrganizationsController < ApplicationController
     if local_user_signed_in?
       user = current_local_user
       Rails.logger.debug "In Organization Controller, current_local_user = #{current_local_user.inspect}"
-    end
-    if ldap_user_signed_in?
+    elsif ldap_user_signed_in?
       user = current_ldap_user
       Rails.logger.debug "In Organization Controller, current_ldap_user = #{current_ldap_user.inspect}"
     end
@@ -133,7 +132,6 @@ class OrganizationsController < ApplicationController
     # Pagination/sorting params initialization
     Rails.logger.info "In Organization Controller, search"
     params[:start] = 1 if params[:start].blank?
-
     if params[:allrows] != true
       params[:rows] = 20 if params[:rows].blank?
     else
@@ -147,128 +145,98 @@ class OrganizationsController < ApplicationController
     if parse_request_header
       wrapper_authenticate_user
     end
-
+    @organizations = []
     # Scope chaining, reuse the scope definition
-    if params[:name].present? || params[:source_context].present? || params[:source_id].present? || params[:source_status].present? || params[:family_name].present? || params[:address].present? || params[:address2].present? || params[:city].present? || params[:state_province].present? || params[:country].present? || params[:postal_code].present? || params[:email].present? || params[:phone].present? || params[:updated_by].present? || params[:date_range_arr].present?
+    if params.has_key?( :name||:source_context||:source_id||:source_status||:family_name||
+                        :address||:address2||:city||:state_province||:country||
+                        :postal_code||:email||:phone||:updated_by||:date_range_arr)
       # ctrp_ids is used for retrieving the cluster of orgs when searching by source_id
       ctrp_ids = Organization.matches_wc('source_id', params[:source_id],@current_user.role).pluck(:ctrp_id) if params[:source_id].present?
-
-      @organizations = Organization.all
-
-      if params[:alias]
-        @organizations = @organizations.matches_name_wc(params[:name],params[:wc_search]) if params[:name].present?
-      else
-        #@organizations = @organizations.matches_wc('name', params[:name]) if params[:name].present?
-        @organizations = @organizations.matches_wc('name', params[:name],params[:wc_search]) if params[:name].present?
-
-      end
-
-      @organizations = @organizations.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present?
-
-      if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
-          @current_user.role == "ROLE_ADMIN")
-        @organizations = @organizations.with_source_status(params[:source_status]) if params[:source_status].present?
-        @organizations = @organizations.with_source_context(params[:source_context]) if params[:source_context].present?
-
-      else
-        # TODO need constant for Active
-        @organizations = @organizations.with_source_status("Active")
-        @organizations = @organizations.with_source_context("CTRP")
-
-      end
-      @organizations = @organizations.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
-      @organizations = @organizations.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present?
-      @organizations = @organizations.with_family(params[:family_name]) if params[:family_name].present?
-      @organizations = @organizations.without_family() if params[:no_family].present?
-      @organizations = @organizations.matches_wc('address', params[:address],params[:wc_search]) if params[:address].present?
-      @organizations = @organizations.matches_wc('address2', params[:address2],params[:wc_search]) if params[:address2].present?
-      @organizations = @organizations.matches_wc('city', params[:city],params[:wc_search]) if params[:city].present?
-      @organizations = @organizations.matches_wc('state_province', params[:state_province],params[:wc_search]) if params[:state_province].present?
-      @organizations = @organizations.matches('country', params[:country]) if params[:country].present?
-      @organizations = @organizations.matches_wc('postal_code', params[:postal_code],params[:wc_search]) if params[:postal_code].present?
-      @organizations = @organizations.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present?
-      @organizations = @organizations.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
-      @organizations = @organizations.matches('processing_status', params[:processing_status]) if params[:processing_status].present?
-      @organizations = @organizations.with_service_request(params[:service_request]) if params[:service_request].present?
-      @organizations = @organizations.sort_by_col(params[:sort], params[:order])
-
-      if params[:rows] != nil
-        @organizations = @organizations.page(params[:start]).per(params[:rows])
-      end
-
-    else
-      @organizations = []
+      @organizations = filterSearch Organization.all,  ctrp_ids
     end
   end
 
+  def filterSearch resultOrgs,  ctrp_ids
+    if params[:alias]
+      resultOrgs = resultOrgs.matches_name_wc(params[:name],params[:wc_search]) if params[:name].present? && !resultOrgs.blank?
+    else
+      resultOrgs = resultOrgs.matches_wc('name', params[:name],params[:wc_search]) if params[:name].present? && !resultOrgs.blank?
+    end
+    resultOrgs = resultOrgs.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present? && !resultOrgs.blank?
+    if @current_user && (['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR'].include? @current_user.role)
+      resultOrgs = resultOrgs.with_source_status(params[:source_status]) if params[:source_status].present? && !resultOrgs.blank?
+      resultOrgs = resultOrgs.with_source_context(params[:source_context]) if params[:source_context].present? && !resultOrgs.blank?
+    else # TODO need constant for Active
+      resultOrgs = resultOrgs.with_source_status("Active") if !resultOrgs.blank?
+      resultOrgs = resultOrgs.with_source_context("CTRP") if !resultOrgs.blank?
+    end
+    resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2 && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.without_family() if params[:no_family].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('address', params[:address],params[:wc_search]) if params[:address].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('address2', params[:address2],params[:wc_search]) if params[:address2].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('city', params[:city],params[:wc_search]) if params[:city].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('state_province', params[:state_province],params[:wc_search]) if params[:state_province].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches('country', params[:country]) if params[:country].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('postal_code', params[:postal_code],params[:wc_search]) if params[:postal_code].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.matches('processing_status', params[:processing_status]) if params[:processing_status].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.with_service_request(params[:service_request]) if params[:service_request].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.sort_by_col(params[:sort], params[:order]) if !resultOrgs.blank?
+    resultOrgs = resultOrgs.page(params[:start]).per(params[:rows]) if params[:rows] != nil &&  !resultOrgs.blank?
+    return resultOrgs
+  end
+
   def clone
-    ctep_org_id = params[:org_id]
+    #ctep_org_id = params[:org_id]
 
     @organizations = Organization.find_by_id()
   end
 
-  #Method to check for Uniqueness while creating organizations - check on name & source context. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
-  def unique
-    print params[:org_name]
-    print params[:source_context_id]
-    print params[:org_exists]
-    print "Org ID "
-    print params[:org_id]
-
-#    exists = false
-    is_unique = true
+  def countOrgsWithSameName
     count = 0
-
-   #Get count of organization record with the same name - can be the existing record (if the user is on the edit screen)
+    #Get count of organization record with the same name - can be the existing record (if the user is on the edit screen)
     if params.has_key?(:org_name) && params.has_key?(:source_context_id)
       count = Organization.where("lower(name)=?", params[:org_name].downcase).where("source_context_id=?", params[:source_context_id]).count;
     end
+    return count
+  end
 
-    print "count "
-    print count
+  #Method to check for Uniqueness while creating organizations - check on name & source context. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
+  def unique
+    count = countOrgsWithSameName
+    is_unique = true
 
     if params[:org_exists] == true
-      @dbOrg = Organization.find(params[:org_id]);
-      if @dbOrg != nil
-        print " db organization "
-        print @dbOrg.name
-
-        #if on the Edit screen, then check for name changes and ignore if database & screen names are the same.
-        if params[:org_name] == @dbOrg.name
-          print " both are equal. Must not warn "
-          is_unique = true;
-        else
-          #However if on the edit screen and the user types in a name that is the same as another org, then complain
-          if count > 0
-            print " both are different. Must warn. "
-            is_unique = false
-          end
-        end
+      @dbOrg = Organization.find(params[:org_id])
+      #if on the Edit screen, then check for name changes and ignore if database & screen names are the same.
+      #if params[:org_name] == @dbOrg.name, both are equal. Must not warn
+      #However if on the edit screen and the user types in a name that is the same as another org, then complain, both are different. Must warn.
+      if !@dbOrg.nil? && !(params[:org_name] == @dbOrg.name || count == 0)
+        is_unique = false
       end
     elsif params[:org_exists] == false && count > 0
       is_unique = false
     end
 
-    p " is unique? "
-    p is_unique
-
     respond_to do |format|
-#        format.json {render :json => {:name_unique => !exists}}
       format.json {render :json => {:name_unique => is_unique}}
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_organization
-      @organization = Organization.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_organization
+    @organization = Organization.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def organization_params
-      params.require(:organization).permit(:source_id, :name, :address, :address2, :address3, :city, :state_province, :postal_code,
-                                           :country, :email, :phone, :extension, :fax, :source_status_id,
-                                           :source_context_id, :lock_version, :processing_status,
-                                           name_aliases_attributes: [:id,:organization_id,:name,:_destroy])
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def organization_params
+    params.require(:organization).permit(:source_id, :name, :address, :address2, :address3, :city, :state_province, :postal_code,
+                                         :country, :email, :phone, :extension, :fax, :source_status_id,
+                                         :source_context_id, :lock_version, :processing_status,
+                                         name_aliases_attributes: [:id,:organization_id,:name,:_destroy])
+  end
 end

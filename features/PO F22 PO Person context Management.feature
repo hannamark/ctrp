@@ -23,7 +23,8 @@ Scenario:#1 CTEP Context of a new person record created
       |Middle Name|
       |Last Name|
       |Suffix|
-      |Phone Number|#(Phone Number"|"Extension)
+      |Phone Number|
+      |Phone Number Extension|
       |Email|
       |Source Context|
       |Source ID|
@@ -33,8 +34,25 @@ Scenario:#1 CTEP Context of a new person record created
       |Service Request|#(Create)
       |Processing Status|#(Incomplete)
       
+        Scenario:#1aa Peron Registration Type Values 
+    Given I am on the CTEP Person record Tab
+     And I can view Person Registration Type fields
      
-       Scenario:#1a CTEP Person Context Mandatory Fields 
+     |Investigator|
+     |Non Physician Investigator|
+     |Associate Plus|
+     |Associate|
+     |Associate Basic|
+
+       Scenario:#1a' Person Source Status CTEP available list
+    Given I am logged into the PO application
+     When I am on the CTEP Person Tab
+     Then the person source status type will be available 
+     
+     |Active|
+     |Inactive|
+    
+      Scenario:#1a" CTEP Person Context Mandatory Fields 
     Given I am logged into the CTRP 
      When CTEP Context of a person record is created
      Then the person record fields type are mandatory
@@ -116,10 +134,12 @@ Scenario:#1 CTEP Context of a new person record created
     |Last Name|
     And the CTEP Organization is Active
     Then the CTRP Context field type is not automatically updated
-    And the CTRP Processing Status will be "pending"
+    And the CTRP Processing Status will be "Incomplete"
     And The CTRP Curator will be able to identify by searching CTEP Person with Service Request "Update"
     When CTRP Curator will determine the updates for the CTRP Context
     Then the CTRP Processing Status will be "Complete"
+    And the CTEP "Processing Status" will be set to "Complete"
+    And the CTEP "service request" will be set to "NULL" 
      
 
      Scenario:#5 Curator can identify when two persons are to be merged 
