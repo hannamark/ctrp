@@ -332,6 +332,16 @@ class ApplicationController < ActionController::Base
     current_local_user || current_ldap_user || user
   end
 
+  def current_ctrp_user_role_details user_role
+    role_details = {}
+    all_roles = AppSetting.find_by_code('USER_ROLES') ?
+        (JSON.parse (AppSetting.find_by_code('USER_ROLES')["big_value"].gsub("\n",'').gsub("\\",'').split.join(" "))) : nil
+    if !all_roles.nil?
+      role_details = all_roles.select { |role| role["id"] == user_role }[0]
+    end
+    return role_details
+  end
+
   def global_request_logging
     http_request_header_keys = request.headers.env.keys.select{|header_name| header_name.match("^HTTP.*")}
     http_request_headers = request.headers.env.select{|header_name, header_value| http_request_header_keys.index(header_name)}

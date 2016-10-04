@@ -16,6 +16,7 @@
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
+        vm.curPerson.processing_status = 'Complete';
         vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
@@ -24,12 +25,18 @@
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
         var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
+        vm.processStatusArr = OrgService.getProcessingStatuses();
         vm.formTitleLabel = 'Add Person'; //default form title
+        vm.affiliatedOrgError = true; // flag for empty org affiliations
         var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
-
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
+            if (vm.savedSelection.length === 0) {
+                vm.affiliatedOrgError = true;
+                return;
+            }
+            vm.affiliatedOrgError = false;
             vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
                 //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
@@ -191,6 +198,7 @@
             filterSourceContext();
             locateSourceStatus();
             createFormTitleLabel();
+            watchOrgAffiliations();
         }
 
 
@@ -239,6 +247,19 @@
         function watchGlobalWriteModeChanges() {
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                 createFormTitleLabel();
+            });
+        }
+
+        /**
+         * Watch the array savedSelection for affiliated organizations
+         * @return {[type]} [description]
+         */
+        function watchOrgAffiliations() {
+            $scope.$watchCollection(function() {return vm.savedSelection;},
+            function(newVal, oldVal) {
+                if (!!newVal && angular.isArray(newVal) && newVal.length !== oldVal.length) {
+                    vm.affiliatedOrgError = newVal.length === 0;
+                }
             });
         }
 

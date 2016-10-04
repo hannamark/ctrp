@@ -5,11 +5,13 @@ class SourceStatusesController < ApplicationController
   # GET /source_statuses
   # GET /source_statuses.json
   def index
-    #TODO need to use constant for ROLE_CURATOR and ROLE_SUPER
-    if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR"
+    org_source_status_access = (current_ctrp_user_role_details @current_user.role)['org_source_status_access']
+    if org_source_status_access
       @source_statuses = SourceStatus.source_statuses_with_active_record_status
+                             .where("source_context_id=?", SourceContext.find_by_code('CTRP').id)
+                             .order(code: :asc)
+                             .select { |status| org_source_status_access.split(",").include? status["code"] }
       #@source_statuses = SourceStatus.all
-
     else
       #TODO need to use constant for Active
       #@source_statuses = SourceStatus.all
