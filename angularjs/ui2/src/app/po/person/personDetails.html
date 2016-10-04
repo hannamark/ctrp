@@ -32,7 +32,7 @@
         </div>
         <div class="row">
           <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field="" model="person"></ctrp-comment>
-          <form class="form-horizontal" role="form" name="person_form" novalidate ctrp-submit="personDetailView.updatePerson" unsaved-changes>
+          <form class="form-horizontal" role="form" name="person_form" novalidate ctrp-submit="personDetailView.updatePerson()" unsaved-changes>
             <md-tabs md-dynamic-height md-border-bottom md-selected="personDetailView.tabIndex">
                 <md-tab ng-repeat="clusterPerson in personDetailView.curPerson.cluster track by $index">
                     <md-tab-label>{{clusterPerson.context}}</md-tab-label>
@@ -100,7 +100,7 @@
                                 {{personDetailView.curPerson.source_id}}
                             </div>
                         </div>
-                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.processing_status)}">
+                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new}">
                             <label class="control-label col-xs-12 col-sm-3">Processing Status:</label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="form-text" ng-if="personDetailView.curPerson.new" id="processing_status">{{personDetailView.curPerson.processing_status}}</div>
@@ -112,7 +112,7 @@
                                         ng-required="!personDetailView.curPerson.new && personDetailView.curSourceContextName === 'CTRP'"
                                         ng-options="status.name as status.name for status in personDetailView.processStatusArr">
                                     </select>
-                                    <span class="help-block" ng-show="ctrpbtn.person_form.needsAttention(person_form.processing_status)">
+                                    <span class="help-block" ng-show="ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new">
                                         Processing Status is Required
                                     </span>
                                 </div>
@@ -181,12 +181,13 @@
                         </div>
                         <!--                             ng-class="{'has-error': ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0) && personDetailView.curPersonEditable }" -->
                         <div class="form-group has-feedback required"
+                            ng-class="{'has-error': personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.savedselection.length == 0)}"
                             ng-if="personDetailView.curPersonEditable"
                             restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
                             <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
                             <div class="col-xs-12 col-sm-9">
                                 <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
-                                <span class="help-block" ng-show="personDetailView.savedSelection.length === 0">
+                                <span class="help-block" ng-show="personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.savedselection.length == 0)">
                                     Organization Affiliation is Required
                                 </span>
                                 <!-- ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0 && personDetailView.curPersonEditable) -->
