@@ -226,7 +226,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group" ng-show="psDetailView.curPs.contact_type === 'PI'" ng-class="{'has-feedback required': psDetailView.curPs.contact_type === 'PI','has-error': ctrpbtn.ps_form.needsAttention(ps_form.investigator)}">
+                        <div class="form-group" ng-show="psDetailView.curPs.contact_type === 'PI' && psDetailView.curPs.participating_site_investigators.length" ng-class="{'has-feedback required': psDetailView.curPs.contact_type === 'PI','has-error': ctrpbtn.ps_form.needsAttention(ps_form.investigator)}">
                             <label for="investigator" class="control-label col-xs-12 col-sm-3">Contact Name:</label>
                             <div class="col-xs-12 col-sm-4">
                                 <select name="investigator" id="investigator"

@@ -32,8 +32,6 @@
         vm.selectedInvContact;
         vm.invContactArray = [];
 
-        activate();
-
         vm.updatePs = function() {
             // Prevent multiple submissions
             vm.disableBtn = true;
@@ -70,9 +68,7 @@
 
                 if (status >= 200 && status <= 210) {
                     if (vm.isManageScreen) {
-                        //$state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
-                        vm.editMode = false;
-                        vm.addMode = false;
+                        $state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
                     } else {
                         $state.go('main.viewTrial', {trialId: response.trial.id});
                     }
@@ -201,6 +197,8 @@
             //appendStatuses();
             setupPs();
         };
+
+        activate();
 
         /****************************** implementations **************************/
         function activate() {

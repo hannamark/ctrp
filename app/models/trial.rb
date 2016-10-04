@@ -345,9 +345,10 @@ class Trial < TrialBase
     return sitesu_sites
   end
 
-  # Array of orgs in user's associated org's family that's not yet added to participating sites
+  # Array of orgs in user's associated org's family
   def available_family_orgs
-    return self.current_user.family_orgs - self.ps_orgs if self.current_user.present?
+    #return self.current_user.family_orgs - self.ps_orgs if self.current_user.present?
+    return self.current_user.family_orgs if self.current_user.present?
   end
 
   def is_owner
