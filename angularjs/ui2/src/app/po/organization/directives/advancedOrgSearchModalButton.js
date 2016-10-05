@@ -37,8 +37,7 @@
 
         function linkerFn(scope, element, attrs) {
             $compile(element.contents())(scope);
-            //console.log('in linkerFn for orgAdvSearchModal Button');
-            //  scope.useBuiltInTemplate = attrs.useBuiltInTemplate == undefined ? false : true;
+            scope.buttonLabel = attrs.buttonLabel || 'Search Organizations';
         } //linkerFn
 
 
