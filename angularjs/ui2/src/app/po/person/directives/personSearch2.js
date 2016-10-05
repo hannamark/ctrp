@@ -35,16 +35,12 @@
         function personSearch2DirectiveController($scope, UserService, DateService, OrgService, $state, _) {
 
             var vm = this;
-            vm.name = 'Tony';
             vm.searchParams = PersonService.getInitialPersonSearchParams();
-            console.log('searchParams: ', vm.searchParams);
             vm.sourceContextArr = [];
             vm.sourceStatusArr = [];
             vm.searchResults = []; // array of person
             var fromStateName = $state.fromState.name || '';
             vm.searchWarningMessage = '';
-            console.log('fromStateName: ', fromStateName);
-
             vm.dateFormat = DateService.getFormats()[1];
             vm.dateOptions = DateService.getDateOptions();
             vm.startDateOpened = ''; //false;
@@ -52,7 +48,6 @@
 
             // ag-grid options
             vm.gridOptions = getGridOptions();
-            console.log('vm.gridOptions: ', vm.gridOptions);
 
             // actions
             vm.typeAheadNameSearch = typeAheadNameSearch;
@@ -73,6 +68,7 @@
 
                     if (status >= 200 && status <= 210) {
                         vm.sourceContextArr = data.sort(Common.a2zComparator());
+                        console.info('sourceContextArr: ', vm.sourceContextArr);
                     }
                 });
 
@@ -81,6 +77,7 @@
 
                     if (status >= 200 && status <= 210) {
                         vm.sourceStatusArr = data.sort(Common.a2zComparator());
+                        console.info('sourceStatusArr: ', vm.sourceStatusArr);
                     }
                 });
             } // _getPromisedData
