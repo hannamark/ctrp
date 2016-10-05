@@ -48,16 +48,6 @@
                                 <label class="control-label col-xs-12 col-sm-3">CTRP Organization ID:</label>
                                 <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.curOrg.ctrp_id}}</div>
                             </div>
-                            <div ng-if="!orgDetailView.curOrg.new" class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3">Context Organization ID:</label>
-                                <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.curOrg.id}}</div>
-                            </div>
-                            <div class="form-group" ng-show="clusterOrg.context == 'CTEP'">
-                                <label class="control-label col-xs-12 col-sm-3">CTEP Organization ID:</label>
-                                <div class="col-xs-12 col-sm-6 form-text">
-                                    TODO:
-                                </div>
-                            </div>
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.name) || orgDetailView.showUniqueWarning}">
                                 <label for="organization_name" class="control-label col-xs-12 col-sm-3">Name:</label>
                                 <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
@@ -270,7 +260,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="form-group col-xs-12 col-sm-6 has-feedback"
                                          ng-class="{'has-error': organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone)}">
@@ -285,9 +274,9 @@
                                             </div>
                                             <span ng-show="organization_form.phone.$dirty">{{30 - orgDetailView.curOrg.phone.length}} left</span>
                                             <div class="has-error" ng-show="orgDetailView.curOrg.phone.length && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid">
-                                                    <span class="help-block">
-                                                        Warning: Phone number invalid for the selected Country.
-                                                     </span>
+                                                        <span class="help-block">
+                                                            Warning: Phone number invalid for the selected Country.
+                                                         </span>
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-2 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.phone}}</div>
@@ -300,6 +289,12 @@
                                             <span ng-show="organization_form.extension.$dirty">{{30 - orgDetailView.curOrg.extension.length}} left</span>
                                         </div>
                                         <div class="col-xs-12 col-sm-2 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.extension}}</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div ng-if="!orgDetailView.curOrg.new" class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3">Context Organization ID:</label>
+                                        <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.curOrg.id}}</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
