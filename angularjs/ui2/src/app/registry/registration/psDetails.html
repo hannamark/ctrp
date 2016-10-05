@@ -11,14 +11,15 @@
                 <div class="bottom-offset-xss" ng-show="psDetailView.isManageScreen && !(psDetailView.editMode || psDetailView.addMode)">
                     <div class="col-sm-12 table-responsive" ng-show="psDetailView.curTrial.participating_sites.length > 0" >
                         <h5>List of Participating Sites:</h5>
-                        <table class="table table-bordered table-striped table-condensed">
+                        <table st-table="psDetailView.curTrial.participating_sites" class="table table-bordered table-striped table-condensed">
                             <thead>
                                 <th>CTRP ID</th>
                                 <th>CTRP Organization Name</th>
                                 <th>Principal Investigator</th>
                                 <th>Local Trial Id</th>
                                 <th>Program Code</th>
-                                <th>Site Recruitment Status</th>
+                                <th>Current Site Recruitment Status</th>
+                                <th>Current Site Recruitment Status Date</th>
                                 <th>Primary Contact</th>
                                 <th>Email</th>
                                 <th>Phone</th>
@@ -27,26 +28,45 @@
                             <tbody>
                                 <tr ng-repeat="ps in psDetailView.curTrial.participating_sites track by $index">
                                     <td class="col-sm-1">{{ps.organization.id}}</td>
-                                    <td class="coll-sm-2">{{ps.organization.name}}</td>
-                                    <td class="coll-sm-1">{{ps.view_investigators}}</td>
-                                    <td class="coll-sm-1">{{ps.protocol_id}}</td>
-                                    <td class="coll-sm-1">{{ps.program_code}}</td>
-                                    <td class="coll-sm-1">{{ps.current_status_name}}</td>
-                                    <td class="coll-sm-1">{{ps.contact_name}}</td>
-                                    <td class="coll-sm-1">{{ps.contact_email}}</td>
-                                    <td class="coll-sm-2">
+                                    <td class="col-sm-2">{{ps.organization.name}}</td>
+                                    <td class="col-sm-1">{{ps.view_investigators}}</td>
+                                    <td class="col-sm-1">{{ps.protocol_id}}</td>
+                                    <td class="col-sm-1">{{ps.program_code}}</td>
+                                    <td class="col-sm-1">{{ps.current_status_name}}</td>
+                                    <td class="col-sm-1">{{ps.latest_site_recruitment_status_date | dateFormat }}</td>
+                                    <td class="col-sm-1">{{ps.contact_name}}</td>
+                                    <td class="col-sm-1">{{ps.contact_email}}</td>
+                                    <td class="col-sm-1">
                                         {{ps.contact_phone}}
                                         <span ng-show="ps.extension">
                                             ext. {{ps.extension}}
                                         </span>
                                     </td>
-                                    <td class="coll-sm-1">
+                                    <td class="col-sm-1">
                                         <button type="button" restriction-field class="btn btn-primary" ng-click="psDetailView.editPs($index)">
                                             <i class="glyphicon glyphicon-edit"></i>
                                         </button>
                                     </td>
                                 </tr>
                             </tbody>
+                            <tfoot>
+                    			<tr>
+                    				<td colspan="11" class="col-sm-12">
+                    					<div class="pull-left" st-pagination="" st-items-by-page="psDetailView.itemsPerPage" st-displayed-pages="7"></div>
+                                        <div class="pull-left">
+                                            <select class="form-control input-sm" name="itemsPerPage" id="itemsPerPage" ng-model="psDetailView.itemsPerPage">
+                                                <option value="1">1</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
+                                        <div class="pull-left form-text pagination-text">
+                                            <span> items per page</span>
+                                        </div>
+                    				</td>
+                    			</tr>
+                    		</tfoot>
                         </table>
                     </div>
                     <div class="btn-toolbar">

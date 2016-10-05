@@ -31,55 +31,7 @@
         vm.addMode = false;
         vm.selectedInvContact;
         vm.invContactArray = [];
-
-        /* Will be used later when pagination is likely required */
-        vm.psGridOptions = {
-            enableColumnResizing: true,
-            totalItems: null,
-            rowHeight: 22,
-            paginationPageSize: 20,
-            useExternalPagination: true,
-            enableGridMenu: false,
-            enableFiltering: false,
-            columnDefs: [
-                {
-                    name: 'organization.id', displayName: 'CTRP ID', enableSorting: false, minWidth: '120', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
-                },
-                {
-                    name: 'organization.name', displayName: 'CTRP Organization Name', enableSorting: false, minWidth: '120', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
-                },
-                {
-                    name: 'view_investigators', displayName: 'Principal Investigator', enableSorting: false, minWidth: '120', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
-                },
-                {
-                    name: 'protocol_id', displayName: 'Local Trial Identifier', enableSorting: false, minWidth: '120', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
-                },
-                {
-                    name: 'program_code', displayName: 'Program Code', enableSorting: false, minWidth: '120', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
-                },
-                {
-                    name: 'current_status_name', displayName: 'Current Site Recruitment Status', enableSorting: false, minWidth: '120', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
-                },
-                {
-                    name: 'contact_name', displayName: 'Primary Contact', enableSorting: false, minWidth: '120', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
-                },
-                {
-                    name: 'contact_email', displayName: 'Email', enableSorting: false, minWidth: '120', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
-                },
-                {
-                    name: 'contact_phone', displayName: 'Phone Number', enableSorting: false, minWidth: '120', width: '*',
-                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}} - {{extension}}</div>'
-                }
-            ]
-        };
+        vm.itemsPerPage = 1;
 
         vm.updatePs = function() {
             // Prevent multiple submissions
@@ -156,6 +108,15 @@
             //vm.curPs = angular.copy(vm.curPsOriginal);
             setupPs('reset');
             $scope.ps_form.$setPristine();
+
+            /* Execute in a $timeout because Angular 'contact_type' watch needs to run before these values are reset */
+            $timeout(function() {
+               vm.curPs.contact_name = vm.curPsOriginal.contact_name;
+               vm.curPs.contact_email = vm.curPsOriginal.contact_email;
+               vm.curPs.contact_phone = vm.curPsOriginal.contact_phone;
+               vm.curPs.extension = vm.curPsOriginal.extension;
+           }, 1);
+
         }
 
         // Delete the associations
@@ -294,6 +255,9 @@
                 vm.curPs = angular.copy(vm.curPsOriginal);
             } else {
                 vm.curPsOriginal = angular.copy(vm.curPs);
+                watchContactTypeSelection();
+                watchInvContactSelection();
+                watchPersonContactSelection();
             }
 
             vm.curPs.contact_type = vm.curPs.contact_type ? vm.curPs.contact_type : 'General';
@@ -319,12 +283,6 @@
                     });
                 }
             });
-
-            watchContactTypeSelection();
-            watchInvContactSelection();
-            watchPersonContactSelection()
-
-            console.log('trial and ps are: ', vm.curTrial, vm.curPs);
         }
 
         // Redirect to search page if this user is not allowed to mange sites
