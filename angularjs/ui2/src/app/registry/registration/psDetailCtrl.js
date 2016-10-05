@@ -32,6 +32,55 @@
         vm.selectedInvContact;
         vm.invContactArray = [];
 
+        /* Will be used later when pagination is likely required */
+        vm.psGridOptions = {
+            enableColumnResizing: true,
+            totalItems: null,
+            rowHeight: 22,
+            paginationPageSize: 20,
+            useExternalPagination: true,
+            enableGridMenu: false,
+            enableFiltering: false,
+            columnDefs: [
+                {
+                    name: 'organization.id', displayName: 'CTRP ID', enableSorting: false, minWidth: '120', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
+                },
+                {
+                    name: 'organization.name', displayName: 'CTRP Organization Name', enableSorting: false, minWidth: '120', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
+                },
+                {
+                    name: 'view_investigators', displayName: 'Principal Investigator', enableSorting: false, minWidth: '120', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
+                },
+                {
+                    name: 'protocol_id', displayName: 'Local Trial Identifier', enableSorting: false, minWidth: '120', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
+                },
+                {
+                    name: 'program_code', displayName: 'Program Code', enableSorting: false, minWidth: '120', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
+                },
+                {
+                    name: 'current_status_name', displayName: 'Current Site Recruitment Status', enableSorting: false, minWidth: '120', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
+                },
+                {
+                    name: 'contact_name', displayName: 'Primary Contact', enableSorting: false, minWidth: '120', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
+                },
+                {
+                    name: 'contact_email', displayName: 'Email', enableSorting: false, minWidth: '120', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
+                },
+                {
+                    name: 'contact_phone', displayName: 'Phone Number', enableSorting: false, minWidth: '120', width: '*',
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">{{COL_FIELD}} - {{extension}}</div>'
+                }
+            ]
+        };
+
         vm.updatePs = function() {
             // Prevent multiple submissions
             vm.disableBtn = true;
@@ -92,6 +141,22 @@
         vm.reload = function() {
             $state.go($state.$current, null, { reload: true });
         };
+
+        vm.reset = function() {
+            vm.availableOrgs = [];
+            vm.srStatusArr = srStatusObj;
+            vm.status_date_opened = false;
+            vm.addedStatuses = [];
+            vm.srsNum = 0;
+            vm.selectedPiArray = [];
+            vm.selectedPersonContactArray = [];
+            vm.selectedInvContact;
+            vm.invContactArray = [];
+
+            //vm.curPs = angular.copy(vm.curPsOriginal);
+            setupPs('reset');
+            $scope.ps_form.$setPristine();
+        }
 
         // Delete the associations
         vm.toggleSelection = function (index, type) {
@@ -217,14 +282,20 @@
         function activateManage() {
             vm.curTrial = trialDetailObj;
             vm.curPs = {};
+            //vm.psGridOptions.data = vm.curTrial.participating_sites;
 
             allowPermittedAction();
             console.log('trial and ps are: ', vm.curTrial, vm.curPs);
         }
 
 
-        function setupPs() {
-            vm.curPsOriginal = angular.copy(vm.curPs);
+        function setupPs(mode) {
+            if (mode === 'reset') {
+                vm.curPs = angular.copy(vm.curPsOriginal);
+            } else {
+                vm.curPsOriginal = angular.copy(vm.curPs);
+            }
+
             vm.curPs.contact_type = vm.curPs.contact_type ? vm.curPs.contact_type : 'General';
 
             appendNewPsFlag();

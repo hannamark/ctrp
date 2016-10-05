@@ -245,6 +245,11 @@ class  User < ActiveRecord::Base
     return privileges_json
   end
 
+
+  scope :org_write_access, -> (current_user) {
+    ['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR'].include? current_user.role
+  }
+
   def ldap_before_save
     Rails.logger.info "In ldap_before_save"
     self.email = Devise::LDAP::Adapter.get_ldap_param(self.username,"mail").first
