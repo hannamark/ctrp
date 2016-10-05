@@ -60,12 +60,12 @@
 
         function linkFn(scope, element, attrs) {
             //actions
+            scope.searchParams.source_context = scope.sourceContextOnly;
         } //linkFn
 
 
 
         function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService, $state) {
-
 
             var fromStateName = $state.fromState.name || '';
             $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
@@ -84,7 +84,6 @@
             $scope.endDateOpened = ''; // false;
             $scope.searchWarningMessage = '';
             $scope.searching = false;
-            console.log('in person search form directive');
 
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
@@ -97,6 +96,7 @@
             $scope.usedInModal = angular.isDefined($scope.usedInModal) ? $scope.usedInModal : false;
             if ($scope.usedInModal) {
                 $scope.sourceContextOnly = $scope.sourceContextOnly || 'CTRP';
+                $scope.searchParams.source_context = $scope.sourceContextOnly;
             }
             // $scope.sourceContextOnly = angular.isDefined($scope.sourceContextOnly) && $scope.usedInModal ? $scope.sourceContextOnly : undefined;
             $scope.showGrid = angular.isDefined($scope.showGrid) ? $scope.showGrid : false;
@@ -130,7 +130,7 @@
                     $scope.searching = true;
                     if ($scope.usedInModal) {
                         // in modal, search against CTRP context and Active people!
-                        $scope.searchParams.source_context = 'CTRP';
+                        $scope.searchParams.source_context = $scope.sourceContextOnly || 'CTRP';
                         $scope.searchParams.source_status = 'Active';
                     }
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
