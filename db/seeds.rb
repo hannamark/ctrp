@@ -1358,6 +1358,60 @@ CtGovImportExport.find_or_create_by(from:'Not yet recruiting',            to:'Ap
 CtGovImportExport.find_or_create_by(from:'Temporarily Closed to Accrual and Intervention',  to:'Suspended', import_or_export:'export' ,model:'Site Recruitement Status')
 CtGovImportExport.find_or_create_by(from:'Closed to Accrual and Intervention',   to:'Active, not recruiting', import_or_export:'export' ,model:'Site Recruitement Status')
 
+CtGovImportExport.find_or_create_by(from:'Years', to:'Years',import_or_export:'export' ,model:'AgeUnit')
+CtGovImportExport.find_or_create_by(from:'Months', to:'Months',import_or_export:'export' ,model:'AgeUnit')
+CtGovImportExport.find_or_create_by(from:'Weeks', to:'Weeks',import_or_export:'export' ,model:'AgeUnit')
+CtGovImportExport.find_or_create_by(from:'Days', to:'Days',import_or_export:'export' ,model:'AgeUnit')
+CtGovImportExport.find_or_create_by(from:'Hours', to:'Hours',import_or_export:'export' ,model:'AgeUnit')
+CtGovImportExport.find_or_create_by(from:'Minutes', to:'Minutes',import_or_export:'export' ,model:'AgeUnit')
+
+CtGovImportExport.find_or_create_by(from:'Years', to:'Years',import_or_export:'import' ,model:'AgeUnit')
+CtGovImportExport.find_or_create_by(from:'Months', to:'Months',import_or_export:'import' ,model:'AgeUnit')
+CtGovImportExport.find_or_create_by(from:'Weeks', to:'Weeks',import_or_export:'import' ,model:'AgeUnit')
+CtGovImportExport.find_or_create_by(from:'Days', to:'Days',import_or_export:'import' ,model:'AgeUnit')
+CtGovImportExport.find_or_create_by(from:'Hours', to:'Hours',import_or_export:'import' ,model:'AgeUnit')
+CtGovImportExport.find_or_create_by(from:'Minutes', to:'Minutes',import_or_export:'import' ,model:'AgeUnit')
+
+
+CtGovImportExport.find_or_create_by(from:'Male', to:'Male',import_or_export:'import' ,model:'Gender')
+CtGovImportExport.find_or_create_by(from:'Female', to:'Female',import_or_export:'import' ,model:'Gender')
+CtGovImportExport.find_or_create_by(from:'Both', to:'Both',import_or_export:'import' ,model:'Gender')
+
+CtGovImportExport.find_or_create_by(from:'Male', to:'Male',import_or_export:'export' ,model:'Gender')
+CtGovImportExport.find_or_create_by(from:'Female', to:'Female',import_or_export:'export' ,model:'Gender')
+CtGovImportExport.find_or_create_by(from:'Both', to:'Both',import_or_export:'export' ,model:'Gender')
+
+CtGovImportExport.find_or_create_by(from:'Drug', to:'Drug',import_or_export:'export' ,model:'InterventionType')
+CtGovImportExport.find_or_create_by(from:'Device', to:'Device',import_or_export:'export' ,model:'InterventionType')
+CtGovImportExport.find_or_create_by(from:'Biological/Vaccine', to:'Biological/Vaccine',import_or_export:'export' ,model:'InterventionType')
+CtGovImportExport.find_or_create_by(from:'Procedure/Surgery', to:'Procedure/Surgery',import_or_export:'export' ,model:'InterventionType')
+CtGovImportExport.find_or_create_by(from:'Radiation', to:'Radiation',import_or_export:'export' ,model:'InterventionType')
+CtGovImportExport.find_or_create_by(from:'Behavioral', to:'Behavioral',import_or_export:'export' ,model:'InterventionType')
+CtGovImportExport.find_or_create_by(from:'Genetic', to:'Genetic',import_or_export:'export' ,model:'InterventionType')
+CtGovImportExport.find_or_create_by(from:'Dietary Supplement', to:'Dietary Supplement',import_or_export:'export' ,model:'InterventionType')
+CtGovImportExport.find_or_create_by(from:'Other', to:'Other',import_or_export:'export' ,model:'InterventionType')
+
+
+
+CtGovImportExport.find_or_create_by(from:'None Retained', to:'None Retained',import_or_export:'export' ,model:'BiospecimenRetention')
+CtGovImportExport.find_or_create_by(from:'Samples With DNA', to:'Samples With DNA',import_or_export:'export' ,model:'BiospecimenRetention')
+CtGovImportExport.find_or_create_by(from:'Samples Without DNA', to:'Samples Without DNA',import_or_export:'export' ,model:'BiospecimenRetention')
+
+CtGovImportExport.find_or_create_by(from:'None Retained', to:'None Retained',import_or_export:'import' ,model:'BiospecimenRetention')
+CtGovImportExport.find_or_create_by(from:'Samples With DNA', to:'Samples With DNA',import_or_export:'import' ,model:'BiospecimenRetention')
+CtGovImportExport.find_or_create_by(from:'Samples Without DNA', to:'Samples Without DNA',import_or_export:'import' ,model:'BiospecimenRetention')
+
+
+
+CtGovImportExport.find_or_create_by(from:'Prospective', to:'Prospective',import_or_export:'import' ,model:'TimePerspectives')
+CtGovImportExport.find_or_create_by(from:'Retrospective', to:'Retrospective',import_or_export:'import' ,model:'TimePerspectives')
+CtGovImportExport.find_or_create_by(from:'Cross sectional', to:'Cross sectional',import_or_export:'import' ,model:'TimePerspectives')
+CtGovImportExport.find_or_create_by(from:'Other', to:'Other',import_or_export:'import' ,model:'TimePerspectives')
+
+CtGovImportExport.find_or_create_by(from:'Prospective', to:'Prospective',import_or_export:'export' ,model:'TimePerspectives')
+CtGovImportExport.find_or_create_by(from:'Retrospective', to:'Retrospective',import_or_export:'export' ,model:'TimePerspectives')
+CtGovImportExport.find_or_create_by(from:'Cross sectional', to:'Cross sectional',import_or_export:'export' ,model:'TimePerspectives')
+CtGovImportExport.find_or_create_by(from:'Other', to:'Other',import_or_export:'export' ,model:'TimePerspectives')
 
 
 
