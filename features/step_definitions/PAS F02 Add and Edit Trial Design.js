@@ -118,6 +118,19 @@ module.exports = function() {
     var optionD = '';
     var crcValueA = '';
     var crcValueB = '';
+    var fieldA = '';
+    var fieldB = '';
+    var fieldC = '';
+    var fieldD = '';
+    var fieldE = '';
+    var fieldF = '';
+    var fieldG = '';
+    var fieldH = '';
+    var fieldI = '';
+    var fieldJ = '';
+    var fieldK = '';
+    var fieldL = '';
+    var fieldM = '';
 
 
     /*
@@ -278,23 +291,38 @@ module.exports = function() {
             var tdFiledsList = fieldsOptions.toString().split("\n");
             crcFld = tdFiledsList[0];
             var crcValSplit = crcFld.toString().split(" (");
-            fieldA = crcValSplit[0];  //Clinical Research Category
-            fieldB = tdFiledsList[2]; //Primary Purpose
-            fieldC = tdFiledsList[3]; //Secondary Purpose
-            fieldD = tdFiledsList[4]; //Trial Phase
-            fieldE = tdFiledsList[5]; //Is this a pilot?
-            fieldF = tdFiledsList[6]; //Intervention Model
-            fieldG = tdFiledsList[7]; //Masking
-            fieldH = tdFiledsList[8]; //Allocation
-            fieldI = tdFiledsList[9]; //Study Classification
-            fieldJ = tdFiledsList[10]; //Number of Arms/Groups
-            fieldK = tdFiledsList[11]; //Target Enrollment
-            fieldL = tdFiledsList[12]; //Final Enrollment for CT.gov
-            fieldM = tdFiledsList[13]; //Accruals
+            if (optionA === 'Interventional'){
+                fieldA = crcValSplit[0];  //Clinical Research Category
+                fieldB = tdFiledsList[2]; //Primary Purpose
+                fieldC = tdFiledsList[3]; //Secondary Purpose
+                fieldD = tdFiledsList[4]; //Trial Phase
+                fieldE = tdFiledsList[5]; //Is this a pilot?
+                fieldF = tdFiledsList[6]; //Intervention Model
+                fieldG = tdFiledsList[7]; //Masking
+                fieldH = tdFiledsList[8]; //Allocation
+                fieldI = tdFiledsList[9]; //Study Classification
+                fieldJ = tdFiledsList[10]; //Number of Arms/Groups
+                fieldK = tdFiledsList[11]; //Target Enrollment
+                fieldL = tdFiledsList[12]; //Final Enrollment for CT.gov
+                fieldM = tdFiledsList[13]; //Accruals
+            } else {
+                fieldA = crcValSplit[0];  //Clinical Research Category
+                fieldB = tdFiledsList[2]; //Primary Purpose
+                fieldC = tdFiledsList[3]; //Trial Phase
+                fieldD = tdFiledsList[4]; //Is this a pilot?
+                fieldE = tdFiledsList[5]; //Study Model
+                fieldF = tdFiledsList[6]; //Time Perspective
+                fieldG = tdFiledsList[7]; //Bio-specimen Retention
+                fieldH = tdFiledsList[8]; //Bio-specimen Description
+                fieldI = tdFiledsList[9]; //Number of Arms/Groups
+                fieldJ = tdFiledsList[10]; //Target Enrollment
+                fieldK = tdFiledsList[11]; //Final Enrollment for CT.gov
+                fieldL = tdFiledsList[12]; //Accruals
+            }
             trialDesign.researchCategoryLst.$('option:checked').getText().then(function (value) {
                 var crntCRCValue = '' + value + '';
                 //Interventional
-                if (crntCRCValue === 'Interventional'){
+                if (crntCRCValue === 'Interventional' && optionA === 'Interventional'){
                     console.log('Test 1');
                     console.log('System Identified [' + optionA + '] as the current Clinical Research Category value');
                     verifyTrlDsgnInterOrExpndAcs();
@@ -304,7 +332,7 @@ module.exports = function() {
                     verifyTrlDsgnInterOrExpndAcs();
                 }
                 //Expanded Access
-                if (crntCRCValue === 'Expanded Access'){
+                if (crntCRCValue === 'Expanded Access' && optionB === 'Expanded Access'){
                     console.log('Test 3');
                     console.log('System Identified [' + optionB + '] as the current Clinical Research Category value');
                     verifyTrlDsgnInterOrExpndAcs();
@@ -314,7 +342,7 @@ module.exports = function() {
                     verifyTrlDsgnInterOrExpndAcs();
                 }
                 //Observational
-                if (crntCRCValue === 'Observational'){
+                if (crntCRCValue === 'Observational' && optionA === 'Observational'){
                     console.log('Test 5');
                     console.log('System Identified [' + optionA + '] as the current Clinical Research Category value');
                     verifyTrlDsgnObserOrAncillary();
@@ -324,7 +352,7 @@ module.exports = function() {
                     verifyTrlDsgnObserOrAncillary();
                 }
                 //Ancillary Correlative
-                if (crntCRCValue === 'Ancillary Correlative'){
+                if (crntCRCValue === 'Ancillary Correlative' && optionB === 'Ancillary Correlative'){
                     console.log('Test 7');
                     console.log('System Identified [' + optionB + '] as the current Clinical Research Category value');
                     verifyTrlDsgnObserOrAncillary();
@@ -369,34 +397,52 @@ module.exports = function() {
                 helper.verifyElementDisplayed(trialDesign.researchCategoryLst, true);
                 helper.getVerifyLabel(trialDesign.primaryPurposeLbl, fieldB+":", "Verifying Primary Purpose field");
                 helper.verifyElementDisplayed(trialDesign.primaryPurposeLst, true);
-                helper.getVerifyLabel(trialDesign.secondaryPurposeLbl, fieldC+":", "Verifying Secondary Purpose field");
-                helper.verifyElementDisplayed(trialDesign.secondaryPurposeLst, true);
-                helper.getVerifyLabel(trialDesign.trialPhaseLbl, fieldD+":", "Verifying Trial Phase field");
+                helper.getVerifyLabel(trialDesign.trialPhaseLbl, fieldC+":", "Verifying Secondary Purpose field");
                 helper.verifyElementDisplayed(trialDesign.trialPhaseLst, true);
-                helper.getVerifyLabel(trialDesign.isThisAPilotLbl, fieldE+":", "Verifying Is this a pilot field");
+                helper.getVerifyLabel(trialDesign.isThisAPilotLbl, fieldD+":", "Verifying Is this a pilot field");
                 helper.verifyElementDisplayed(trialDesign.isThisAPilotYes, true);
                 helper.verifyElementDisplayed(trialDesign.isThisAPilotNo, true);
-                helper.getVerifyLabel(trialDesign.studyModelLbl, fieldF+":", "Verifying Study Model field");
+                helper.getVerifyLabel(trialDesign.studyModelLbl, fieldE+":", "Verifying Study Model field");
                 helper.verifyElementDisplayed(trialDesign.studyModelLst, true);
-                helper.getVerifyLabel(trialDesign.timePerspectiveLbl, fieldG+":", "Verifying Time Perspective field");
+                helper.getVerifyLabel(trialDesign.timePerspectiveLbl, fieldF+":", "Verifying Time Perspective field");
                 helper.verifyElementDisplayed(trialDesign.timePerspectiveLst, true);
-                helper.getVerifyLabel(trialDesign.bioSpecimenRetentionLbl, fieldH+":", "Verifying Bio-specimen Retention field");
+                helper.getVerifyLabel(trialDesign.bioSpecimenRetentionLbl, fieldG+":", "Verifying Bio-specimen Retention field");
                 helper.verifyElementDisplayed(trialDesign.bioSpecimenRetentionLst, true);
-                helper.getVerifyLabel(trialDesign.bioSpecimenDescriptionLbl, fieldI+":", "Verifying Bio-specimen Description field");
+                helper.getVerifyLabel(trialDesign.bioSpecimenDescriptionLbl, fieldH+":", "Verifying Bio-specimen Description field");
                 helper.verifyElementDisplayed(trialDesign.bioSpecimenDescriptionTxt, true);
-                helper.getVerifyLabel(trialDesign.numberOfArmsLbl, fieldJ+":", "Verifying Number of Arms/Group field");
+                helper.getVerifyLabel(trialDesign.numberOfArmsLbl, fieldI+":", "Verifying Number of Arms/Group field");
                 helper.verifyElementDisplayed(trialDesign.numberOfArmsTxt, true);
-                helper.getVerifyLabel(trialDesign.targetEnrollmentLbl, fieldK+":", "Verifying Target Enrollment field");
+                helper.getVerifyLabel(trialDesign.targetEnrollmentLbl, fieldJ+":", "Verifying Target Enrollment field");
                 helper.verifyElementDisplayed(trialDesign.targetEnrollmentTxt, true);
-                helper.getVerifyLabel(trialDesign.finalEnrollmentLbl, fieldL+":", "Verifying Final enrollment for CT.gov field");
+                helper.getVerifyLabel(trialDesign.finalEnrollmentLbl, fieldK+":", "Verifying Final enrollment for CT.gov field");
                 helper.verifyElementDisplayed(trialDesign.finalEnrollmentTxt, true);
-                helper.getVerifyLabel(trialDesign.accrualsLbl, fieldM+":", "Verifying Accruals field");
+                helper.getVerifyLabel(trialDesign.accrualsLbl, fieldL+":", "Verifying Accruals field");
                 helper.verifyElementDisplayed(trialDesign.accrualsView, true);
             }
         });
     });
 
+    /*
+     Scenario:#1c Fields displayed when Clinical Research Category is set to "Observational" or "Ancillary Correlative"
+     Given I am on the Trial Design Screen
+     When the Clinical Research Category Selected type is
+     |Observational|
+     |Ancillary Correlative|
+     Then the Trial Design Fields below will be displayed
 
+     |Clinical Research Category (Observational, Ancillary Correlative)|
+     |Primary Purpose|
+     |Trial Phase|
+     |Is this a pilot?|
+     |Study Model|
+     |Time Perspective|
+     |Bio-Specimen Retention|
+     |Bio-Specimen Description|
+     |Number of Arms/Groups|
+     |Target Enrollment|
+     |Final Enrollment for CT.gov|
+     |Accruals|
+     */
 
 
 

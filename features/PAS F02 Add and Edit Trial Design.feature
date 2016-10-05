@@ -13,7 +13,7 @@ Scenario: #1 I can change Clinical research Category for a trial
     |Expanded Access            |
     |Observational              |
     |Ancillary Correlative      |
-@runthis
+
  Scenario:#1a Fields displayed when Clinical Research Category is set to "Interventional" or "Expanded Access"
     Given I am on the Trial Design Screen
      When the Clinical Research Category Selected type is
@@ -35,7 +35,7 @@ Scenario: #1 I can change Clinical research Category for a trial
   |Final Enrollment for CT.gov|
   |Accruals|
 
- 
+
 Scenario:#1c Fields displayed when Clinical Research Category is set to "Observational" or "Ancillary Correlative"
     Given I am on the Trial Design Screen
      When the Clinical Research Category Selected type is
