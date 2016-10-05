@@ -1,7 +1,7 @@
 @PO @Global
 Feature: PO F6 Curator review of a Pending Organization
 
-  Scenario: #1 As a PO Curator, I can display all Organizations with Pending status----CTRP becasue we don't have pending in CTEP Context or NLM
+  Scenario: #1 As a PO Curator, I can display all Organizations with Pending status
     Given I am logged in as a CTRP Curator
     And I am on the Search Organizations screen
     When I select Source Status as Pending

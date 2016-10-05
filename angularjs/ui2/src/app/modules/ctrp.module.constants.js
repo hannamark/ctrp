@@ -17,7 +17,7 @@
             'COUNTRY_LIST': '/ctrp/countries.json',
             'STATES_IN_COUNTRY': '/ctrp/states.json?country=',
             'SOURCE_CONTEXTS': '/ctrp/source_contexts.json',
-            'SOURCE_STATUSES': '/ctrp/source_statuses.json',
+            'SOURCE_STATUSES': '/ctrp/source_statuses/search.json',
             'A_USER': '/ctrp/users/',
             'A_USER_SIGNUP': '/ctrp/sign_up.json',
             'A_USER_CHANGEPASSWORD': '/ctrp/change_password',

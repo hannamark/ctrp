@@ -364,6 +364,9 @@ header img {
 .top-offset-lg {
 	margin-top: 185px;
 }
+.bottom-offset-xss {
+    margin-bottom: 15px;
+}
 .bottom-offset-xs {
 	margin-bottom: 25px;
 }
@@ -860,8 +863,16 @@ h5 {
 
 .ui-grid-cell {
     line-height: 1em;
-    height: 22px !important;
+    height: 22px !important;*/
+    /*height: 25px !important;*/
+
 }
+/*
+Commented out for now but will likely be needed to standardized UI Grids with regular table look/feel
+.ui-grid-cell .ui-grid-cell-contents {
+    padding: 6px;
+}
+*/
 
 div.ui-grid-cell .ui-grid-datepicker [ng-click="select(null)"] {
     display: none;

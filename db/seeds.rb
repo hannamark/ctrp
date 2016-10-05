@@ -300,20 +300,21 @@ NcitIntervention.create(preferred_name: 'Anti-inflammatory Antibody ALXN1007', s
 
 
 
-StudyClassification.find_or_create_by(code: 'SAFE').update(name: 'Safety')
-StudyClassification.find_or_create_by(code: 'EFFI').update(name: 'Efficacy')
-StudyClassification.find_or_create_by(code: 'SAEF').update(name: 'Safety/Efficacy')
-StudyClassification.find_or_create_by(code: 'BAV').update(name: 'Bioavailability')
-StudyClassification.find_or_create_by(code: 'BEQ').update(name: 'Bioequivalence')
-StudyClassification.find_or_create_by(code: 'PD').update(name: 'Pharmacodynamics')
-StudyClassification.find_or_create_by(code: 'PKPD').update(name: 'Pharmacokinetics/Pharmacodynamics')
-StudyClassification.find_or_create_by(code: 'NA').update(name: 'NA')
+StudyClassification.find_or_create_by(code: 'SAFE').update(name: 'Safety Study')
+StudyClassification.find_or_create_by(code: 'EFFI').update(name: 'Efficacy Study')
+StudyClassification.find_or_create_by(code: 'SAEF').update(name: 'Safety/Efficacy Study')
+StudyClassification.find_or_create_by(code: 'BAV').update(name:  'Bio-availability Study')
+StudyClassification.find_or_create_by(code: 'BEQ').update(name:   'Bio-equivalence Study')
+StudyClassification.find_or_create_by(code: 'PD').update(name:   'Pharmacodynamics Study')
+StudyClassification.find_or_create_by(code: 'PK').update(name:   'Pharmacokinetics Study')
+StudyClassification.find_or_create_by(code: 'PKPD').update(name: 'Pharmacokinetics/dynamics Study')
+StudyClassification.find_or_create_by(code: 'NA').update(name: 'N/A')
 
 StudyModel.find_or_create_by(code: 'COH').update(name: 'Cohort')
 StudyModel.find_or_create_by(code: 'CASECO').update(name: 'Case-control')
 StudyModel.find_or_create_by(code: 'CASEON').update(name: 'Case-only')
 StudyModel.find_or_create_by(code: 'CASECR').update(name: 'Case-crossover')
-StudyModel.find_or_create_by(code: 'EORCS').update(name: 'Ecologic or Community Studies')
+StudyModel.find_or_create_by(code: 'EORCS').update(name: 'Ecologic or Community')
 StudyModel.find_or_create_by(code: 'FAMB').update(name: 'Family-based')
 StudyModel.find_or_create_by(code: 'OTH').update(name: 'Other')
 
@@ -321,16 +322,16 @@ OutcomeMeasureType.find_or_create_by(code: 'PRI').update(name: 'Primary')
 OutcomeMeasureType.find_or_create_by(code: 'SEC').update(name: 'Secondary')
 OutcomeMeasureType.find_or_create_by(code: 'OTH').update(name: 'Other Prespecified')
 
-Allocation.find_or_create_by(code: 'NA').update(name: 'NA')
-Allocation.find_or_create_by(code: 'RCT').update(name: 'Randomized Controlled Trial')
-Allocation.find_or_create_by(code: 'NRT').update(name: 'Non-Randomized Trial')
+Allocation.find_or_create_by(code: 'NA').update(name: 'N/A')
+Allocation.find_or_create_by(code: 'RCT').update(name: 'Randomized')
+Allocation.find_or_create_by(code: 'NRT').update(name: 'Non-Randomized')
 
-InterventionModel.find_or_create_by(code: 'SG').update(name: 'Single Group')
-InterventionModel.find_or_create_by(code: 'PL').update(name: 'Parallel')
-InterventionModel.find_or_create_by(code: 'CO').update(name: 'Cross-Over')
-InterventionModel.find_or_create_by(code: 'FT').update(name: 'Factorial')
+InterventionModel.find_or_create_by(code: 'SG').update(name: 'Single Group Assignment')
+InterventionModel.find_or_create_by(code: 'PL').update(name: 'Parallel Assignment')
+InterventionModel.find_or_create_by(code: 'CO').update(name: 'Crossover Assignment')
+InterventionModel.find_or_create_by(code: 'FT').update(name: 'Factorial Assignment')
 
-Masking.find_or_create_by(code: 'OP').update(name: 'Open')
+Masking.find_or_create_by(code: 'OP').update(name: 'Open Label')
 Masking.find_or_create_by(code: 'SB').update(name: 'Single Blind')
 Masking.find_or_create_by(code: 'DB').update(name: 'Double Blind')
 
@@ -1204,42 +1205,54 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                      {
                                         "id": "ROLE_RO",
                                         "name": "Read Only",
-                                        "assign_access": ""
+                                        "assign_access": "",
+                                        "org_source_status_search_access": "ACT"
                                      },
                                      {
                                         "id": "ROLE_ACCOUNT-APPROVER",
                                         "name": "Account Approver",
-                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
+                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST",
+                                        "org_source_status_search_access": "ACT"
                                      },
                                      {
                                         "id": "ROLE_CURATOR",
                                         "name": "Curator",
-                                        "assign_access": ""
+                                        "assign_access": "",
+                                        "org_source_status_access": "ACT,PEND,INACT",
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
                                      },
                                      {
                                         "id": "ROLE_ABSTRACTOR",
                                         "name": "Abstractor",
-                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU",
+                                        "org_source_status_access": "ACT,PEND,INACT",
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
                                      },
                                      {
                                         "id": "ROLE_SUPER",
                                         "name": "Super",
-                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU",
+                                        "org_source_status_access": "ACT,PEND,INACT",
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
                                      },
                                      {
                                         "id": "ROLE_ADMIN",
                                         "name": "Admin",
-                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST"
+                                        "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST",
+                                        "org_source_status_access": "ACT,PEND,INACT",
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
                                      },
                                      {
                                         "id": "ROLE_TRIAL-SUBMITTER",
                                         "name": "Trial Submitter",
-                                        "assign_access": ""
+                                        "assign_access": "",
+                                        "org_source_status_search_access": "ACT"
                                      },
                                      {
                                         "id": "ROLE_SITE-SU",
                                         "name": "Site Administrator",
-                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU"
+                                        "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU",
+                                        "org_source_status_search_access": "ACT"
                                      },
                                      {
                                         "id": "ROLE_SERVICE-REST",
@@ -1340,6 +1353,18 @@ CtGovImportExport.find_or_create_by(to:'Phase 2/3', from:'II/III',import_or_expo
 CtGovImportExport.find_or_create_by(to:'Phase 3', from:'III',import_or_export:'export' ,model:'Phase')
 CtGovImportExport.find_or_create_by(to:'Phase 4', from:'IV',import_or_export:'export' ,model:'Phase')
 CtGovImportExport.find_or_create_by(to:'N/A', from:'N/A',import_or_export:'export' ,model:'Phase')
+
+CtGovImportExport.find_or_create_by(from:'In Review',                     to:'Not yet recruiting',import_or_export:'export' ,model:'Site Recruitement Status')
+CtGovImportExport.find_or_create_by(from:'Withdrawn',                     to:'Withdrawn',import_or_export:'export' ,model:'Site Recruitement Status')
+CtGovImportExport.find_or_create_by(from:'Active',                        to:'Recruiting', import_or_export:'export' ,model:'Site Recruitement Status')
+CtGovImportExport.find_or_create_by(from:'Enrolling by Invitation',       to:'Enrolling by Invitation', import_or_export:'export' ,model:'Site Recruitement Status')
+CtGovImportExport.find_or_create_by(from:'Temporarily Closed to Accrual', to:'Suspended', import_or_export:'export' ,model:'Site Recruitement Status')
+CtGovImportExport.find_or_create_by(from:'Closed to Accrual',             to:'Active, not recruiting', import_or_export:'export' ,model:'Site Recruitement Status')
+CtGovImportExport.find_or_create_by(from:'Administratively Complete',     to:'Terminated', import_or_export:'export' ,model:'Site Recruitement Status')
+CtGovImportExport.find_or_create_by(from:'Completed',                     to:'Completed', import_or_export:'export' ,model:'Site Recruitement Status')
+CtGovImportExport.find_or_create_by(from:'Not yet recruiting',            to:'Approved', import_or_export:'export' ,model:'Site Recruitement Status')
+CtGovImportExport.find_or_create_by(from:'Temporarily Closed to Accrual and Intervention',  to:'Suspended', import_or_export:'export' ,model:'Site Recruitement Status')
+CtGovImportExport.find_or_create_by(from:'Closed to Accrual and Intervention',   to:'Active, not recruiting', import_or_export:'export' ,model:'Site Recruitement Status')
 
 
 
