@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160930152929) do
+ActiveRecord::Schema.define(version: 20161005144739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -434,6 +434,24 @@ ActiveRecord::Schema.define(version: 20160930152929) do
     t.datetime "updated_at",                           null: false
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
+  end
+
+  create_table "import_trial_log_data", force: :cascade do |t|
+    t.string   "file"
+    t.string   "file_name",        limit: 255
+    t.string   "document_type",    limit: 255
+    t.string   "document_subtype", limit: 255
+    t.string   "context",          limit: 255
+    t.string   "object",           limit: 255
+    t.string   "method",           limit: 255
+    t.string   "status",           limit: 255
+    t.string   "object_id",        limit: 255
+    t.string   "user",             limit: 255
+    t.text     "response_body"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "uuid",             limit: 255
+    t.integer  "lock_version",                 default: 0
   end
 
   create_table "ind_ides", force: :cascade do |t|
@@ -1768,6 +1786,7 @@ ActiveRecord::Schema.define(version: 20160930152929) do
   create_sequence "grants_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "holder_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "identifier_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "import_trial_log_data_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ind_ides_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "internal_sources_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "intervention_models_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

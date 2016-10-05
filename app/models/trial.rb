@@ -126,6 +126,7 @@
 
 class Trial < TrialBase
   include Filterable
+  include TableLoggable
 
   # Disabled optimistic locking
   self.locking_column = :dummy_column

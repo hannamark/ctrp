@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :import_trial_log_data
+
   resources :ct_gov_import_exports
 
   get 'validation_rule/index'
