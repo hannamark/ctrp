@@ -59,7 +59,7 @@ Scenario:#1c Fields displayed when Clinical Research Category is set to "Observa
 
 Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
 Given I am logged into the CTRP Protocol Abstraction application
-  And I am on the Trial Design screen
+  And I am at the Trial Design screen
   And the Clinical Research Category value
  
   |Interventional|
@@ -125,7 +125,7 @@ Given I am logged into the CTRP Protocol Abstraction application
   And I can add or edit a value for Target Enrollment
   And I can add or edit a value for Final Enrollment for ClinicalTrials.gov
   And the value of Accruals will be displayed
-  When I select Save
+  When When I select Save at the trial design screen
  Then the Interventional Trial Design for the trial will be associated with the trial
   And the message Record Updated displays
 
@@ -134,7 +134,7 @@ Given I am on the Trial Design Screen
   And the Clinical research Category is Interventional
   And the Information Source is 'Protocol'
  When The Trial Design field <TrialDesignField> is not entered
-  And I have seleted the save Button
+  And I select Save at the trial design screen
  Then An error message <TrialDesignErrorMessage> will be displayed
 
 Examples:
