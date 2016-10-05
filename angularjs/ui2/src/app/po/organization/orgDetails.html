@@ -85,30 +85,40 @@
                                         {{orgDetailView.curOrg.source_id}}
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.source_status)}">
                                     <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status:</label>
                                     <div class="col-xs-12 col-sm-6">
                                         <div ng-if="!orgDetailView.curOrgEditable" class="form-text">{{orgDetailView.curSourceStatusName}}</div>
                                         <div ng-if="orgDetailView.curOrgEditable" class="animated-item">
-                                            <select restriction-field ng-init="orgDetailView.curOrg.source_status_id"
+                                            <select restriction-field required ng-init="orgDetailView.curOrg.source_status_id"
                                                     class="form-control input-sm" id="source_status"
                                                     ng-model="orgDetailView.curOrg.source_status_id"
                                                     ng-options="status.id as status.name for status in orgDetailView.sourceStatusArr">
                                             </select>
                                         </div>
+                                        <div class="has-error" ng-show="ctrpbtn.organization_form.needsAttention(organization_form.source_status)">
+                                            <span class="help-block">
+                                                Source Status is Required.
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.processing_status)}">
                                     <label for="processing_status" class="control-label col-xs-12 col-sm-3">Processing Status:</label>
                                     <div class="col-xs-12 col-sm-6">
                                         <div ng-if="orgDetailView.curOrg.new || !orgDetailView.curOrgEditable" class="form-text">{{orgDetailView.curOrg.processing_status}}</div>
                                         <div ng-if="!orgDetailView.curOrg.new && orgDetailView.curOrgEditable" class="animated-item">
-                                            <select restriction-field ng-init="orgDetailView.curOrg.processing_status"
+                                            <select restriction-field required ng-init="orgDetailView.curOrg.processing_status"
                                                     class="form-control input-sm" id="processing_status"
                                                     ng-model="orgDetailView.curOrg.processing_status"
                                                     ng-options="status.name as status.name for status in orgDetailView.processStatusArr">
                                             </select>
+                                        </div>
+                                        <div class="has-error" ng-show="ctrpbtn.organization_form.needsAttention(organization_form.processing_status)">
+                                            <span class="help-block">
+                                                Processing Status is Required.
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -297,13 +307,6 @@
                                         <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.curOrg.id}}</div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-xs-12 col-sm-3">Fax:</label>
-                                    <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
-                                        <input type="text" restriction-field class="form-control input-sm" id="fax" ng-model="orgDetailView.curOrg.fax" placeholder="Fax">
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.fax}}</div>
-                                </div>
                                 <div class="form-group" ng-hide="orgDetailView.curOrg.new || !orgDetailView.curOrg.created_by">
                                     <label class="control-label col-xs-12 col-sm-3">Created By:</label>
                                     <div class="col-xs-12 col-sm-6 form-text">
@@ -392,6 +395,15 @@
                                         </button>
                                         <button type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.resetForm()" ng-disabled="orgDetailView.disableBtn">
                                             <i class="glyphicon glyphicon-remove"></i> Reset
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group no-bottom-margin" ng-show="orgDetailView.curOrgEditable">
+                                    <div class="col-xs-12 col-sm-3"></div>
+                                    <div class="btn-toolbar col-xs-12 col-sm-6">
+                                        <button type="button" restriction-field class="btn btn-primary pull-left" id="associate_org_context_btn" >
+                                            Associate Organization Context
                                         </button>
                                     </div>
                                 </div>
