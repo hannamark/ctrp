@@ -757,6 +757,7 @@ class TrialsController < ApplicationController
     trial_service = TrialService.new({trial: nil})
     @trial = Trial.new(trial_service.import_params(xml, @current_user))
     @trial.current_user = @current_user
+    #request_record = @trial.request_logging(xml,"Create","request",@current_user,ImportTrialLogDatum)
 
     respond_to do |format|
       if @trial.save

@@ -30,15 +30,15 @@
 
             <div class="form-group">
                 <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status: </label>
-                <div ng-if="sourceStatuses.length > 1">
+                <div ng-if="sourceStatuses.length > 1 && !(status.name !== 'Active' && usedInModal)">
                     <div class="col-xs-12 col-sm-4">
                         <select class="form-control input-sm" id="source_status" ng-model="searchParams.source_status">
                             <option value="">Select a Status</option>
-                            <option ng-repeat="status in sourceStatuses" value="{{status.name}}" ng-disabled="status.name !== 'Active' && usedInModal">{{status.name}}</option>
+                            <option ng-repeat="status in sourceStatuses" value="{{status.name}}">{{status.name}}</option>
                         </select>
                     </div>
                 </div>
-                <div ng-if="sourceStatuses.length === 1">
+                <div ng-if="sourceStatuses.length === 1 || (status.name !== 'Active' && usedInModal)">
                     <div class="col-xs-12 col-sm-4">
                         <p class="form-control-static">{{sourceStatuses[0].name}}</p>
                     </div>
@@ -110,17 +110,17 @@
             <div class="form-group">
                 <!--source context-->
                 <label for="source_context" class="control-label col-xs-12 col-sm-3">Source Context: </label>
-                <div ng-if="sourceContexts.length > 1">
+                <div ng-if="sourceContexts.length > 1 && !(context.name !== 'CTRP' && usedInModal)">
                     <div class="col-xs-12 col-sm-9">
                         <select class="form-control input-sm" id="source_context" ng-model="searchParams.source_context"
                             ng-change="getSourceStatusArr()">
                             <option value="" ng-selected="searchParams.source_context==''">All Contexts</option>
-                            <option ng-repeat="context in sourceContexts" value="{{context.name}}" ng-disabled="context.name !== 'CTRP' && usedInModal">{{context.name}}</option>
+                            <option ng-repeat="context in sourceContexts" value="{{context.name}}">{{context.name}}</option>
                         </select>
                     </div>
                 </div>
                 <!-- source context ends -->
-                <div  ng-if="sourceContexts.length === 1">
+                <div  ng-if="sourceContexts.length === 1 || (context.name !== 'CTRP' && usedInModal)">
                     <div class="col-xs-12 col-sm-9">
                         <p class="form-control-static">{{sourceContexts[0].name}}</p>
                     </div>
