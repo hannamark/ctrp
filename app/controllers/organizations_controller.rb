@@ -236,7 +236,7 @@ class OrganizationsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def organization_params
     params.require(:organization).permit(:source_id, :name, :address, :address2, :address3, :city, :state_province, :postal_code,
-                                         :country, :email, :phone, :extension, :fax, :source_status_id,
+                                         :country, :email, :phone, :extension, :source_status_id,
                                          :source_context_id, :lock_version, :processing_status,
                                          name_aliases_attributes: [:id,:organization_id,:name,:_destroy])
   end

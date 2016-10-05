@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20161005144739) do
+=======
+ActiveRecord::Schema.define(version: 20161005143914) do
+>>>>>>> 958a470da6879a3834e0ae336cb77016a8f67a94
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -818,7 +822,6 @@ ActiveRecord::Schema.define(version: 20161005144739) do
     t.string   "country",                  limit: 255
     t.string   "email",                    limit: 255
     t.string   "phone",                    limit: 255
-    t.string   "fax",                      limit: 255
     t.integer  "source_status_id"
     t.integer  "source_context_id"
     t.datetime "created_at",                                       null: false

@@ -46,6 +46,7 @@
                 usedInModal: '=?', //boolean, optional; default to false
                 maxRowSelectable : '=', //int, optional; if not not set, use MAX_VALUE -> can select all results
                 curationMode: '=?', // boolean, optional; default to false unless maxRowSelectable is set to > 0
+                sourceContextOnly: '=?', // enable source context only. If not set, default to 'CTRP' if used in modal
                 personSearchResults: '@personSearchResults',
                 selectedPersonsArray: '@selectedPersonsArray',
             },
@@ -59,12 +60,12 @@
 
         function linkFn(scope, element, attrs) {
             //actions
+            scope.searchParams.source_context = scope.sourceContextOnly;
         } //linkFn
 
 
 
         function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService, $state) {
-
 
             var fromStateName = $state.fromState.name || '';
             $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
@@ -83,7 +84,6 @@
             $scope.endDateOpened = ''; // false;
             $scope.searchWarningMessage = '';
             $scope.searching = false;
-            console.log('in person search form directive');
 
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
@@ -94,6 +94,11 @@
             //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
             $scope.curationModeEnabled = angular.isDefined($scope.curationMode) ? $scope.curationMode : $scope.curationModeEnabled;
             $scope.usedInModal = angular.isDefined($scope.usedInModal) ? $scope.usedInModal : false;
+            if ($scope.usedInModal) {
+                $scope.sourceContextOnly = $scope.sourceContextOnly || 'CTRP';
+                $scope.searchParams.source_context = $scope.sourceContextOnly;
+            }
+            // $scope.sourceContextOnly = angular.isDefined($scope.sourceContextOnly) && $scope.usedInModal ? $scope.sourceContextOnly : undefined;
             $scope.showGrid = angular.isDefined($scope.showGrid) ? $scope.showGrid : false;
 
             $scope.searchPeople = function (newSearchFlag) {
@@ -125,7 +130,7 @@
                     $scope.searching = true;
                     if ($scope.usedInModal) {
                         // in modal, search against CTRP context and Active people!
-                        $scope.searchParams.source_context = 'CTRP';
+                        $scope.searchParams.source_context = $scope.sourceContextOnly || 'CTRP';
                         $scope.searchParams.source_status = 'Active';
                     }
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
@@ -426,6 +431,7 @@
 
                     if (status >= 200 && status <= 210) {
                         $scope.sourceContextArr = data.sort(Common.a2zComparator());
+                        console.info('sourceContextArr: ', $scope.sourceContextArr);
                     }
                 });
 
@@ -434,6 +440,7 @@
 
                     if (status >= 200 && status <= 210) {
                         $scope.sourceStatusArr = data.sort(Common.a2zComparator());
+                        console.info('sourceStatusArr: ', $scope.sourceStatusArr);
                     }
                 });
             } //getPromisedData
