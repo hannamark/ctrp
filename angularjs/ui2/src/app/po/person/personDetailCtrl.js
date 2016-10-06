@@ -190,6 +190,7 @@
             watchGlobalWriteModeChanges();
             watchOrgReceiver();
             watchSourceContext();
+            watchContextAssociation();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
             }
@@ -352,7 +353,13 @@
             }, true);
         }
 
-
+        function watchContextAssociation() {
+            $scope.$watchCollection(function() {
+                return vm.associatedPersonContexts;
+            }, function(newVal, oldVal) {
+                console.info('vm.associatedPersonContexts: ', newVal);
+            });
+        }
 
         /**
          * Asynchronously populate the vm.savedSelection array for presenting
