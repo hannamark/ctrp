@@ -182,7 +182,7 @@ class OrganizationsController < ApplicationController
 
     wc_matches_to_look_for = 'address,address2,updated_by,city,state_province,postal_code,email,phone'.split(",")
     wc_matches_to_look_for.each do |filter|
-      resultOrgs = resultOrgs.matches_wc(filter, params[filter]) if params[filter].present? && !resultOrgs.blank?
+      resultOrgs = resultOrgs.matches_wc(filter, params[filter], params[:wc_search]) if params[filter].present? && !resultOrgs.blank?
     end
 
     resultOrgs = resultOrgs.sort_by_col(params[:sort], params[:order]) if !resultOrgs.blank?

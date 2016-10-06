@@ -110,7 +110,7 @@
             <div class="form-group">
                 <!--source context-->
                 <label for="source_context" class="control-label col-xs-12 col-sm-3">Source Context: </label>
-                <div ng-if="sourceContexts.length > 1 && !(context.name !== 'CTRP' && usedInModal)">
+                <div ng-if="sourceContexts.length > 1 && !usedInModal">
                     <div class="col-xs-12 col-sm-9">
                         <select class="form-control input-sm" id="source_context" ng-model="searchParams.source_context"
                             ng-change="getSourceStatusArr()">
@@ -120,9 +120,9 @@
                     </div>
                 </div>
                 <!-- source context ends -->
-                <div  ng-if="sourceContexts.length === 1 || (context.name !== 'CTRP' && usedInModal)">
+                <div  ng-if="sourceContexts.length === 1 || usedInModal">
                     <div class="col-xs-12 col-sm-9">
-                        <p class="form-control-static">{{sourceContexts[0].name}}</p>
+                        <p class="form-control-static">{{sourceContext || sourceContexts[0].name}}</p>
                     </div>
                 </div>
             </div>

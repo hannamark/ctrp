@@ -21,6 +21,8 @@
                 showGrid: '=?', //boolean, optional
                 usedInModal: '=?', //boolean, option
                 maxRowSelectable: '=', //int, required
+                sourceContext: '=', //required
+                preSearch: '=', //required
                 curationMode: '=?',
                 orgSearchResults: '@orgSearchResults',
                 selectedOrgsArray: '@selectedOrgsArray'
@@ -105,7 +107,6 @@
                 });
             }; //typeAheadNameSearch
 
-
             /* searchOrgs */
             $scope.searchOrgs = function (newSearchFlag) {
 
@@ -145,7 +146,7 @@
                     if ($scope.usedInModal || $scope.userRole.indexOf('TRIAL-SUBMITTER') > -1) {
                         // search from the modal can only search against 'Active' in 'CTRP' context
                         $scope.searchParams.source_status = 'Active';
-                        $scope.searchParams.source_context = 'CTRP';
+                        $scope.searchParams.source_context = $scope.sourceContext;
                     }
 
                     OrgService.searchOrgs($scope.searchParams).then(function (data) {
@@ -178,7 +179,6 @@
                     });
                 }
             }; //searchOrgs
-
 
             /* resetSearch */
             $scope.resetSearch = function () {
@@ -689,6 +689,14 @@
                 $scope.curationShown = UserService.isCurationModeEnabled() || false;
             }
 
+
+            //pre-search results
+            if ($scope.preSearch) {
+                for (var property in $scope.preSearch) {
+                    $scope.searchParams[property] = $scope.preSearch[property];
+                }
+                $scope.searchOrgs();
+            }
 
         } //ctrpAdvancedOrgSearchController
     }
