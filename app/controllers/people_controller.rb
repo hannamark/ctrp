@@ -164,7 +164,7 @@ class PeopleController < ApplicationController
       associated_ctep_person = Person.find(params[:ctep_person_id])
       if !associated_ctep_person.nil?
         associated_ctep_person.ctrp_id = params[:ctrp_id]
-        associated_ctep_person.update_attributes('ctrp_id': params[:ctrp_id])
+        associated_ctep_person.update_attributes('ctrp_id': params[:ctrp_id], 'association_start_date': Time.now)
       end
 
     end
