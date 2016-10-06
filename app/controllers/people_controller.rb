@@ -155,6 +155,24 @@ class PeopleController < ApplicationController
     end
   end
 
+  # associate a CTEP person to a ctrp_id (CTRP person)
+  def associate_person
+    associated_ctep_person = nil
+
+    if params.has_key?(:ctep_person_id) and params.has_key?(:ctrp_id)
+
+      associated_ctep_person = Person.find(params[:ctep_person_id])
+      if !associated_ctep_person.nil?
+        associated_ctep_person.ctrp_id = params[:ctrp_id]
+        associated_ctep_person.update_attributes('ctrp_id': params[:ctrp_id])
+      end
+
+    end
+    respond_to do |format|
+      format.json { render :json => {:person => associated_ctep_person} }
+    end
+  end
+
   #Method to check for Uniqueness while creating persons - check on First & Last name. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
   def unique
     print params[:person_fname]

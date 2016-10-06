@@ -89,8 +89,8 @@
                                 {{personDetailView.curPerson.source_id}}
                             </div>
                         </div>
-                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new}">
-                            <label class="control-label col-xs-12 col-sm-3">Processing Status:</label>
+                        <div class="form-group has-feedback required" ng-hide="personDetailView.curSourceContextName === 'CTRP'" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new && personDetailView.curSourceContextName !== 'CTRP'}">
+                            <label class="control-label col-xs-12 col-sm-3">Processing Status: </label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="form-text" ng-if="personDetailView.curPerson.new" id="processing_status">{{personDetailView.curPerson.processing_status}}</div>
                                 <div ng-if="!personDetailView.curPerson.new && personDetailView.curSourceContextName === 'CTRP'">
@@ -256,7 +256,7 @@
                             </div>
                         </div>
                         <div class="form-group"
-                            ng-if="personDetailView.curSourceContextName === 'CTRP' && personDetailView.curPersonEditable" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
+                            ng-if="personDetailView.curSourceContextName === 'CTRP' && !personDetailView.curPerson.new" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
                             <label for="person_context" class="control-label col-sm-3 col-xs-12">Associate Person Context:</label>
                             <div class="col-sm-5 col-xs-12">
                                 <button type="button" class="btn btn-primary" person-search-modal-button2 source-context-only="'CTEP'" ng-model="personDetailView.associatedPersonContexts" restriction-field>
