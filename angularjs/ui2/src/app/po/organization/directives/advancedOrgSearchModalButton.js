@@ -85,7 +85,7 @@
                             //concatenate
                             _.each(selectedOrgs, function(selectedOrg, index) {
                                 //prevent pushing duplicated org
-                               if (Common.indexOfObjectInJsonArray($scope.savedSelection, "id", selectedOrg.id) == -1) {
+                               if (Common.indexOfObjectInJsonArray($scope.savedSelection, "id", selectedOrg.id) === -1) {
                                    $scope.savedSelection.push(selectedOrg);
                                }
                             });
@@ -110,7 +110,7 @@
             };// toggleSelection
 
             $scope.batchSelect = function(intention) {
-                if (intention == 'removeAll') {
+                if (intention === 'removeAll') {
                     $scope.savedSelection.length = 0;
                 }
             }
@@ -168,4 +168,4 @@
     } //advancedOrgSearchForm2ModalCtrl
 
 
-})();
+}());
