@@ -3,7 +3,7 @@ Feature: PO F13 Curator review of a Pending Person Record
 
   Scenario:#1 As a PO Curator, I can display all Person Records with Pending status
     Given I am logged in to the CTRP PO application
-    And I am on the CTRP PO Curator Review screen
+    And I am on the CTRP PO Curator Search screen
     When I select Display Pending Person Records
     Then a list of all Person Records in CTRP with a Pending Status should be displayed
     And I can sort the list by PO Person ID, Person Name, Phone Number, Email Address, Affiliated Organization, Creator Name, and Creation Date

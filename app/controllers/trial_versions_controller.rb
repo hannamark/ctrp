@@ -65,7 +65,7 @@ end
   params[:start] = 1 if params[:start].blank?
   params[:rows]  = 10 if params[:rows].blank?
 
-  submission_type= SubmissionType.find_by_name("Update")
+  submission_type= SubmissionType.find_by_code("UPD")
 
    @submissions =Submission.where("trial_id =? AND submission_type_id=? ", params[:trial_id],submission_type.id)
    @submissions = @submissions.page(params[:start]).per(params[:rows])

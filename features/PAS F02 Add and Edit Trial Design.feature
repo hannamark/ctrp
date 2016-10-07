@@ -1,7 +1,7 @@
 @PA @global
 Feature:  PAS F02 Add and Edit Trial Design 
 As a CTRP PA Abstractor, I can add and edit Trial Design 
-@runthis
+
 Scenario: #1 I can change Clinical research Category for a trial
   Given I am logged into the CTRP Protocol Abstraction application
     And I have selected a trial
@@ -13,7 +13,7 @@ Scenario: #1 I can change Clinical research Category for a trial
     |Expanded Access            |
     |Observational              |
     |Ancillary Correlative      |
-  
+@runthis
  Scenario:#1a Fields displayed when Clinical Research Category is set to "Interventional" or "Expanded Access"
     Given I am on the Trial Design Screen
      When the Clinical Research Category Selected type is
@@ -49,8 +49,8 @@ Scenario:#1c Fields displayed when Clinical Research Category is set to "Observa
   |Is this a pilot?|
   |Study Model|
   |Time Perspective|
-  |Bio-Specimen Retention|
-  |Bio-Specimen Description|
+  |Bio-specimen Retention|
+  |Bio-specimen Description|
   |Number of Arms/Groups|
   |Target Enrollment|
   |Final Enrollment for CT.gov|
@@ -59,7 +59,7 @@ Scenario:#1c Fields displayed when Clinical Research Category is set to "Observa
 
 Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
 Given I am logged into the CTRP Protocol Abstraction application
-  And I am on the Trial Design screen
+  And I am at the Trial Design screen
   And the Clinical Research Category value
  
   |Interventional|
@@ -125,7 +125,7 @@ Given I am logged into the CTRP Protocol Abstraction application
   And I can add or edit a value for Target Enrollment
   And I can add or edit a value for Final Enrollment for ClinicalTrials.gov
   And the value of Accruals will be displayed
-  When I select Save
+  When When I select Save at the trial design screen
  Then the Interventional Trial Design for the trial will be associated with the trial
   And the message Record Updated displays
 
@@ -134,7 +134,7 @@ Given I am on the Trial Design Screen
   And the Clinical research Category is Interventional
   And the Information Source is 'Protocol'
  When The Trial Design field <TrialDesignField> is not entered
-  And I have seleted the save Button
+  And I select Save at the trial design screen
  Then An error message <TrialDesignErrorMessage> will be displayed
 
 Examples:
@@ -173,8 +173,8 @@ Given I am on the Trial Design screen
   And I Can check Subject
   And I can check Investigator
   And I can check Caregiver
-  And I can check Outcome Asessor
- When I select Save
+  And I can check Outcome Assessor
+ When When I select Save at the trial design screen
  Then the updated Masking role is associated with the trial
   And the message Record Updated displays
 
@@ -297,7 +297,7 @@ Given I am logged into the CTRP Protocol Abstraction application
   And I can enter a value for Target Enrollment
   And I can enter a value for Final Enrollment for ClinicalTrials.gov
   And the value of Accruals will be displayed
-  And I select Save
+  And When I select Save at the trial design screen
  Then the Expanded Access trial design is associated with the trial
   And the message Record Updated displays
 

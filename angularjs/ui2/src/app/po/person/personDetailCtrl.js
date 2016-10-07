@@ -16,20 +16,29 @@
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
+        console.info('vm.curPerson: ', vm.curPerson);
+        vm.curPerson.processing_status = 'Complete';
         vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.sourceContextArr = sourceContextObj;
         vm.savedSelection = [];
+        vm.associatedPersonContexts = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
         var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
+        vm.processStatusArr = OrgService.getProcessingStatuses();
         vm.formTitleLabel = 'Add Person'; //default form title
+        vm.affiliatedOrgError = true; // flag for empty org affiliations
         var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
-
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
+            if (vm.savedSelection.length === 0) {
+                vm.affiliatedOrgError = true;
+                return;
+            }
+            vm.affiliatedOrgError = false;
             vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
                 //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
@@ -182,6 +191,7 @@
             watchGlobalWriteModeChanges();
             watchOrgReceiver();
             watchSourceContext();
+            watchContextAssociation();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
             }
@@ -191,6 +201,7 @@
             filterSourceContext();
             locateSourceStatus();
             createFormTitleLabel();
+            watchOrgAffiliations();
         }
 
 
@@ -239,6 +250,19 @@
         function watchGlobalWriteModeChanges() {
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                 createFormTitleLabel();
+            });
+        }
+
+        /**
+         * Watch the array savedSelection for affiliated organizations
+         * @return {[type]} [description]
+         */
+        function watchOrgAffiliations() {
+            $scope.$watchCollection(function() {return vm.savedSelection;},
+            function(newVal, oldVal) {
+                if (!!newVal && angular.isArray(newVal) && newVal.length !== oldVal.length) {
+                    vm.affiliatedOrgError = newVal.length === 0;
+                }
             });
         }
 
@@ -330,7 +354,29 @@
             }, true);
         }
 
-
+        /**
+         * Watching the person context selected for associating with the current CTRP person
+         * @return {[type]} [description]
+         */
+        function watchContextAssociation() {
+            $scope.$watchCollection(function() {
+                return vm.associatedPersonContexts;
+            }, function(newVal, oldVal) {
+                console.info('vm.associatedPersonContexts: ', newVal);
+                if (!!newVal && angular.isArray(newVal) && newVal.length > 0) {
+                    var ctepPerson = newVal[0];
+                    PersonService.associatePersonContext(ctepPerson.id, vm.curPerson.ctrp_id).then(function(res) {
+                        console.info('res with association person: ', res); // resp.person
+                        vm.associatedPersonContexts = []; // clean up
+                        if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: 'CTEP'}) === -1) {
+                            vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id});
+                        }
+                    }).catch(function(err) {
+                        console.error('err: ', err);
+                    });
+                }
+            });
+        }
 
         /**
          * Asynchronously populate the vm.savedSelection array for presenting

@@ -10,12 +10,13 @@ class OrganizationsController < ApplicationController
   # GET /organizations
   # GET /organizations.json
   def index
-    @organizations = Organization.all
+    @organizations = Organization.all_orgs_data(params)
   end
 
   # GET /organizations/1
   # GET /organizations/1.json
   def show
+    @organization = Organization.all_orgs_data(params)[0]
   end
 
   # GET /organizations/new
@@ -152,7 +153,7 @@ class OrganizationsController < ApplicationController
                         :postal_code||:email||:phone||:updated_by||:date_range_arr)
       # ctrp_ids is used for retrieving the cluster of orgs when searching by source_id
       ctrp_ids = Organization.matches_wc('source_id', params[:source_id],@current_user.role).pluck(:ctrp_id) if params[:source_id].present?
-      @organizations = filterSearch Organization.all,  ctrp_ids
+      @organizations = filterSearch Organization.all_orgs_data(params),  ctrp_ids
     end
   end
 
@@ -163,27 +164,28 @@ class OrganizationsController < ApplicationController
       resultOrgs = resultOrgs.matches_wc('name', params[:name],params[:wc_search]) if params[:name].present? && !resultOrgs.blank?
     end
     resultOrgs = resultOrgs.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present? && !resultOrgs.blank?
-    if @current_user && (['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR'].include? @current_user.role)
-      resultOrgs = resultOrgs.with_source_status(params[:source_status]) if params[:source_status].present? && !resultOrgs.blank?
-      resultOrgs = resultOrgs.with_source_context(params[:source_context]) if params[:source_context].present? && !resultOrgs.blank?
+    if @current_user && User.org_write_access(@current_user)
+      resultOrgs = resultOrgs.matches("source_statuses.name", params[:source_status]) if params[:source_status].present? && !resultOrgs.blank?
+      resultOrgs = resultOrgs.matches("source_contexts.name", params[:source_context]) if params[:source_context].present? && !resultOrgs.blank?
     else # TODO need constant for Active
-      resultOrgs = resultOrgs.with_source_status("Active") if !resultOrgs.blank?
-      resultOrgs = resultOrgs.with_source_context("CTRP") if !resultOrgs.blank?
+      resultOrgs = resultOrgs.matches("source_status.name", "Active") if !resultOrgs.blank?
+      resultOrgs = resultOrgs.matches("source_context.name", "CTRP") if !resultOrgs.blank?
     end
     resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2 && !resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present? && !resultOrgs.blank?
     resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? && !resultOrgs.blank?
     resultOrgs = resultOrgs.without_family() if params[:no_family].present? && !resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('address', params[:address],params[:wc_search]) if params[:address].present? && !resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('address2', params[:address2],params[:wc_search]) if params[:address2].present? && !resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('city', params[:city],params[:wc_search]) if params[:city].present? && !resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('state_province', params[:state_province],params[:wc_search]) if params[:state_province].present? && !resultOrgs.blank?
-    resultOrgs = resultOrgs.matches('country', params[:country]) if params[:country].present? && !resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('postal_code', params[:postal_code],params[:wc_search]) if params[:postal_code].present? && !resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present? && !resultOrgs.blank?
-    resultOrgs = resultOrgs.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present? && !resultOrgs.blank?
-    resultOrgs = resultOrgs.matches('processing_status', params[:processing_status]) if params[:processing_status].present? && !resultOrgs.blank?
     resultOrgs = resultOrgs.with_service_request(params[:service_request]) if params[:service_request].present? && !resultOrgs.blank?
+
+    matches_to_look_for = 'country,processing_status'.split(",")
+    matches_to_look_for.each do |filter|
+      resultOrgs = resultOrgs.matches(filter, params[filter]) if params[filter].present? && !resultOrgs.blank?
+    end
+
+    wc_matches_to_look_for = 'address,address2,updated_by,city,state_province,postal_code,email,phone'.split(",")
+    wc_matches_to_look_for.each do |filter|
+      resultOrgs = resultOrgs.matches_wc(filter, params[filter], params[:wc_search]) if params[filter].present? && !resultOrgs.blank?
+    end
+
     resultOrgs = resultOrgs.sort_by_col(params[:sort], params[:order]) if !resultOrgs.blank?
     resultOrgs = resultOrgs.page(params[:start]).per(params[:rows]) if params[:rows] != nil &&  !resultOrgs.blank?
     return resultOrgs
@@ -235,7 +237,7 @@ class OrganizationsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def organization_params
     params.require(:organization).permit(:source_id, :name, :address, :address2, :address3, :city, :state_province, :postal_code,
-                                         :country, :email, :phone, :extension, :fax, :source_status_id,
+                                         :country, :email, :phone, :extension, :source_status_id,
                                          :source_context_id, :lock_version, :processing_status,
                                          name_aliases_attributes: [:id,:organization_id,:name,:_destroy])
   end

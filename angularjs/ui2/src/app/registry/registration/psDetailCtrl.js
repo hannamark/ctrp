@@ -14,14 +14,12 @@
                           srStatusObj, DateService, $timeout, centralContactTypes) {
 
         var vm = this;
-        vm.curPs = psDetailObj || {};
-        vm.curPs = vm.curPs.data || vm.curPs;
-        vm.curPsOriginal = angular.copy(vm.curPs);
-        vm.curTrial = trialDetailObj || vm.curPs.trial;
+
+        /* Initialize global properties unaffected by permissions */
+        vm.isManageScreen = $state.$current.name.indexOf('manage') > -1 ? true : false;
         vm.curUser = userDetailObj;
         vm.centralContactTypes = centralContactTypes.types;
         vm.centralContactTypes.shift(); // Remove 'None' value as done in PA
-        vm.curPs.contact_type = vm.curPs.contact_type ? vm.curPs.contact_type : 'General';
         vm.availableOrgs = [];
         vm.srStatusArr = srStatusObj;
         vm.status_date_opened = false;
@@ -30,8 +28,17 @@
         vm.selectedPiArray = [];
         vm.selectedPersonContactArray = [];
         vm.editMode = false; // Flag used in manage sites screen
+        vm.addMode = false;
         vm.selectedInvContact;
         vm.invContactArray = [];
+        vm.itemsOptions = {
+            data: [
+                {id: 1, value: 25},
+                {id: 2, value: 50},
+                {id: 3, value: 100}
+            ],
+            selectedOption: {id: 1, value: 25}
+        };
 
         vm.updatePs = function() {
             // Prevent multiple submissions
@@ -71,9 +78,16 @@
                     if (vm.isManageScreen) {
                         $state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
                     } else {
-                        //$state.go('main.viewTrial', {trialId: response.trial.id});
+                        $state.go('main.viewTrial', {trialId: response.trial.id});
                     }
                     toastr.success('Participating Site ' + vm.curPs.id + ' has been recorded', 'Operation Successful!');
+
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       $scope.ps_form.$setPristine();
+                   }, 1);
+
+                   // Response needs to refresh PS list
                 }
             }).catch(function(err) {
                 console.log('error in updating trial ' + JSON.stringify(outerPs));
@@ -86,6 +100,31 @@
         vm.reload = function() {
             $state.go($state.$current, null, { reload: true });
         };
+
+        vm.reset = function() {
+            vm.availableOrgs = [];
+            vm.srStatusArr = srStatusObj;
+            vm.status_date_opened = false;
+            vm.addedStatuses = [];
+            vm.srsNum = 0;
+            vm.selectedPiArray = [];
+            vm.selectedPersonContactArray = [];
+            vm.selectedInvContact;
+            vm.invContactArray = [];
+
+            //vm.curPs = angular.copy(vm.curPsOriginal);
+            setupPs('reset');
+            $scope.ps_form.$setPristine();
+
+            /* Execute in a $timeout because Angular 'contact_type' watch needs to run before these values are reset */
+            $timeout(function() {
+               vm.curPs.contact_name = vm.curPsOriginal.contact_name;
+               vm.curPs.contact_email = vm.curPsOriginal.contact_email;
+               vm.curPs.contact_phone = vm.curPsOriginal.contact_phone;
+               vm.curPs.extension = vm.curPsOriginal.extension;
+           }, 1);
+
+        }
 
         // Delete the associations
         vm.toggleSelection = function (index, type) {
@@ -168,36 +207,73 @@
 
         vm.addPs = function() {
             vm.editMode = false;
+            vm.addMode = true;
             vm.curPs = {};
             vm.curPs.new = true;
             vm.addedStatuses = [];
             vm.srsNum = 0;
             vm.selectedPiArray = [];
-            setDefaultOrg();
+            //setDefaultOrg();
+            setupPs();
         };
 
         vm.editPs = function(psIdx) {
             vm.editMode = true;
-            vm.curPs = vm.curTrial.sitesu_sites[psIdx];
+            vm.addMode = false;
+            vm.curPs = vm.curTrial.participating_sites[psIdx];
+            //vm.curPs = vm.curTrial.sitesu_sites[psIdx];
             vm.addedStatuses = [];
             vm.srsNum = 0;
             vm.selectedPiArray = [];
-            setSitePi();
-            appendStatuses();
+
+            //setSitePi();
+            //appendStatuses();
+            setupPs();
         };
 
         activate();
 
         /****************************** implementations **************************/
-
         function activate() {
+            if (vm.isManageScreen) {
+                activateManage();
+            } else {
+                vm.curPs = psDetailObj || {};
+                vm.curPs = vm.curPs.data || vm.curPs;
+                vm.curTrial = trialDetailObj || vm.curPs.trial;
+
+                allowPermittedAction();
+                setupPs();
+            }
+        }
+
+        function activateManage() {
+            vm.curTrial = trialDetailObj;
+            vm.curPs = {};
+            //vm.psGridOptions.data = vm.curTrial.participating_sites;
+
             allowPermittedAction();
+            console.log('trial and ps are: ', vm.curTrial, vm.curPs);
+        }
+
+
+        function setupPs(mode) {
+            if (mode === 'reset') {
+                vm.curPs = angular.copy(vm.curPsOriginal);
+            } else {
+                vm.curPsOriginal = angular.copy(vm.curPs);
+                watchContactTypeSelection();
+                watchInvContactSelection();
+                watchPersonContactSelection();
+            }
+
+            vm.curPs.contact_type = vm.curPs.contact_type ? vm.curPs.contact_type : 'General';
+
             appendNewPsFlag();
-            setManageScreenFlag();
             populateOrgs();
             setDefaultOrg();
 
-            if (!vm.curPs.new) {
+            if (!vm.curPs.new || vm.editMode) {
                 setSitePi();
                 appendStatuses();
             }
@@ -214,10 +290,6 @@
                     });
                 }
             });
-
-            watchContactTypeSelection();
-            watchInvContactSelection();
-            watchPersonContactSelection()
         }
 
         // Redirect to search page if this user is not allowed to mange sites
@@ -238,14 +310,6 @@
                 vm.curPs.new = true;
             } else {
                 vm.curPs.new = false;
-            }
-        }
-
-        function setManageScreenFlag() {
-            if ($state.$current.name.indexOf('manage') > -1) {
-                vm.isManageScreen = true;
-            } else {
-                vm.isManageScreen = false;
             }
         }
 
@@ -273,7 +337,9 @@
                 }
             }
             $timeout( function() {
-                vm.selectedPiArray.push(vm.curPs.participating_site_investigators[vm.sitePiIdx].person);
+                if (vm.curPs.participating_site_investigators.length) {
+                    vm.selectedPiArray.push(vm.curPs.participating_site_investigators[vm.sitePiIdx].person);
+                }
             }, 1000);
         }
 
@@ -302,6 +368,7 @@
         /* Create UI relevant array with obj properties needed in the UI */
         function configurePsInvList() {
             var invList = vm.curPs.participating_site_investigators;
+            vm.invContactArray = [];
 
             _.each(invList, function(inv) {
                 var invObj = {

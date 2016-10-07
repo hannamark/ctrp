@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :import_trial_log_data
+
   resources :ct_gov_import_exports
 
   get 'validation_rule/index'
@@ -69,7 +71,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :source_statuses
+    resources :source_statuses do
+      collection do
+        post 'search'
+      end
+    end
     resources :service_requests
     resources :org_funding_mechanisms
     resources :ctep_org_types
@@ -134,6 +140,7 @@ Rails.application.routes.draw do
         post 'search'
         post 'curate'
         post 'unique', defaults: {format: 'json'}
+        get '/associate_context/:ctep_person_id/:ctrp_id', to: 'people#associate_person'
       end
     end
 

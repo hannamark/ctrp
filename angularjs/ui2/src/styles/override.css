@@ -364,6 +364,9 @@ header img {
 .top-offset-lg {
 	margin-top: 185px;
 }
+.bottom-offset-xss {
+    margin-bottom: 15px;
+}
 .bottom-offset-xs {
 	margin-bottom: 25px;
 }
@@ -860,7 +863,13 @@ h5 {
 
 .ui-grid-cell {
     line-height: 1em;
-    height: 22px !important;
+    /*height: 22px !important;*/
+    height: 25px !important;
+
+}
+
+.ui-grid-cell .ui-grid-cell-contents {
+    padding: 6px;
 }
 
 div.ui-grid-cell .ui-grid-datepicker [ng-click="select(null)"] {
@@ -1895,4 +1904,17 @@ body.trial-abstraction-search .form-horizontal label.control-label.checkbox3 {
     #typeAheadResults .btn-danger .glyphicon {
         padding: 0 6px 0 2px;
     }
+}
+
+.pagination {
+    margin: 0px 5px 0px 5px
+}
+
+.pagination > li a {
+    padding: 3px 10px;
+}
+
+.pagination-text {
+    margin-left: 5px;
+    color: #444;
 }

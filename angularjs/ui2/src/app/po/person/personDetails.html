@@ -82,9 +82,37 @@
                             </div>
                             <div class="col-xs-12 col-sm-6 form-text" ng-if="!personDetailView.curPersonEditable">{{personDetailView.curPerson.suffix}}</div>
                         </div>
+                        <!-- Source ID will be R/O on Person screen -->
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-3">Source ID:</label>
+                            <div class="col-xs-12 col-sm-6 form-text">
+                                {{personDetailView.curPerson.source_id}}
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback required" ng-hide="personDetailView.curSourceContextName === 'CTRP'" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new && personDetailView.curSourceContextName !== 'CTRP'}">
+                            <label class="control-label col-xs-12 col-sm-3">Processing Status: </label>
+                            <div class="col-xs-12 col-sm-3">
+                                <div class="form-text" ng-if="personDetailView.curPerson.new" id="processing_status">{{personDetailView.curPerson.processing_status}}</div>
+                                <div ng-if="!personDetailView.curPerson.new && personDetailView.curSourceContextName === 'CTRP'">
+                                    <select name="processing_status" id="processing_status" class="form-control input-sm"
+                                        restriction-field
+                                        ng-model="personDetailView.curPerson.processing_status"
+                                        ng-init="personDetailView.processStatusArr[0]"
+                                        ng-required="!personDetailView.curPerson.new && personDetailView.curSourceContextName === 'CTRP'"
+                                        ng-options="status.name as status.name for status in personDetailView.processStatusArr">
+                                        <option value="">
+                                            Select a processing status
+                                        </option>
+                                    </select>
+                                    <span class="help-block" ng-show="ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new">
+                                        Processing Status is Required
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.source_context)}">
                             <label for="source_context" class="control-label col-xs-12 col-sm-3">Source Context:</label>
-                            <div class="col-xs-12 col-sm-6" ng-if="personDetailView.curPersonEditable">
+                            <div class="col-xs-12 col-sm-3" ng-if="personDetailView.curPersonEditable">
                                 <select restriction-field ng-init="personDetailView.curPerson.source_context_id" class="form-control input-sm" id="source_context" ng-model="personDetailView.curPerson.source_context_id" ng-options="context.id as context.name for context in personDetailView.sourceContextArr" name="source_context" required>
                                     <option value="6">Select context</option>
                                 </select>
@@ -93,26 +121,19 @@
                             </div>
                             <div class="col-xs-12 col-sm-6 form-text" ng-if="!personDetailView.curPersonEditable">{{clusterPerson.context}}</div>
                         </div>
-                        <!-- Source ID will be R/O on Person screen -->
-                        <div class="form-group">
-                            <label class="control-label col-xs-12 col-sm-3">Source ID:</label>
-                            <div class="col-xs-12 col-sm-6 form-text">
-                                {{personDetailView.curPerson.source_id}}
-                            </div>
-                        </div>
-                        <div class="form-group has-feedback required" >
-                            <label class="control-label col-xs-12 col-sm-3">Processing Status:</label>
-                            <div class="col-xs-12 col-sm-3">
-                                <div class="form-text">{{personDetailView.curPerson.processing_status}}</div>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status:</label>
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-3">
                                 <!--TODO: if editable -->
                                 <div ng-if="!personDetailView.curPersonEditable" class="form-text">{{personDetailView.curSourceStatusName}}</div>
                                 <div ng-if="personDetailView.curPersonEditable">
-                                    <select ng-init="personDetailView.curPerson.source_status_id" restriction-field class="form-control input-sm" id="source_status" ng-model="personDetailView.curPerson.source_status_id" ng-options="status.id as status.name for status in personDetailView.sourceStatusArrSelected"></select>
+                                    <select ng-init="personDetailView.curPerson.source_status_id"
+                                        restriction-field
+                                        class="form-control input-sm" id="source_status"
+                                        ng-model="personDetailView.curPerson.source_status_id"
+                                        ng-options="status.id as status.name for status in personDetailView.sourceStatusArrSelected">
+
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -162,16 +183,18 @@
                                 {{personDetailView.curPerson.updated_by}} ({{personDetailView.curPerson.person_updated_date}})
                             </div>
                         </div>
+                        <!--                             ng-class="{'has-error': ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0) && personDetailView.curPersonEditable }" -->
                         <div class="form-group has-feedback required"
+                            ng-class="{'has-error': personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.savedselection.length == 0)}"
                             ng-if="personDetailView.curPersonEditable"
-                            restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN"
-                            ng-class="{'has-error': ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0 && personDetailView.curPersonEditable)}">
+                            restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
                             <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
                             <div class="col-xs-12 col-sm-9">
                                 <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
-                                <span class="help-block" ng-show="ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0 && personDetailView.curPersonEditable)">
+                                <span class="help-block" ng-show="personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.savedselection.length == 0)">
                                     Organization Affiliation is Required
                                 </span>
+                                <!-- ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0 && personDetailView.curPersonEditable) -->
                             </div>
                         </div>
                         <div class="form-group" ng-if="personDetailView.curPersonEditable">
@@ -190,7 +213,7 @@
                                         <tbody>
                                         <tr ng-repeat="org in personDetailView.savedSelection | filter: {'name': personDetailView.selectedOrgFilter} track by $index" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                             <td>{{org.id}}</td>
-                                            <td>{{org.name}}</td>
+                                            <td><a ui-sref="main.orgDetail({orgId: org.id})">{{org.name}}</a></td>
                                             <td>
                                                 <div class="input-group add-on date datepicker">
                                                     <input type="text" class="form-control input-sm" restriction-field
@@ -231,6 +254,18 @@
                                 <!-- row for the table ends -->
                                 <!--</div>-->
                             </div>
+                        </div>
+                        <div class="form-group"
+                            ng-if="personDetailView.curSourceContextName === 'CTRP' && !personDetailView.curPerson.new" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
+                            <label for="person_context" class="control-label col-sm-3 col-xs-12">Associate Person Context:</label>
+                            <div class="col-sm-5 col-xs-12">
+                                <button type="button" class="btn btn-primary" person-search-modal-button2 source-context-only="'CTEP'" ng-model="personDetailView.associatedPersonContexts" restriction-field>
+                                    <i class="glyphicon glyphicon-search"></i> Search Persons
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group animated-item" ng-show="personDetailView.associatedPersonContexts.length > 0">
+                            <h4>Associated Persons</h4>
                         </div>
                         <div class="form-group no-bottom-margin" ng-show="personDetailView.curPersonEditable" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
                             <div class="col-xs-12 col-sm-3"></div>
