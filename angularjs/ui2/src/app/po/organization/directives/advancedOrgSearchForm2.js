@@ -539,7 +539,7 @@
 
 
                     allSearchParams.start = null;
-                    allSearchParams.rows = 10000000; // To get back all results, for now
+                    allSearchParams.rows = null;
 
                     return OrgService.searchOrgs(allSearchParams).then(
                         function (data) {
