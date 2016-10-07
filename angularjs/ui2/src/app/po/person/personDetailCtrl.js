@@ -368,7 +368,9 @@
                     PersonService.associatePersonContext(ctepPerson.id, vm.curPerson.ctrp_id).then(function(res) {
                         console.info('res with association person: ', res); // resp.person
                         vm.associatedPersonContexts = []; // clean up
-                        vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id}); 
+                        if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: 'CTEP'}) === -1) {
+                            vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id});                            
+                        }
                     }).catch(function(err) {
                         console.error('err: ', err);
                     });
