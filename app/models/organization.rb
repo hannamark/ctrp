@@ -366,7 +366,6 @@ class Organization < ActiveRecord::Base
     join_clause = "
       INNER JOIN source_contexts ON organizations.source_context_id = source_contexts.id
       INNER JOIN source_statuses ON organizations.source_status_id = source_statuses.id
-      LEFT JOIN family_memberships ON organizations.id = family_memberships.organization_id
       LEFT JOIN (
         select family_memberships.id, family_memberships.organization_id, families.name
         from family_memberships
