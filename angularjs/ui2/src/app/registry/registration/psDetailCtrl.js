@@ -31,7 +31,14 @@
         vm.addMode = false;
         vm.selectedInvContact;
         vm.invContactArray = [];
-        vm.itemsPerPage = 1;
+        vm.itemsOptions = {
+            data: [
+                {id: 1, value: 25},
+                {id: 2, value: 50},
+                {id: 3, value: 100}
+            ],
+            selectedOption: {id: 1, value: 25}
+        };
 
         vm.updatePs = function() {
             // Prevent multiple submissions
@@ -330,7 +337,9 @@
                 }
             }
             $timeout( function() {
-                vm.selectedPiArray.push(vm.curPs.participating_site_investigators[vm.sitePiIdx].person);
+                if (vm.curPs.participating_site_investigators.length) {
+                    vm.selectedPiArray.push(vm.curPs.participating_site_investigators[vm.sitePiIdx].person);
+                }
             }, 1000);
         }
 

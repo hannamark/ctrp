@@ -77,21 +77,6 @@ class Organization < ActiveRecord::Base
 
   after_create   :save_id_to_ctrp_id
 
-  # Get CTEP ID from the CTEP context org in the cluster, comma separate them if there are multiple
-  def ctep_id
-    ctep_id_arr = []
-    ctep_id_arr = Organization.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:source_id) if self.ctrp_id.present?
-    ctep_id_str = ""
-    ctep_id_arr.each_with_index { |e, i|
-      if i > 0
-        ctep_id_str += ", #{e}"
-      else
-        ctep_id_str += e
-      end
-    }
-    return ctep_id_str
-  end
-
 
   def nullifiable
     isNullifiable =true;
@@ -273,18 +258,18 @@ class Organization < ActiveRecord::Base
   end
 
   # Scope definitions for search
-  scope :contains, -> (column, value) { where("organizations.#{column} ilike ?", "%#{value}%") }
+  scope :contains, -> (column, value) { where("#{column} ilike ?", "%#{value}%") }
 
-  scope :matches, -> (column, value) { where("organizations.#{column} = ?", "#{value}") }
+  scope :matches, -> (column, value) { where("#{column} = ?", "#{value}") }
 
   scope :matches_wc, -> (column, value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
-      where("organizations.#{column} ilike ?", "%#{value[1..str_len - 1]}")
+      where("#{column} ilike ?", "%#{value[1..str_len - 1]}")
     elsif value[0] != '*' && value[str_len - 1] == '*'
-      where("organizations.#{column} ilike ?", "#{value[0..str_len - 2]}%")
+      where("#{column} ilike ?", "#{value[0..str_len - 2]}%")
     elsif value[0] == '*' && value[str_len - 1] == '*'
-      where("organizations.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
+      where("#{column} ilike ?", "%#{value[1..str_len - 2]}%")
     else
       if !wc_search
         if !value.match(/\s/).nil?
@@ -366,20 +351,49 @@ class Organization < ActiveRecord::Base
   }
 
   scope :sort_by_col, -> (column, order) {
-    if Organization.columns_hash[column] && Organization.columns_hash[column].type == :integer
-      order("#{column} #{order}")
-    elsif column == 'source_context'
-      joins("LEFT JOIN source_contexts ON source_contexts.id = organizations.source_context_id").order("source_contexts.name #{order}").group(:'source_contexts.name')
-    elsif column == 'source_status'
-      joins("LEFT JOIN source_statuses ON source_statuses.id = organizations.source_status_id").order("source_statuses.name #{order}").group(:'source_statuses.name')
-    else
-      order("LOWER(organizations.#{column}) #{order}")
+    if ['source_context','source_status'].include? column
+      column += "_name"
     end
+    order("#{column} #{order}")
   }
   scope :updated_date_range, -> (dates) {
     start_date = DateTime.parse(dates[0])
     end_date = DateTime.parse(dates[1])
     where("organizations.updated_at BETWEEN ? and ?", start_date, end_date)
+  }
+
+  scope :all_orgs_data, -> (params) {
+    join_clause = "
+      INNER JOIN source_contexts ON organizations.source_context_id = source_contexts.id
+      INNER JOIN source_statuses ON organizations.source_status_id = source_statuses.id
+      LEFT JOIN family_memberships ON organizations.id = family_memberships.organization_id
+      LEFT JOIN (
+        select family_memberships.id, family_memberships.organization_id, families.name
+        from family_memberships
+/* need to add this in when families is fixed
+        where (family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
+              and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)
+*/
+	      LEFT JOIN families on family_memberships.family_id = families.id
+      )  as unexpired_family_membership ON organizations.id = unexpired_family_membership.organization_id
+      LEFT JOIN (
+              SELECT organizations_for_ctep.ctrp_id, string_agg(organizations_for_ctep.source_id, ',') as ctep_id from organizations as organizations_for_ctep
+              INNER JOIN source_contexts ON source_contexts.id = organizations_for_ctep.source_context_id
+              where source_contexts.code = 'CTEP' and organizations_for_ctep.ctrp_id is not null
+              GROUP BY organizations_for_ctep.ctrp_id
+      ) as all_cteps_by_ctrp_id on organizations.ctrp_id = all_cteps_by_ctrp_id.ctrp_id
+    "
+    where_clause = ""
+    if  params && params[:id]
+      where_clause = " organizations.id = #{params[:id]} "
+    end
+    joins(join_clause).where(where_clause).select("
+      organizations.*,
+      all_cteps_by_ctrp_id.ctep_id,
+      source_statuses.name as source_status_name,
+      source_contexts.name as source_context_name,
+      unexpired_family_membership.name as aff_families_names
+    ")
   }
 end
 

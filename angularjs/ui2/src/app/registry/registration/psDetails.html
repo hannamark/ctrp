@@ -52,13 +52,10 @@
                             <tfoot>
                     			<tr>
                     				<td colspan="11" class="col-sm-12">
-                    					<div class="pull-left" st-pagination="" st-items-by-page="psDetailView.itemsPerPage" st-displayed-pages="7"></div>
+                    					<div class="pull-left" st-pagination="" st-items-by-page="psDetailView.itemsOptions.selectedOption.value" st-displayed-pages="7"></div>
                                         <div class="pull-left">
-                                            <select class="form-control input-sm" name="itemsPerPage" id="itemsPerPage" ng-model="psDetailView.itemsPerPage">
-                                                <option value="1">1</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
+                                            <select class="form-control input-sm" name="itemsPerPage" id="itemsPerPage" ng-model="psDetailView.itemsOptions.selectedOption"
+                                                ng-options="item.value for item in psDetailView.itemsOptions.data track by item.id">
                                             </select>
                                         </div>
                                         <div class="pull-left form-text pagination-text">

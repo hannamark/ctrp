@@ -23,7 +23,7 @@
         <div class="row">
             <form class="form form-horizontal" role="form" name="trial_form" novalidate ctrp-submit="trialDetailView.updateTrial()" unsaved-changes>
                 <uib-accordion close-others="false">
-                    <div uib-accordion-group class="panel-default"  ng-if="['amend'].indexOf(trialDetailView.curTrial.edit_type) > -1" is-open="trialDetailView.accordions[0]">
+                    <div uib-accordion-group class="panel-default" ng-if="['amend'].indexOf(trialDetailView.curTrial.edit_type) > -1" is-open="trialDetailView.accordions[0]">
                         <uib-accordion-heading>
                             Amendment Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[0], 'glyphicon-chevron-right': !trialDetailView.accordions[0]}"></i>
                         </uib-accordion-heading>
@@ -901,7 +901,7 @@
                         </div>
                     </div>
 
-                    <div uib-accordion-group class="panel-default"  is-open="trialDetailView.accordions[10]">
+                    <div uib-accordion-group class="panel-default" is-open="trialDetailView.accordions[10]">
                         <uib-accordion-heading>
                             Regulatory Information  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[10], 'glyphicon-chevron-right': !trialDetailView.accordions[10]}"></i>
                         </uib-accordion-heading>
@@ -1193,8 +1193,7 @@
                         <div class="form-group has-feedback" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.participating_sites)}">
                             <label class="control-label col-xs-12 col-sm-3">List of Participating Sites:</label>
                             <div class="col-xs -12 col-sm-9 form-file-upload">
-                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.participating_sites" name="participating_sites" ngf-max-size="10MB"
-                                       validate-file-type="{{trialDetailView.acceptedFileExtensions}}">
+                                <input type="file" restriction-field ngf-select ng-model="trialDetailView.participating_sites" name="participating_sites" ngf-max-size="10MB" validate-file-type="{{trialDetailView.acceptedFileExtensions}}">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.participating_sites) && trial_form.participating_sites.$error.validateFileType">
                                     Valid file is Required. Allowed file types: {{trialDetailView.acceptedFileExtensions}}
                                 </span>
@@ -1287,6 +1286,72 @@
                                 <a ng-class="document._destroy == true ? 'deleted-text animated-item' : 'animated-item'" href="{{trialDetailView.downloadBaseUrl}}/{{document.id}}">{{document.file_name}}</a>
                                 <span ng-show="trialDetailView.isDocDeletionAllowed" restriction-field ng-click="trialDetailView.toggleSelection($index, 'document')" class="btn glyphicon glyphicon-trash"></span>
                                 <br>{{document.document_subtype}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div uib-accordion-group is-open="trialDetailView.accordions[12]" class="panel-default" ng-show="!trialDetailView.curTrial.new && (trialDetailView.curTrial.edit_type === 'update' || trialDetailView.curTrial.edit_type === 'amend')">
+                        <uib-accordion-heading>
+                            Participating Sites <i class="glyphicon glyphicon-edit" title="Editable Section" aria-label="Editable Section"></i> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': trialDetailView.accordions[12], 'glyphicon-chevron-right': !trialDetailView.accordions[12]}"></i>
+                        </uib-accordion-heading>
+
+                        <div class="form-group">
+                            <div class="col-sm-12 table-responsive" ng-show="trialDetailView.curTrial.participating_sites.length > 0">
+                                <h5>List of Participating Sites:</h5>
+                                <table st-table="trialDetailView.curTrial.participating_sites" class="table table-bordered table-striped table-condensed">
+                                    <thead>
+                                        <th>CTRP ID</th>
+                                        <th>CTRP Organization Name</th>
+                                        <th>Principal Investigator</th>
+                                        <th>Local Trial Id</th>
+                                        <th>Program Code</th>
+                                        <th>Current Site Recruitment Status</th>
+                                        <th>Current Site Recruitment Status Date</th>
+                                        <th>Primary Contact</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Edit</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="ps in trialDetailView.curTrial.participating_sites track by $index">
+                                            <td class="col-sm-1">{{ps.organization.id}}</td>
+                                            <td class="col-sm-2">{{ps.organization.name}}</td>
+                                            <td class="col-sm-1">{{ps.view_investigators}}</td>
+                                            <td class="col-sm-1">{{ps.protocol_id}}</td>
+                                            <td class="col-sm-1">{{ps.program_code}}</td>
+                                            <td class="col-sm-1">{{ps.current_status_name}}</td>
+                                            <td class="col-sm-1">{{ps.latest_site_recruitment_status_date | dateFormat }}</td>
+                                            <td class="col-sm-1">{{ps.contact_name}}</td>
+                                            <td class="col-sm-1">{{ps.contact_email}}</td>
+                                            <td class="col-sm-1">
+                                                {{ps.contact_phone}}
+                                                <span ng-show="ps.extension">
+                                                    ext. {{ps.extension}}
+                                                </span>
+                                            </td>
+                                            <td class="col-sm-1">
+                                                <button type="button" restriction-field class="btn btn-primary" ng-click="trialDetailView.editParticipatingSite($index)">
+                                                    <i class="glyphicon glyphicon-edit"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                            			<tr>
+                            				<td colspan="11" class="col-sm-12">
+                            					<div class="pull-left" st-pagination="" st-items-by-page="trialDetailView.itemsOptions.selectedOption.value" st-displayed-pages="7"></div>
+                                                <div class="pull-left">
+                                                    <select class="form-control input-sm" name="itemsPerPage" id="itemsPerPage" ng-model="trialDetailView.itemsOptions.selectedOption"
+                                                        ng-options="item.value for item in trialDetailView.itemsOptions.data track by item.id">
+                                                    </select>
+                                                </div>
+                                                <div class="pull-left form-text pagination-text">
+                                                    <span> items per page</span>
+                                                </div>
+                            				</td>
+                            			</tr>
+                            		</tfoot>
+                                </table>
                             </div>
                         </div>
                     </div>

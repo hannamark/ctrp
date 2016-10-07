@@ -10,7 +10,7 @@ When I select one or more of the following
 |First Name|
 |Last Name|
 |Context Person ID|
-|Affiliation|#type ahead
+|Affiliation #type ahead|
 |Source Context|
 |Source ID|
 |Source Status|
