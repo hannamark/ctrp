@@ -8,10 +8,10 @@ Feature: PAM F28 I can view Organization Details as "Abstractor" and "Read Only"
      Then the organization details screen will displayed 
 When the context is CTRP
 Then the following fields will be displayed
-|CTRP ID|#Grouping ID
+|CTRP ID #Grouping ID|
 |Organization Name|
 |Family Name|
-|Context Organization ID|#Primary Key
+|Context Organization ID  #Primary Key|
 |Source Status|
 |Source Context|
 |Source ID|
@@ -32,10 +32,10 @@ Then the following fields will be displayed
 And when there are other contexts for this organization
 When the context is CTEP
 Then the following fields will be displayed
-|CTRP ID|#Grouping ID
+|CTRP ID #Grouping ID|
 |Organization Name|
 |CTEP Organization Type|
-|Context Organization ID|#Primary Key
+|Context Organization ID  #Primary Key|
 |Source Status|
 |Source Context|
 |Source ID|
@@ -59,7 +59,7 @@ When the context is NLM
 Then the following fields will be displayed
 |CTRP ID|#Grouping ID
 |Organization Name|
-|Context Organization ID|#Primary Key
+|Context Organization ID #Primary Key|
 |Source Status|
 |Source Context|
 |Source ID|
