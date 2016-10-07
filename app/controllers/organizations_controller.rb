@@ -154,16 +154,6 @@ class OrganizationsController < ApplicationController
       # ctrp_ids is used for retrieving the cluster of orgs when searching by source_id
       ctrp_ids = Organization.matches_wc('source_id', params[:source_id],@current_user.role).pluck(:ctrp_id) if params[:source_id].present?
       @organizations = filterSearch Organization.all_orgs_data(params),  ctrp_ids
-      p "*****"
-      p "*****"
-      p "*****"
-      p "*****"
-      p "*****"
-      p "*****"
-      p "*****"
-      p "*****"
-      p @organizations
-      p "TTTTTT"
     end
   end
 
