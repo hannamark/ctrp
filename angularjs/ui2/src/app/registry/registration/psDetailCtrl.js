@@ -33,11 +33,11 @@
         vm.invContactArray = [];
         vm.itemsOptions = {
             data: [
-                {id: 1, value: 25},
+                {id: 1, value: 1},
                 {id: 2, value: 50},
                 {id: 3, value: 100}
             ],
-            selectedOption: {id: 1, value: 25}
+            selectedOption: {id: 1, value: 1}
         };
 
         vm.updatePs = function() {
