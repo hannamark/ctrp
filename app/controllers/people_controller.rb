@@ -135,12 +135,12 @@ class PeopleController < ApplicationController
           @current_user.role == "ROLE_ADMIN")
         source_context_id = SourceContext.where(code: params[:source_context]) if params[:source_context].present?
         @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
-        @people = @people.with_source_status(params[:source_status], source_context_id) if params[:source_status].present?
+        # @people = @people.with_source_status(params[:source_status], source_context_id) if params[:source_status].present?
       else
         # TODO need constant for CTRP
         @people = @people.with_source_context("CTRP")
         # TODO need constant for Active
-        @people = @people.with_source_status("Active")
+        # @people = @people.with_source_status("Active")
       end
 
       # if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
