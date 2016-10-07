@@ -300,4 +300,120 @@ Scenario Outline: #4a Trial Status Abstraction Validation Warnings
 |PAS arms/groups	                                |Arm is null	                                                                                                                                    |Arms/Groups are missing 	                                                                                                                                |	[Select Arms/Groups] from Scientific Data menu.	|
 |PAS arms/groups	                                |Arm Label is more than 62 characters	                                                                                                            |Arm label cannot be more than 62 characters                                                                                                              	|	[Select Arms/Groups] from Scientific Data menu.	|
 |PAS Biomarkers	                                    |The status of any Biomarker is pending	                                                                                                            |At least one pending biomarker exists on the trial.                                                                              	                        |	[Select Biomarkers] from Scientific Data menu.	|
+# On Hold
+   # Scenario Outline: #6 Abstraction Validation rules for Status/Dates relationships for "Trial Start Date"
+   # Given I have selected the option to register a trial <trialType>
+   # And I am on the Trial Dates Section
+    #When Current Trial Status is <TrialStatusType> then for the "Trial Start Date" below rules for "Anticipated" <DateTypeAnticipated>, the error <DateTypeAnticipatedError> and the comment <Comment> should be there
+      #|TrialStatusType                                  |DateTypeAnticipated                | DateTypeAnticipatedError                                                                          |Comment
+      #|Active                                           |not allowed                        |If current Trial Status is Active, Trial Start Date must be Actual                                 |[Select Trial Status] from Administrative Data menu to view Trial Status.	|
+      #|Enrolling by Invitation                          |not allowed                        |If current Trial Status is Enrolling by Invitation, Trial Start Date must be Actual                |[Select Trial Status] from Administrative Data menu to view Trial Status.	|
+      #|Closed to Accrual                                |not allowed                        |If current Trial Status is Closed to Accrual, Trial Start Date must be Actual                      |[Select Trial Status] from Administrative Data menu to view Trial Status.	|
+      #|Closed to Accrual and Intervention               |not allowed                        |If current Trial Status is Closed to Accrual and Intervention, Trial Start Date must be Actual            |[Select Trial Status] from Administrative Data menu to view Trial Status.	|
+      #|Temporarily Closed to Accrual                    |not allowed                        |If current Trial Status is Temporarily Closed to Accrual, Trial Start Date must be Actual                  |[Select Trial Status] from Administrative Data menu to view Trial Status.	|
+      #|Temporarily Closed to Accrual and Intervention   |not allowed                        |If current Trial Status is Temporarily Closed to Accrual and Intervention, Trial Start Date must be Actual |[Select Trial Status] from Administrative Data menu to view Trial Status.	|
+      #|Administratively Complete                        |not allowed                        |If current Trial Status is Administratively Complete, Trial Start Date must be Actual                      |[Select Trial Status] from Administrative Data menu to view Trial Status.	|
+      #|Complete                                         |not allowed                        |If current Trial Status is Complete, Trial Start Date must be Actual                                       |[Select Trial Status] from Administrative Data menu to view Trial Status.	|
+
+   # Examples:
+      #|trialType  |
+      #|National                 |
+      #|Externally Peer-Reviewed |
+      #|Institutional            |
+
+
+  #Scenario Outline: #7 Abstraction Validation Rules for Status/Dates relationships for "Primary Completion Date"
+    #Given I have selected the option to register a trial <trialType>
+    #And I am on the Trial Dates Section
+    #When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "Anticipated" <DateTypeAnticipated>, the error <DateTypeAnticipatedError> and the comment <Comment> should be there
+      #|TrialStatusType                                |DateTypeAnticipated               | DateTypeAnticipatedError                                                                    |Comment|
+      #|Administratively Complete                      |not allowed                       |If current Trial Status is Administratively Complete, Primary Completion Date must be Actual |[Select Trial Status] from Administrative Data menu to view Trial Status.	|
+      #|Complete                                       |not allowed                       |If current Trial Status is Complete, Primary Completion Date must be Actual                  |[Select Trial Status] from Administrative Data menu to view Trial Status.	|
+    
+    # Examples:
+      #|trialType  |
+      #|National                 |
+      #|Externally Peer-Reviewed |
+      #|Institutional            |
+
+  
+       
+       #Scenario Outline: #8 Rules for Status/Dates relationships for "Primary Completion Date"
+    #Given I have selected the option to register a trial <trialType>
+    #And I am on the Trial Dates Section                       
+      #And the Clinical Research Category type is "Interventional"
+      #When Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "NA" <DateTypeNA>, the error <DateTypeErrorNA> and the Comment <Comment> should be there
+     
+      #|TrialStatusType                                |DateTypeNA         | DateTypeErrorNA           |
+      #|In Review                                      |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials | Comment                        |
+      #|Approved                                       |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials |[Select Trial Status] from Administrative Data menu to view Trial Status.
+      #|Active                                         |NOT allowed         |Primary Completion Date Type of NA is not available for Interventional Trials|[Select Trial Status] from Administrative Data menu to view Trial Status.                          |
+      #|Enrolling by Invitation                        |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|[Select Trial Status] from Administrative Data menu to view Trial Status.                           |
+      #|Closed to Accrual                              |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|[Select Trial Status] from Administrative Data menu to view Trial Status.                           |
+      #|Closed to Accrual and Intervention             |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|[Select Trial Status] from Administrative Data menu to view Trial Status.                           |
+      #|Temporarily Closed to Accrual                  |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|[Select Trial Status] from Administrative Data menu to view Trial Status.                           |
+      #|Temporarily Closed to Accrual and Intervention |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|[Select Trial Status] from Administrative Data menu to view Trial Status.                           |
+      #|Withdrawn                                      |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|[Select Trial Status] from Administrative Data menu to view Trial Status.                           |
+      #|Administratively Complete                      |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|[Select Trial Status] from Administrative Data menu to view Trial Status.                           |
+      #|Complete                                       |NOT allowed        |Primary Completion Date Type of NA is not available for Interventional Trials|[Select Trial Status] from Administrative Data menu to view Trial Status.                           |   
+      
+       # Examples:
+      #|trialType  |
+      #|National                 |
+      #|Externally Peer-Reviewed |
+      #|Institutional            |
+
+ 	
+    #Scenario Outline: #9 Rules for Status/Dates relationships for "Primary Completion Date"
+    #Given I have selected the option to register a trial <trialType>
+    #And I am on the Trial Dates Section
+	 #When the trial is NOT a DCP Trial
+      #Then Current Trial Status is <TrialStatusType> then for the "Primary Completion Date" below rules for "NA" <DateTypeNA>, the error <DateTypeErrorNA> and the Comment <Comment> should be there
+     
+      #|TrialStatusType                                |DateTypeNA         | DateTypeErrorNA                                                    |Comment                  |
+      #|In Review                                      |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+      #|Approved                                       |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+      #|Active                                         |NOT allowed         |Primary Completion Date Type of NA is available only for DCP Trials|[Select Trial Status] from Administrative Data menu to view Trial Status.|
+      #|Enrolling by Invitation                        |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+      #|Closed to Accrual                              |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+      #|Closed to Accrual and Intervention             |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+      #|Temporarily Closed to Accrual                  |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+      #|Temporarily Closed to Accrual and Intervention |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+      #|Withdrawn                                      |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+      #|Administratively Complete                      |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+      #|Complete                                       |NOT allowed        |Primary Completion Date Type of NA is available only for DCP Trials |[Select Trial Status] from Administrative Data menu to view Trial Status.|   
+      
+
+    #Examples:
+      #|trialType  |
+      #|National                 |
+      #|Externally Peer-Reviewed |
+      #|Institutional            |
+
+
+       #Scenario Outline: #10 Rules for Status/Dates relationships for "Completion Date"
+       #Given I have selected the option to register a trial <trialType>
+       #And I am on the Trial Dates Section
+   # When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Actual" <DateTypeActual>, the error <DateTypeActualError> and the Comment <Comment> should be there
+      #|TrialStatusType                                |DateTypeActual                       | DateTypeActualError                                                                                           |Comment                                                                    |
+      #|In Review                                      |not allowed                          |If current Trial Status is In Review, Completion Date must be Anticipated                                      |[Select Trial Status] from Administrative Data menu to view Trial Status.  |
+      #|Approved                                       |not allowed                          |If current Trial Status is Approved, Completion Date must be Anticipated                                       |[Select Trial Status] from Administrative Data menu to view Trial Status.  |
+      #|Active                                         |not allowed                          |If current Trial Status is Active, Completion Date must be Anticipated                                         |[Select Trial Status] from Administrative Data menu to view Trial Status.  |
+      #|Enrolling by Invitation                        |not allowed                          |If current Trial Status is Enrolling by Invitation, Completion Date must be Anticipated                        |[Select Trial Status] from Administrative Data menu to view Trial Status.  |
+      #|Closed to Accrual                              |not allowed                          |If current Trial Status is Closed to Accrual, Completion Date must be Anticipated                              |[Select Trial Status] from Administrative Data menu to view Trial Status.  |
+      #|Closed to Accrual and Intervention             |not allowed                          |If current Trial Status is Closed to Accrual and Intervention, Completion Date must be Anticipated             |[Select Trial Status] from Administrative Data menu to view Trial Status.  |
+      #|Temporarily Closed to Accrual                  |not allowed                          |If current Trial Status is Temporarily Closed to Accrual, Completion Date must be Anticipated                  |[Select Trial Status] from Administrative Data menu to view Trial Status.  |
+      #|Temporarily Closed to Accrual and Intervention |not allowed                          |If current Trial Status is Temporarily Closed to Accrual and Intervention, Completion Date must be Anticipated |[Select Trial Status] from Administrative Data menu to view Trial Status.  |
+      #|Withdrawn                                      |not allowed                          |If current Trial Status is Withdrawn, Completion Date must be Anticipated                                      |[Select Trial Status] from Administrative Data menu to view Trial Status.  |
+     
+   # When Current Trial Status is <TrialStatusType> then for the "Completion Date" below rules for "Anticipated" <DateTypeAnticipated>, the error <DateTypeAnticipatedError> and the Comment <Comment> should be there
+      #|TrialStatusType                                |DateTypeAnticipated                  | DateTypeAnticipatedError                                                            |Comment                                                |
+      #|Administratively Complete                      |not allowed                          |If current Trial Status is Administratively Complete, Completion Date must be Actual |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+      #|Complete                                       |not allowed                          |If current Trial Status is Complete, Completion Date must be Actual                  |[Select Trial Status] from Administrative Data menu to view Trial Status.|
+
+    #Examples:
+      #|trialType  |
+      #|National                 |
+      #|Externally Peer-Reviewed |
+      #|Institutional            |
 
