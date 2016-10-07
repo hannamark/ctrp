@@ -98,6 +98,14 @@
         vm.isDocDeletionAllowed = latestSubNum === -1; // only allow deletion in original registration
         vm.changeMemoDoc = {file_name: ''};
         vm.proHighlightedDoc = {file_name: ''};
+        vm.itemsOptions = {
+            data: [
+                {id: 1, value: 25},
+                {id: 2, value: 50},
+                {id: 3, value: 100}
+            ],
+            selectedOption: {id: 1, value: 25}
+        };
 
         var milestones = getMilestoneCodes(vm.curTrial);
         console.info('milestones: ', milestones);
@@ -432,12 +440,12 @@
 
 
         vm.collapseAccordion = function() {
-            vm.accordions = [false, false, false, false, false, false, false, false, false, false, false, false];
+            vm.accordions = [false, false, false, false, false, false, false, false, false, false, false, false, false];
             vm.collapsed = true;
         };
 
         vm.expandAccordion = function() {
-            vm.accordions = [true, true, true, true, true, true, true, true, true, true, true, true];
+            vm.accordions = [true, true, true, true, true, true, true, true, true, true, true, true, true];
             vm.collapsed = false;
         };
 
@@ -1083,6 +1091,42 @@
             }
         };
 
+        vm.editParticipatingSite = function(index) {
+            var curPs = vm.curTrial.participating_sites[index];
+
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/registry/registration/psDetails.html',
+                controller: 'psDetailCtrl as psDetailView',
+                size: 'lg',
+                backdrop: 'static',
+                resolve: {
+                    TrialService: 'TrialService',
+                    UserService: 'UserService',
+                    PATrialService: 'PATrialService',
+                    psDetailObj: function($q) {
+                        return curPs;
+                    },
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    userDetailObj: function(UserService) {
+                        return UserService.getCurrentUserDetails();
+                    },
+                    srStatusObj: function(TrialService) {
+                        return TrialService.getSrStatuses();
+                    },
+                    centralContactTypes: function(PATrialService) {
+                        return PATrialService.getCentralContactTypes();
+                    }
+                }
+
+            });
+
+            modalInstance.result.then(function () {
+                //console.log('modal closed, TODO redirect');
+            });
+        }
+
         activate();
 
         /*
@@ -1090,7 +1134,7 @@
             isOpenByDefault value is only important for accordion groups that do not have any writeable fields when edit_type === 'update'
         */
         vm.isOpenByDefault =  vm.curTrial.new || vm.curTrial.edit_type === 'complete' || vm.curTrial.edit_type === 'amend';
-        vm.accordions = [true, true, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, true, true, true, true, vm.isOpenByDefault, true];
+        vm.accordions = [true, true, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, true, true, true, true, vm.isOpenByDefault, vm.isOpenByDefault];
 
         /****************** implementations below ***************/
         function activate() {
