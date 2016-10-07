@@ -370,6 +370,7 @@
                         vm.associatedPersonContexts = []; // clean up
                         if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: 'CTEP'}) === -1) {
                             vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id});
+                            vm.curPerson.associated_persons.push(res.person); // TODO: populate the source_context and source_status with string 
                         }
                     }).catch(function(err) {
                         console.error('err: ', err);
