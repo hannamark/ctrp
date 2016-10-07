@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161006202735) do
+ActiveRecord::Schema.define(version: 20161007134941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -963,6 +963,7 @@ ActiveRecord::Schema.define(version: 20161006202735) do
     t.string   "extension",              limit: 255
     t.string   "processing_status"
     t.datetime "association_start_date"
+    t.string   "service_request"
   end
 
   add_index "people", ["source_context_id"], name: "index_people_on_source_context_id", using: :btree

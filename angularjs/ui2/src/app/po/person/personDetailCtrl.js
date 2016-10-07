@@ -16,6 +16,7 @@
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
+        console.info('vm.curPerson: ', vm.curPerson);
         vm.curPerson.processing_status = 'Complete';
         vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
@@ -364,11 +365,13 @@
                 console.info('vm.associatedPersonContexts: ', newVal);
                 if (!!newVal && angular.isArray(newVal) && newVal.length > 0) {
                     var ctepPerson = newVal[0];
-                    console.info('ctepPersonId: ', ctepPerson.id);
-                    console.info('ctrp person ctrp id: ', vm.curPerson.ctrp_id);
                     PersonService.associatePersonContext(ctepPerson.id, vm.curPerson.ctrp_id).then(function(res) {
                         console.info('res with association person: ', res); // resp.person
                         vm.associatedPersonContexts = []; // clean up
+                        if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: 'CTEP'}) === -1) {
+                            vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id});
+                            vm.curPerson.associated_persons.push(res.person); // TODO: populate the source_context and source_status with string 
+                        }
                     }).catch(function(err) {
                         console.error('err: ', err);
                     });

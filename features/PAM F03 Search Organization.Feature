@@ -7,9 +7,9 @@ Scenario: #1 I am able to search for organizations
 Given I am logged into the CTRP
 And I have selected the option "Search Organizations"
 When I selected one or more of the values to search all trials
-|Organization Name| #(type ahead)
+|Organization Name  #(type ahead)|
 |Family Name|
-|Context Organization ID|#Primary Key
+|Context Organization ID #Primary Key|
 |Source Status|
 |Source Context|
 |Source ID|
@@ -39,7 +39,7 @@ Then the system should display the organizations search results for organizatons
 |State|
 |Country|
 |Postal Code|
-|Context Organization ID|#Primary Key
+|Context Organization ID #Primary Key|
 |Processing Status|
 |Service Request|
 |Last Updated By|
