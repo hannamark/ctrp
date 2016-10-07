@@ -55,7 +55,7 @@
             $scope.searchWarningMessage = '';
             $scope.processingStatuses = OrgService.getProcessingStatuses();
             $scope.serviceRequests = [];
-            $scope.userRole = !!UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+            $scope.userRole = UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
             $scope.dateFormat = DateService.getFormats()[1];
             $scope.searching = false;
 
@@ -99,10 +99,10 @@
                         orgNames = res.orgs.map(function (org) {
                             return org.name;
                         });
-
-                        return uniqueNames = orgNames.filter(function (name) {
+                        uniqueNames = orgNames.filter(function (name) {
                             return uniqueNames.indexOf(name) === -1;
                         });
+                        return uniqueNames;
                     }
                 });
             }; //typeAheadNameSearch
@@ -122,7 +122,7 @@
 
                 _.keys($scope.searchParams).forEach(function (key) {
 
-                    if(ignoreKeys.indexOf(key) === -1 && $scope.searchParams[key] != '')
+                    if(ignoreKeys.indexOf(key) === -1 && $scope.searchParams[key] !== '')
                         isEmptySearch = false;
                 });
                 if(isEmptySearch && newSearchFlag === 'fromStart') {
@@ -284,7 +284,7 @@
                 switch (range) {
                     case 'today':
                         $scope.searchParams.startDate = today;
-                        $scope.searchParams.endDate = today;;
+                        $scope.searchParams.endDate = today;
                         break;
                     case 'yesterday':
                         $scope.searchParams.startDate = moment().add(-1, 'days').toDate();
@@ -331,7 +331,7 @@
                 getPromisedData();
                 prepareGidOptions();
 
-                if (fromStateName != 'main.orgDetail') {
+                if (fromStateName !== 'main.orgDetail') {
                     $scope.resetSearch();
                 } else {
                    $scope.searchOrgs(); //refresh search results
@@ -385,7 +385,7 @@
                 $scope.$watch('searchParams.country', function (newVal, oldVal) {
                     $scope.states = [];
 
-                    if (!!newVal && newVal != oldVal) {
+                    if (newVal && newVal !== oldVal) {
                         GeoLocationService.getStateListInCountry(newVal)
                             .then(function (response) {
                                 var status = response.server_response.status;
@@ -600,7 +600,7 @@
                         $scope.warningMessage = '';
                     }
 
-                    if (newVal != oldVal) {
+                    if (newVal !== oldVal) {
                         $scope.gridApi.grid.refresh();
                     }
                 });
@@ -616,7 +616,7 @@
                     $scope.toBeCurated.id_to_be_nullified = $scope.nullifiedId;
                     if ($scope.selectedRows.length === $scope.maxRowSelectable && $scope.nullifiedId) {
                         _.each($scope.selectedRows, function (curRow) {
-                            if (curRow.entity.id != $scope.nullifiedId) {
+                            if (curRow.entity.id !== $scope.nullifiedId) {
                                 $scope.toBeCurated['id_to_be_retained'] = curRow.entity.id;
                                 return;
                             }
@@ -693,7 +693,9 @@
             //pre-search results
             if ($scope.preSearch) {
                 for (var property in $scope.preSearch) {
-                    $scope.searchParams[property] = $scope.preSearch[property];
+                    if ({}.hasOwnProperty.call($scope.preSearch, property)) {
+                        $scope.searchParams[property] = $scope.preSearch[property];
+                    }
                 }
                 $scope.searchOrgs();
             }
@@ -701,4 +703,4 @@
         } //ctrpAdvancedOrgSearchController
     }
 
-})();
+}());

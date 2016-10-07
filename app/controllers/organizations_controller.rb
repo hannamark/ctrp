@@ -10,12 +10,13 @@ class OrganizationsController < ApplicationController
   # GET /organizations
   # GET /organizations.json
   def index
-    @organizations = Organization.all
+    @organizations = Organization.all_orgs_data(params)
   end
 
   # GET /organizations/1
   # GET /organizations/1.json
   def show
+    @organization = Organization.all_orgs_data(params)[0]
   end
 
   # GET /organizations/new
@@ -152,7 +153,17 @@ class OrganizationsController < ApplicationController
                         :postal_code||:email||:phone||:updated_by||:date_range_arr)
       # ctrp_ids is used for retrieving the cluster of orgs when searching by source_id
       ctrp_ids = Organization.matches_wc('source_id', params[:source_id],@current_user.role).pluck(:ctrp_id) if params[:source_id].present?
-      @organizations = filterSearch Organization.all,  ctrp_ids
+      @organizations = filterSearch Organization.all_orgs_data(params),  ctrp_ids
+      p "*****"
+      p "*****"
+      p "*****"
+      p "*****"
+      p "*****"
+      p "*****"
+      p "*****"
+      p "*****"
+      p @organizations
+      p "TTTTTT"
     end
   end
 
@@ -164,11 +175,11 @@ class OrganizationsController < ApplicationController
     end
     resultOrgs = resultOrgs.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present? && !resultOrgs.blank?
     if @current_user && User.org_write_access(@current_user)
-      resultOrgs = resultOrgs.with_source_status(params[:source_status]) if params[:source_status].present? && !resultOrgs.blank?
-      resultOrgs = resultOrgs.with_source_context(params[:source_context]) if params[:source_context].present? && !resultOrgs.blank?
+      resultOrgs = resultOrgs.matches("source_statuses.name", params[:source_status]) if params[:source_status].present? && !resultOrgs.blank?
+      resultOrgs = resultOrgs.matches("source_contexts.name", params[:source_context]) if params[:source_context].present? && !resultOrgs.blank?
     else # TODO need constant for Active
-      resultOrgs = resultOrgs.with_source_status("Active") if !resultOrgs.blank?
-      resultOrgs = resultOrgs.with_source_context("CTRP") if !resultOrgs.blank?
+      resultOrgs = resultOrgs.matches("source_status.name", "Active") if !resultOrgs.blank?
+      resultOrgs = resultOrgs.matches("source_context.name", "CTRP") if !resultOrgs.blank?
     end
     resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2 && !resultOrgs.blank?
     resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? && !resultOrgs.blank?
