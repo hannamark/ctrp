@@ -97,7 +97,10 @@
                     modalOpened = false;
                 }, function () {
                     modalOpened = false;
-                    console.log("operation canceled");
+                    if($scope.preSearch) {
+                        $scope.searchParams = null;
+                    }
+                    console.log("operation canceled", $scope.searchParams);
                 });
             }; //searchOrg
 

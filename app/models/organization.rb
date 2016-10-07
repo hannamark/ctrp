@@ -275,9 +275,9 @@ class Organization < ActiveRecord::Base
         if !value.match(/\s/).nil?
           value=value.gsub! /\s+/, '%'
         end
-        where("organizations.#{column} ilike ?", "%#{value}%")
+        where("#{column} ilike ?", "%#{value}%")
       else
-        where("organizations.#{column} ilike ?", "#{value}")
+        where("#{column} ilike ?", "#{value}")
       end
     end
   }
@@ -335,15 +335,17 @@ class Organization < ActiveRecord::Base
 
   scope :with_family, -> (value) {
     str_len = value.length
+    results = nil
     if value[0] == '*' && value[str_len - 1] != '*'
-      joins(:families).where("families.name ilike ?", "%#{value[1..str_len - 1]}")
+      results = joins(:families).where("families.name ilike ?", "%#{value[1..str_len - 1]}")
     elsif value[0] != '*' && value[str_len - 1] == '*'
-      joins(:families).where("families.name ilike ?", "#{value[0..str_len - 2]}%")
+      results =joins(:families).where("families.name ilike ?", "#{value[0..str_len - 2]}%")
     elsif value[0] == '*' && value[str_len - 1] == '*'
-      joins(:families).where("families.name ilike ?", "%#{value[1..str_len - 2]}%")
+      results = joins(:families).where("families.name ilike ?", "%#{value[1..str_len - 2]}%")
     else
-      joins(:families).where("families.name ilike ?", "#{value}")
+      results = joins(:families).where("families.name ilike ?", "#{value}")
     end
+    results.select(:organization).distinct
   }
 
   scope :without_family, -> () {
@@ -367,13 +369,16 @@ class Organization < ActiveRecord::Base
       INNER JOIN source_contexts ON organizations.source_context_id = source_contexts.id
       INNER JOIN source_statuses ON organizations.source_status_id = source_statuses.id
       LEFT JOIN (
-        select family_memberships.id, family_memberships.organization_id, families.name
-        from family_memberships
-/* need to add this in when families is fixed
-        where (family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
-              and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)
-*/
-	      LEFT JOIN families on family_memberships.family_id = families.id
+        SELECT  families_list.organization_id, string_agg(families_list.name, '; ') as family_name
+            from
+            (select family_memberships.id, family_memberships.organization_id, families.name from family_memberships
+        /* need to add this in when families is fixed
+            where (family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
+                  and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)
+        */
+            LEFT JOIN families on family_memberships.family_id = families.id
+        ) as families_list
+        GROUP BY families_list.organization_id
       )  as unexpired_family_membership ON organizations.id = unexpired_family_membership.organization_id
       LEFT JOIN (
               SELECT organizations_for_ctep.ctrp_id, string_agg(organizations_for_ctep.source_id, ',') as ctep_id from organizations as organizations_for_ctep
@@ -391,7 +396,13 @@ class Organization < ActiveRecord::Base
       all_cteps_by_ctrp_id.ctep_id,
       source_statuses.name as source_status_name,
       source_contexts.name as source_context_name,
-      unexpired_family_membership.name as aff_families_names
+       (
+          CASE
+            WHEN family_name is not null
+            THEN family_name
+            ELSE ''
+          END
+       ) as aff_families_names
     ")
   }
 end

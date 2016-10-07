@@ -173,7 +173,8 @@ class OrganizationsController < ApplicationController
     end
     resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2 && !resultOrgs.blank?
     resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? && !resultOrgs.blank?
-    resultOrgs = resultOrgs.without_family() if params[:no_family].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.where("unexpired_family_membership.no_family" => nil) if params[:no_family].present? && !resultOrgs.blank?
+
     resultOrgs = resultOrgs.with_service_request(params[:service_request]) if params[:service_request].present? && !resultOrgs.blank?
 
     matches_to_look_for = 'country,processing_status'.split(",")
