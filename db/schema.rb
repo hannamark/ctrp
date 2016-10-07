@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20161005144739) do
-=======
-ActiveRecord::Schema.define(version: 20161005143914) do
->>>>>>> 958a470da6879a3834e0ae336cb77016a8f67a94
+ActiveRecord::Schema.define(version: 20161006202735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -947,25 +943,26 @@ ActiveRecord::Schema.define(version: 20161005143914) do
   add_index "participating_sites", ["trial_id"], name: "index_participating_sites_on_trial_id", using: :btree
 
   create_table "people", force: :cascade do |t|
-    t.string   "source_id",         limit: 255
-    t.string   "prefix",            limit: 255
-    t.string   "suffix",            limit: 255
-    t.string   "email",             limit: 255
-    t.string   "phone",             limit: 255
+    t.string   "source_id",              limit: 255
+    t.string   "prefix",                 limit: 255
+    t.string   "suffix",                 limit: 255
+    t.string   "email",                  limit: 255
+    t.string   "phone",                  limit: 255
     t.integer  "source_status_id"
     t.integer  "source_context_id"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.string   "uuid",              limit: 255
-    t.integer  "lock_version",                  default: 0
-    t.string   "fname",             limit: 255
-    t.string   "mname",             limit: 255
-    t.string   "lname",             limit: 255
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.string   "uuid",                   limit: 255
+    t.integer  "lock_version",                       default: 0
+    t.string   "fname",                  limit: 255
+    t.string   "mname",                  limit: 255
+    t.string   "lname",                  limit: 255
     t.integer  "ctrp_id"
     t.string   "created_by"
     t.string   "updated_by"
-    t.string   "extension",         limit: 255
+    t.string   "extension",              limit: 255
     t.string   "processing_status"
+    t.datetime "association_start_date"
   end
 
   add_index "people", ["source_context_id"], name: "index_people_on_source_context_id", using: :btree

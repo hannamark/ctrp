@@ -102,6 +102,7 @@
             $scope.showGrid = angular.isDefined($scope.showGrid) ? $scope.showGrid : false;
 
             $scope.searchPeople = function (newSearchFlag) {
+                console.info('searching people: ', $scope.searchParams);
                 if (newSearchFlag === 'fromStart') {
                     $scope.searchParams.start = 1;
                 }
@@ -131,7 +132,7 @@
                     if ($scope.usedInModal) {
                         // in modal, search against CTRP context and Active people!
                         $scope.searchParams.source_context = $scope.sourceContextOnly || 'CTRP';
-                        $scope.searchParams.source_status = 'Active';
+                        // $scope.searchParams.source_status = 'Active'; // TODO: source status should be active in the search for in modal use
                     }
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
                         var status = data.status;
@@ -377,10 +378,9 @@
              * @param row
              */
             function rowSelectionCallBack(row) {
-
                 if ($scope.maxRowSelectable > 0 && $scope.curationShown || $scope.usedInModal) {
                     if (row.isSelected) {
-                        //console.log('row is selected: ' + JSON.stringify(row.entity));
+                        console.log('row is selected: ', row.entity);
                         if ($scope.selectedRows.length < $scope.maxRowSelectable) {
                             $scope.selectedRows.unshift(row);
                             $scope.$parent.selectedPersonsArray.push(row.entity);
@@ -455,7 +455,8 @@
                 $scope.gridOptions = PersonService.getGridOptions($scope.usedInModal);
                 $scope.gridOptions.isRowSelectable = function (row) {
                     var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
-                    if (isCTEPContext) {
+                    if (isCTEPContext && $scope.sourceContextOnly != 'CTEP') {
+                        // if set to show sourceContextOnly to 'CTEP', then we should allow selection
                         return false;
                     } else {
                         return true;

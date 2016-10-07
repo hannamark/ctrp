@@ -13,7 +13,7 @@
         .controller('advancedOrgSearchForm2ModalCtrl', advancedOrgSearchForm2ModalCtrl)
         .directive('ctrpOrgAdvSearchModalButton', ctrpOrgAdvSearchModalButton);
 
-    advancedOrgSearchForm2ModalCtrl.$inject = ['$scope', '$uibModalInstance', 'maxRowSelectable']; //for modal controller
+    advancedOrgSearchForm2ModalCtrl.$inject = ['$scope', '$uibModalInstance', 'maxRowSelectable', 'sourceContext', 'preSearch']; //for modal controller
     ctrpOrgAdvSearchModalButton.$inject = ['$uibModal', '$compile', '_', '$timeout', 'Common']; //modal button directive
 
 
@@ -37,7 +37,9 @@
 
         function linkerFn(scope, element, attrs) {
             $compile(element.contents())(scope);
-            scope.buttonLabel = attrs.buttonLabel || 'Search Organizations';
+            scope.buttonLabel   = attrs.buttonLabel || 'Search Organizations';
+            scope.sourceContext = attrs.sourceContext || 'CTRP';
+            scope.preSearch     = attrs.preSearch ? JSON.parse(attrs.preSearch) : undefined;
         } //linkerFn
 
 
@@ -62,6 +64,12 @@
                     resolve: {
                         maxRowSelectable: function () {
                             return $scope.maxRowSelectable || 'undefined';
+                        },
+                        sourceContext: function () {
+                            return $scope.sourceContext;
+                        },
+                        preSearch: function () {
+                            return $scope.preSearch;
                         }
                     }
                 });
@@ -77,7 +85,7 @@
                             //concatenate
                             _.each(selectedOrgs, function(selectedOrg, index) {
                                 //prevent pushing duplicated org
-                               if (Common.indexOfObjectInJsonArray($scope.savedSelection, "id", selectedOrg.id) == -1) {
+                               if (Common.indexOfObjectInJsonArray($scope.savedSelection, "id", selectedOrg.id) === -1) {
                                    $scope.savedSelection.push(selectedOrg);
                                }
                             });
@@ -102,7 +110,7 @@
             };// toggleSelection
 
             $scope.batchSelect = function(intention) {
-                if (intention == 'removeAll') {
+                if (intention === 'removeAll') {
                     $scope.savedSelection.length = 0;
                 }
             }
@@ -119,12 +127,13 @@
      * @param $scope
      * @param $uibModalInstance
      */
-    function advancedOrgSearchForm2ModalCtrl($scope, $uibModalInstance, maxRowSelectable) {
+    function advancedOrgSearchForm2ModalCtrl($scope, $uibModalInstance, maxRowSelectable, sourceContext, preSearch) {
         var vm = this;
         vm.maxRowSelectable = maxRowSelectable || 'undefined'; //to be passed to the adv org search form
+        vm.sourceContext = sourceContext || 'CTRP'; //to be passed to the adv org search form
+        vm.preSearch = preSearch;
         $scope.orgSearchResults = {orgs: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
         $scope.selectedOrgsArray = [];  // orgs selected in the modal
-
         vm.cancel = function() {
             $uibModalInstance.dismiss('canceled');
         }; //cancel
@@ -159,4 +168,4 @@
     } //advancedOrgSearchForm2ModalCtrl
 
 
-})();
+}());

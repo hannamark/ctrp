@@ -200,7 +200,7 @@
                                     <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
                                         <select restriction-field class="form-control input-sm" id="country"
                                                 ng-model="orgDetailView.curOrg.country"
-                                                ng-change="orgDetailView.watchCountrySelection(orgDetailView.curOrg.country)" name="country" required>
+                                                ng-change="orgDetailView.watchCountrySelection(orgDetailView.curOrg.country); orgDetailView.curOrg.state_province = ''" name="country" required>
                                             <option value="" ng-selected="orgDetailView.curOrg.country == ''">Select a country</option>
                                             <option ng-repeat="country in orgDetailView.countriesArr track by $index" value="{{country.name}}" ng-selected="orgDetailView.curOrg.country == country.name">{{country.name}}</option>
                                         </select>
@@ -405,6 +405,8 @@
                                         <ctrp-org-adv-search-modal-button
                                                 class="col-xs-12 col-sm-3"
                                                 max-row-selectable="1" use-built-in-template="false" allow-overwrite="true"
+                                                source-context = 'CTEP'
+                                                pre-search = '{"name": "{{orgDetailView.curOrg.name}}", "state_province" : "{{orgDetailView.curOrg.state_province}}", "country" : "{{orgDetailView.curOrg.country}}"}'
                                                 button-label = 'Associate Organization Context'
                                                 selected-orgs-array="orgDetailView.selectedOrgsArray">
                                         </ctrp-org-adv-search-modal-button>

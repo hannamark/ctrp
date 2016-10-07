@@ -190,6 +190,7 @@
             watchGlobalWriteModeChanges();
             watchOrgReceiver();
             watchSourceContext();
+            watchContextAssociation();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
             }
@@ -352,7 +353,28 @@
             }, true);
         }
 
-
+        /**
+         * Watching the person context selected for associating with the current CTRP person
+         * @return {[type]} [description]
+         */
+        function watchContextAssociation() {
+            $scope.$watchCollection(function() {
+                return vm.associatedPersonContexts;
+            }, function(newVal, oldVal) {
+                console.info('vm.associatedPersonContexts: ', newVal);
+                if (!!newVal && angular.isArray(newVal) && newVal.length > 0) {
+                    var ctepPerson = newVal[0];
+                    console.info('ctepPersonId: ', ctepPerson.id);
+                    console.info('ctrp person ctrp id: ', vm.curPerson.ctrp_id);
+                    PersonService.associatePersonContext(ctepPerson.id, vm.curPerson.ctrp_id).then(function(res) {
+                        console.info('res with association person: ', res); // resp.person
+                        vm.associatedPersonContexts = []; // clean up
+                    }).catch(function(err) {
+                        console.error('err: ', err);
+                    });
+                }
+            });
+        }
 
         /**
          * Asynchronously populate the vm.savedSelection array for presenting

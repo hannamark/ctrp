@@ -451,7 +451,7 @@
 
         vm.deleteTrialStatus = function(deletionComment, index) {
             if (deletionComment == null || deletionComment.trim().length === 0) return;
-            if (vm.addedStatuses[index].comment === null) {
+            if (!vm.addedStatuses[index].comment) {
                 vm.addedStatuses[index].comment = '';
             }
             if (vm.addedStatuses[index].comment.length === 0) {
