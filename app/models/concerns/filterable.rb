@@ -2,6 +2,7 @@ module Filterable
   extend ActiveSupport::Concern
 
   module ClassMethods
+
     def filter(results,filtering_params)
       if results.nil?
         results = self.where(nil)
