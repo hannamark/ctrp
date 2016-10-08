@@ -295,11 +295,15 @@ class Trial < TrialBase
         actions.append('complete')
       elsif self.internal_source && self.internal_source.code == 'PRO'
         actions.append('update')
-        actions.append('amend')
-        actions.append('verify-data')
-        actions.append('view-tsr')
-
+        processing_status_wrappers = self.processing_status_wrappers.pluck(:processing_status_id)
+        if (processing_status_wrappers.include? ProcessingStatus.find_by_code("AVR")) || (processing_status_wrappers.include? ProcessingStatus.find_by_code("VNR"))
+            actions.append('amend')
+            actions.append('verify-data')
+            actions.append('view-tsr')
+        end
       end
+    else
+      actions = []
     end
 
     if self.internal_source && self.internal_source.code == 'IMP'
@@ -315,6 +319,7 @@ class Trial < TrialBase
         end
       end
     end
+
     return actions
   end
 
