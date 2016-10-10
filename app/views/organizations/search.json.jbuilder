@@ -18,10 +18,10 @@ json.orgs do
         :email,
         :phone,
         :ctrp_id,
-        :ctep_id,
         :aff_families_names,
         :updated_by,
         :updated_at
+        json.ctep_id organization.multiview_ctep_id
         json.source_context organization.source_context_name
         json.source_status organization.source_status_name
         json.url organization_url(organization, format: :json)
@@ -30,7 +30,7 @@ json.orgs do
 end
 json.start params[:start]
 json.rows params[:rows]
-json.total @organizations.respond_to?(:total_count) ? @organizations.total_count : @organizations.size
+json.total @total
 json.sort params[:sort]
 json.order params[:order]
 json.alias params[:alias]

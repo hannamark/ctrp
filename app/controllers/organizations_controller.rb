@@ -16,7 +16,6 @@ class OrganizationsController < ApplicationController
   # GET /organizations/1
   # GET /organizations/1.json
   def show
-    @organization = Organization.all_orgs_data(params)[0]
   end
 
   # GET /organizations/new
@@ -158,22 +157,17 @@ class OrganizationsController < ApplicationController
   end
 
   def filterSearch resultOrgs,  ctrp_ids
-    if params[:alias]
-      resultOrgs = resultOrgs.matches_name_wc(params[:name],params[:wc_search]) if params[:name].present? && !resultOrgs.blank?
-    else
-      resultOrgs = resultOrgs.matches_wc('name', params[:name],params[:wc_search]) if params[:name].present? && !resultOrgs.blank?
-    end
     resultOrgs = resultOrgs.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present? && !resultOrgs.blank?
     if @current_user && User.org_write_access(@current_user)
       resultOrgs = resultOrgs.matches("source_statuses.name", params[:source_status]) if params[:source_status].present? && !resultOrgs.blank?
       resultOrgs = resultOrgs.matches("source_contexts.name", params[:source_context]) if params[:source_context].present? && !resultOrgs.blank?
     else # TODO need constant for Active
-      resultOrgs = resultOrgs.matches("source_status.name", "Active") if !resultOrgs.blank?
-      resultOrgs = resultOrgs.matches("source_context.name", "CTRP") if !resultOrgs.blank?
+      resultOrgs = resultOrgs.matches("source_statuses.name", "Active") if !resultOrgs.blank?
+      resultOrgs = resultOrgs.matches("source_contexts.name", "CTRP") if !resultOrgs.blank?
     end
     resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2 && !resultOrgs.blank?
-    resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? && !resultOrgs.blank?
-    resultOrgs = resultOrgs.where("unexpired_family_membership.no_family" => nil) if params[:no_family].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? && !resultOrgs.blank? && params[:family_name] != '*'
+    resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if params[:no_family].present? && !resultOrgs.blank?
 
     resultOrgs = resultOrgs.with_service_request(params[:service_request]) if params[:service_request].present? && !resultOrgs.blank?
 
@@ -184,11 +178,14 @@ class OrganizationsController < ApplicationController
 
     wc_matches_to_look_for = 'address,address2,updated_by,city,state_province,postal_code,email,phone'.split(",")
     wc_matches_to_look_for.each do |filter|
-      resultOrgs = resultOrgs.matches_wc(filter, params[filter], params[:wc_search]) if params[filter].present? && !resultOrgs.blank?
+      resultOrgs = resultOrgs.matches_wc(filter, params[filter], params[:wc_search]) if params[filter].present? && !resultOrgs.blank? && params[filter] != '*'
     end
 
-    resultOrgs = resultOrgs.sort_by_col(params[:sort], params[:order]) if !resultOrgs.blank?
-    resultOrgs = resultOrgs.page(params[:start]).per(params[:rows]) if params[:rows] != nil &&  !resultOrgs.blank?
+    @total = resultOrgs.size
+
+    unless params[:rows].nil?
+      resultOrgs = Kaminari.paginate_array(resultOrgs).page(params[:start]).per(params[:rows]) unless resultOrgs.blank?
+    end
     return resultOrgs
   end
 
