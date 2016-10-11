@@ -15,6 +15,14 @@
         vm.curTrial = trialDetailObj;
         vm.documents = [];
         vm.downloadBaseUrl = HOST + '/ctrp/registry/trial_documents/download';
+        vm.itemsOptions = {
+            data: [
+                {id: 1, value: 25},
+                {id: 2, value: 50},
+                {id: 3, value: 100}
+            ],
+            selectedOption: {id: 1, value: 25}
+        };
         console.info('curTrial: ', vm.curTrial);
         console.info('ind_ides: ', vm.curTrial.ind_ides);
         vm.addMySite = function () {

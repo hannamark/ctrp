@@ -451,7 +451,7 @@
 
         vm.deleteTrialStatus = function(deletionComment, index) {
             if (deletionComment == null || deletionComment.trim().length === 0) return;
-            if (!vm.addedStatuses[index].comment) {
+            if (vm.addedStatuses[index].comment === null) {
                 vm.addedStatuses[index].comment = '';
             }
             if (vm.addedStatuses[index].comment.length === 0) {
@@ -1095,28 +1095,14 @@
             var curPs = vm.curTrial.participating_sites[index];
 
             var modalInstance = $uibModal.open({
-                templateUrl: 'app/registry/registration/psDetails.html',
-                controller: 'psDetailCtrl as psDetailView',
+                templateUrl: 'app/registi',
+                controller: 'gsaModalCtrl as gsaView',
                 size: 'lg',
                 backdrop: 'static',
                 resolve: {
-                    TrialService: 'TrialService',
                     UserService: 'UserService',
-                    PATrialService: 'PATrialService',
-                    psDetailObj: function($q) {
-                        return curPs;
-                    },
-                    trialDetailObj: function($stateParams, TrialService) {
-                        return TrialService.getTrialById($stateParams.trialId);
-                    },
-                    userDetailObj: function(UserService) {
-                        return UserService.getCurrentUserDetails();
-                    },
-                    srStatusObj: function(TrialService) {
-                        return TrialService.getSrStatuses();
-                    },
-                    centralContactTypes: function(PATrialService) {
-                        return PATrialService.getCentralContactTypes();
+                    gsaObj: function (UserService) {
+                        return UserService.getGsa();
                     }
                 }
 
