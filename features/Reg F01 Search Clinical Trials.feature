@@ -46,6 +46,7 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
   
   Scenario: #1b As a Site Admin I can search for Imported Clinical Trials in CTRP 
   Given I am logged into the CTRP Registration application
+  And my role is a Site Admin
   And I am on the Search Clinical Trials Screen
    And I know the search Parameters of trial
    When I select the option to search Trials "My Trials" 
