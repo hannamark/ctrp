@@ -311,29 +311,27 @@ class Trial < TrialBase
       #When Trial is Imported
       if self.current_user && self.current_user.role == 'ROLE_SITE-SU'
         #Have Site Admin Privileges
-        #When participating Sites from my Family are added to the trial
-        #Then the Available Action Update will allow update of any of the participating site from my Family registered on the Trial
-        #When a participating site from my Family has not been added to the Trial
-        #Then the Available Action Add will allow adding any of the participating site from my Family not previously registered on the Trial
-        #self.current_user.organization.families
-        #So from above family we will get the list of orgs and check that org belongs to any of the ps of trial or not?
+        #
         if !self.current_user.organization.families.nil?
-          my_family = self.current_user.organization.families[0]
-          my_family_organizations = my_family.organizations
-          if self.ps_orgs.include?(my_family_organizations)
+          flag=0;
+          self.current_user.organization.families.each do |my_family|
+            my_family_organizations = my_family.organizations
+            if self.ps_orgs.include?(my_family_organizations)
+                flag =1;
+                break;
+            end
+          end
+          if flag == 1
             actions.append('manage-sites') #
           else
             actions.append('manage-sites') #
           end
+        else
+          #Place logic here if user organization does not belong to any family.
         end
-
       else
         #Do not have site Admin Privileges
-
-        #When my participating Site is added to the trial
-        #Then the only available action is to update my participating site in the trial
-        #When my participating site is not added to the Trial
-        #Then the only available Action is to add my participating Site to the trial
+        #
         if self.current_user &&  self.ps_orgs.include?(self.current_user.organization)
             # Associated org has been added as participating site
             actions.append('update-my-site')
