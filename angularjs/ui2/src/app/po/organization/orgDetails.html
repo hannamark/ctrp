@@ -301,12 +301,30 @@
                                         <div class="col-xs-12 col-sm-2 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.curOrg.extension}}</div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div ng-if="!orgDetailView.curOrg.new" class="form-group">
-                                        <label class="control-label col-xs-12 col-sm-3">Context Organization ID:</label>
-                                        <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.curOrg.id}}</div>
+                                <div class="row"  ng-if="!orgDetailView.curOrg.new">
+                                    <div class="form-group col-xs-12 col-sm-6 has-feedback">
+                                        <label class="control-label col-xs-6 col-sm-6">Context Organization ID:</label>
+                                        <div class="form-group col-xs-6 col-sm-6 form-text">
+                                            {{orgDetailView.curOrg.id}}
+                                        </div>
                                     </div>
                                 </div>
+                            <div class="row"  ng-if="!orgDetailView.curOrg.new && orgDetailView.curOrg.new_ctep_org_id">
+                                <div class="form-group col-xs-12 col-sm-6 has-feedback has-error">
+                                    <label class="control-label col-xs-6 col-sm-6">Associated CTEP ORG:</label>
+                                    <div class="form-group col-xs-6 col-sm-6 form-text has-error">
+                                        {{orgDetailView.newOrgCTEP.name}}{{orgDetailView.newOrgCTEP.state_province?', '+orgDetailView.newOrgCTEP.state_province:''}}{{orgDetailView.newOrgCTEP.country?', '+orgDetailView.newOrgCTEP.country:''}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row"  ng-if="!orgDetailView.curOrg.new && orgDetailView.curOrg.new_nlm_org_id">
+                                <div class="form-group col-xs-12 col-sm-6 has-feedback has-error">
+                                    <label class="control-label col-xs-6 col-sm-6">Associated NLM ORG:</label>
+                                    <div class="form-group col-xs-6 col-sm-6 form-text has-error">
+                                        {{orgDetailView.newOrgNLM.name}}{{orgDetailView.newOrgNLM.state_province?', '+orgDetailView.newOrgNLM.state_province:''}}{{orgDetailView.newOrgNLM.country?', '+orgDetailView.newOrgNLM.country:''}}
+                                    </div>
+                                </div>
+                            </div>
                                 <div class="form-group" ng-hide="orgDetailView.curOrg.new || !orgDetailView.curOrg.created_by">
                                     <label class="control-label col-xs-12 col-sm-3">Created By:</label>
                                     <div class="col-xs-12 col-sm-6 form-text">
@@ -387,6 +405,15 @@
                                 <div class="form-group no-bottom-margin" ng-show="orgDetailView.curOrgEditable">
                                     <div class="col-xs-12 col-sm-3"></div>
                                     <div class="btn-toolbar col-xs-12 col-sm-6">
+                                        <ctrp-org-adv-search-modal-button
+                                                ng-hide="orgDetailView.curOrg.new"
+                                                class="pull-left"
+                                                max-row-selectable="1" use-built-in-template="false" allow-overwrite="true"
+                                                source-contextfilter = "CTEP,NLM"
+                                                pre-search = '{"nosave" : true, "source_contextfilter": ["CTEP","NLM"],"name": "{{orgDetailView.curOrg.name}}", "state_province" : "{{orgDetailView.curOrg.state_province}}", "country" : "{{orgDetailView.curOrg.country}}"}'
+                                                button-label = 'Associate Organization Context'
+                                                selected-orgs-array="orgDetailView.selectedOrgsArray">
+                                        </ctrp-org-adv-search-modal-button>
                                         <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn" ng-disabled="orgDetailView.disableBtn">
                                             <i class="glyphicon glyphicon-ok"></i> Save
                                         </button>
@@ -396,20 +423,6 @@
                                         <button type="button" ng-hide="orgDetailView.curOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.resetForm()" ng-disabled="orgDetailView.disableBtn">
                                             <i class="glyphicon glyphicon-remove"></i> Reset
                                         </button>
-                                    </div>
-                                </div>
-
-                                <div class="form-group no-bottom-margin" ng-show="orgDetailView.curOrgEditable">
-                                    <div class="col-xs-12 col-sm-3"></div>
-                                    <div class="btn-toolbar col-xs-12 col-sm-6">
-                                        <ctrp-org-adv-search-modal-button
-                                                class="col-xs-12 col-sm-3"
-                                                max-row-selectable="1" use-built-in-template="false" allow-overwrite="true"
-                                                source-context = 'CTEP'
-                                                pre-search = '{"name": "{{orgDetailView.curOrg.name}}", "state_province" : "{{orgDetailView.curOrg.state_province}}", "country" : "{{orgDetailView.curOrg.country}}"}'
-                                                button-label = 'Associate Organization Context'
-                                                selected-orgs-array="orgDetailView.selectedOrgsArray">
-                                        </ctrp-org-adv-search-modal-button>
                                     </div>
                                 </div>
                         </div>

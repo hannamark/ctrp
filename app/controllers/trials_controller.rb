@@ -757,13 +757,13 @@ class TrialsController < ApplicationController
     trial_service = TrialService.new({trial: nil})
     @trial = Trial.new(trial_service.import_params(xml, @current_user))
     @trial.current_user = @current_user
-    #request_record = @trial.request_logging(xml,"Create","request",@current_user,ImportTrialLogDatum)
-
+    import_log_service = ImportTrialLogService.new
+    request_record = import_log_service.request_logging(xml,"Create","request",@current_user,ImportTrialLogDatum)
     respond_to do |format|
       if @trial.save
         format.html { redirect_to @trial, notice: 'Trial was successfully imported.' }
         format.json { render :show, status: :created, location: @trial }
-
+        import_log_service.response_logging(@trial,"sucess", "Created Sucessfully",ImportTrialLogDatum,request_record)
         FileUtils.mkdir_p('../../storage/tmp')
         file_name = "import_#{params[:nct_id]}_#{Date.today.strftime('%d-%b-%Y')}"
         File.open("../../storage/tmp/#{file_name}.xml", 'wb') do |file|
@@ -773,6 +773,8 @@ class TrialsController < ApplicationController
       else
         format.html { render :new }
         format.json { render json: @trial.errors, status: :unprocessable_entity }
+        import_log_service.response_logging(@trial,"failure", @trial.errors.to_xml,ImportTrialLogDatum,request_record)
+
       end
     end
   end

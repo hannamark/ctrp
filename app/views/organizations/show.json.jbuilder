@@ -26,8 +26,6 @@ json.extract! @organization,
               :lock_version,
               :org_created_date,
               :org_updated_date
-              :source_context_name
-              :source_status_name
 
 # p @organization.created_at
 # p @organization.updated_at
