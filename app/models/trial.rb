@@ -292,6 +292,7 @@ class Trial < TrialBase
     actions = []
 
     if self.internal_source && self.internal_source.code == 'PRO'
+
       #When trial is Protocol
       if self.users.include? self.current_user
         if self.is_draft
@@ -299,13 +300,15 @@ class Trial < TrialBase
         else
           actions.append('update')
           processing_status_wrappers = self.processing_status_wrappers.pluck(:processing_status_id)
-          if (processing_status_wrappers.include? ProcessingStatus.find_by_code("AVR")) || (processing_status_wrappers.include? ProcessingStatus.find_by_code("VNR"))
+          p processing_status_wrappers
+          if (processing_status_wrappers.include? ProcessingStatus.find_by_code("AVR").id) || (processing_status_wrappers.include? ProcessingStatus.find_by_code("VNR").id)
             actions.append('amend')
             actions.append('verify-data')
             actions.append('view-tsr')
           end
         end
       end
+
 
     elsif self.internal_source && self.internal_source.code == 'IMP'
       #When Trial is Imported
