@@ -863,13 +863,7 @@ h5 {
 
 .ui-grid-cell {
     line-height: 1em;
-    /*height: 22px !important;*/
-    height: 25px !important;
-
-}
-
-.ui-grid-cell .ui-grid-cell-contents {
-    padding: 6px;
+    height: 22px !important;
 }
 
 div.ui-grid-cell .ui-grid-datepicker [ng-click="select(null)"] {

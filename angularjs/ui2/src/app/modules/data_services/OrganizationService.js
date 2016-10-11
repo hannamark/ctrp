@@ -180,10 +180,7 @@
         function upsertOrg(orgObj) {
             orgObj.organization.source_context = undefined;
             orgObj.organization.source_status = undefined;
-            $log.info('udat an organization: ' + JSON.stringify(orgObj));
             if (orgObj.new) {
-                //create a new org
-                $log.info('creating an organization: ' + JSON.stringify(orgObj));
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
             }
 
