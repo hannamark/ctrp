@@ -53,14 +53,26 @@ class OrganizationsController < ApplicationController
   def update
     @organization.updated_by = @current_user.username unless @current_user.nil?
 
+    if organization_params[:new_ctep_org_id] then
+        @newctep = Organization.find(organization_params[:new_ctep_org_id])
+        @oldcteps = Organization.where({
+            :ctrp_id => organization_params[:id],
+            :source_context_id => SourceContext.find_by_code("CTEP").id
+            })
+        p @oldcteps
+        @newctep.ctrp_id = organization_params[:ctrp_id]
+        @newctep.save
+    end
+    if organization_params[:new_nlm_org_id] then
+        @newnlm = Organization.find(organization_params[:new_nlm_org_id])
+        @newnlm.ctrp_id = organization_params[:ctrp_id]
+        @newnlm.save
+    end
     respond_to do |format|
-      if @organization.update(organization_params)
+      if @organization.update(organization_params.except(:new_ctep_org_id, :new_nlm_org_id))
         format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
         format.json { render :show, status: :ok, location: @organization }
       else
-        p "###########################"
-        p @organization.errors
-
         format.html { render :edit }
         format.json { render json: @organization.errors, status: :unprocessable_entity }
       end
@@ -159,6 +171,7 @@ class OrganizationsController < ApplicationController
   def filterSearch resultOrgs,  ctrp_ids
     resultOrgs = resultOrgs.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present? && !resultOrgs.blank?
     if @current_user && User.org_write_access(@current_user)
+      resultOrgs = resultOrgs.where("source_contexts.name" => params[:source_contextfilter]) if params[:source_contextfilter].present? && !resultOrgs.blank?
       resultOrgs = resultOrgs.matches("source_statuses.name", params[:source_status]) if params[:source_status].present? && !resultOrgs.blank?
       resultOrgs = resultOrgs.matches("source_contexts.name", params[:source_context]) if params[:source_context].present? && !resultOrgs.blank?
     else # TODO need constant for Active
@@ -235,8 +248,8 @@ class OrganizationsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def organization_params
     params.require(:organization).permit(:source_id, :name, :address, :address2, :address3, :city, :state_province, :postal_code,
-                                         :country, :email, :phone, :extension, :source_status_id,
-                                         :source_context_id, :lock_version, :processing_status,
+                                         :country, :email, :phone, :extension, :source_status_id, :ctrp_id,
+                                         :source_context_id, :lock_version, :processing_status, :new_ctep_org_id, :new_nlm_org_id,
                                          name_aliases_attributes: [:id,:organization_id,:name,:_destroy])
   end
 end

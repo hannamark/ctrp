@@ -369,6 +369,34 @@
             console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
 
+        vm.associateOrgs = function(){
+            if (vm.selectedOrgsArray) {
+                var orgCTEP = _.filter(angular.copy(vm.selectedOrgsArray), function (item, index) {
+                    return _.contains(['CTEP'], item.source_context);
+                });
+                if (orgCTEP.length) {
+                    vm.newOrgCTEP= orgCTEP[0];
+                    vm.curOrg.new_ctep_org_id = orgCTEP[0].id;
+                }
+
+                var orgNLM = _.filter(angular.copy(vm.selectedOrgsArray), function (item, index) {
+                    return _.contains(['NLM'], item.source_context);
+                });
+                if (orgNLM.length) {
+                    vm.newOrgNLM= orgNLM[0];
+                    vm.curOrg.new_nlm_org_id = orgNLM[0].id;
+                }
+            }
+        };
+
+        // Swap context when different tab is selected
+        $scope.$watch(function() {
+            return vm.selectedOrgsArray;
+        }, function(newValue, oldValue) {
+            vm.associateOrgs();
+        });
+
+
         vm.cloneCtepOrg = function(ctepOrgId) {
             OrgService.cloneCtepOrg(ctepOrgId).then(function(response) {
                 console.info('clone response: ', response);

@@ -13,7 +13,7 @@
         .controller('advancedOrgSearchForm2ModalCtrl', advancedOrgSearchForm2ModalCtrl)
         .directive('ctrpOrgAdvSearchModalButton', ctrpOrgAdvSearchModalButton);
 
-    advancedOrgSearchForm2ModalCtrl.$inject = ['$scope', '$uibModalInstance', 'maxRowSelectable', 'sourceContext', 'preSearch']; //for modal controller
+    advancedOrgSearchForm2ModalCtrl.$inject = ['$scope', '$uibModalInstance', 'maxRowSelectable', 'preSearch']; //for modal controller
     ctrpOrgAdvSearchModalButton.$inject = ['$uibModal', '$compile', '_', '$timeout', 'Common']; //modal button directive
 
 
@@ -38,7 +38,6 @@
         function linkerFn(scope, element, attrs) {
             $compile(element.contents())(scope);
             scope.buttonLabel   = attrs.buttonLabel || 'Search Organizations';
-            scope.sourceContext = attrs.sourceContext || 'CTRP';
             scope.preSearch     = attrs.preSearch ? JSON.parse(attrs.preSearch) : undefined;
         } //linkerFn
 
@@ -63,13 +62,10 @@
                     size: size,
                     resolve: {
                         maxRowSelectable: function () {
-                            return $scope.maxRowSelectable || 'undefined';
-                        },
-                        sourceContext: function () {
-                            return $scope.sourceContext;
+                            return $scope.maxRowSelectable || undefined;
                         },
                         preSearch: function () {
-                            return $scope.preSearch;
+                            return $scope.preSearch || undefined;
                         }
                     }
                 });
@@ -97,10 +93,6 @@
                     modalOpened = false;
                 }, function () {
                     modalOpened = false;
-                    if($scope.preSearch) {
-                        $scope.searchParams = null;
-                    }
-                    console.log("operation canceled", $scope.searchParams);
                 });
             }; //searchOrg
 
@@ -130,10 +122,9 @@
      * @param $scope
      * @param $uibModalInstance
      */
-    function advancedOrgSearchForm2ModalCtrl($scope, $uibModalInstance, maxRowSelectable, sourceContext, preSearch) {
+    function advancedOrgSearchForm2ModalCtrl($scope, $uibModalInstance, maxRowSelectable, preSearch) {
         var vm = this;
         vm.maxRowSelectable = maxRowSelectable || 'undefined'; //to be passed to the adv org search form
-        vm.sourceContext = sourceContext || 'CTRP'; //to be passed to the adv org search form
         vm.preSearch = preSearch;
         $scope.orgSearchResults = {orgs: [], total: 0, start: 1, rows: 10, sort: 'name', order: 'asc'};
         $scope.selectedOrgsArray = [];  // orgs selected in the modal
