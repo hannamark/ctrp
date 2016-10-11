@@ -56,7 +56,7 @@ Scenario:#1c Fields displayed when Clinical Research Category is set to "Observa
   |Final Enrollment for CT.gov|
   |Accruals|
 
-
+@runthis
 Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
 Given I am logged into the CTRP Protocol Abstraction application
   And I am at the Trial Design screen

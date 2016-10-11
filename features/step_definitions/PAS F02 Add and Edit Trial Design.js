@@ -444,8 +444,197 @@ module.exports = function() {
      |Accruals|
      */
 
+    // Covered in previous step defination
 
+    /*
+     Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
+     Given I am logged into the CTRP Protocol Abstraction application
+     And I am at the Trial Design screen
+     And the Clinical Research Category value
 
+     |Interventional|
+     |Expanded Access|
+
+     And I can select a different value for Primary Purpose type
+     |Primary Purpose          |
+     |Treatment                |
+     |Prevention               |
+     |Supportive Care          |
+     |Screening                |
+     |Diagnostic               |
+     |Health Services Research |
+     |Basic Science            |
+     |Other                    |
+     And I can select a different value for Secondary Purpose Type:
+     |Secondary Purpose Type |
+     |Ancillary-Correlative  |
+     |Other                  |
+     |No                     |
+     And I can select a different value for Trial Phase type:
+     |Trial Phase |
+     |0           |
+     |I           |
+     |I/II        |
+     |II          |
+     |II/III      |
+     |III         |
+     |IV          |
+     |NA          |
+     And I can select a different value for the question"Is this a pilot" type
+     |Is this a pilot |
+     |yes             |
+     |no              |
+     And I can select a value for Intervention Model type
+     |Intervention Model |
+     |Single Group Assignment|
+     |Parallel Assignment |
+     |Crossover Assignment|
+     |Factorial Assignment|
+     And I can add or edit a value for Number of Arms/Groups
+     And I can select a value for Masking:
+     |Masking      |
+     |Open Label   |
+     |Single Blind |
+     |Double Blind |
+     And I can select a value for Allocation:
+     |Allocation                  |
+     |Randomized |
+     |Non-Randomized        |
+     |N/A                          |
+     And I can select a value for Study Classification:
+     |Study Classification              |
+     |Safety Study                      |
+     |Safety/Efficacy Study             |
+     |Efficacy Study                    |
+     |Bio-equivalence Study                    |
+     |Bio-availability Study   |
+     |Pharmacokinetics Study                  |
+     |Pharmacodynamics Study                  |
+     |Pharmacokinetics/dynamics Study |
+     |N/A                                |
+     And I can add or edit a value for Target Enrollment
+     And I can add or edit a value for Final Enrollment for ClinicalTrials.gov
+     And the value of Accruals will be displayed
+     When When I select Save at the trial design screen
+     Then the Interventional Trial Design for the trial will be associated with the trial
+     And the message Record Updated displays
+     */
+
+    this.Given(/^I am at the Trial Design screen$/, function () {
+        return browser.sleep(25).then(function() {
+            commonFunctions.alertMsgOK();
+            commonFunctions.onPrepareLoginTest('ctrpabstractor');
+            commonFunctions.alertMsgOK();
+            pageMenu.clickSearchTrialAbstractor();
+            login.clickWriteMode('On');
+            pageMenu.clickTrials();
+            pageMenu.clickSearchTrialsPA();
+            helper.alertDialog('OK', 'Are you sure you want to leave this page? You may have unsaved changes.');
+            commonFunctions.verifySearchTrialsPAScreen();
+            pageSearchTrail.setSearchTrialProtocolID(leadProtocolID);
+            pageSearchTrail.clickSearchTrialSearchButton();
+            commonFunctions.clickLinkText(leadProtocolID);
+            leftNav.scientificCheckOut();
+            leftNav.clickScientificTrialDesign();
+            leftNav.checkPanelTitle(pageTtitle, '6');
+        });
+    });
+
+    this.Given(/^the Clinical Research Category value$/, function (table) {
+        return browser.sleep(25).then(function() {
+            var crcInExmTbl = table.raw();
+            crcOptions = crcInExmTbl.toString().replace(/,/g, "\n", -1);
+            console.log('Value(s) in the data table:[' + crcOptions +']');
+            var crcList = crcOptions.toString().split("\n");
+            crcA = crcList[1]; // Interventional
+            crcB = crcList[2]; // Expanded Access
+            trialDesign.selectClinicalResearchCategory(crcA);
+        });
+    });
+
+    this.Given(/^I can select a different value for Primary Purpose type$/, function (table) {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Given(/^I can select a different value for Secondary Purpose Type:$/, function (table) {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Given(/^I can select a different value for Trial Phase type:$/, function (table) {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Given(/^I can select a different value for the question"([^"]*)" type$/, function (arg1, table) {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Given(/^I can select a value for Intervention Model type$/, function (table) {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Given(/^I can add or edit a value for Number of Arms\/Groups$/, function () {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Given(/^I can select a value for Masking:$/, function (table) {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Given(/^I can select a value for Allocation:$/, function (table) {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Given(/^I can select a value for Study Classification:$/, function (table) {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Given(/^I can add or edit a value for Target Enrollment$/, function () {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Given(/^I can add or edit a value for Final Enrollment for ClinicalTrials\.gov$/, function () {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Given(/^the value of Accruals will be displayed$/, function () {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.When(/^When I select Save at the trial design screen$/, function () {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
+
+    this.Then(/^the Interventional Trial Design for the trial will be associated with the trial$/, function () {
+        return browser.sleep(25).then(function() {
+
+        });
+    });
 
 
 
