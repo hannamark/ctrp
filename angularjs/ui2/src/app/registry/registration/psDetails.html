@@ -1,4 +1,5 @@
 <div class="row">
+    <!--
     <div class="col-xs-12 drop-shadow">
         <div class="row">
             <h4 ng-show="!psDetailView.isManageScreen && psDetailView.curPs.new">Add Participating Site</h4>
@@ -299,7 +300,7 @@
                                 </div>
                             </div>
 
-                            <!-- Email Address -->
+                             Email Address
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.email) && ctrpbtn.ps_form.needsAttention(ps_form.phone)}">
                                 <label for="email" class="control-label col-xs-12 col-sm-3">Contact Email Address:</label>
                                 <div class="col-xs-12 col-sm-5">
@@ -308,7 +309,7 @@
                                 </div>
                             </div>
 
-                            <!-- Phone Number -->
+                            Phone Number
                             <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.phone) && ps_form.phone.$error && ctrpbtn.ps_form.needsAttention(ps_form.email) && ps_form.email.$error}">
                                 <label for="phone" class="control-label col-xs-12 col-sm-3">Contact Phone Number:</label>
                                 <div class="col-xs-12 col-sm-3">
@@ -347,4 +348,12 @@
             </form>
         </div>
     </div>
+    -->
+
+    <participating-sites-detail
+        ps-detail-obj="psDetailObj" trial-detail-obj="trialDetailObj"
+        user-detail-obj="userDetailObj" sr-status-obj="srStatusObj"
+        central-contact-types="centralContactTypes" trial-service="TrialService"
+        pa-trial-service="PATrialService">
+    </participating-sites-detail>
 </div>

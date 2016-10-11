@@ -1095,14 +1095,28 @@
             var curPs = vm.curTrial.participating_sites[index];
 
             var modalInstance = $uibModal.open({
-                templateUrl: 'app/registi',
-                controller: 'gsaModalCtrl as gsaView',
+                templateUrl: 'app/registry/registration/directives/participatingSitesDetailModal.html',
+                controller: 'participatingSitesDetailModalCtrl as psDetailsModalView',
                 size: 'lg',
                 backdrop: 'static',
                 resolve: {
+                    TrialService: 'TrialService',
                     UserService: 'UserService',
-                    gsaObj: function (UserService) {
-                        return UserService.getGsa();
+                    PATrialService: 'PATrialService',
+                    psDetailObj: function() {
+                        return curPs;
+                    },
+                    trialDetailObj: function($stateParams, TrialService) {
+                        return TrialService.getTrialById($stateParams.trialId);
+                    },
+                    userDetailObj: function(UserService) {
+                        return UserService.getCurrentUserDetails();
+                    },
+                    srStatusObj: function(TrialService) {
+                        return TrialService.getSrStatuses();
+                    },
+                    centralContactTypes: function(PATrialService) {
+                        return PATrialService.getCentralContactTypes();
                     }
                 }
 
