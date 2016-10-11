@@ -42,12 +42,10 @@ As any CTRP User, I can select available Actions
 
   Scenario: #4 Available Actions when Trial is Imported from ClinicalTrials.gov
     Given I am logged into the CTRP Registration application
-    And I have Site Administrative Privileges
+    When I have Site Administrative Privileges
     And I am on the Clinical Trials search Results
-     When participating Sites from my Family are added to the trial
-     Then the Available Action Update will allow update of any of the participating site from my Family registered on the Trial
-     When a participating site from my Family has not been added to the Trial 
-     Then the Available Action Add will allow adding any of the participating site from my Family not previously registered on the Trial
+    Then the available Action will be "Manage My Sites"
+    
 
  Scenario:#5 Available rules for Drafts when I am a Trial Owner 
     Given I am logged into the CTRP Registration application
