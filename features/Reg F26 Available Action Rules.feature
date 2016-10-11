@@ -40,13 +40,15 @@ As any CTRP User, I can select available Actions
      When my participating site is not added to the Trial 
      Then the only available Action is to add my participating Site to the trial
 
-  Scenario: #4 Available Actions when Trial is Imported from ClinicalTrials.gov
+ Scenario: #4 Available Actions when Trial is Imported from ClinicalTrials.gov
     Given I am logged into the CTRP Registration application
-    When I have Site Administrative Privileges
+    When I am a site admin on a trial
     And I am on the Clinical Trials search Results
     Then the available Action will be "Manage My Sites"
-    
+    And I can add any participating in my family
+    And I can update any participating site in my family after it has been added
 
+    
  Scenario:#5 Available rules for Drafts when I am a Trial Owner 
     Given I am logged into the CTRP Registration application
     And the Trial is a Protocol Trial

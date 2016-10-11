@@ -406,7 +406,7 @@ class Organization < ActiveRecord::Base
         GROUP BY families_list.organization_id
       )  as unexpired_family_membership ON organizations.id = unexpired_family_membership.organization_id
       LEFT JOIN (
-              SELECT organizations_for_ctep.ctrp_id, string_agg(organizations_for_ctep.source_id, ',') as ctep_id from organizations as organizations_for_ctep
+              SELECT organizations_for_ctep.ctrp_id, string_agg(organizations_for_ctep.source_id, '; ') as ctep_id from organizations as organizations_for_ctep
               INNER JOIN source_contexts ON source_contexts.id = organizations_for_ctep.source_context_id
               where source_contexts.code = 'CTEP' and organizations_for_ctep.ctrp_id is not null
               GROUP BY organizations_for_ctep.ctrp_id
