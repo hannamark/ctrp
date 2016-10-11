@@ -126,6 +126,7 @@
 
 class Trial < TrialBase
   include Filterable
+  include TableLoggable
 
   # Disabled optimistic locking
   self.locking_column = :dummy_column
@@ -289,31 +290,60 @@ class Trial < TrialBase
   # Array of actions can be taken on this Trial
   def actions
     actions = []
-    if self.users.include? self.current_user
-      if self.is_draft
-        actions.append('complete')
-      elsif self.internal_source && self.internal_source.code == 'PRO'
-        actions.append('update')
-        actions.append('amend')
-        actions.append('verify-data')
-        actions.append('view-tsr')
 
-      end
-    end
-
-    if self.internal_source && self.internal_source.code == 'IMP'
-      if self.current_user && self.current_user.role == 'ROLE_SITE-SU'
-        actions.append('manage-sites')
-      else
-        if self.current_user &&  self.ps_orgs.include?(self.current_user.organization)
-          # Associated org has been added as participating site
-          actions.append('update-my-site')
-        elsif self.current_user && self.current_user.organization.present?
-          # Associated org hasn't been added as participating site
-          actions.append('add-my-site')
+    if self.internal_source && self.internal_source.code == 'PRO'
+      #When trial is Protocol
+      if self.users.include? self.current_user
+        if self.is_draft
+          actions.append('complete')
+        else
+          actions.append('update')
+          processing_status_wrappers = self.processing_status_wrappers.pluck(:processing_status_id)
+          if (processing_status_wrappers.include? ProcessingStatus.find_by_code("AVR")) || (processing_status_wrappers.include? ProcessingStatus.find_by_code("VNR"))
+            actions.append('amend')
+            actions.append('verify-data')
+            actions.append('view-tsr')
+          end
         end
       end
+
+    elsif self.internal_source && self.internal_source.code == 'IMP'
+      #When Trial is Imported
+      if self.current_user && self.current_user.role == 'ROLE_SITE-SU'
+        #Have Site Admin Privileges
+        #
+        if !self.current_user.organization.families.nil?
+          flag=0;
+          self.current_user.organization.families.each do |my_family|
+            my_family_organizations = my_family.organizations
+            if self.ps_orgs.include?(my_family_organizations)
+                flag =1;
+                break;
+            end
+          end
+          if flag == 1
+            actions.append('manage-sites') #
+          else
+            actions.append('manage-sites') #
+          end
+        else
+          #Place logic here if user organization does not belong to any family.
+        end
+      else
+        #Do not have site Admin Privileges
+        #
+        if self.current_user &&  self.ps_orgs.include?(self.current_user.organization)
+            # Associated org has been added as participating site
+            actions.append('update-my-site')
+          elsif self.current_user && self.current_user.organization.present?
+            # Associated org hasn't been added as participating site
+            actions.append('add-my-site')
+          end
+        end
+    else
+      #Actions will be null if trial belongs to none of the above types
     end
+
     return actions
   end
 

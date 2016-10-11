@@ -16,6 +16,7 @@
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
+        console.info('vm.curPerson: ', vm.curPerson);
         vm.curPerson.processing_status = 'Complete';
         vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
@@ -190,6 +191,7 @@
             watchGlobalWriteModeChanges();
             watchOrgReceiver();
             watchSourceContext();
+            watchContextAssociation();
             if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                 populatePoAffiliations();
             }
@@ -352,7 +354,47 @@
             }, true);
         }
 
+        /**
+         * Watching the person context selected for associating with the current CTRP person
+         * @return {[type]} [description]
+         */
+        function watchContextAssociation() {
+            $scope.$watchCollection(function() {
+                return vm.associatedPersonContexts;
+            }, function(newVal, oldVal) {
+                console.info('vm.associatedPersonContexts: ', newVal);
+                if (!!newVal && angular.isArray(newVal) && newVal.length > 0) {
+                    var ctepPerson = newVal[0];
+                    if (angular.isDefined(ctepPerson.ctrp_id)) {
+                        var isConfirmed = false;
+                        Common.alertConfirm('This CTEP person has been assodicated, click OK to change the existing association').then(function(ok) {
+                            isConfirmed = ok;
+                        }).catch(function(cancel) {
+                            // nothing here
+                        }).finally(function() {
+                            if (isConfirmed) {
+                                return _associateCtepPerson(ctepPerson);
+                            }
+                        });
+                    } else {
+                        return _associateCtepPerson(ctepPerson);
+                    }
+                }
+            });
+        }
 
+        function _associateCtepPerson(ctepPerson) {
+            PersonService.associatePersonContext(ctepPerson.id, vm.curPerson.ctrp_id).then(function(res) {
+                console.info('res with association person: ', res); // resp.person
+                vm.associatedPersonContexts = []; // clean up
+                if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: 'CTEP'}) === -1) {
+                    vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id});
+                    vm.curPerson.associated_persons.push(res.person); // TODO: populate the source_context and source_status with string
+                }
+            }).catch(function(err) {
+                console.error('err: ', err);
+            });
+        }
 
         /**
          * Asynchronously populate the vm.savedSelection array for presenting

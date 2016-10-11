@@ -173,8 +173,8 @@ Given I am on the Trial Design screen
   And I Can check Subject
   And I can check Investigator
   And I can check Caregiver
-  And I can check Outcome Asessor
- When I select Save
+  And I can check Outcome Assessor
+ When When I select Save at the trial design screen
  Then the updated Masking role is associated with the trial
   And the message Record Updated displays
 
@@ -297,7 +297,7 @@ Given I am logged into the CTRP Protocol Abstraction application
   And I can enter a value for Target Enrollment
   And I can enter a value for Final Enrollment for ClinicalTrials.gov
   And the value of Accruals will be displayed
-  And I select Save
+  And When I select Save at the trial design screen
  Then the Expanded Access trial design is associated with the trial
   And the message Record Updated displays
 

@@ -1,7 +1,7 @@
 if @userSearchAccess
   json.users do
     json.array!(@users) do |user|
-      if current_user.role == 'ROLE_ACCOUNT-APPROVER' || current_user.role == 'ROLE_SITE-SU' || current_user.role == 'ROLE_SUPER' || current_user.role == 'ROLE_ADMIN'  || current_user.role == 'ROLE_RO'  || current_user.role == 'ROLE_ABSTRACTOR' || current_user.role == 'ROLE_ABSTRACTOR-SU'
+      if current_user.role == 'ROLE_ACCOUNT-APPROVER' || current_user.role == 'ROLE_SITE-SU' || current_user.role == 'ROLE_SUPER' || current_user.role == 'ROLE_ADMIN'  || current_user.role == 'ROLE_RO'  || current_user.role == 'ROLE_ABSTRACTOR'
         json.extract! user,
                       :domain,
                       :id,

@@ -136,7 +136,8 @@
             getPoAffStatuses : getPoAffStatuses,
             curatePerson : curatePerson,
             checkUniquePerson : checkUniquePerson,
-            extractFullName: extractFullName
+            extractFullName: extractFullName,
+            associatePersonContext: associatePersonContext
         };
 
         return services;
@@ -276,6 +277,14 @@
          */
         function getPoAffStatuses() {
             return PromiseTimeoutService.getData(URL_CONFIGS.PO_AFF_STATUSES);
+        }
+
+        function associatePersonContext(ctepPersonId, ctrpId) {
+            // plug in the url params
+            var url = URL_CONFIGS.ASSOCIATE_PERSON;
+            url = url.replace('{:ctep_person_id}', ctepPersonId);
+            url = url.replace('{:ctrp_id}', ctrpId);
+            return PromiseTimeoutService.getData(url);
         }
 
 

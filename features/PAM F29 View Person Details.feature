@@ -8,13 +8,13 @@ When I select a Person
 Then the Person details screen will displayed 
 When the context is CTEP
 Then the following fields will be displayed
-|CTRP ID|#Grouping ID
+|CTRP ID  #Grouping ID|
 |Prefix|
 |First Name|
 |Middle Name|
 |Last Name|
 |Suffix|
-|Context Person ID|#Primary Key
+|Context Person ID #Primary Key|
 |Source Status|
 |Source Context|
 |Source ID|
@@ -31,13 +31,13 @@ Then the following fields will be displayed
 And when there are other contexts for this Person
 When the context is CTEP
 Then the following fields will be displayed
-|CTRP ID|#Grouping ID
+|CTRP ID #Grouping ID|
 |Prefix|
 |First Name|
 |Middle Name|
 |Last Name|
 |Suffix|
-|Context Person ID|#Primary Key
+|Context Person ID #Primary Key|
 |Source Status|
 |Source Context|
 |Source ID|

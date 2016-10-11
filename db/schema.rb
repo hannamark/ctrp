@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160930152929) do
+ActiveRecord::Schema.define(version: 20161007134941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -436,6 +436,24 @@ ActiveRecord::Schema.define(version: 20160930152929) do
     t.integer  "lock_version",             default: 0
   end
 
+  create_table "import_trial_log_data", force: :cascade do |t|
+    t.string   "file"
+    t.string   "file_name",        limit: 255
+    t.string   "document_type",    limit: 255
+    t.string   "document_subtype", limit: 255
+    t.string   "context",          limit: 255
+    t.string   "object",           limit: 255
+    t.string   "method",           limit: 255
+    t.string   "status",           limit: 255
+    t.string   "object_id",        limit: 255
+    t.string   "user",             limit: 255
+    t.text     "response_body"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "uuid",             limit: 255
+    t.integer  "lock_version",                 default: 0
+  end
+
   create_table "ind_ides", force: :cascade do |t|
     t.string   "ind_ide_type",   limit: 255
     t.string   "grantor",        limit: 255
@@ -800,7 +818,6 @@ ActiveRecord::Schema.define(version: 20160930152929) do
     t.string   "country",                  limit: 255
     t.string   "email",                    limit: 255
     t.string   "phone",                    limit: 255
-    t.string   "fax",                      limit: 255
     t.integer  "source_status_id"
     t.integer  "source_context_id"
     t.datetime "created_at",                                       null: false
@@ -926,25 +943,27 @@ ActiveRecord::Schema.define(version: 20160930152929) do
   add_index "participating_sites", ["trial_id"], name: "index_participating_sites_on_trial_id", using: :btree
 
   create_table "people", force: :cascade do |t|
-    t.string   "source_id",         limit: 255
-    t.string   "prefix",            limit: 255
-    t.string   "suffix",            limit: 255
-    t.string   "email",             limit: 255
-    t.string   "phone",             limit: 255
+    t.string   "source_id",              limit: 255
+    t.string   "prefix",                 limit: 255
+    t.string   "suffix",                 limit: 255
+    t.string   "email",                  limit: 255
+    t.string   "phone",                  limit: 255
     t.integer  "source_status_id"
     t.integer  "source_context_id"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.string   "uuid",              limit: 255
-    t.integer  "lock_version",                  default: 0
-    t.string   "fname",             limit: 255
-    t.string   "mname",             limit: 255
-    t.string   "lname",             limit: 255
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.string   "uuid",                   limit: 255
+    t.integer  "lock_version",                       default: 0
+    t.string   "fname",                  limit: 255
+    t.string   "mname",                  limit: 255
+    t.string   "lname",                  limit: 255
     t.integer  "ctrp_id"
     t.string   "created_by"
     t.string   "updated_by"
-    t.string   "extension",         limit: 255
+    t.string   "extension",              limit: 255
     t.string   "processing_status"
+    t.datetime "association_start_date"
+    t.string   "service_request"
   end
 
   add_index "people", ["source_context_id"], name: "index_people_on_source_context_id", using: :btree
@@ -1768,6 +1787,7 @@ ActiveRecord::Schema.define(version: 20160930152929) do
   create_sequence "grants_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "holder_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "identifier_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "import_trial_log_data_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "ind_ides_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "internal_sources_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "intervention_models_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false

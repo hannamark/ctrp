@@ -24,6 +24,7 @@
                   restrict: 'A',
                   require: '^ngModel',
                   scope: {
+                      sourceContextOnly: '=?',
                       maxRowSelectable: '=?',
                       ngModel: '='
                   },
@@ -36,7 +37,6 @@
               function linkerFn(scope, element, attrs, ngModelCtrl) {
                   $compile(element.contents())(scope);
                   var modalOpened = false;
-
                   element.bind('click', function() {
                       var modalInstance = $uibModal.open({
                           animation: true,
@@ -44,6 +44,9 @@
                           controller: 'advancedPersonSearchModalCtrl as advPersonSearchModalView',
                           size: 'lg',
                           resolve: {
+                              sourceContextOnly: function() {
+                                return scope.sourceContextOnly || 'CTRP'; // CTRP as default context
+                              },
                               maxRowSelectable: function () {
                                   return scope.maxRowSelectable || 1; // 1 as default
                               }

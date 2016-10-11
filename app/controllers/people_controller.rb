@@ -133,13 +133,14 @@ class PeopleController < ApplicationController
 
       if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
           @current_user.role == "ROLE_ADMIN")
+        source_context_id = SourceContext.where(code: params[:source_context]) if params[:source_context].present?
         @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
-        @people = @people.with_source_status(params[:source_status]) if params[:source_status].present?
+        # @people = @people.with_source_status(params[:source_status], source_context_id) if params[:source_status].present?
       else
         # TODO need constant for CTRP
         @people = @people.with_source_context("CTRP")
         # TODO need constant for Active
-        @people = @people.with_source_status("Active")
+        # @people = @people.with_source_status("Active")
       end
 
       # if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
@@ -152,6 +153,24 @@ class PeopleController < ApplicationController
       @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
     else
       @people = []
+    end
+  end
+
+  # associate a CTEP person to a ctrp_id (CTRP person)
+  def associate_person
+    associated_ctep_person = nil
+
+    if params.has_key?(:ctep_person_id) and params.has_key?(:ctrp_id)
+
+      associated_ctep_person = Person.find(params[:ctep_person_id])
+      if !associated_ctep_person.nil?
+        associated_ctep_person.ctrp_id = params[:ctrp_id]
+        associated_ctep_person.update_attributes('ctrp_id': params[:ctrp_id], 'association_start_date': Time.now)
+      end
+
+    end
+    respond_to do |format|
+      format.json { render :json => {:person => associated_ctep_person} }
     end
   end
 

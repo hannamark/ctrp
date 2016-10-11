@@ -8,9 +8,9 @@
     angular.module('ctrp.app.user')
         .controller('userAssignTrialCtrl', userAssignTrialCtrl);
 
-    userAssignTrialCtrl.$inject = ['PromiseTimeoutService', 'toastr', 'userDetailObj', 'TrialService', 'OrgService', 'UserService', 'FamilyService', 'URL_CONFIGS', '$stateParams'];
+    userAssignTrialCtrl.$inject = ['toastr', 'userDetailObj', 'TrialService', 'OrgService', 'UserService', 'FamilyService', '$stateParams'];
 
-    function userAssignTrialCtrl(PromiseTimeoutService, toastr, userDetailObj, TrialService, OrgService, UserService, FamilyService, URL_CONFIGS, $stateParams) {
+    function userAssignTrialCtrl(toastr, userDetailObj, TrialService, OrgService, UserService, FamilyService, $stateParams) {
         var vm = this;
         vm.curUser = userDetailObj;
         vm.trialId = $stateParams.trialId;

@@ -82,14 +82,17 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
      And I can view Participating Site Table for all trials
      And the table displays the columns type
      
-     |CTRP Org ID|#(Group ID)
+     |CTRP Org ID|
+     # CTRP Org ID=Group ID
      |CTRP Organization Name|
-     |Principal Investigator|# (Last Name, First Name)
+     |Principal Investigator|
+     # Principal Investigator Format (Last Name, First Name)
      |Local Trial Identifier|
      |Program Code|
      |Current Site Recruitment Status|
      |Current Site Recruitment Status Date|
-     |Primary Contact|# (Last Name, First Name)
+     |Primary Contact|
+     #Primary Contact Format (Last Name, First Name)
      |Email|
      |Phone Number-Extension|
      

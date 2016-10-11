@@ -37,6 +37,7 @@
             'PO_AFF_STATUSES': '/ctrp/po_affiliation_statuses.json',
             'SEARCH_PERSON': '/ctrp/people/search.json',
             'UNIQUE_PERSON': '/ctrp/people/unique.json',
+            'ASSOCIATE_PERSON': '/ctrp/people/associate_context/{:ctep_person_id}/{:ctrp_id}.json',
             'A_FAMILY': '/ctrp/families/',
             'FAMILY_LIST': '/ctrp/families.json',
             'SEARCH_FAMILY': '/ctrp/families/search.json',

@@ -150,7 +150,7 @@ Scenario: #1b CTEP Context Mandatory Fields
     Scenario: #4a  CTRP Organization information gets updated with the New Org Name information received from CTEP
     Given I am on the Search Organizations Screen
     When CTEP updated organization information is sent to CTRP via Restful service
-    Then the CTEP Service Request will be set to "Update"
+    And the CTEP Service Request will be set to "Update"
     And the CTEP "Processing Status" will be set to "Incomplete"
     Then CTEP Context will be updated automatically with the new information received from the Restful service
     When the CTEP context update IS a New Organization Name

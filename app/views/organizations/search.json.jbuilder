@@ -1,22 +1,36 @@
 json.orgs do
   if params[:no_family]
     json.array!(@organizations) do |organization|
-      json.extract! organization, :id, :source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax
+      json.extract! organization, :id, :source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone
     end
   else
     json.array!(@organizations) do |organization|
-      json.extract! organization, :id, :source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :ctrp_id, :ctep_id, :updated_by, :updated_at, :nullifiable
-      json.source_context organization.source_context.present? ? organization.source_context.name : nil
-      json.source_status organization.source_status.present? ? organization.source_status.name : nil
-      json.url organization_url(organization, format: :json)
-      json.aff_families_count organization.families.count()
-      json.aff_families_names organization.families.map{ |family| family.name}.join("; ")
+      json.extract! organization,
+        :id,
+        :source_id,
+        :name,
+        :address,
+        :address2,
+        :city,
+        :state_province,
+        :postal_code,
+        :country,
+        :email,
+        :phone,
+        :ctrp_id,
+        :aff_families_names,
+        :updated_by,
+        :updated_at
+        json.ctep_id organization.multiview_ctep_id
+        json.source_context organization.source_context_name
+        json.source_status organization.source_status_name
+        json.url organization_url(organization, format: :json)
     end
   end
 end
 json.start params[:start]
 json.rows params[:rows]
-json.total @organizations.respond_to?(:total_count) ? @organizations.total_count : @organizations.size
+json.total @total
 json.sort params[:sort]
 json.order params[:order]
 json.alias params[:alias]

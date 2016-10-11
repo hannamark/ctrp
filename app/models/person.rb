@@ -194,7 +194,7 @@ class Person < ActiveRecord::Base
 
   scope :with_source_context, -> (value) { joins(:source_context).where("source_contexts.name = ?", "#{value}") }
 
-  scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
+  scope :with_source_status, -> (value, source_context_id) { joins(:source_status).where("source_statuses.name = ? AND source_statuses.source_context_id = ?", "#{value}", "#{source_context_id}") }
 
   scope :matches_wc, -> (column, value,wc_search) {
     str_len = value.length
