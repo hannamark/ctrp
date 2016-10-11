@@ -289,7 +289,7 @@ class Organization < ActiveRecord::Base
     else
       if !wc_search
         if !value.match(/\s/).nil?
-          value=value.gsub! /\s+/, '%'
+          value = (value.gsub! /\s+/, '%')
         end
         where("#{column} ilike ?", "%#{value}%")
       else
@@ -309,7 +309,7 @@ class Organization < ActiveRecord::Base
     else
         if !wc_search
           if !value.match(/\s/).nil?
-            value=value.gsub! /\s+/, '%'
+            value = (value.gsub! /\s+/, '%')
           end
           joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value}%", "%#{value}%")
         else
@@ -443,7 +443,7 @@ class Organization < ActiveRecord::Base
       else
         if !params[:wc_search]
           if !alias_value.match(/\s/).nil?
-            alias_value = alias_value.gsub! /\s+/, '%'
+            alias_value = (alias_value.gsub! /\s+/, '%')
           end
           results = joins(join_clause).where(where_clause).where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{alias_value}%", "%#{alias_value}%").select(select_clause)
         else
@@ -465,7 +465,7 @@ class Organization < ActiveRecord::Base
       else
         if !wc_search
           if !value.match(/\s/).nil?
-            value = value.gsub! /\s+/, '%'
+            value = (value.gsub! /\s+/, '%')
           end
           results = joins(join_clause).where(where_clause).where("organizations.name ilike ?", "%#{value}%").select(select_clause)
         else
