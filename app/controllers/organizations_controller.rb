@@ -54,20 +54,12 @@ class OrganizationsController < ApplicationController
     @organization.updated_by = @current_user.username unless @current_user.nil?
 
     if organization_params[:new_ctep_org_id] then
-        @newctep = Organization.find(organization_params[:new_ctep_org_id])
-        @oldcteps = Organization.where({
-            :ctrp_id => organization_params[:id],
-            :source_context_id => SourceContext.find_by_code("CTEP").id
-            })
-        p @oldcteps
-        @newctep.ctrp_id = organization_params[:ctrp_id]
-        @newctep.save
+      @ctepchange = updateOlderContextAssociation "CTEP", organization_params[:ctrp_id], organization_params[:new_ctep_org_id]
     end
     if organization_params[:new_nlm_org_id] then
-        @newnlm = Organization.find(organization_params[:new_nlm_org_id])
-        @newnlm.ctrp_id = organization_params[:ctrp_id]
-        @newnlm.save
+      @nlmchange = updateOlderContextAssociation "NLM", organization_params[:ctrp_id], organization_params[:new_nlm_org_id]
     end
+
     respond_to do |format|
       if @organization.update(organization_params.except(:new_ctep_org_id, :new_nlm_org_id))
         format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
@@ -243,6 +235,19 @@ class OrganizationsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_organization
     @organization = Organization.find(params[:id])
+  end
+
+  def updateOlderContextAssociation context_val, ctrp_id_val, new_context_org_id
+    old_orgs = Organization.where({:ctrp_id => ctrp_id_val, :source_context_id => SourceContext.find_by_code(context_val).id})
+                   .where('id NOT IN (?)', [ctrp_id_val, new_context_org_id])
+    old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
+    new_org = Organization.where('id = ?', new_context_org_id)
+    if new_org[0].ctrp_id != ctrp_id_val
+      new_org.update_all(ctrp_id: ctrp_id_val) if !new_org.blank?
+    else
+      new_org = []
+    end
+    return (old_orgs.size + new_org.size) > 0
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

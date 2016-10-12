@@ -32,8 +32,8 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Postal Code|
     |Country|
     |Email|
-    |Phone Number “|” Extension |#Single Field
-    |Context Organization ID |#Primary Key
+    |Phone Number “|” Extension (#Single Field) |
+    |Context Organization ID (#Primary Key)|
     |Service Request |
     |Processing Status|
     

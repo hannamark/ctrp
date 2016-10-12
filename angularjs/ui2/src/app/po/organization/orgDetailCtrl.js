@@ -62,11 +62,14 @@
                     } else if (status === 200) {
                         // updated
                         vm.curOrg = response;
-
-                        // To make sure setPristine() is executed after all $watch functions are complete
-                        $timeout(function() {
-                           $scope.organization_form.$setPristine();
-                       }, 1);
+                        if (vm.curOrg.context_change) {
+                            $state.go('main.orgDetail', response, {reload: true});
+                        } else {
+                            // To make sure setPristine() is executed after all $watch functions are complete
+                            $timeout(function () {
+                                $scope.organization_form.$setPristine();
+                             }, 1);
+                        }
                     }
 
                     showToastr(vm.curOrg.name);

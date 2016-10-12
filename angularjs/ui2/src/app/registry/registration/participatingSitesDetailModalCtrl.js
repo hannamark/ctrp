@@ -24,8 +24,15 @@
         $scope.TrialService = TrialService;
         $scope.PATrialService = PATrialService;
 
+        vm.title = $scope.psDetailObj && !$scope.psDetailObj.new ? 'Update Participating Site' : 'Add Participating Site';
+
         vm.cancel = function() {
+
             $uibModalInstance.dismiss('cancel');
         }; //cancel
+
+        $scope.$on('closePsDetail', function(e) {
+            vm.cancel();
+        });
     }
 })();
