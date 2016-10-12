@@ -133,22 +133,20 @@ class PeopleController < ApplicationController
 
       if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
           @current_user.role == "ROLE_ADMIN")
-        source_context_id = SourceContext.where(code: params[:source_context]) if params[:source_context].present?
+        # SourceContext.where(code: params[:source_context]).pluck(:id)
+        source_context_id = SourceContext.find_by_code(params[:source_context]).id if params[:source_context].present?
         @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
-        # @people = @people.with_source_status(params[:source_status], source_context_id) if params[:source_status].present?
+        @people = @people.with_source_status_context(params[:source_status], source_context_id) if params[:source_status].present? && params[:source_context].present?
+        @people = @people.with_source_status_only(params[:source_status]) if params[:source_status].present? && !params[:source_context].present?
+
+        p "@people.size: #{@people.size}"
       else
         # TODO need constant for CTRP
         @people = @people.with_source_context("CTRP")
+        ctrp_source_context_id = SourceContext.find_by_code("CTRP").id
         # TODO need constant for Active
-        # @people = @people.with_source_status("Active")
+        @people = @people.with_source_status('ACT', ctrp_source_context_id)
       end
-
-      # if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
-      #   @people = @people.with_source_status(params[:source_status][:name]) if params[:source_status].present?
-      # else
-      #   # TODO need constant for Active
-      #   @people = @people.with_source_status("Active")
-      # end
 
       @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
     else

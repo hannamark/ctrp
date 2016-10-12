@@ -362,12 +362,11 @@
             $scope.$watchCollection(function() {
                 return vm.associatedPersonContexts;
             }, function(newVal, oldVal) {
-                console.info('vm.associatedPersonContexts: ', newVal);
                 if (!!newVal && angular.isArray(newVal) && newVal.length > 0) {
                     var ctepPerson = newVal[0];
-                    if (angular.isDefined(ctepPerson.ctrp_id)) {
+                    if (angular.isDefined(ctepPerson.ctrp_id) && ctepPerson.ctrp_id !== vm.curPerson.ctrp_id) {
                         var isConfirmed = false;
-                        Common.alertConfirm('This CTEP person has been assodicated, click OK to change the existing association').then(function(ok) {
+                        Common.alertConfirm('This CTEP person has been assodicated to another CTRP Person Context, click OK to change the existing association').then(function(ok) {
                             isConfirmed = ok;
                         }).catch(function(cancel) {
                             // nothing here
