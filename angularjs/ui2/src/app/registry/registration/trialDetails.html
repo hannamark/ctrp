@@ -321,7 +321,10 @@
                                 </span>
                             </div>
                             <div class="col-xs-12 col-xs-3" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
-                                <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="trialDetailView.selectedPiArray"></ctrp-person-adv-search-modal-button>
+                                <button type="button" class="btn btn-primary" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="trialDetailView.selectedPiArray" restriction-field>
+                                    <i class="glyphicon glyphicon-search"></i> Search Persons
+                                </button>
+                                <!-- <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="trialDetailView.selectedPiArray"></ctrp-person-adv-search-modal-button> -->
                             </div>
                         </div>
                     </div>
