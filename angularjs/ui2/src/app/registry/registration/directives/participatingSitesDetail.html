@@ -130,7 +130,10 @@
                         </span>
                     </div>
                     <div class="col-xs-12 col-xs-3">
-                        <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="selectedPiArray"></ctrp-person-adv-search-modal-button>
+                        <!-- <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="selectedPiArray"></ctrp-person-adv-search-modal-button> -->
+                        <button type="button" class="btn btn-primary" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="selectedPiArray" restriction-field>
+                            <i class="glyphicon glyphicon-search"></i> Search Persons
+                        </button>
                     </div>
                 </div>
 
@@ -294,7 +297,10 @@
                                </span>
                             </div>
                             <div class="col-xs-12 col-sm-4" ng-show="curPs.contact_type == 'Person'">
-                                <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="selectedPersonContactArray"></ctrp-person-adv-search-modal-button>
+                                <!-- <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="selectedPersonContactArray"></ctrp-person-adv-search-modal-button> -->
+                                <button type="button" class="btn btn-primary" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="selectedPersonContactArray" restriction-field>
+                                    <i class="glyphicon glyphicon-search"></i> Search Persons
+                                </button>
                             </div>
                         </div>
 

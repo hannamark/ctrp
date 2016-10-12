@@ -935,7 +935,10 @@
                                 </span>
                             </div>
                             <div class="col-xs-12 col-sm-3" ng-show="trialDetailView.showInvSearchBtn && ['update'].indexOf(trialDetailView.curTrial.edit_type) < 0">
-                                <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="trialDetailView.selectedInvArray"></ctrp-person-adv-search-modal-button>
+                                <!-- <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="trialDetailView.selectedInvArray"></ctrp-person-adv-search-modal-button> -->
+                                <button type="button" class="btn btn-primary" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="trialDetailView.selectedInvArray" restriction-field>
+                                    <i class="glyphicon glyphicon-search"></i> Search Persons
+                                </button>
                             </div>
                         </div>
 
