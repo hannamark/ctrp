@@ -172,5 +172,5 @@ Feature: PO F19 Read Only Version of Organization
      And I can view selected organization associations details in different tabs
      And I an view Associated organization detailed table displayed under the CTRP context tab
 
-     Then 
+     
 
