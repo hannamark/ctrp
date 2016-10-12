@@ -418,7 +418,7 @@ class Organization < ActiveRecord::Base
        (
           CASE
             WHEN source_contexts.name = 'CTEP'
-            THEN source_contexts.name
+            THEN organizations.source_id
             ELSE all_cteps_by_ctrp_id.ctep_id
           END
        ) as multiview_ctep_id,
