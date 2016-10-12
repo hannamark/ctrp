@@ -175,7 +175,10 @@
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <!-- <button class="btn btn-primary">Look Up Person</button> -->
-                    <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.principalInvestigator.array"></ctrp-person-adv-search-modal-button>
+                    <!-- <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.principalInvestigator.array"></ctrp-person-adv-search-modal-button> -->
+                    <button type="button" class="btn btn-primary" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="generalTrialDetailView.principalInvestigator.array" restriction-field>
+                        <i class="glyphicon glyphicon-search"></i> Search Persons
+                    </button>
                 </div>
             </div>
           </fieldset>
@@ -223,7 +226,10 @@
                             </span>
                         </div>
                         <div class="col-xs-12 col-sm-3" ng-show="generalTrialDetailView.centralContactType == 'Person'">
-                            <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button>
+                            <!-- <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button> -->
+                            <button type="button" class="btn btn-primary" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts" restriction-field>
+                                <i class="glyphicon glyphicon-search"></i> Search Persons
+                            </button>
                         </div>
                     </div>
 
