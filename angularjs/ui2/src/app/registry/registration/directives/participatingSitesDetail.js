@@ -369,6 +369,8 @@
 
             // Set the Site PI from many participating_site_investigators
             function setSitePi() {
+                //$scope.selectedPiArray.pop();
+
                 for (var i = 0; i < $scope.curPs.participating_site_investigators.length; i++) {
                     if ($scope.curPs.participating_site_investigators[i].investigator_type === 'Principal Investigator') {
                         $scope.sitePiIdx = i;
@@ -409,15 +411,18 @@
                 $scope.invContactArray = [];
 
                 _.each(invList, function(inv) {
-                    var invObj = {
-                        id: inv.id,
-                        name: inv.person.fname + ' ' + inv.person.lname,
-                        email: inv.person.email,
-                        phone: inv.person.phone,
-                        extension: inv.person.extension
-                    };
+                    console.log('inv investigator type is: ', inv.investigator_type);
+                    if (inv.investigator_type === 'Principal Investigator') {
+                        var invObj = {
+                            id: inv.id,
+                            name: inv.person.fname + ' ' + inv.person.lname,
+                            email: inv.person.email,
+                            phone: inv.person.phone,
+                            extension: inv.person.extension
+                        };
 
-                    $scope.invContactArray.push(invObj);
+                        $scope.invContactArray.push(invObj);
+                    }
                 });
             }
 

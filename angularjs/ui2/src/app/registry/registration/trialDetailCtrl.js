@@ -1122,8 +1122,12 @@
 
             });
 
-            modalInstance.result.then(function () {
-                //console.log('modal closed, TODO redirect');
+            /* Update Trial participating_sites list when update/add PS modal closes */
+            modalInstance.result.then(function (result) {
+                var trial = TrialService.getTrialById($stateParams.trialId);
+                trial.then(function(trial) {
+                    vm.curTrial.participating_sites = trial.participating_sites;
+                });
             });
         }
 
@@ -1613,5 +1617,7 @@
                 vm.nihHolderTypeError = '';
             }
         }
+
+        $scope.$on('refreshPsList')
     }
 })();
