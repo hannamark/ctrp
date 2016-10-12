@@ -415,7 +415,13 @@ class Organization < ActiveRecord::Base
     where_clause = ""
     select_clause = "
       organizations.*,
-      all_cteps_by_ctrp_id.ctep_id as multiview_ctep_id,
+       (
+          CASE
+            WHEN source_contexts.name = 'CTEP'
+            THEN source_contexts.name
+            ELSE all_cteps_by_ctrp_id.ctep_id
+          END
+       ) as multiview_ctep_id,
       source_statuses.name as source_status_name,
       source_contexts.name as source_context_name,
        (
