@@ -77,6 +77,8 @@
             $scope.selectedRows = [];
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
+            $scope.processingStatuses = OrgService.getProcessingStatuses();
+            $scope.serviceRequests = [];
             $scope.dateFormat = DateService.getFormats()[1];
             // console.log('dateFormat: ' + $scope.dateFormat);
             $scope.dateOptions = DateService.getDateOptions();
@@ -450,6 +452,16 @@
                             });
                         }
                     }
+                });
+
+                OrgService.getServiceRequests().then(function (requests) {
+                    var status = requests.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        $scope.serviceRequests = requests;
+                    }
+
+                    delete requests.server_response;
                 });
             } //getPromisedData
 

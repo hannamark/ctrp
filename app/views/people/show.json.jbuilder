@@ -5,6 +5,8 @@ json.extract! @person, :id, :source_id, :fname, :mname, :lname, :prefix, :suffix
 
 
 ctrp_context_id = SourceContext.find_by_code('CTRP').id
+json.set! :is_ctrp_context, ctrp_context_id == @person.source_context_id # flag if this person is ctrp context
+
 @associated_persons = Person.where("ctrp_id = ? AND source_context_id != ?", @person.ctrp_id, ctrp_context_id) if @person.ctrp_id.present?
 
 json.associated_persons do
