@@ -141,13 +141,12 @@ class PeopleController < ApplicationController
         @people = @people.with_source_status_context(params[:source_status], source_context_id) if params[:source_status].present? && params[:source_context].present?
         @people = @people.with_source_status_only(params[:source_status]) if params[:source_status].present? && !params[:source_context].present?
 
-        p "@people.size: #{@people.size}"
       else
         # TODO need constant for CTRP
         @people = @people.with_source_context("CTRP")
         ctrp_source_context_id = SourceContext.find_by_code("CTRP").id
         # TODO need constant for Active
-        @people = @people.with_source_status('ACT', ctrp_source_context_id)
+        @people = @people.with_source_status_context('ACT', ctrp_source_context_id)
       end
 
       @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
