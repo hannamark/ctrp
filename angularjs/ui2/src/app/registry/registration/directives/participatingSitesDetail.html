@@ -8,7 +8,7 @@
     <div class="row">
         <form class="form form-horizontal" role="form" name="ps_form" novalidate ctrp-submit="updatePs()" unsaved-changes>
             <div class="bottom-offset-xss" ng-show="isManageScreen && !(editMode || addMode)">
-                <div class="col-sm-12 table-responsive" ng-show="curTrial.participating_sites.length > 0" >
+                <div class="col-sm-12 table-responsive" ng-show="curTrial.participating_sites.length">
                     <h5>List of Participating Sites:</h5>
                     <table st-table="curTrial.participating_sites" class="table table-bordered table-striped table-condensed">
                         <thead>
@@ -28,7 +28,7 @@
                             <tr ng-repeat="ps in curTrial.participating_sites track by $index">
                                 <td class="col-sm-1">{{ps.organization.id}}</td>
                                 <td class="col-sm-2">{{ps.organization.name}}</td>
-                                <td class="col-sm-1">{{ps.view_investigators}}</td>
+                                <td class="col-sm-1">{{ps.site_pi.fname}} {{ps.site_pi.lname}}</td>
                                 <td class="col-sm-1">{{ps.protocol_id}}</td>
                                 <td class="col-sm-1">{{ps.program_code}}</td>
                                 <td class="col-sm-1">{{ps.current_status_name}}</td>
@@ -259,12 +259,15 @@
 
                     <div class="form-group" ng-show="curPs.contact_type === 'PI' && curPs.participating_site_investigators.length" ng-class="{'has-feedback required': curPs.contact_type === 'PI','has-error': ctrpbtn.ps_form.needsAttention(ps_form.investigator)}">
                         <label for="investigator" class="control-label col-xs-12 col-sm-3">Contact Name:</label>
-                        <div class="col-xs-12 col-sm-4">
+                        <div class="col-xs-12 col-sm-4 form-text">
+                            <!--
                             <select name="investigator" id="investigator"
                                     class="form-control input-sm"
                                     ng-model="selectedInvContact" ng-options="investigator as investigator.name for investigator in invContactArray track by investigator.id" ng-required="curPs.contact_type === 'PI'">
                                 <option value="">-Select Investigator-</option>
                             </select>
+                            -->
+                            {{curPs.contact_name}}
                         </div>
                     </div>
 
@@ -284,52 +287,50 @@
                         </div>
                     </div>
 
-                    <div>
-                        <div class="form-group" ng-class="{'has-feedback required': curPs.contact_type === 'General' || curPs.contact_type === 'Person','has-error': ctrpbtn.ps_form.needsAttention(ps_form.contact_name)}" ng-hide="curPs.contact_type === 'PI'">
-                            <label for="contact_type" class="control-label col-xs-12 col-sm-3">Contact Name:</label>
-                            <div class="col-xs-12 col-sm-4">
-                                <input type="text" id="contact_name" name="contact_name" class="form-control input-sm" placeholder="Central Contact"
-                                       ng-disabled="curPs.contact_type !== 'General'" maxlength="125"
-                                       ng-model="curPs.contact_name" ng-required="curPs.contact_type === 'General' || curPs.contact_type === 'Person'">
-                               <span ng-messages="ctrpbtn.ps_form.needsAttention(ps_form.contact_name) && ps_form.contact_name.$error">
-                                   <span class="help-block" ng-message="required">Central contact name is Required</span>
-                               </span>
-                            </div>
-                            <div class="col-xs-12 col-sm-4" ng-show="curPs.contact_type == 'Person'">
-                                <button type="button" class="btn btn-primary" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="selectedPersonContactArray" restriction-field>
-                                    <i class="glyphicon glyphicon-search"></i> Search Persons
-                                </button>
-                            </div>
+                    <div class="form-group" ng-class="{'has-feedback required': curPs.contact_type === 'General' || curPs.contact_type === 'Person','has-error': ctrpbtn.ps_form.needsAttention(ps_form.contact_name)}" ng-hide="curPs.contact_type === 'PI'">
+                        <label for="contact_type" class="control-label col-xs-12 col-sm-3">Contact Name:</label>
+                        <div class="col-xs-12 col-sm-4">
+                            <input type="text" id="contact_name" name="contact_name" class="form-control input-sm" placeholder="Central Contact"
+                                   ng-disabled="curPs.contact_type !== 'General'" maxlength="125"
+                                   ng-model="curPs.contact_name" ng-required="curPs.contact_type === 'General' || curPs.contact_type === 'Person'">
+                           <span ng-messages="ctrpbtn.ps_form.needsAttention(ps_form.contact_name) && ps_form.contact_name.$error">
+                               <span class="help-block" ng-message="required">Central contact name is Required</span>
+                           </span>
                         </div>
-
-                        <!-- Email Address -->
-                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.email) && ctrpbtn.ps_form.needsAttention(ps_form.phone)}">
-                            <label for="email" class="control-label col-xs-12 col-sm-3">Contact Email Address:</label>
-                            <div class="col-xs-12 col-sm-5">
-                                <input type="email" id="email" name="email" maxlength="254" ng-model="curPs.contact_email" class="form-control input-sm" placeholder="Email" ng-required="!curPs.contact_phone.length">
-                                <span class="form-control-feedback" ng-show="ps_form.email.$viewValue.length" ng-class="ps_form.email.$error && ctrpbtn.ps_form.needsAttention(ps_form.email) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
-                            </div>
+                        <div class="col-xs-12 col-sm-4" ng-show="curPs.contact_type == 'Person'">
+                            <button type="button" class="btn btn-primary" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="selectedPersonContactArray" restriction-field>
+                                <i class="glyphicon glyphicon-search"></i> Search Persons
+                            </button>
                         </div>
+                    </div>
 
-                        <!-- Phone Number -->
-                        <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.phone) && ps_form.phone.$error && ctrpbtn.ps_form.needsAttention(ps_form.email) && ps_form.email.$error}">
-                            <label for="phone" class="control-label col-xs-12 col-sm-3">Contact Phone Number:</label>
-                            <div class="col-xs-12 col-sm-3">
-                                <input type="text" id="phone" name="phone" maxlength="30" ng-model="curPs.contact_phone" class="form-control input-sm" placeholder="Phone" ng-required="!curPs.contact_email.length">
-                                <span ng-show="ps_form.phone.$viewValue.length" class="form-control-feedback" ng-class="!curPs.contact_phone.length && ctrpbtn.ps_form.needsAttention(ps_form.email) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <input type="text" class="form-control input-sm no-validate" id="phone_extension" maxlength="14" ng-model="curPs.extension" placeholder="Extension">
-                            </div>
+                    <!-- Email Address -->
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.email) && ctrpbtn.ps_form.needsAttention(ps_form.phone)}">
+                        <label for="email" class="control-label col-xs-12 col-sm-3">Contact Email Address:</label>
+                        <div class="col-xs-12 col-sm-5">
+                            <input type="email" id="email" name="email" maxlength="254" ng-model="curPs.contact_email" class="form-control input-sm" placeholder="Email" ng-required="!curPs.contact_phone.length">
+                            <span class="form-control-feedback" ng-show="ps_form.email.$viewValue.length" ng-class="ps_form.email.$error && ctrpbtn.ps_form.needsAttention(ps_form.email) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                         </div>
+                    </div>
 
-                        <div class="form-group has-feedback has-error" ng-show="ctrpbtn.ps_form.needsAttention(ps_form.phone) && ps_form.phone.$error && ctrpbtn.ps_form.needsAttention(ps_form.email) && ps_form.email.$error">
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-5">
-                                <span>
-                                    <span class="help-block">Email or Phone Number is Required</span>
-                                </span>
-                            </div>
+                    <!-- Phone Number -->
+                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.phone) && ps_form.phone.$error && ctrpbtn.ps_form.needsAttention(ps_form.email) && ps_form.email.$error}">
+                        <label for="phone" class="control-label col-xs-12 col-sm-3">Contact Phone Number:</label>
+                        <div class="col-xs-12 col-sm-3">
+                            <input type="text" id="phone" name="phone" maxlength="30" ng-model="curPs.contact_phone" class="form-control input-sm" placeholder="Phone" ng-required="!curPs.contact_email.length">
+                            <span ng-show="ps_form.phone.$viewValue.length" class="form-control-feedback" ng-class="!curPs.contact_phone.length && ctrpbtn.ps_form.needsAttention(ps_form.email) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                        </div>
+                        <div class="col-xs-12 col-sm-2">
+                            <input type="text" class="form-control input-sm no-validate" id="phone_extension" maxlength="14" ng-model="curPs.extension" placeholder="Extension">
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback has-error" ng-show="ctrpbtn.ps_form.needsAttention(ps_form.phone) && ps_form.phone.$error && ctrpbtn.ps_form.needsAttention(ps_form.email) && ps_form.email.$error">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-5">
+                            <span>
+                                <span class="help-block">Email or Phone Number is Required</span>
+                            </span>
                         </div>
                     </div>
 

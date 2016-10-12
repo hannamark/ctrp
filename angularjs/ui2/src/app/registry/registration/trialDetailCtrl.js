@@ -1138,7 +1138,7 @@
             isOpenByDefault value is only important for accordion groups that do not have any writeable fields when edit_type === 'update'
         */
         vm.isOpenByDefault =  vm.curTrial.new || vm.curTrial.edit_type === 'complete' || vm.curTrial.edit_type === 'amend';
-        vm.accordions = [true, true, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, true, true, true, true, vm.isOpenByDefault, vm.isOpenByDefault];
+        vm.accordions = [true, true, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, true, true, true, true, vm.isOpenByDefault, true];
 
         /****************** implementations below ***************/
         function activate() {

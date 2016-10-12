@@ -366,7 +366,7 @@
                                 <tr ng-repeat="ps in viewTrialView.curTrial.participating_sites track by $index">
                                     <td class="col-sm-1">{{ps.organization.id}}</td>
                                     <td class="col-sm-2">{{ps.organization.name}}</td>
-                                    <td class="col-sm-1">{{ps.view_investigators}}</td>
+                                    <td class="col-sm-1">{{ps.site_pi.fname}} {{ps.site_pi.lname}}</td>
                                     <td class="col-sm-1">{{ps.protocol_id}}</td>
                                     <td class="col-sm-1">{{ps.program_code}}</td>
                                     <td class="col-sm-1">{{ps.current_status_name}}</td>

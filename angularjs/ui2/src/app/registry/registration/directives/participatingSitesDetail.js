@@ -438,7 +438,7 @@
                     }
 
                     if (newVal === 'PI') {
-                        console.log('pi: ', oldVal, newVal);
+                        $scope.selectedInvContact = $scope.invContactArray[0];
                     }
                 });
             }
