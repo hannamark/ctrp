@@ -115,12 +115,14 @@ class PeopleController < ApplicationController
         params[:fname].present? || params[:lname].present? || params[:prefix].present? ||
         params[:suffix].present? || params[:email].present? || params[:phone].present? ||
         params[:source_context].present? || params[:source_status].present? || params[:date_range_arr].present? ||
-        params[:updated_by].present? || params[:affiliated_org_name].present?
+        params[:updated_by].present? || params[:affiliated_org_name].present? || params[:processing_status].present? ||
+        params[:service_request].present?
 
       @people = Person.all
       @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
+      @people = @people.matches('processing_status', params[:processing_status]) if params[:processing_status].present?
       @people = @people.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present?
       @people = @people.matches_wc('source_id',params[:source_id],params[:wc_search]) if params[:source_id].present?
       @people = @people.matches_wc('fname', params[:fname],params[:wc_search]) if params[:fname].present?
@@ -216,9 +218,6 @@ class PeopleController < ApplicationController
         is_unique = false
       end
 
-    p " is unique? "
-    p is_unique
-
     respond_to do |format|
 #        format.json {render :json => {:name_unique => !exists}}
       format.json {render :json => {:name_unique => is_unique}}
@@ -235,7 +234,7 @@ class PeopleController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
       params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :extension,
-                                     :source_status_id, :source_context_id, :lock_version, :processing_status,
+                                     :source_status_id, :source_context_id, :lock_version, :processing_status, :service_request,
                                      po_affiliations_attributes: [:id, :organization_id, :effective_date,
                                                                   :expiration_date, :po_affiliation_status_id,
                                                                   :lock_version, :_destroy])
