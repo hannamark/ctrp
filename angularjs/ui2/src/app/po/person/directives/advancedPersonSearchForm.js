@@ -431,7 +431,11 @@
 
                     if (status >= 200 && status <= 210) {
                         $scope.sourceContextArr = data.sort(Common.a2zComparator());
-                        console.info('sourceContextArr: ', $scope.sourceContextArr);
+                        if ($scope.usedInModal && !!$scope.sourceContextOnly) {
+                            $scope.sourceContextArr = $scope.sourceContextArr.filter(function(c) {
+                                return c.code === $scope.sourceContextOnly; // show only the source context assigned
+                            });
+                        }
                     }
                 });
 
@@ -440,7 +444,11 @@
 
                     if (status >= 200 && status <= 210) {
                         $scope.sourceStatusArr = data.sort(Common.a2zComparator());
-                        console.info('sourceStatusArr: ', $scope.sourceStatusArr);
+                        if ($scope.usedInModal) {
+                            $scope.sourceStatusArr = $scope.sourceStatusArr.filter(function(s) {
+                                return s.code === 'ACT';
+                            });
+                        }
                     }
                 });
             } //getPromisedData
