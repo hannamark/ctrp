@@ -155,6 +155,17 @@ class PeopleController < ApplicationController
     end
   end
 
+  # make a clone of a ctep person to CTRP
+  def clone_ctep_person
+    cloned_person = nil
+    if params.has_key?(:ctep_person_id)
+
+      ctep_person = Person.find(params[:ctep_person_id])
+
+    end
+
+  end
+
   # associate a CTEP person to a ctrp_id (CTRP person)
   def associate_person
     associated_ctep_person = nil
