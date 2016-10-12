@@ -7,9 +7,9 @@
 
     angular.module('ctrp.app.registry').directive('participatingSitesDetail', participatingSitesDetail);
 
-    participatingSitesDetail.$inject = ['PersonService', 'toastr', '$state', '$timeout'];
+    participatingSitesDetail.$inject = ['PersonService', 'toastr', '$state', '$timeout', '$rootScope'];
 
-    function participatingSitesDetail(PersonService, toastr, $state, $timeout) {
+    function participatingSitesDetail(PersonService, toastr, $state, $timeout, $rootScope) {
 
         var directiveObj = {
           restrict: 'E',
@@ -37,7 +37,7 @@
 
         function participatingSitesDetailController($scope) {
             /* Global Variables */
-            var usedInModal = $scope.usedInModal;
+            var usedInModal = $scope.usedInModal ? $scope.usedInModal : false;
             var userDetailObj = $scope.userDetailObj;
             var trialDetailObj = $scope.trialDetailObj;
             var psDetailObj = $scope.psDetailObj;
@@ -81,7 +81,7 @@
                 if ($scope.selectedPiArray.length > 0) {
                     $scope.curPs.participating_site_investigators_attributes = [];
                     var psInvestigatorObj = {person_id: $scope.selectedPiArray[0].id, investigator_type: 'Principal Investigator'};
-                    if (!$scope.curPs.new) {
+                    if (!$scope.curPs.new && $scope.curPs.participating_site_investigators.length) {
                         psInvestigatorObj.id = $scope.curPs.participating_site_investigators[$scope.sitePiIdx].id;
                     }
                     $scope.curPs.participating_site_investigators_attributes.push(psInvestigatorObj);
@@ -107,12 +107,18 @@
                     var status = response.server_response.status;
 
                     if (status >= 200 && status <= 210) {
+                        toastr.success('Participating Site ' + $scope.curPs.id + ' has been recorded', 'Operation Successful!');
+
+                        if ($scope.usedInModal) {
+                            $rootScope.$broadcast('closePsDetail');
+                            return;
+                        }
+
                         if ($scope.isManageScreen) {
                             $state.go('main.manageParticipatingSite', {trialId: response.trial.id}, {reload: true});
                         } else {
                             $state.go('main.viewTrial', {trialId: response.trial.id});
                         }
-                        toastr.success('Participating Site ' + $scope.curPs.id + ' has been recorded', 'Operation Successful!');
 
                         // To make sure setPristine() is executed after all $watch functions are complete
                         $timeout(function() {
