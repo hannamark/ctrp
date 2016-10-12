@@ -417,7 +417,7 @@ class Organization < ActiveRecord::Base
       organizations.*,
        (
           CASE
-            WHEN source_contexts.name = 'CTEP'
+            WHEN source_contexts.code = 'CTEP'
             THEN organizations.source_id
             ELSE all_cteps_by_ctrp_id.ctep_id
           END
