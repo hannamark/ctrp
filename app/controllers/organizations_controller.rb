@@ -10,7 +10,7 @@ class OrganizationsController < ApplicationController
   # GET /organizations
   # GET /organizations.json
   def index
-    @organizations = Organization.all_orgs_data(params)
+    @organizations = Organization.all_orgs_data()
   end
 
   # GET /organizations/1
@@ -154,7 +154,24 @@ class OrganizationsController < ApplicationController
     if params.has_key?( :name||:source_context||:source_id||:source_status||:family_name||
                         :address||:address2||:city||:state_province||:country||
                         :postal_code||:email||:phone||:updated_by||:date_range_arr)
-      @organizations = filterSearch Organization.all_orgs_data(params)
+
+      # get complete resultset
+      @organizations = filterSearch Organization.all_orgs_data()
+
+      # order
+      sortBy = params[:sort]
+      if ['source_context', 'source_status'].include? sortBy
+        sortBy  += "_name"
+      end
+      @organizations = @organizations.order("#{sortBy} #{params[:order]}")
+
+      @total = @organizations.size
+
+      # paginate
+      unless params[:rows].nil?
+        @organizations = Kaminari.paginate_array(@organizations).page(params[:start]).per(params[:rows]) unless @organizations.blank?
+      end
+
     end
   end
 
@@ -167,6 +184,10 @@ class OrganizationsController < ApplicationController
       resultOrgs = resultOrgs.matches("source_statuses.name", "Active") if !resultOrgs.blank?
       resultOrgs = resultOrgs.matches("source_contexts.name", "CTRP") if !resultOrgs.blank?
     end
+
+    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id]) if params[:source_id].present? && !resultOrgs.blank?
+    resultOrgs = resultOrgs.match_name_from_joins(params[:name], params[:alias], params[:wc_search]) if params[:name].present? && !resultOrgs.blank?
+
     resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2 && !resultOrgs.blank?
     resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? && !resultOrgs.blank? && params[:family_name] != '*'
     resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if params[:no_family].present? && !resultOrgs.blank?
@@ -181,12 +202,6 @@ class OrganizationsController < ApplicationController
     wc_matches_to_look_for = 'address,address2,updated_by,city,state_province,postal_code,email,phone'.split(",")
     wc_matches_to_look_for.each do |filter|
       resultOrgs = resultOrgs.matches_wc(filter, params[filter], params[:wc_search]) if params[filter].present? && !resultOrgs.blank? && params[filter] != '*'
-    end
-
-    @total = resultOrgs.size
-
-    unless params[:rows].nil?
-      resultOrgs = Kaminari.paginate_array(resultOrgs).page(params[:start]).per(params[:rows]) unless resultOrgs.blank?
     end
     return resultOrgs
   end
