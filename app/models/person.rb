@@ -194,7 +194,11 @@ class Person < ActiveRecord::Base
 
   scope :with_source_context, -> (value) { joins(:source_context).where("source_contexts.name = ?", "#{value}") }
 
-  scope :with_source_status, -> (value, source_context_id) { joins(:source_status).where("source_statuses.name = ? AND source_statuses.source_context_id = ?", "#{value}", "#{source_context_id}") }
+  # search against source_status for the given source_context_id
+  scope :with_source_status_context, -> (value, source_context_id) { joins(:source_status).where("source_statuses.code = ? AND source_statuses.source_context_id = ?", "#{value}", "#{source_context_id}") }
+
+  scope :with_source_status_only, -> (value) { joins(:source_status).where("source_statuses.code = ?", "#{value}")} # with searching against all source_context
+
 
   scope :matches_wc, -> (column, value,wc_search) {
     str_len = value.length
@@ -215,6 +219,42 @@ class Person < ActiveRecord::Base
         where("people.#{column} ilike ?", "#{value}")
       end
     end
+  }
+
+  scope :all_persons_data, -> (params) {
+    join_clause = "
+    INNER JOIN source_contexts ON people.source_context_id = source_context.id
+    INNER JOIN source_statuses ON people.source_status_id = source_statuses.id
+"
+
+
+    where_clause = ""
+    select_clause = "
+      people.*,
+      source_statuses.name as source_status_name,
+      source_contexts.name as source_context_name
+    "
+
+    if params && params[:ctrp_id]
+      where_clause = " people.id = #{params[:ctrp_id]}"
+    end
+    results = nil
+    if params[:fname].present?
+      # results = nil
+      fname = params[:fname]
+      str_len = fname.length
+      wc_search = params[:wc_search]
+      if fname[0] == '*' && fname[str_len-1] != '*'
+        results = joins(join_clause).where(where_clause).where("people.name ilike ?", "%#{fname[1..str_len-1]}%").select(select_clause)
+      end
+    end
+    sortBy = params[:sort]
+    if ['source_context', 'source_status'].include?(sortBy)
+      sortBy += "_name"
+    end
+    results
+    # results.order("#{sortBy} #{params[:order]}")
+
   }
 
   scope :sort_by_col, -> (column, order) {
