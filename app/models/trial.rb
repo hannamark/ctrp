@@ -127,6 +127,7 @@
 class Trial < TrialBase
   include Filterable
   include TableLoggable
+  include ActiveRecord::UnionScope
 
   # Disabled optimistic locking
   self.locking_column = :dummy_column
@@ -1024,6 +1025,20 @@ class Trial < TrialBase
     where(lead_org_id: familyOrganizations)
   }
 
+  scope :with_current_user_org_as_ps, -> (value) {
+    p "in scope with_curent_user_as_ps"
+    current_user = value
+    organization = current_user.organization
+    join_clause = "LEFT JOIN participating_sites ON participating_sites.trial_id = trials.id"
+    where_clause = "participating_sites.organization_id =? "
+    joins(join_clause).where(where_clause, organization)
+  }
+
+  scope :with_owner_and_with_current_user_org_as_ps, ->(value) {
+    p "////////"
+    union_scope(with_owner(value.username),with_current_user_org_as_ps(value))
+  }
+
   scope :with_protocol_id, -> (value) {
     join_clause = 'LEFT JOIN other_ids ON other_ids.trial_id = trials.id'
     where_clause = 'trials.lead_protocol_id ilike ? OR trials.nci_id ilike ? OR other_ids.protocol_id ilike ?'
@@ -1234,6 +1249,7 @@ class Trial < TrialBase
   }
 
   scope :with_owner, -> (value) {
+    p "in with_owner"
     #joins(:users).where("users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)", value, false, nil)
     join_clause = "LEFT JOIN trial_ownerships ON trial_ownerships.trial_id = trials.id LEFT JOIN users ON users.id = trial_ownerships.user_id"
     where_clause = "trial_ownerships.ended_at IS ? AND users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)"
