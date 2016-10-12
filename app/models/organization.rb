@@ -437,56 +437,61 @@ class Organization < ActiveRecord::Base
     end
 
     if params[:alias] && params[:name].present?
-      results = nil
       alias_value = params[:name]
       alias_str_len = params[:name].length
       if alias_value[0] == '*' && alias_value[alias_str_len - 1] != '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{alias_value[1..alias_str_len - 1]}", "%#{alias_value[1..alias_str_len - 1]}").select(select_clause)
+        alias_name_where_clause = "organizations.name ilike ? OR name_aliases.name ilike ?", "%#{alias_value[1..alias_str_len - 1]}", "%#{alias_value[1..alias_str_len - 1]}"
       elsif alias_value[0] != '*' && alias_value[alias_str_len - 1] == '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{alias_value[0..alias_str_len - 2]}%", "#{alias_value[0..alias_str_len - 2]}%").select(select_clause)
+        alias_name_where_clause = "organizations.name ilike ? OR name_aliases.name ilike ?", "#{alias_value[0..alias_str_len - 2]}%", "#{alias_value[0..alias_str_len - 2]}%"
       elsif alias_value[0] == '*' && alias_value[alias_str_len - 1] == '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{alias_value[1..alias_str_len - 2]}%", "%#{alias_value[1..alias_str_len - 2]}%").select(select_clause)
+        alias_name_where_clause = "organizations.name ilike ? OR name_aliases.name ilike ?", "%#{alias_value[1..alias_str_len - 2]}%", "%#{alias_value[1..alias_str_len - 2]}%"
       else
         if !params[:wc_search]
           if !alias_value.match(/\s/).nil?
             alias_value = (alias_value.gsub! /\s+/, '%')
           end
-          results = joins(join_clause).where(where_clause).where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{alias_value}%", "%#{alias_value}%").select(select_clause)
+          alias_name_where_clause = "organizations.name ilike ? OR name_aliases.name ilike ?", "%#{alias_value}%", "%#{alias_value}%"
         else
-          results = joins(join_clause).where(where_clause).where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{alias_value}", "#{alias_value}").select(select_clause)
+          alias_name_where_clause = "organizations.name ilike ? OR name_aliases.name ilike ?", "#{alias_value}", "#{alias_value}"
         end
       end
-
+      results = joins(join_clause).where(where_clause).where(alias_name_where_clause)
     elsif params[:name].present?
-
-      value = params[:name]
+      name_value = params[:name]
       str_len = params[:name].length
       wc_search = params[:wc_search]
       if value[0] == '*' && value[str_len - 1] != '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}").select(select_clause)
+        name_where_clause = "organizations.name ilike ?", "%#{name_value[1..str_len - 1]}"
       elsif value[0] != '*' && value[str_len - 1] == '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%").select(select_clause)
+        name_where_clause = "organizations.name ilike ?", "#{name_value[0..str_len - 2]}%"
       elsif value[0] == '*' && value[str_len - 1] == '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%").select(select_clause)
+        name_where_clause = "organizations.name ilike ?", "%#{name_value[1..str_len - 2]}%"
       else
         if !wc_search
           if !value.match(/\s/).nil?
-            value = (value.gsub! /\s+/, '%')
+            value = (name_value.gsub! /\s+/, '%')
           end
-          results = joins(join_clause).where(where_clause).where("organizations.name ilike ?", "%#{value}%").select(select_clause)
+          name_where_clause = "organizations.name ilike ?", "%#{name_value}%"
         else
-          results = joins(join_clause).where(where_clause).where("organizations.name ilike ?", "#{value}").select(select_clause)
+          name_where_clause = "organizations.name ilike ?", "#{name_value}"
         end
       end
+      results = joins(join_clause).where(where_clause).where(name_where_clause)
     else
-      results = joins(join_clause).where(where_clause).select(select_clause)
+      results = joins(join_clause).where(where_clause)
+    end
+
+    if params[:source_id].present?
+      source_value = params[:source_id]
+      source_id_clause = "organizations.source_id ilike ? OR all_cteps_by_ctrp_id.ctep_id ilike ?", "%#{source_value}", "%#{source_value}"
+      results = results.where(source_id_clause)
     end
 
     sortBy = params[:sort]
     if ['source_context', 'source_status'].include? sortBy
       sortBy  += "_name"
     end
-    results.order("#{sortBy} #{params[:order]}")
+    results.select(select_clause).order("#{sortBy} #{params[:order]}")
   }
 end
 

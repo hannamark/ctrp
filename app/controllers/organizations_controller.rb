@@ -154,14 +154,11 @@ class OrganizationsController < ApplicationController
     if params.has_key?( :name||:source_context||:source_id||:source_status||:family_name||
                         :address||:address2||:city||:state_province||:country||
                         :postal_code||:email||:phone||:updated_by||:date_range_arr)
-      # ctrp_ids is used for retrieving the cluster of orgs when searching by source_id
-      ctrp_ids = Organization.matches_wc('source_id', params[:source_id],@current_user.role).pluck(:ctrp_id) if params[:source_id].present?
-      @organizations = filterSearch Organization.all_orgs_data(params),  ctrp_ids
+      @organizations = filterSearch Organization.all_orgs_data(params)
     end
   end
 
-  def filterSearch resultOrgs,  ctrp_ids
-    resultOrgs = resultOrgs.with_source_id(params[:source_id], ctrp_ids) if params[:source_id].present? && !resultOrgs.blank?
+  def filterSearch resultOrgs
     if @current_user && User.org_write_access(@current_user)
       resultOrgs = resultOrgs.where("source_contexts.name" => params[:source_contextfilter]) if params[:source_contextfilter].present? && !resultOrgs.blank?
       resultOrgs = resultOrgs.matches("source_statuses.name", params[:source_status]) if params[:source_status].present? && !resultOrgs.blank?
