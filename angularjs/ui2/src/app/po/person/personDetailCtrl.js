@@ -316,6 +316,7 @@
                 var ctrpSourceContextObj = _.findWhere(vm.sourceContextArr, {code: 'CTRP'});
                 vm.curPerson.source_context_id = !!ctrpSourceContextObj ? ctrpSourceContextObj.id : '';
             }
+            console.info('vm.curSourceContextName: ', vm.curSourceContextName);
             //delete 'CTEP and 'NLM' from the sourceContextArr
             vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'CTEP'}));
             vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'NLM'}));
