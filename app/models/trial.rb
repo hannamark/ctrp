@@ -316,11 +316,9 @@ class Trial < TrialBase
       if self.current_user && self.current_user.role == 'ROLE_SITE-SU'
         #Have Site Admin Privileges
         #
-        if !self.current_user.organization.families.nil?
           flag=0;
-          self.current_user.organization.families.each do |my_family|
-            my_family_organizations = my_family.organizations
-            if self.ps_orgs.include?(my_family_organizations)
+          self.current_user.family_organizations.each do |org|
+            if self.ps_orgs.include?(org)
                 flag =1;
                 break;
             end
@@ -330,9 +328,8 @@ class Trial < TrialBase
           else
             actions.append('manage-sites') #
           end
-        else
-          #Place logic here if user organization does not belong to any family.
-        end
+
+
       else
         #Do not have site Admin Privileges
         #
@@ -1017,6 +1014,8 @@ class Trial < TrialBase
     end
   }
 
+
+
   scope :in_family, -> (value, dateLimit) {
     familyOrganizations = FamilyMembership.where(
         family_id: value
@@ -1025,8 +1024,23 @@ class Trial < TrialBase
     where(lead_org_id: familyOrganizations)
   }
 
+  scope :with_current_user_in_family_as_ps, -> (value) {
+    current_user = value
+    organization = current_user.organization
+    family_organizations = current_user.family_organizations
+    param = []
+    family_organizations.each do |o|
+      param.push(o)
+    end
+
+    family_organizations = family_organizations.join(',')
+    join_clause = "LEFT JOIN participating_sites ON participating_sites.trial_id = trials.id"
+    where_clause = "participating_sites.organization_id in ("+param.join(',')+")"
+    joins(join_clause).where(where_clause)
+  }
+
+
   scope :with_current_user_org_as_ps, -> (value) {
-    p "in scope with_curent_user_as_ps"
     current_user = value
     organization = current_user.organization
     join_clause = "LEFT JOIN participating_sites ON participating_sites.trial_id = trials.id"
@@ -1034,9 +1048,20 @@ class Trial < TrialBase
     joins(join_clause).where(where_clause, organization)
   }
 
+  scope :in_family, -> (value, dateLimit) {
+    familyOrganizations = FamilyMembership.where(
+        family_id: value
+    ).where("family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null")
+                              .pluck(:organization_id)
+    where(lead_org_id: familyOrganizations)
+  }
+
   scope :with_owner_and_with_current_user_org_as_ps, ->(value) {
-    p "////////"
     union_scope(with_owner(value.username),with_current_user_org_as_ps(value))
+  }
+
+  scope :with_owner_and_with_current_user_in_family_as_ps, ->(value) {
+    union_scope(with_owner(value.username),with_current_user_in_family_as_ps(value))
   }
 
   scope :with_protocol_id, -> (value) {
@@ -1249,7 +1274,6 @@ class Trial < TrialBase
   }
 
   scope :with_owner, -> (value) {
-    p "in with_owner"
     #joins(:users).where("users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)", value, false, nil)
     join_clause = "LEFT JOIN trial_ownerships ON trial_ownerships.trial_id = trials.id LEFT JOIN users ON users.id = trial_ownerships.user_id"
     where_clause = "trial_ownerships.ended_at IS ? AND users.username = ? AND (trials.is_draft = ? OR trials.is_draft IS ?)"
