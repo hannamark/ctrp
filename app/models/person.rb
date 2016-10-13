@@ -199,6 +199,7 @@ class Person < ActiveRecord::Base
 
   scope :with_source_status_only, -> (value) { joins(:source_status).where("source_statuses.code = ?", "#{value}")} # with searching against all source_context
 
+  scope :with_service_request, -> (value) { joins(:service_request).where("service_requests.id = ?", "#{value}")}
 
   scope :matches_wc, -> (column, value,wc_search) {
     str_len = value.length
