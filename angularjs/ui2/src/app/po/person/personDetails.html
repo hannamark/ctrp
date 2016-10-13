@@ -91,7 +91,7 @@
                         </div>
                         <div class="form-group" ng-show="clusterPerson.context === 'CTEP'">
                             <label class="control-label col-xs-12 col-sm-3">Service Request:</label>
-                            <div class="col-xs-12 col-sm-3 form-text">{{personDetailView.curPerson.service_request}}</div>                            
+                            <div class="col-xs-12 col-sm-3 form-text">{{personDetailView.curPerson.service_request}}</div>
                         </div>
                         <div class="form-group has-feedback required" ng-hide="personDetailView.curSourceContextName === 'CTRP'" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new && personDetailView.curSourceContextName !== 'CTRP'}">
                             <label class="control-label col-xs-12 col-sm-3">Processing Status: </label>
@@ -353,7 +353,7 @@
                                                 {{person.association_start_date | date: "dd-MMM-yyyy H:mm"}}
                                             </td>
                                             <td class="text-center td-icon">
-                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.toggleSelection($index)" title="Mark for deletion">
+                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.removeAssociation(person.id)" title="Mark for deletion">
                                                     <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                                 </button>
                                             </td>
