@@ -246,7 +246,6 @@ var dbConnection = function () {
 
     this.buildDBConnection = function () {
         client.connect(function (value) {
-            console.log('------------ value of db connect ---------------' + value);
             return value;
         });
     };
@@ -730,6 +729,78 @@ var dbConnection = function () {
                 });
           //  });
         });
-    }
+    };
+
+    this.dbConnectionMailVerification = function (typeOfIDNCIORLeadProtocol, identifier, emailTO, emailSubject, emailBody,err) {
+            //if (err) {
+            //    return console.error('could not connect to postgres', err);
+            //}
+            //if(typeOfIDNCIORLeadProtocol.toUpperCase() === 'NCI')
+            //{
+            //client.query("SELECT * FROM trials where nci_id = '" + identifier + "'", function (err, trialID) {
+            //    if (err) {
+            //      //  console.error('error running the SELECT query', err);
+            //        assert.fail(0, 1, 'error running Query.');
+            //    }
+            //    trialDBID = trialID.rows[0].id;
+            //    client.query("SELECT * FROM mail_logs where trial_id = " + trialDBID , function (err, mailID) {
+            //        if (err) {
+            //          //  console.error('error running the Select query to find the email', err);
+            //            assert.fail(0, 1, 'error running Query.');
+            //        }
+            //        if(emailTO !== '') {
+            //            expect(mailID.rows[0].to).to.equal(emailTO, 'Verification of Email TO');
+            //        }
+            //        if(emailSubject !== '') {
+            //            expect(mailID.rows[0].subject).to.equal(emailSubject, 'Verification of Email Subject');
+            //        }
+            //        if(emailBody !== '') {
+            //            expect(mailID.rows[0].body).to.equal(emailBody, 'Verification of Email Body');
+            //        }
+            //        expect(mailID.rows[0].result).to.equal('Success', 'Verify Email Result is Success');
+            //        client.on('end', function () {
+            //            console.log("Client was disconnected.")
+            //        });
+            //    });
+            //});
+            //}
+            //    else
+            if (typeOfIDNCIORLeadProtocol.toUpperCase().replace(/ /g, '') === 'LEADPROTOCOLID') {
+                client.query("SELECT * FROM trials where lead_protocol_id = '" + identifier + "'", function (err, trialID) {
+                    if (err) {
+                        // console.error('error running the SELECT query', err);
+                        assert.fail(0, 1, 'error running Query.');
+                    }
+                    trialDBID = trialID.rows[0].id;
+                    client.query("SELECT * FROM mail_logs where trial_id = " + trialDBID, function (err, mailID) {
+                        if (err) {
+                            // console.error('error running the Select query to find the email', err);
+                            assert.fail(0, 1, 'error running Query.');
+                        }
+                        console.log('mailI/d from db');
+                        console.log(mailID.rows[0].to);
+                        if (emailTO !== '') {
+                            expect(mailID.rows[0].to).to.equal(emailTO, 'Verification of Email TO');
+                        }
+                        if (emailSubject !== '') {
+                            expect(mailID.rows[0].subject).to.equal(emailSubject, 'Verification of Email Subject');
+                        }
+                        if (emailBody !== '') {
+                            expect(mailID.rows[0].body).to.equal(emailBody, 'Verification of Email Body');//.and.notify(err);
+                        }
+                        expect(mailID.rows[0].result).to.equal('Success', 'Verify Email Result is Success');
+                        client.on('end', function () {
+                            console.log("Client was disconnected.")
+                        });
+                    });
+                });
+            }
+            else {
+                assert.fail(0, 1, 'Please select the correct Criteria for selection of Trial. Type should be either "NCI" OR "LEADPROTOCOLID". ' +
+                'Current provided type is: ' + typeOfIDNCIORLeadProtocol + 'which does not match with existing types.');
+            }
+
+
+    };
 };
 module.exports = dbConnection;

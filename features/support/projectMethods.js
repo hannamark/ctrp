@@ -69,7 +69,7 @@ var projectMethods = function() {
         addOrg.setAddPostalCode(postalCode);
         addOrg.setAddEmail(email);
         addOrg.setAddPhone(phone);
-        addOrg.setAddFax(fax);
+    //    addOrg.setAddFax(fax);
         addOrg.clickSave();
     };
     /***********************************************
@@ -720,7 +720,7 @@ var projectMethods = function() {
                         addOrg.setAddPostalCode('46578');
                         addOrg.setAddEmail('searchOrg@email.com');
                         addOrg.setAddPhone('222-487-8956');
-                        addOrg.setAddFax('222-487-4242');
+                      //  addOrg.setAddFax('222-487-4242');
                         addOrg.clickSave();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                         menuItem.clickOrganizations();
@@ -798,7 +798,7 @@ var projectMethods = function() {
                         addOrg.setAddPostalCode(orgPostal);
                         addOrg.setAddEmail(orgEmail);
                         addOrg.setAddPhone(orgPhone);
-                        addOrg.setAddFax(orgFax);
+                     //   addOrg.setAddFax(orgFax);
                         addOrg.clickSave();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                         menuItem.clickOrganizations();
@@ -884,7 +884,7 @@ var projectMethods = function() {
                         addOrg.setAddPostalCode('42589');
                         addOrg.setAddEmail('editOrg@email.com');
                         addOrg.setAddPhone('589-687-8956');
-                        addOrg.setAddFax('898-420-4242');
+                     //   addOrg.setAddFax('898-420-4242');
                         addOrg.clickSave();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                     });
@@ -1181,7 +1181,7 @@ var projectMethods = function() {
         addOrg.getVerifyAddPostalCode(postalCode);
         addOrg.getVerifyAddEmail(email);
         addOrg.getVerifyAddPhone(phone);
-        addOrg.getVerifyAddFax(fax);
+    //    addOrg.getVerifyAddFax(fax);
     };
 
     /**********************************
