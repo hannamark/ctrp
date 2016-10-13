@@ -141,6 +141,7 @@ Rails.application.routes.draw do
         post 'curate'
         post 'unique', defaults: {format: 'json'}
         get '/associate_context/:ctep_person_id/:ctrp_id', to: 'people#associate_person'
+        get '/association/remove/:ctep_person_id', to: 'people#remove_association'
       end
     end
 

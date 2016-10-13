@@ -137,7 +137,8 @@
             curatePerson : curatePerson,
             checkUniquePerson : checkUniquePerson,
             extractFullName: extractFullName,
-            associatePersonContext: associatePersonContext
+            associatePersonContext: associatePersonContext,
+            removePersonAssociation: removePersonAssociation,
         };
 
         return services;
@@ -284,6 +285,16 @@
             var url = URL_CONFIGS.ASSOCIATE_PERSON;
             url = url.replace('{:ctep_person_id}', ctepPersonId);
             url = url.replace('{:ctrp_id}', ctrpId);
+            return PromiseTimeoutService.getData(url);
+        }
+        /**
+         * Remove person context association
+         * @param  {[type]} ctepPersonId [description]
+         * @return {[type]}              [description]
+         */
+        function removePersonAssociation(ctepPersonId) {
+            var url = URL_CONFIGS.REMOVE_PERSON_ASSOCIATION;
+            url = url.replace('{:ctep_person_id}', ctepPersonId);
             return PromiseTimeoutService.getData(url);
         }
 

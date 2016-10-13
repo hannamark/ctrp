@@ -185,6 +185,21 @@ class PeopleController < ApplicationController
     end
   end
 
+  def remove_association
+    success = false
+    if params.has_key?(:ctep_person_id)
+      associated_ctep_person = Person.find(params[:ctep_person_id])
+      if !associated_ctep_person.nil? && associated_ctep_person.source_context_id == SourceContext.find_by_code('CTEP').id
+        success = associated_ctep_person.update_attributes('ctrp_id': nil, 'association_start_date': nil)
+      end
+
+    end
+
+    respond_to do |format|
+      format.json { render :json => {:is_removed => success} }
+    end
+  end
+
   #Method to check for Uniqueness while creating persons - check on First & Last name. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
   def unique
     print params[:person_fname]
