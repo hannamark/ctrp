@@ -215,6 +215,12 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Other|
 
 
+       Scenario:#15 View Trial Details displayed fields rules 
+    Given I am on the trial Details screen
+     When Fields names don't have a value added
+     Then all field names without field values will be displayed 
+     And field names with field values will be displayed 
+    
 
 
  
