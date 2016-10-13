@@ -35,6 +35,14 @@ var parser = new xml2js.Parser({explicitArray : false});
 var concat = require('concat-stream');
 var util = require('util');
 var registryMessagePage = require('../support/RegistryMessage');
+var fs = require('fs');
+var testConfiguration = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testConfig/';
+
+var configurationFile;
+configurationFile = '' + testConfiguration + '/testSettings.json';
+var configuration = JSON.parse(
+    fs.readFileSync(configurationFile)
+);
 
 
 var projectMethodsRegistry = function () {
@@ -395,7 +403,7 @@ var projectMethodsRegistry = function () {
                     addOrg.setAddPostalCode('55578');
                     addOrg.setAddEmail('searchTrialOrg@email.com');
                     addOrg.setAddPhone('545-487-8956');
-                    addOrg.setAddFax('898-487-4242');
+                 //   addOrg.setAddFax('898-487-4242');
                     addOrg.clickSave();
                     orgSourceId = addOrg.addOrgCTRPID.getText();
                     commonFunctions.onPrepareLoginTest(userWhoWillCreateTrial);
@@ -512,7 +520,7 @@ var projectMethodsRegistry = function () {
                             addOrg.setAddPostalCode('55578');
                             addOrg.setAddEmail('searchTrialOrg@email.com');
                             addOrg.setAddPhone('545-487-8956');
-                            addOrg.setAddFax('898-487-4242');
+                       //     addOrg.setAddFax('898-487-4242');
                             addOrg.clickSave();
                             menuItem.clickPeople();
                             menuItem.clickListPeople();
@@ -1082,7 +1090,7 @@ var projectMethodsRegistry = function () {
                         addOrg.setAddPostalCode('42666');
                         addOrg.setAddEmail('editTrialOrg@email.com');
                         addOrg.setAddPhone('589-8888-956');
-                        addOrg.setAddFax('898-9420-442');
+                      //  addOrg.setAddFax('898-9420-442');
                         addOrg.clickSave();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                     });
@@ -3121,7 +3129,28 @@ var projectMethodsRegistry = function () {
         addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function(allTrialOtherDocsDescValue) {
             expect(allTrialOtherDocsDescValue.sort()).to.eventually.equal(allOtherTrialRelatedDocsWithDescriptionArr.sort(), 'Validating Trial allOtherTrialRelatedDocsWithDecsription in Edit Page');
         });
-    }
+    };
+
+
+    this.baseEnvironment = function() {
+        if (browser.baseUrl === configuration.baseMainUrlQA) {
+            console.log('browser.baseUrl.current qa');
+            console.log(browser.baseUrl);
+            initialEmailEnv = '[CTRP AUM: qa]';
+        }
+
+        if (browser.baseUrl === configuration.baseMainUrl) {
+            console.log('browser.baseUrl.current. ci');
+            console.log(browser.baseUrl);
+            initialEmailEnv = '[CTRP AUM: development]';
+        }
+
+        if (browser.baseUrl === configuration.baseMainUrlLocalHost) {
+            console.log('browser.baseUrl.current local');
+            console.log(browser.baseUrl);
+            initialEmailEnv = '[CTRP AUM: development]';
+        }
+    };
 
 };
 module.exports = projectMethodsRegistry;
