@@ -31,6 +31,7 @@ AddOrganizationsPage = function(){
     this.addEmail = element(by.model('orgDetailView.curOrg.email'));
     this.addPhone = element(by.model('orgDetailView.curOrg.phone'));
     this.addFax = element(by.model('orgDetailView.curOrg.fax'));
+    this.addExtension = element(by.model('orgDetailView.curOrg.extension'));
     this.addVerifyOrgFamilyName = element(by.binding('family.name'));
     this.saveButton = element(by.id('save_btn')); //element(by.css('input[value="Save"]'));
     this.clearButton = element(by.css('#clear_btn'));//element(by.css('input[value="Reset"]'));by.id('reset_btn')
@@ -98,6 +99,10 @@ AddOrganizationsPage = function(){
 
     this.setAddFax = function(fax){
         addOrg.setValue(this.addFax,fax,"Organization by Fax field");
+    };
+
+    this.setAddExtension = function(extension){
+        addOrg.setValue(this.addExtension,extension,"Organization by Extension field");
     };
 
     this.clickSave = function(){
