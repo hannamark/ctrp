@@ -1302,8 +1302,8 @@ class TrialService
 
   def change_code(records,model,_ct_gov_val)
     _ctrp_record = records.find_by_from(_ct_gov_val)
-    _ctrp_record.nil? ? _ctrp_val = _ctrp_record.to : _ctrp_val = nil
-    _ctrp_val.nil? ?  _ctrp_code = model.where(name: _ctrp_val).pluck(:code) : _ctrp_code =''
+    !_ctrp_record.nil? ? _ctrp_val = _ctrp_record.to : _ctrp_val = nil
+    !_ctrp_val.nil? ?  _ctrp_code = model.where(name: _ctrp_val).pluck(:code) : _ctrp_code =''
     return _ctrp_code
   end
 
