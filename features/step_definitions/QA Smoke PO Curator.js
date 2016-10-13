@@ -210,7 +210,14 @@ module.exports = function () {
         return browser.sleep(25).then(function () {
             personTable = table.hashes();
             for (var i = 0; i < personTable.length; i++) {
-                projectFunctions.createPerson(personTable[i].prefix, personTable[i].firstName, personTable[i].middleName, personTable[i].lastName, personTable[i].suffix, personTable[i].email, personTable[i].phone);
+                personPrefix = personTable[i].prefix;
+                personFirstName = personTable[i].firstName;
+                personMiddleName = personTable[i].middleName;
+                personLastName = personTable[i].lastName;
+                personSuffix = personTable[i].suffix;
+                personEmail = personTable[i].email;
+                personPhone = personTable[i].phone;
+             //   projectFunctions.createPerson(personTable[i].prefix, personTable[i].firstName, personTable[i].middleName, personTable[i].lastName, personTable[i].suffix, personTable[i].email, personTable[i].phone);
             }
             // browser.sleep(25).then(callback);
         });
@@ -226,49 +233,50 @@ module.exports = function () {
                 console.log('wait here');
                 return true;
             }, 40).then(function () {
-                menuItem.clickPeople();
-                menuItem.clickListPeople();
-                cukePerson.then(function (value) {
-                    searchPeople.setPersonFirstName(value);
-                    searchPeople.clickSearch();
-                    expect(projectFunctions.inSearchResults(value)).to.become('true');
-                    searchOrg.searchResultMenu.click();
+                projectFunctions.createPerson(personPrefix, personFirstName, personMiddleName, personLastName, personSuffix, personEmail, personPhone);
+              //  menuItem.clickPeople();
+              //  menuItem.clickListPeople();
+             //   cukePerson.then(function (value) {
+              //      searchPeople.setPersonFirstName(value);
+               //     searchPeople.clickSearch();
+               //     expect(projectFunctions.inSearchResults(value)).to.become('true');
+              //      searchOrg.searchResultMenu.click();
                     //*[@id="menuitem-15"]/button
-                    element(by.xpath('//*[@id="menuitem-21"]/button')).click();
-                    element(by.xpath('//*[@id="menuitem-23"]/button')).click();
-                    element(by.xpath('//*[@id="menuitem-25"]/button')).click();
-                    element(by.xpath('//*[@id="menuitem-27"]/button')).click();
-                    element(by.xpath('//*[@id="menuitem-29"]/button')).click();
-                    element(by.xpath('//*[@id="menuitem-31"]/button')).click();
-                    element(by.xpath('//*[@id="menuitem-33"]/button')).click();
-                    searchOrg.searchResultMenu.click();
-                    browser.takeScreenshot().then(function (png) {
-                        helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/exceptionA' + moment().format('MMMDoYY hmmss') + '.png');
-                    });
-                    element(by.linkText(value)).isPresent().then(function (stateLink) {
-                        if (stateLink === true) {
-                            element(by.linkText(value)).isDisplayed().then(function (state2Link) {
-                                if (state2Link)
-                                    console.log('element Person link is displayed');
-                                element(by.linkText('LNsmokeSS')).click();
-                                //  element(by.linkText(value)).click();
-                            });
-                        } else {
-                            assert.fail(0, 1, 'Person name link did not appear');
-                        }
-                    });
-                    browser.takeScreenshot().then(function (png) {
-                        helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/exceptionB' + moment().format('MMMDoYY hmmss') + '.png');
-                    });
-                    browser.driver.wait(function () {
-                        console.log('wait here');
-                        return true;
-                    }, 40).then(function () {
-                        addPeople.addPersonFirstName.getAttribute('value').then(function (perFNAme) {
-                            console.log("This is the Person First name in Edit Person Page" + perFNAme);
-                            expect(perFNAme).to.equal(value, 'Verify the Person name in Edit page.');
-                        })
-                    });
+                    //element(by.xpath('//*[@id="menuitem-21"]/button')).click();
+                    //element(by.xpath('//*[@id="menuitem-23"]/button')).click();
+                    //element(by.xpath('//*[@id="menuitem-25"]/button')).click();
+                    //element(by.xpath('//*[@id="menuitem-27"]/button')).click();
+                    //element(by.xpath('//*[@id="menuitem-29"]/button')).click();
+                    //element(by.xpath('//*[@id="menuitem-31"]/button')).click();
+                    //element(by.xpath('//*[@id="menuitem-33"]/button')).click();
+                    //searchOrg.searchResultMenu.click();
+                    //browser.takeScreenshot().then(function (png) {
+                    //    helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/exceptionA' + moment().format('MMMDoYY hmmss') + '.png');
+                    //});
+                    //element(by.linkText(value)).isPresent().then(function (stateLink) {
+                    //    if (stateLink === true) {
+                    //        element(by.linkText(value)).isDisplayed().then(function (state2Link) {
+                    //            if (state2Link)
+                    //                console.log('element Person link is displayed');
+                    //            element(by.linkText('LNsmokeSS')).click();
+                    //            //  element(by.linkText(value)).click();
+                    //        });
+                    //    } else {
+                    //        assert.fail(0, 1, 'Person name link did not appear');
+                    //    }
+                    //});
+                    //browser.takeScreenshot().then(function (png) {
+                    //    helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/exceptionB' + moment().format('MMMDoYY hmmss') + '.png');
+                    //});
+                    //browser.driver.wait(function () {
+                    //    console.log('wait here');
+                    //    return true;
+                    //}, 40).then(function () {
+                    //    addPeople.addPersonFirstName.getAttribute('value').then(function (perFNAme) {
+                    //        console.log("This is the Person First name in Edit Person Page" + perFNAme);
+                    //        expect(perFNAme).to.equal(value, 'Verify the Person name in Edit page.');
+                    //    })
+                    //});
                     searchOrg.orgModelSearch.isPresent().then(function (state) {
                         if (state === true) {
                             searchOrg.orgModelSearch.isDisplayed().then(function (state2) {
@@ -276,7 +284,7 @@ module.exports = function () {
                                     searchOrg.clickOrgSearchModel();
                             });
                         } else {
-                            assert.fail(0, 1, 'Organization Model on Edit Person page did not appear');
+                            assert.fail(0, 1, 'Organization Model on Person page did not appear');
                         }
                     });
                     cukeOrganization.then(function (orgValue) {
@@ -285,7 +293,7 @@ module.exports = function () {
                         searchOrg.selectOrgModelItem();
                         searchOrg.clickOrgModelConfirm();
                     });
-                });
+              //  });
             });
             // browser.sleep(25).then(callback);
         });
