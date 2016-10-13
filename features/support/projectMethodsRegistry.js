@@ -405,6 +405,7 @@ var projectMethodsRegistry = function () {
                     addOrg.setAddPhone('545-487-8956');
                  //   addOrg.setAddFax('898-487-4242');
                     addOrg.clickSave();
+                    helper.wait(addOrg.addOrgCTRPID,'CTRPID from Organization Page');
                     orgSourceId = addOrg.addOrgCTRPID.getText();
                     commonFunctions.onPrepareLoginTest(userWhoWillCreateTrial);
                     //login.login('ctrptrialsubmitter', 'Welcome01');
