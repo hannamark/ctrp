@@ -77,6 +77,8 @@
             $scope.selectedRows = [];
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
+            $scope.processingStatuses = OrgService.getProcessingStatuses();
+            $scope.serviceRequests = [];
             $scope.dateFormat = DateService.getFormats()[1];
             // console.log('dateFormat: ' + $scope.dateFormat);
             $scope.dateOptions = DateService.getDateOptions();
@@ -431,7 +433,11 @@
 
                     if (status >= 200 && status <= 210) {
                         $scope.sourceContextArr = data.sort(Common.a2zComparator());
-                        console.info('sourceContextArr: ', $scope.sourceContextArr);
+                        if ($scope.usedInModal && !!$scope.sourceContextOnly) {
+                            $scope.sourceContextArr = $scope.sourceContextArr.filter(function(c) {
+                                return c.code === $scope.sourceContextOnly; // show only the source context assigned
+                            });
+                        }
                     }
                 });
 
@@ -440,8 +446,22 @@
 
                     if (status >= 200 && status <= 210) {
                         $scope.sourceStatusArr = data.sort(Common.a2zComparator());
-                        console.info('sourceStatusArr: ', $scope.sourceStatusArr);
+                        if ($scope.usedInModal) {
+                            $scope.sourceStatusArr = $scope.sourceStatusArr.filter(function(s) {
+                                return s.code === 'ACT';
+                            });
+                        }
                     }
+                });
+
+                OrgService.getServiceRequests().then(function (requests) {
+                    var status = requests.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        $scope.serviceRequests = requests;
+                    }
+
+                    delete requests.server_response;
                 });
             } //getPromisedData
 

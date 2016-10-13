@@ -1122,8 +1122,12 @@
 
             });
 
-            modalInstance.result.then(function () {
-                //console.log('modal closed, TODO redirect');
+            /* Update Trial participating_sites list when update/add PS modal closes */
+            modalInstance.result.then(function (result) {
+                var trial = TrialService.getTrialById($stateParams.trialId);
+                trial.then(function(trial) {
+                    vm.curTrial.participating_sites = trial.participating_sites;
+                });
             });
         }
 
@@ -1134,7 +1138,7 @@
             isOpenByDefault value is only important for accordion groups that do not have any writeable fields when edit_type === 'update'
         */
         vm.isOpenByDefault =  vm.curTrial.new || vm.curTrial.edit_type === 'complete' || vm.curTrial.edit_type === 'amend';
-        vm.accordions = [true, true, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, true, true, true, true, vm.isOpenByDefault, vm.isOpenByDefault];
+        vm.accordions = [true, true, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, true, true, true, true, vm.isOpenByDefault, true];
 
         /****************** implementations below ***************/
         function activate() {
@@ -1613,5 +1617,7 @@
                 vm.nihHolderTypeError = '';
             }
         }
+
+        $scope.$on('refreshPsList')
     }
 })();

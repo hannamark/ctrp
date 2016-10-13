@@ -256,7 +256,7 @@ if Person.all.size == 0
   Person.find_or_create_by(source_id:'098',
                            source_context: SourceContext.find_by_code('NLM'),
                            source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
-                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@nlm', phone:'098-765-4321', ctrp_id: person8.id)
+                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@nlm', phone:'098-765-4321')
 
   person9 = Person.find_or_create_by(id:672434, source_id:'19844',
                                      source_context: SourceContext.find_by_code('CTEP'),

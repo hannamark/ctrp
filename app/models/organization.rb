@@ -318,6 +318,51 @@ class Organization < ActiveRecord::Base
     end
   }
 
+  scope :match_source_id_from_joins, -> (value) {
+      source_id_clause = "organizations.source_id ilike ? OR all_cteps_by_ctrp_id.ctep_id ilike ?", "%#{value}", "%#{value}"
+      where(source_id_clause)
+  }
+  scope :match_name_from_joins, -> (name_value, alias_value, wc_search) {
+    str_len = name_value.length
+    if alias_value.present?
+      if name_value[0] == '*' && name_value[str_len - 1] != '*'
+        alias_name_where_clause = "organizations.name ilike ? OR name_aliases.name ilike ?", "%#{name_value[1..str_len - 1]}", "%#{name_value[1..str_len - 1]}"
+      elsif name_value[0] != '*' && name_value[str_len - 1] == '*'
+        alias_name_where_clause = "organizations.name ilike ? OR name_aliases.name ilike ?", "#{name_value[0..str_len - 2]}%", "#{name_value[0..str_len - 2]}%"
+      elsif name_value[0] == '*' && name_value[str_len - 1] == '*'
+        alias_name_where_clause = "organizations.name ilike ? OR name_aliases.name ilike ?", "%#{name_value[1..str_len - 2]}%", "%#{name_value[1..str_len - 2]}%"
+      else
+        if !wc_search
+          if !name_value.match(/\s/).nil?
+            name_value = (name_value.gsub! /\s+/, '%')
+          end
+          alias_name_where_clause = "organizations.name ilike ? OR name_aliases.name ilike ?", "%#{name_value}%", "%#{name_value}%"
+        else
+          alias_name_where_clause = "organizations.name ilike ? OR name_aliases.name ilike ?", "#{name_value}", "#{name_value}"
+        end
+      end
+      where(alias_name_where_clause)
+    else
+      if name_value[0] == '*' && name_value[str_len - 1] != '*'
+        name_where_clause = "organizations.name ilike ?", "%#{name_value[1..str_len - 1]}"
+      elsif name_value[0] != '*' && name_value[str_len - 1] == '*'
+        name_where_clause = "organizations.name ilike ?", "#{name_value[0..str_len - 2]}%"
+      elsif name_value[0] == '*' && name_value[str_len - 1] == '*'
+        name_where_clause = "organizations.name ilike ?", "%#{name_value[1..str_len - 2]}%"
+      else
+        if !wc_search
+          if !value.match(/\s/).nil?
+            name_value = (name_value.gsub! /\s+/, '%')
+          end
+          name_where_clause = "organizations.name ilike ?", "%#{name_value}%"
+        else
+          name_where_clause = "organizations.name ilike ?", "#{name_value}"
+        end
+      end
+      where(name_where_clause)
+    end
+  }
+
   scope :with_source_id, -> (value, ctrp_ids) {
     q = "organizations.source_id ilike ?"
 
@@ -349,27 +394,27 @@ class Organization < ActiveRecord::Base
 
   scope :with_service_request, -> (value) { joins(:service_request).where("service_requests.id = ?", "#{value}")}
 
-  #this now only works after running Organization.all_orgs_data(params) for efficiency
+  #this now only works after running Organization.all_orgs_data() for efficiency
   scope :with_family, -> (value) {
     str_len = value.length
 
     # for '*text' or '*, text'
     if value[0] == '*' && value[str_len - 1] != '*'
-      results = where("family_name ilike ?", "%#{value[1..str_len - 1]}")
+      where("family_name ilike ?", "%#{value[1..str_len - 1]}")
 
     # for 'text*' or ', text*'
     elsif value[0] != '*' && value[str_len - 1] == '*'
-      results = where("family_name ilike ?", "#{value[0..str_len - 2]}%")
+      where("family_name ilike ?", "#{value[0..str_len - 2]}%")
 
     # for '*text*'
     elsif value[0] == '*' && value[str_len - 1] == '*'
-      results = where("family_name ilike ?", "%#{value[1..str_len - 2]}%")
+      where("family_name ilike ?", "%#{value[1..str_len - 2]}%")
 
     # for 'text' or  '*, text,*' or  'text,*' or  '*, text'
     else
-      results = where("family_name ilike ?", "#{value}")
+      where("family_name ilike ?", "#{value}")
     end
-    results.select(:organizations).distinct
+    select(:organizations).distinct
   }
 
   scope :without_family, -> () {
@@ -388,7 +433,7 @@ class Organization < ActiveRecord::Base
     where("organizations.updated_at BETWEEN ? and ?", start_date, end_date)
   }
 
-  scope :all_orgs_data, -> (params) {
+  scope :all_orgs_data, -> () {
     join_clause = "
       LEFT JOIN name_aliases ON organizations.id = name_aliases.organization_id
       INNER JOIN source_contexts ON organizations.source_context_id = source_contexts.id
@@ -396,13 +441,12 @@ class Organization < ActiveRecord::Base
       LEFT JOIN (
         SELECT  families_list.organization_id, string_agg(families_list.name, '; ') as family_name
             from
-            (select family_memberships.id, family_memberships.organization_id, families.name from family_memberships
-        /* need to add this in when families is fixed
-            where (family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
+            (
+              select family_memberships.id, family_memberships.organization_id, families.name from family_memberships
+              LEFT JOIN families on family_memberships.family_id = families.id
+              where (family_memberships.effective_date < '#{DateTime.now}' or family_memberships.effective_date is null)
                   and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)
-        */
-            LEFT JOIN families on family_memberships.family_id = families.id
-        ) as families_list
+            ) as families_list
         GROUP BY families_list.organization_id
       )  as unexpired_family_membership ON organizations.id = unexpired_family_membership.organization_id
       LEFT JOIN (
@@ -412,12 +456,12 @@ class Organization < ActiveRecord::Base
               GROUP BY organizations_for_ctep.ctrp_id
       ) as all_cteps_by_ctrp_id on organizations.ctrp_id = all_cteps_by_ctrp_id.ctrp_id
     "
-    where_clause = ""
+
     select_clause = "
       organizations.*,
        (
           CASE
-            WHEN source_contexts.name = 'CTEP'
+            WHEN source_contexts.code = 'CTEP'
             THEN organizations.source_id
             ELSE all_cteps_by_ctrp_id.ctep_id
           END
@@ -432,61 +476,7 @@ class Organization < ActiveRecord::Base
           END
        ) as aff_families_names
     "
-    if  params && params[:id]
-      where_clause = " organizations.id = #{params[:id]} "
-    end
-
-    if params[:alias] && params[:name].present?
-      results = nil
-      alias_value = params[:name]
-      alias_str_len = params[:name].length
-      if alias_value[0] == '*' && alias_value[alias_str_len - 1] != '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{alias_value[1..alias_str_len - 1]}", "%#{alias_value[1..alias_str_len - 1]}").select(select_clause)
-      elsif alias_value[0] != '*' && alias_value[alias_str_len - 1] == '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{alias_value[0..alias_str_len - 2]}%", "#{alias_value[0..alias_str_len - 2]}%").select(select_clause)
-      elsif alias_value[0] == '*' && alias_value[alias_str_len - 1] == '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{alias_value[1..alias_str_len - 2]}%", "%#{alias_value[1..alias_str_len - 2]}%").select(select_clause)
-      else
-        if !params[:wc_search]
-          if !alias_value.match(/\s/).nil?
-            alias_value = (alias_value.gsub! /\s+/, '%')
-          end
-          results = joins(join_clause).where(where_clause).where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{alias_value}%", "%#{alias_value}%").select(select_clause)
-        else
-          results = joins(join_clause).where(where_clause).where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{alias_value}", "#{alias_value}").select(select_clause)
-        end
-      end
-
-    elsif params[:name].present?
-
-      value = params[:name]
-      str_len = params[:name].length
-      wc_search = params[:wc_search]
-      if value[0] == '*' && value[str_len - 1] != '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ?", "%#{value[1..str_len - 1]}").select(select_clause)
-      elsif value[0] != '*' && value[str_len - 1] == '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ?", "#{value[0..str_len - 2]}%").select(select_clause)
-      elsif value[0] == '*' && value[str_len - 1] == '*'
-        results = joins(join_clause).where(where_clause).where("organizations.name ilike ?", "%#{value[1..str_len - 2]}%").select(select_clause)
-      else
-        if !wc_search
-          if !value.match(/\s/).nil?
-            value = (value.gsub! /\s+/, '%')
-          end
-          results = joins(join_clause).where(where_clause).where("organizations.name ilike ?", "%#{value}%").select(select_clause)
-        else
-          results = joins(join_clause).where(where_clause).where("organizations.name ilike ?", "#{value}").select(select_clause)
-        end
-      end
-    else
-      results = joins(join_clause).where(where_clause).select(select_clause)
-    end
-
-    sortBy = params[:sort]
-    if ['source_context', 'source_status'].include? sortBy
-      sortBy  += "_name"
-    end
-    results.order("#{sortBy} #{params[:order]}")
+    joins(join_clause).select(select_clause)
   }
 end
 

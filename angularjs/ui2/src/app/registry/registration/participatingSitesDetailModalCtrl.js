@@ -26,13 +26,12 @@
 
         vm.title = $scope.psDetailObj && !$scope.psDetailObj.new ? 'Update Participating Site' : 'Add Participating Site';
 
-        vm.cancel = function() {
-
-            $uibModalInstance.dismiss('cancel');
+        vm.close = function() {
+            $uibModalInstance.close('close');
         }; //cancel
 
         $scope.$on('closePsDetail', function(e) {
-            vm.cancel();
+            vm.close();
         });
     }
 })();
