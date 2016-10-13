@@ -764,8 +764,8 @@ class TrialsController < ApplicationController
     url = url.sub('NCT********', params[:nct_id])
     xml = Nokogiri::XML(open(url))
 
-    trial_service = TrialService.new({trial: nil})
-    @trial = Trial.new(trial_service.import_params(xml, @current_user))
+    import_trial_service = ImportTrialService.new()
+    @trial = Trial.new(import_trial_service.import_params(xml, @current_user))
     @trial.current_user = @current_user
     import_log_service = ImportTrialLogService.new
     request_record = import_log_service.request_logging(xml,"Create","request",@current_user,ImportTrialLogDatum)

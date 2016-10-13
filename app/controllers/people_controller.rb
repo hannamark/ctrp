@@ -131,6 +131,7 @@ class PeopleController < ApplicationController
       @people = @people.matches_wc('suffix', params[:suffix],params[:wc_search]) if params[:suffix].present?
       @people = @people.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present?
       @people = @people.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
+      @people = @people.with_service_request(params[:service_request]) if params[:service_request].present?
 
 
       if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
