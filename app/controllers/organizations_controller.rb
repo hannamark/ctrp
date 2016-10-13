@@ -150,10 +150,10 @@ class OrganizationsController < ApplicationController
       wrapper_authenticate_user
     end
     @organizations = []
+    org_keys = %w[ name source_context source_id source_status family_name address address2 city
+                    state_province country postal_code email phone updated_by date_range_arr]
     # Scope chaining, reuse the scope definition
-    if params.has_key?( :name||:source_context||:source_id||:source_status||:family_name||
-                        :address||:address2||:city||:state_province||:country||
-                        :postal_code||:email||:phone||:updated_by||:date_range_arr)
+    if (params.keys & org_keys).any?
 
       # get complete resultset
       @organizations = filterSearch Organization.all_orgs_data()
@@ -165,9 +165,10 @@ class OrganizationsController < ApplicationController
       end
       @organizations = @organizations.order("#{sortBy} #{params[:order]}")
 
+      # get total: faster here than in jbuilder (jbuilder counts array; here we use SQL COUNT(*) - faster)
       @total = @organizations.size
 
-      # paginate
+      # finally paginate
       unless params[:rows].nil?
         @organizations = Kaminari.paginate_array(@organizations).page(params[:start]).per(params[:rows]) unless @organizations.blank?
       end
@@ -207,9 +208,9 @@ class OrganizationsController < ApplicationController
   end
 
   def clone
-    #ctep_org_id = params[:org_id]
-
-    @organizations = Organization.find_by_id()
+    @organizations = Organization.new(Organization.find(params[:org_id]).attributes)
+    @organizations.id = nil
+    @organizations.save
   end
 
   def countOrgsWithSameName
