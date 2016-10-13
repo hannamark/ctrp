@@ -74,7 +74,7 @@ module.exports = function () {
             addOrg.getVerifyAddPostalCode(viewOrgTable['PostalCode']);
             addOrg.getVerifyAddEmail(viewOrgTable['Email']);
             addOrg.getVerifyAddPhone(viewOrgTable['Phone']);
-            addOrg.getVerifyAddFax(viewOrgTable['Fax']);
+         //   addOrg.getVerifyAddFax(viewOrgTable['Fax']);
             cukeFamily.then(function (value) {
                 expect(addOrg.addVerifyOrgFamilyName.getText()).to.eventually.equal(value);
             });
@@ -96,7 +96,7 @@ module.exports = function () {
             expect(addOrg.addPostalCode.isEnabled()).to.eventually.equal(false);
             expect(addOrg.addEmail.isEnabled()).to.eventually.equal(false);
             expect(addOrg.addPhone.isEnabled()).to.eventually.equal(false);
-            expect(addOrg.addFax.isEnabled()).to.eventually.equal(false);//.and.notify(callback);
+         //   expect(addOrg.addFax.isEnabled()).to.eventually.equal(false);//.and.notify(callback);
         });
     });
 
