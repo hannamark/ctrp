@@ -475,6 +475,24 @@ var projectMethodsRegistry = function () {
                 }, 40).then(function () {
                     menuItem.clickHomeEnterOrganizations();
                     login.clickWriteMode('On');
+                    menuItem.clickOrganizations();
+                    menuItem.clickAddOrganizations();
+                    cukeOrganization.then(function (value) {
+                        console.log('Add org Name' + value);
+                        addOrg.setAddOrgName(value);
+                    });
+                    addOrg.setAddAlias('shAlias');
+                    addOrg.clickSaveAlias();
+                    addOrg.setAddAddress('9609 Aff PerOrg MedicalTrial Center Drive');
+                    addOrg.setAddAddress2('9609 Aff PerOrg II MedicalTrial Center Drive');
+                    selectValue.selectCountry('Togo');
+                    selectValue.selectState('Centre');
+                    addOrg.setAddCity('searchTrialCity');
+                    addOrg.setAddPostalCode('55578');
+                    addOrg.setAddEmail('searchTrialOrg@email.com');
+                    addOrg.setAddPhone('545-487-8956');
+                    //     addOrg.setAddFax('898-487-4242');
+                    addOrg.clickSave();
                     menuItem.clickPeople();
                     menuItem.clickAddPerson();
                     addPeople.setAddPersonPrefix('prefix');
@@ -487,7 +505,7 @@ var projectMethodsRegistry = function () {
                     addPeople.setAddPersonSuffix('suffix');
                     addPeople.setAddPersonEmail('email@eml.com');
                     addPeople.setAddPersonPhone('222-444-5555');
-                    addPeople.clickSave();
+                //    addPeople.clickSave();
                     searchOrg.clickOrgSearchModel();
                     cukeOrganization.then(function (value) {
                         console.log('Add org Name' + value);
@@ -496,44 +514,26 @@ var projectMethodsRegistry = function () {
                     //   searchOrg.setOrgName('trialPerAffOrg' + moment().format('MMMDoYY h'));
                     //   cukeOrganization = searchOrg.orgName.getAttribute('value');
                     searchOrg.clickSearchButton();
-                    return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
-                        if (state === true) {
-                            console.log('Organization exists');
+                 //   return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
+                   //     if (state === true) {
+                   //         console.log('Organization exists');
                             searchOrg.selectOrgModelItem();
                             searchOrg.clickOrgModelConfirm();
-                        }
-                        else {
-                            searchOrg.clickOrgModelClose();
-                            menuItem.clickOrganizations();
-                            menuItem.clickAddOrganizations();
-                            cukeOrganization.then(function (value) {
-                                console.log('Add org Name' + value);
-                                addOrg.setAddOrgName(value);
-                            });
-                            addOrg.setAddAlias('shAlias');
-                            addOrg.clickSaveAlias();
-                            addOrg.setAddAddress('9609 Aff PerOrg MedicalTrial Center Drive');
-                            addOrg.setAddAddress2('9609 Aff PerOrg II MedicalTrial Center Drive');
-                            selectValue.selectCountry('Togo');
-                            selectValue.selectState('Centre');
-                            addOrg.setAddCity('searchTrialCity');
-                            addOrg.setAddPostalCode('55578');
-                            addOrg.setAddEmail('searchTrialOrg@email.com');
-                            addOrg.setAddPhone('545-487-8956');
-                       //     addOrg.setAddFax('898-487-4242');
-                            addOrg.clickSave();
-                            menuItem.clickPeople();
-                            menuItem.clickListPeople();
-                            searchPeople.setPersonFirstName(cukePerson);
-                            searchPeople.clickSearch();
+                   //     }
+                    //    else {
+                   //         searchOrg.clickOrgModelClose();
+                    //                                 menuItem.clickPeople();
+                     //       menuItem.clickListPeople();
+                      //      searchPeople.setPersonFirstName(cukePerson);
+                     //       searchPeople.clickSearch();
                            // element(by.linkText(cukePerson)).click();
-                            element(by.linkText('lName')).click();
-                            searchOrg.clickOrgSearchModel();
-                            searchOrg.setOrgName(cukeOrganization);
-                            searchOrg.clickSearchButton();
-                            searchOrg.selectOrgModelItem();
-                            searchOrg.clickOrgModelConfirm();
-                        }
+                    //        element(by.linkText('lName')).click();
+                     //       searchOrg.clickOrgSearchModel();
+                     //       searchOrg.setOrgName(cukeOrganization);
+                     //       searchOrg.clickSearchButton();
+                     //       searchOrg.selectOrgModelItem();
+                     //       searchOrg.clickOrgModelConfirm();
+                    //    }
                         addPeople.clickSave();
                         commonFunctions.onPrepareLoginTest(userWhoWillCreateTrial);
                         //login.login('ctrptrialsubmitter', 'Welcome01');
@@ -563,7 +563,7 @@ var projectMethodsRegistry = function () {
                             searchOrg.clickOrgModelConfirm();
                         });
                     });
-                });
+              //  });
             }
         });
     };
@@ -1133,6 +1133,24 @@ var projectMethodsRegistry = function () {
                         commonFunctions.onPrepareLoginTest('ctrpcurator');
                         menuItem.clickHomeEnterOrganizations();
                         login.clickWriteMode('On');
+                        menuItem.clickOrganizations();
+                        menuItem.clickAddOrganizations();
+                        cukeOrganization.then(function (value) {
+                            console.log('Add org Name' + value);
+                            addOrg.setAddOrgName(value);
+                        });
+                        addOrg.setAddAlias('shAlias');
+                        addOrg.clickSaveAlias();
+                        addOrg.setAddAddress('9609 Aff PerOrg MedicalTrial Center Drive');
+                        addOrg.setAddAddress2('9609 Aff PerOrg II MedicalTrial Center Drive');
+                        selectValue.selectCountry('Togo');
+                        selectValue.selectState('Centre');
+                        addOrg.setAddCity('searchTrialCity');
+                        addOrg.setAddPostalCode('55578');
+                        addOrg.setAddEmail('searchTrialOrg@email.com');
+                        addOrg.setAddPhone('545-487-8956');
+                        //     addOrg.setAddFax('898-487-4242');
+                        addOrg.clickSave();
                         menuItem.clickPeople();
                         menuItem.clickAddPerson();
                         addPeople.setAddPersonPrefix('px');
@@ -1145,6 +1163,15 @@ var projectMethodsRegistry = function () {
                         addPeople.setAddPersonSuffix('sx');
                         addPeople.setAddPersonEmail('shiImpTrial@pr.com');
                         addPeople.setAddPersonPhone('420-9999-906');
+                        searchOrg.clickOrgSearchModel();
+                        cukeOrganization.then(function (value) {
+                            console.log('Add org Name' + value);
+                            searchOrg.setOrgName(value);
+                        });
+                        searchOrg.clickSearchButton();
+                        searchOrg.selectOrgModelItem();
+                        searchOrg.clickOrgModelConfirm();
+                    //    searchOrg.clickOrgModelClose();
                         addPeople.clickSave();
                         perSourceId = addPeople.addPersonSourceId.getText();
                         commonFunctions.onPrepareLoginTest('ctrptrialsubmitter');
@@ -1727,6 +1754,24 @@ var projectMethodsRegistry = function () {
                 }, 40).then(function () {
                     menuItem.clickHomeEnterOrganizations();
                     login.clickWriteMode('On');
+                    menuItem.clickOrganizations();
+                    menuItem.clickAddOrganizations();
+                    cukeOrganization.then(function (value) {
+                        console.log('Add org Name' + value);
+                        addOrg.setAddOrgName(value);
+                    });
+                    addOrg.setAddAlias('shAlias');
+                    addOrg.clickSaveAlias();
+                    addOrg.setAddAddress('9609 Aff PerOrg Medical PS');
+                    addOrg.setAddAddress2('9609 Aff PerOrg II Medical PS');
+                    selectValue.selectCountry('Gambia');
+                    selectValue.selectState('Banjul');
+                    addOrg.setAddCity('PSCity');
+                    addOrg.setAddPostalCode('25252');
+                    addOrg.setAddEmail('PSImportedTrial@email.com');
+                    addOrg.setAddPhone('545-999-8956');
+                    addOrg.setAddFax('898-222-4242');
+                    addOrg.clickSave();
                     menuItem.clickPeople();
                     menuItem.clickAddPerson();
                     addPeople.setAddPersonPrefix('prefix');
@@ -1739,50 +1784,32 @@ var projectMethodsRegistry = function () {
                     addPeople.setAddPersonSuffix('suffixPS');
                     addPeople.setAddPersonEmail('emailPS@eml.com');
                     addPeople.setAddPersonPhone('222-747-5555');
-                    addPeople.clickSave();
+                 //   addPeople.clickSave();
                     searchOrg.clickOrgSearchModel();
                     cukeOrganization.then(function (value) {
                         console.log('Add org Name' + value);
                         searchOrg.setOrgName(value);
                     });
                     searchOrg.clickSearchButton();
-                    return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
-                        if (state === true) {
-                            console.log('Organization exists');
+                //    return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
+                 //       if (state === true) {
+                   //         console.log('Organization exists');
                             searchOrg.selectOrgModelItem();
                             searchOrg.clickOrgModelConfirm();
-                        }
-                        else {
-                            searchOrg.clickOrgModelClose();
-                            menuItem.clickOrganizations();
-                            menuItem.clickAddOrganizations();
-                            cukeOrganization.then(function (value) {
-                                console.log('Add org Name' + value);
-                                addOrg.setAddOrgName(value);
-                            });
-                            addOrg.setAddAlias('shAlias');
-                            addOrg.clickSaveAlias();
-                            addOrg.setAddAddress('9609 Aff PerOrg Medical PS');
-                            addOrg.setAddAddress2('9609 Aff PerOrg II Medical PS');
-                            selectValue.selectCountry('Gambia');
-                            selectValue.selectState('Banjul');
-                            addOrg.setAddCity('PSCity');
-                            addOrg.setAddPostalCode('25252');
-                            addOrg.setAddEmail('PSImportedTrial@email.com');
-                            addOrg.setAddPhone('545-999-8956');
-                            addOrg.setAddFax('898-222-4242');
-                            addOrg.clickSave();
-                            menuItem.clickPeople();
-                            menuItem.clickListPeople();
-                            searchPeople.setPersonFirstName(cukePerson);
-                            searchPeople.clickSearch();
-                            element(by.linkText(cukePerson)).click();
-                            searchOrg.clickOrgSearchModel();
-                            searchOrg.setOrgName(cukeOrganization);
-                            searchOrg.clickSearchButton();
-                            searchOrg.selectOrgModelItem();
-                            searchOrg.clickOrgModelConfirm();
-                        }
+                    //    }
+                     //   else {
+                     //       searchOrg.clickOrgModelClose();
+                        //    menuItem.clickPeople();
+                        //    menuItem.clickListPeople();
+                        //    searchPeople.setPersonFirstName(cukePerson);
+                        //    searchPeople.clickSearch();
+                       //     element(by.linkText(cukePerson)).click();
+                      //      searchOrg.clickOrgSearchModel();
+                      //      searchOrg.setOrgName(cukeOrganization);
+                      //      searchOrg.clickSearchButton();
+                        //    searchOrg.selectOrgModelItem();
+                        //    searchOrg.clickOrgModelConfirm();
+                      //  }
                         addPeople.clickSave();
                         commonFunctions.onPrepareLoginTest(userWhoWillCreateTrial);
                         //login.login('ctrptrialsubmitter', 'Welcome01');
@@ -1810,7 +1837,7 @@ var projectMethodsRegistry = function () {
                             searchOrg.clickOrgModelConfirm();
                         });
                     });
-                });
+          //      });
             }
         });
     };

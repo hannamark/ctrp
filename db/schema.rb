@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161012200420) do
+ActiveRecord::Schema.define(version: 20161013152925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1047,6 +1047,13 @@ ActiveRecord::Schema.define(version: 20161012200420) do
     t.string   "section"
   end
 
+  create_table "registration_types", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "research_categories", force: :cascade do |t|
     t.string   "code",         limit: 255
     t.string   "name",         limit: 255
@@ -1832,6 +1839,7 @@ ActiveRecord::Schema.define(version: 20161012200420) do
   create_sequence "processing_status_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "processing_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "protocol_id_origins_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "registration_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "research_categories_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "responsible_parties_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "secondary_purposes_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
