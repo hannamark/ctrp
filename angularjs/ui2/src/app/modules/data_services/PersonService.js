@@ -139,6 +139,7 @@
             extractFullName: extractFullName,
             associatePersonContext: associatePersonContext,
             removePersonAssociation: removePersonAssociation,
+            cloneCtepPerson: cloneCtepPerson,
         };
 
         return services;
@@ -306,6 +307,14 @@
          */
         function curatePerson(curationObject) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CURATE_PERSON, curationObject);
+        }
+
+        function cloneCtepPerson(ctepPersonId, forceClone) {
+            var data = {
+                ctep_person_id: ctepPersonId,
+                force_clone: forceClone || false,
+            };
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CLONE_CTEP_PERSON, data);
         }
 
 

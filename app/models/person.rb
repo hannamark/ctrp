@@ -222,6 +222,18 @@ class Person < ActiveRecord::Base
     end
   }
 
+  scope :find_ctrp_matches, -> (params) {
+
+    query_obj = joins(:po_affiliations)
+    # query_obj = query_obj.where('po_affiliations.person_id = people.id')
+    query_obj = query_obj.where('people.fname = ?', params[:fname]) unless params[:fname].nil?
+    query_obj = query_obj.where('people.lname = ?', params[:lname]) unless params[:lname].nil?
+    query_obj
+
+    # joins("LEFT OUTER JOIN po_affiliations on people.id = po_affiliations.person_id").where("people.fname = ? OR people.lname = ?", params[:fname], params[:lname])
+    #.where("people.lname = ?", params[:lname])
+  }
+
   scope :all_persons_data, -> (params) {
     join_clause = "
     INNER JOIN source_contexts ON people.source_context_id = source_context.id

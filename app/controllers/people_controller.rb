@@ -4,7 +4,7 @@ class PeopleController < ApplicationController
   load_and_authorize_resource unless Rails.env.test?
   before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy]
 
-  # skip_authorize_resource :only => [:search]
+  skip_authorize_resource :only => [:search]
   #http_basic_authenticate_with name: "ctrpadmin", password: "Welcome02", except: :index
 
   # GET /people
@@ -156,16 +156,6 @@ class PeopleController < ApplicationController
     end
   end
 
-  # make a clone of a ctep person to CTRP
-  def clone_ctep_person
-    cloned_person = nil
-    if params.has_key?(:ctep_person_id)
-
-      ctep_person = Person.find(params[:ctep_person_id])
-
-    end
-
-  end
 
   # associate a CTEP person to a ctrp_id (CTRP person)
   def associate_person
@@ -176,7 +166,7 @@ class PeopleController < ApplicationController
       associated_ctep_person = Person.find(params[:ctep_person_id])
       if !associated_ctep_person.nil?
         associated_ctep_person.ctrp_id = params[:ctrp_id]
-        associated_ctep_person.update_attributes('ctrp_id': params[:ctrp_id], 'association_start_date': Time.now)
+        associated_ctep_person.update_attributes('ctrp_id': params[:ctrp_id], 'association_start_date': Time.now, 'processing_status': 'Complete')
       end
 
     end
@@ -190,15 +180,46 @@ class PeopleController < ApplicationController
     if params.has_key?(:ctep_person_id)
       associated_ctep_person = Person.find(params[:ctep_person_id])
       if !associated_ctep_person.nil? && associated_ctep_person.source_context_id == SourceContext.find_by_code('CTEP').id
-        success = associated_ctep_person.update_attributes('ctrp_id': nil, 'association_start_date': nil)
+        success = associated_ctep_person.update_attributes('ctrp_id': nil, 'association_start_date': nil, 'processing_status': 'Incomplete')
       end
-
     end
 
     respond_to do |format|
       format.json { render :json => {:is_removed => success} }
     end
   end
+
+  def clone_ctep_person
+
+    if params.has_key?(:ctep_person_id)
+      # @matched = find_matches(params[:ctep_person_id])
+      ctep_person = Person.find(params[:ctep_person_id])
+      ctrp_source_context_id = SourceContext.find_by_code('CTRP').id
+      @matched = Person.where(fname: ctep_person.fname, lname: ctep_person.lname, source_context_id: ctrp_source_context_id)
+      @matched = @matched.with_source_status_context('ACT', ctrp_source_context_id)
+      # TODO: match against the state and address in affiliated organization
+      p "matched person size: #{@matched.size}"
+
+      is_cloned = false
+      if (@matched.size > 0 && params[:force_clone] == true) || @matched.size == 0
+        @matched = ctep_person.dup   # TODO: reserve associations here for the clone
+        @matched.source_context_id = ctrp_source_context_id
+        @matched.association_start_date = nil
+        # @matched.processing_status = nil
+        # @matched.registration_type = nil
+        # @matched.service_request_id = nil
+        is_cloned = @matched.save()
+        # link the CTEP to the new CTRP person clone
+        ctep_person.update_attributes('ctrp_id': @matched.ctrp_id, 'association_start_date': Time.now, 'processing_status': 'Complete')
+      end
+    end
+
+    respond_to do |format|
+      format.json { render :json => {:matched => @matched, :is_cloned => is_cloned} }
+    end
+
+  end
+
 
   #Method to check for Uniqueness while creating persons - check on First & Last name. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
   def unique
@@ -261,7 +282,7 @@ class PeopleController < ApplicationController
     def person_params
       params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :extension,
                                      :source_status_id, :source_context_id, :lock_version, :processing_status,
-                                     :registration_type, :service_request,
+                                     :registration_type, :service_request, :force_clone,
                                      po_affiliations_attributes: [:id, :organization_id, :effective_date,
                                                                   :expiration_date, :po_affiliation_status_id,
                                                                   :lock_version, :_destroy])

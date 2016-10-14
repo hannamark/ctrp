@@ -26,19 +26,27 @@
         vm.associatedPersonContexts = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
+        vm.hasCtrpContext = _.findIndex(vm.curPerson.cluster || [], {context: 'CTRP'}) > -1;
         var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
         vm.processStatusArr = OrgService.getProcessingStatuses();
         vm.formTitleLabel = 'Add Person'; //default form title
         vm.affiliatedOrgError = true; // flag for empty org affiliations
+        vm.matchedCtrpPersons = []; // CTRP persons found from attempt to clone ctep person
         var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
+
+
+        // actions:
         vm.removeAssociation = removePersonAssociation;
+        vm.cloneCtepPerson = cloneCtepPerson;
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
             if (vm.savedSelection.length === 0) {
                 vm.affiliatedOrgError = true;
+                console.info('affiliated org error, return!');
                 return;
             }
+            console.info('NO affiliated org error!');
             vm.affiliatedOrgError = false;
             vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
@@ -465,6 +473,22 @@
             }).catch(function(err) {
                 console.error('err: ', err);
             }).finally(function() {
+            });
+        }
+
+        function cloneCtepPerson(ctepPersonId, forceClone) {
+            PersonService.cloneCtepPerson(ctepPersonId, forceClone).then(function(res) {
+                console.info('res in cloning person: ', res);
+                if (res.is_cloned) {
+                    showToastr('The CTEP person context has been successfully cloned');
+                    vm.matchedCtrpPersons = [];
+                    vm.curPerson.cluster.push({context: 'CTRP', id: res.id});
+                    vm.curPerson.associated_persons.push(res.matched);
+                } else {
+                    vm.matchedCtrpPersons = res.matched;
+                }
+            }).catch(function(err) {
+                console.error('err in cloning person: ', err);
             });
         }
 
