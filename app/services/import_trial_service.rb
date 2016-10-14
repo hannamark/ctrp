@@ -88,15 +88,47 @@ class ImportTrialService
     end
 
     org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
+
     orgs = Organization.all
     orgs = orgs.matches_name_wc(org_name, true)
+    nlm_orgs = orgs.with_source_context("NLM")
     orgs = orgs.with_source_status("Active")
     orgs = orgs.with_source_context("CTRP")
-    if orgs.length > 0
-      import_params[:lead_org_id] = orgs[0].id
-      import_params[:sponsor_id] = orgs[0].id
-      import_params[:trial_funding_sources_attributes] = [{organization_id: orgs[0].id}]
+
+    #M.D. Anderson Cancer Center NCT02217865
+
+    if nlm_orgs.length == 1
+      _nlm_org_ctrp_id = nlm_orgs[0].ctrp_id
+      _ctrp_org = Organization.find_by_id_and_source_context_id(_nlm_org_ctrp_id,SourceContext.find_by_code('CTRP').id)
+      _ctrp_org_status = SourceStatus.find_by_id(_ctrp_org.source_status_id).code if !_ctrp_org.nil?
+      if  !_ctrp_org.nil? &&  _ctrp_org_status == 'ACT'
+        #take that CTRP org and make it the Lead org, sponsor, Data table 4 etc.
+        import_params[:lead_org_id] = nlm_orgs[0].id
+        import_params[:sponsor_id] = nlm_orgs[0].id
+        import_params[:trial_funding_sources_attributes] = [{organization_id: nlm_orgs[0].id}]
+      elsif !_ctrp_org.nil? &&  _ctrp_org_status != 'ACT'
+        ## then throw an error back and stop the import process.
+        ##BA'S ...??
+      elsif _ctrp_org.nil?
+        ##then leave the lead org etc blank but continue with the import.
+        ##BA'S ...??
+      else
+
+      end
+
+    elsif nlm_orgs.length > 1
+    #Throw an error
+    ##BA'S ...??
+    else nlm_orgs.length == 0
+    #When a trial has been imported with a "Sponsor Name" that does not exist in the NLM Context in the CTRP
+    #And that "Sponsor Name" does not match an organization name "Agency" name in CTRP
+    #Then an NLM Context with an NLM Context Status of "Active" will be automatically created in CTRP
+    #And the processing status is "Incomplete"
+    #And the service Request is "Create"
+     #org = Organization.create(source_status_id:SourceStatus.find_by_c('ACTIVE'))
+
     end
+
 
     import_params[:collaborators_attributes] = []
     xml.xpath('//collaborator/agency').each do |collaborator|
