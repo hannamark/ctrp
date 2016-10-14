@@ -40,7 +40,6 @@
 
                     element.bind('submit', function(event) {
                         var formAction = $parse(attrs.ctrpSubmit);
-
                         submitController.attempted = formController.$submitted;
                         //$log.info('form is submitted: ' + formController.$submitted);
 
@@ -78,6 +77,7 @@
                     this.needsAttention = function(fieldModelController, isFieldInvalid) {
                         if (angular.isDefined(isFieldInvalid) && isFieldInvalid === true) {
                             formController.$invalid = true;
+
                             return formController.$submitted && isFieldInvalid;
                         }
 
@@ -91,7 +91,7 @@
                            a CRUD form when list/CRUD views are displayed separately in the UI
                         */
 
-                        if (fieldModelController) {
+                        if (fieldModelController) {                            
                             return formController.$submitted && fieldModelController.$invalid &&
                                 (fieldModelController.$dirty || this.attempted);
                         } else {
