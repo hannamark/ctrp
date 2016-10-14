@@ -8,10 +8,10 @@
     angular.module('ctrp.app.registry').controller('trialCtrl', trialCtrl);
 
     trialCtrl.$inject = ['TrialService', 'uiGridConstants', 'uiGridExporterConstants', 'uiGridExporterService', '$scope', '$rootScope', 'Common', '$uibModal',
-                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj','HOST'];
+                         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj','HOST','OrgService'];
 
     function trialCtrl(TrialService, uiGridConstants, uiGridExporterConstants, uiGridExporterService, $scope, $rootScope, Commo, $uibModal,
-                       studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,HOST) {
+                       studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj,HOST,OrgService) {
 
         var vm = this;
         $scope.downloadTSRUrl = HOST + '/ctrp/registry/trial_documents/download_tsr_in_rtf';
@@ -25,6 +25,15 @@
         vm.searchWarningMessage = '';
         vm.searching = false;
         var fromStateName = $state.fromState.name || '';
+
+        vm.typeAheadNameSearch = function () {
+            return OrgService.typeAheadOrgNameSearch(vm.searchParams.org);
+        };
+
+        vm.setTypeAheadOrg = function (searchObj) {
+            var orgSearch = OrgService.setTypeAheadOrg(searchObj);
+            vm.searchParams.org = orgSearch.organization_details.name;
+        };
 
         //ui-grid plugin options
         var actionTemplate = '<div ng-if="row.entity.actions.length > 0" class="btn-group" ng-class="grid.renderContainers.body.visibleRowCache.indexOf(row) > 4 ? \'dropup\' : \'\'">'
