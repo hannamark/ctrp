@@ -185,7 +185,7 @@ class PeopleController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => {:is_removed => success} }
+      format.json { render :json => {:is_removed => success, :removed_person => associated_ctep_person } }
     end
   end
 
