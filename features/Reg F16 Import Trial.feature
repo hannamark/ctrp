@@ -29,6 +29,7 @@ Scenario:#2a  NLM Context will be created for an Imported trial
     Given I am logged into the CTRP
     When a trial has been imported with a "Sponsor Name" that exists in the NLM Context in CTRP
     And the NLM context is mapped to a CTRP Organization Context
+    Adnd the CTRP Organization is "Active"
     Then the CTRP Organization will be used as 
     
     |Trial Sponsor|
