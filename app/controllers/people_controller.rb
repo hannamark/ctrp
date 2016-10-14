@@ -131,6 +131,7 @@ class PeopleController < ApplicationController
       @people = @people.matches_wc('suffix', params[:suffix],params[:wc_search]) if params[:suffix].present?
       @people = @people.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present?
       @people = @people.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
+      @people = @people.with_service_request(params[:service_request]) if params[:service_request].present?
 
 
       if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
@@ -181,6 +182,21 @@ class PeopleController < ApplicationController
     end
     respond_to do |format|
       format.json { render :json => {:person => associated_ctep_person} }
+    end
+  end
+
+  def remove_association
+    success = false
+    if params.has_key?(:ctep_person_id)
+      associated_ctep_person = Person.find(params[:ctep_person_id])
+      if !associated_ctep_person.nil? && associated_ctep_person.source_context_id == SourceContext.find_by_code('CTEP').id
+        success = associated_ctep_person.update_attributes('ctrp_id': nil, 'association_start_date': nil)
+      end
+
+    end
+
+    respond_to do |format|
+      format.json { render :json => {:is_removed => success} }
     end
   end
 

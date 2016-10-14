@@ -208,6 +208,7 @@ org21 = Organization.find_or_create_by(id: 595150, source_id: 'CO029', name: 'Me
 
 if Person.all.size == 0
   puts "...Seeding persons"
+
   person1 = Person.find_or_create_by(id:1699192, source_id:'33303',
                                      source_context: SourceContext.find_by_code('CTEP'),
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
@@ -251,7 +252,7 @@ if Person.all.size == 0
   Person.find_or_create_by(source_id:'AB123',
                            source_context: SourceContext.find_by_code('CTEP'),
                            source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
-                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@ctep', phone:'123-456-7890', ctrp_id: person8.id, registration_type: 'Investigator')
+                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@ctep', phone:'123-456-7890', ctrp_id: person8.id, service_request_id: 1, registration_type: 'Investigator')
 
   Person.find_or_create_by(source_id:'098',
                            source_context: SourceContext.find_by_code('NLM'),
@@ -261,7 +262,7 @@ if Person.all.size == 0
   person9 = Person.find_or_create_by(id:672434, source_id:'19844',
                                      source_context: SourceContext.find_by_code('CTEP'),
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
-                                     fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100', registration_type: 'Investigator')
+                                     fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100', service_request_id: 1, registration_type: 'Investigator')
 
   person10 = Person.find_or_create_by(id:1426655, source_id:'15179',
                                       source_context: SourceContext.find_by_code('CTRP'),

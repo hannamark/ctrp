@@ -31,6 +31,7 @@
         vm.formTitleLabel = 'Add Person'; //default form title
         vm.affiliatedOrgError = true; // flag for empty org affiliations
         var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
+        vm.removeAssociation = removePersonAssociation;
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
@@ -64,13 +65,14 @@
                 var status = response.status || response.server_response.status;
                 if (newPerson.new && status === 201) {
                     // created
-                    showToastr(vm.curPerson.lname);
+                    // 'Person ' + personName + ' has been recorded'
+                    showToastr('Person ' + vm.curPerson.lname + ' has been recorded');
                     vm.curPerson.new = false;
                     $state.go('main.personDetail', {personId: response.data.id});
                 } else if (status === 200) {
                     // updated
                     vm.curPerson = response.data;
-                    showToastr(vm.curPerson.lname);
+                    showToastr('Person ' + vm.curPerson.lname + ' has been recorded');
                     vm.curPerson.new = false;
 
                     // To make sure setPristine() is executed after all $watch functions are complete
@@ -83,9 +85,9 @@
             });
         }; // updatePerson
 
-        function showToastr(personName) {
+        function showToastr(message) {
             toastr.clear();
-            toastr.success('Person ' + personName + ' has been recorded', 'Operation Successful!');
+            toastr.success(message, 'Operation Successful!');
         }
 
         vm.resetForm = function() {
@@ -316,7 +318,6 @@
                 var ctrpSourceContextObj = _.findWhere(vm.sourceContextArr, {code: 'CTRP'});
                 vm.curPerson.source_context_id = !!ctrpSourceContextObj ? ctrpSourceContextObj.id : '';
             }
-            console.info('vm.curSourceContextName: ', vm.curSourceContextName);
             //delete 'CTEP and 'NLM' from the sourceContextArr
             vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'CTEP'}));
             vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'NLM'}));
@@ -453,6 +454,19 @@
 
             } //prepareModal
         }; //confirmDelete
+
+        function removePersonAssociation(ctepPersonId) {
+            PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
+                console.info('res: ',res);
+                if (res.is_removed) {
+                    vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, _.findWhere(vm.curPerson.associated_persons, {id: ctepPersonId}));
+                    showToastr('The selected person context association was deleted');
+                }
+            }).catch(function(err) {
+                console.error('err: ', err);
+            }).finally(function() {
+            });
+        }
 
 
         //Function that checks if a user name - based on First & Last names is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the person/unique Rails end point.

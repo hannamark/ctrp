@@ -38,6 +38,7 @@
             'SEARCH_PERSON': '/ctrp/people/search.json',
             'UNIQUE_PERSON': '/ctrp/people/unique.json',
             'ASSOCIATE_PERSON': '/ctrp/people/associate_context/{:ctep_person_id}/{:ctrp_id}.json',
+            'REMOVE_PERSON_ASSOCIATION': '/ctrp/people/association/remove/{:ctep_person_id}',
             'A_FAMILY': '/ctrp/families/',
             'FAMILY_LIST': '/ctrp/families.json',
             'SEARCH_FAMILY': '/ctrp/families/search.json',

@@ -79,7 +79,7 @@ Given I am logged into the CTRP Protocol Abstraction application
   |Secondary Purpose Type |
   |Ancillary-Correlative  |
   |Other                  |
-  |No                     |
+
   And I can select a different value for Trial Phase type:
   |Trial Phase |
   |0           |
@@ -92,8 +92,8 @@ Given I am logged into the CTRP Protocol Abstraction application
   |NA          |
   And I can select a different value for the question"Is this a pilot" type
   |Is this a pilot |
-  |yes             |
-  |no              |
+  |Yes             |
+  |No              |
   And I can select a value for Intervention Model type
   |Intervention Model |
   |Single Group Assignment|
