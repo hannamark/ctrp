@@ -396,7 +396,7 @@
         function _associateCtepPerson(ctepPerson, ctrpId) {
             PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
                 console.info('res with association person: ', res); // resp.person
-                if (res.server_response.status > 200 && res.server_response.status < 226) {
+                if (res.server_response.status >= 200 && res.server_response.status < 226) {
                     vm.associatedPersonContexts = []; // clean up
                     vm.matchedCtrpPersons = []; // clean up
                     if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: 'CTEP'}) === -1) {
