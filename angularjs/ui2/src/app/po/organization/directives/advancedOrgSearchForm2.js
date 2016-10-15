@@ -21,6 +21,7 @@
                 showGrid: '=?', //boolean, optional
                 usedInModal: '=?', //boolean, option
                 maxRowSelectable: '=', //int, required
+                filteredContexts: '=', //required
                 preSearch: '=', //required
                 curationMode: '=?',
                 orgSearchResults: '@orgSearchResults',
@@ -57,7 +58,7 @@
             $scope.userRole = UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
             $scope.dateFormat = DateService.getFormats()[1];
             $scope.searching = false;
-            $scope.filteredContexts = ($scope.preSearch && $scope.preSearch["source_contextfilter"]) ? $scope.preSearch["source_contextfilter"] : undefined;
+            $scope.filteredContexts = $scope.filteredContexts;
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
@@ -690,10 +691,9 @@
             }
 
 
-            if ($scope.usedInModal || $scope.userRole.indexOf('TRIAL-SUBMITTER') > -1) {
-                // search from the modal can only search against 'Active' in 'CTRP' context
+            if ($scope.userRole.indexOf('TRIAL-SUBMITTER') > -1) {
                 $scope.searchParams.source_status = 'Active';
-                $scope.searchParams.source_context = ($scope.preSearch && $scope.filteredContexts !== undefined) ? undefined: 'CTRP';
+                $scope.searchParams.source_context = 'CTRP';
             }
 
             //pre-search results
@@ -703,7 +703,6 @@
                         $scope.searchParams[property] = $scope.preSearch[property];
                     }
                 }
-                $scope.searchOrgs();
                 
                 //trigger country on-change
                 if($scope.preSearch["country"]) {

@@ -19,6 +19,7 @@ json.orgs do
         :phone,
         :ctrp_id,
         :aff_families_names,
+        :association_date,
         :updated_by,
         :updated_at
         json.ctep_id organization.multiview_ctep_id

@@ -433,6 +433,8 @@ class Organization < ActiveRecord::Base
     where("organizations.updated_at BETWEEN ? and ?", start_date, end_date)
   }
 
+  time_parser_start = "to_char((("
+  time_parser_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy')"
   scope :all_orgs_data, -> () {
     join_clause = "
       LEFT JOIN name_aliases ON organizations.id = name_aliases.organization_id
@@ -450,15 +452,17 @@ class Organization < ActiveRecord::Base
         GROUP BY families_list.organization_id
       )  as unexpired_family_membership ON organizations.id = unexpired_family_membership.organization_id
       LEFT JOIN (
-              SELECT organizations_for_ctep.ctrp_id, string_agg(organizations_for_ctep.source_id, '; ') as ctep_id from organizations as organizations_for_ctep
+              SELECT organizations_for_ctep.ctrp_id as ctep_ctrp_id, string_agg(organizations_for_ctep.source_id, '; ') as ctep_id from organizations as organizations_for_ctep
               INNER JOIN source_contexts ON source_contexts.id = organizations_for_ctep.source_context_id
               where source_contexts.code = 'CTEP' and organizations_for_ctep.ctrp_id is not null
               GROUP BY organizations_for_ctep.ctrp_id
-      ) as all_cteps_by_ctrp_id on organizations.ctrp_id = all_cteps_by_ctrp_id.ctrp_id
+      ) as all_cteps_by_ctrp_id on organizations.ctrp_id = ctep_ctrp_id
     "
 
     select_clause = "
       organizations.*,
+" + time_parser_start + "organizations.created_at" + time_parser_end + " as org_created_date,
+" + time_parser_start + "organizations.updated_at" + time_parser_end + " as org_updated_date,
        (
           CASE
             WHEN source_contexts.code = 'CTEP'

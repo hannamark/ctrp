@@ -134,6 +134,7 @@
             getAllOrgs: getAllOrgs,
             getOrgById: getOrgById,
             upsertOrg: upsertOrg,
+            getAssociatedOrgs: getAssociatedOrgs,
             searchOrgs: searchOrgs,
             getInitialOrgSearchParams: getInitialOrgSearchParams,
             getGridOptions: getGridOptions,
@@ -178,8 +179,6 @@
          * @returns {*}
          */
         function upsertOrg(orgObj) {
-            orgObj.organization.source_context = undefined;
-            orgObj.organization.source_status = undefined;
             if (orgObj.new) {
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
             }
@@ -189,8 +188,15 @@
             return PromiseTimeoutService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + '.json', orgObj, configObj);
         } //upsertOrg
 
-
-
+        /**
+         * Get associated organizations
+         *
+         * @param getAssociatedOrgs
+         * @returns {*}
+         */
+        function getAssociatedOrgs(orgId) {
+            return PromiseTimeoutService.getData(URL_CONFIGS.ASSOCIATED_ORGS + orgId + '.json');
+        } //getAssociatedOrgs
 
         /**
          *

@@ -132,6 +132,13 @@ class OrganizationsController < ApplicationController
 
   end
 
+  def associated
+    active_org = Organization.find(params[:id])
+    @associated_orgs = {}
+    @active_context = SourceContext.find(active_org.source_context_id).name
+    @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
+  end
+
   def search
     # Pagination/sorting params initialization
     Rails.logger.info "In Organization Controller, search"
@@ -151,7 +158,7 @@ class OrganizationsController < ApplicationController
     end
     @organizations = []
     org_keys = %w[ name source_context source_id source_status family_name address address2 city
-                    state_province country postal_code email phone updated_by date_range_arr]
+                    ctrp_id state_province country postal_code email phone updated_by date_range_arr]
     # Scope chaining, reuse the scope definition
     if (params.keys & org_keys).any?
 
@@ -195,7 +202,7 @@ class OrganizationsController < ApplicationController
 
     resultOrgs = resultOrgs.with_service_request(params[:service_request]) if params[:service_request].present? && !resultOrgs.blank?
 
-    matches_to_look_for = 'country,processing_status'.split(",")
+    matches_to_look_for = 'ctrp_id,country,processing_status'.split(",")
     matches_to_look_for.each do |filter|
       resultOrgs = resultOrgs.matches(filter, params[filter]) if params[filter].present? && !resultOrgs.blank?
     end
@@ -208,9 +215,12 @@ class OrganizationsController < ApplicationController
   end
 
   def clone
-    @organizations = Organization.new(Organization.find(params[:org_id]).attributes)
-    @organizations.id = nil
-    @organizations.save
+    @organization = Organization.new(Organization.find(params[:org_id]).attributes)
+    #@allorganizations = Organization.find(Organization.find(params[:org_id]).attributes)
+    @organization.id = nil
+    @organization.ctrp_id = @organization.ctrp_id
+    @organization.source_context_id = SourceContext.find_by_code("CTRP").id
+    @organization.save
   end
 
   def countOrgsWithSameName

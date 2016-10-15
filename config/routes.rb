@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     resources :organizations do
       collection do
         get 'search'
+        get '/associated/:id', to: 'organizations#associated'
         post 'search'
         post 'select'
         post 'curate'

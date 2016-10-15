@@ -1,0 +1,124 @@
+                            <!--CTRP content -->
+                                <div class="form-group" ng-if="curOrg.ctrp_id">
+                                    <label class="control-label col-xs-12 col-sm-3">CTRP Organization ID:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{curOrg.ctrp_id}}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-xs-12 col-sm-3">CTEP Organization ID:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{curOrg.multiview_ctep_id}}</div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label col-xs-12 col-sm-3">Name:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{curOrg.name}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-xs-12 col-sm-3">Source Context:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{curOrg.source_context_name}}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-xs-12 col-sm-3">Source ID:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{curOrg.source_id}}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-xs-12 col-sm-3">Source Status:</label>
+                                    <div class="col-xs-12 col-sm-6">{{curOrg.source_status_name}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-xs-12 col-sm-3">Processing Status:</label>
+                                    <div class="col-xs-12 col-sm-6">{{curOrg.processing_status}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-xs-12 col-sm-3">Name Alias:</label>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <table class="table table-bordered table-striped table-condensed animated-item" ng-show="orgDetailView.addedNameAliases.length > 0">
+                                            <tbody>
+                                            <thead>
+                                            <th>Alias</th>
+                                            <th ng-show="orgDetailView.curOrgEditable">Delete</th>
+                                            </thead>
+                                            <tr ng-repeat="nameAlias in orgDetailView.addedNameAliases track by $index" ng-class="nameAlias._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                                                <td class="col-md-7">{{nameAlias.name}}</td>
+                                                <td class="text-center td-icon" ng-show="orgDetailView.curOrgEditable">
+                                                    <label class="btn btn-warning" restriction-field ng-click="orgDetailView.toggleSelection($index, 'other_id')">
+                                                        <i ng-class="nameAlias._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label col-xs-12 col-sm-3">Address 1:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{curOrg.address}}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-xs-12 col-sm-3">Address 2:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{curOrg.address2}}</div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label col-xs-12 col-sm-3">Country:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{curOrg.country}}</div>
+                                </div>
+                                <div class="form-group" ng-hide="orgDetailView.states.length == 0">
+                                    <label class="control-label col-xs-12 col-sm-3">State:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text"">{{curOrg.state_province}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-6 has-feedback">
+                                        <label class="control-label col-xs-6 col-sm-6">City:</label>
+                                        <div class="col-xs-12 col-sm-6 form-text">{{curOrg.city}}</div>
+                                    </div>
+                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 col-xs-12 col-sm-12 has-feedback">
+                                        <label class="control-label col-md-3 col-lg-3 col-xl-3 col-sm-3 col-xs-6">Postal Code:</label>
+                                        <div class="col-xs-12 col-sm-2 form-text">{{curOrg.postal_code}}</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-6 has-feedback">
+                                        <label class="control-label col-xs-6 col-sm-6">Email:</label>
+                                        <div class="form-text">{{curOrg.email}}</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-6 has-feedback">
+                                        <label class="control-label col-xs-6 col-sm-6">Phone Number:</label>
+                                        <div class="col-xs-12 col-sm-6 form-text">{{curOrg.phone}}</div>
+                                    </div>
+                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 col-xs-12 col-sm-12 has-feedback">
+                                        <label class="control-label col-md-3 col-lg-3 col-xl-3 col-sm-3 col-xs-6">Extension:</label>
+                                        <div class="col-xs-12 col-sm-2 form-text">{{curOrg.extension}}</div>
+                                    </div>
+                                </div>
+                                <div class="row"  ng-if="!curOrg.new">
+                                    <div class="form-group col-xs-12 col-sm-6 has-feedback">
+                                        <label class="control-label col-xs-6 col-sm-6">Context Organization ID:</label>
+                                        <div class="form-group col-xs-6 col-sm-6 form-text">{{curOrg.id}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="!curOrg.created_by">
+                                    <label class="control-label col-xs-12 col-sm-3">Created By:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{curOrg.created_by}} ({{curOrg.org_created_date}})</div>
+                                </div>
+                                <div class="form-group" ng-hide="curOrg.new || !curOrg.updated_by">
+                                    <label class="control-label col-xs-12 col-sm-3">Updated By:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{curOrg.updated_by}} ({{curOrg.org_updated_date}})</div>
+                                </div>
+                                <div ng-show="curOrg.families.length > 0" class="form-group">
+                                    <label class="control-label col-xs-12 col-sm-3">Families:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">
+                                        <p ng-repeat="family in curOrg.families">
+                                            <a ui-sref="main.familyDetail({familyId : family.id })">{{family.name}}</a>
+                                        </p>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
