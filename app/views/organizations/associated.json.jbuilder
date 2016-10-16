@@ -8,13 +8,14 @@ json.associated_orgs do
                   :name,
                   :address,
                   :address2,
+                  :address3,
                   :processing_status,
                   :city,
                   :state_province,
                   :postal_code,
                   :country,
                   :email,
-                  :phone,
+                  :phone_with_ext,
                   :extension,
                   :ctrp_id,
                   :source_context_id,
@@ -30,7 +31,8 @@ json.associated_orgs do
                   :org_created_date,
                   :org_updated_date,
                   :aff_families_names,
-                  :org_assoc_date
+                  :org_assoc_date,
+                  :service_request_name
     json.ctep_id organization.multiview_ctep_id
   end
 end

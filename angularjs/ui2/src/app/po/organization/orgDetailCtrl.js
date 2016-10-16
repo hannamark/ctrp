@@ -55,16 +55,16 @@
                         // created
                         $state.go('main.orgDetail', {orgId: response.id});
                     } else if (status === 200) {
-                        // updated
-                        vm.curOrg = response;
-                        if (vm.ctrpOrg.context_change) {
-                            $state.go('main.orgDetail', response, {reload: true});
-                        } else {
-                            // To make sure setPristine() is executed after all $watch functions are complete
-                            $timeout(function () {
-                                $scope.organization_form.$setPristine();
-                             }, 1);
-                        }
+
+                        //update name aliases
+                        vm.ctrpOrg.name_aliases = response.name_aliases;
+                        vm.addedNameAliases = [];
+                        appendNameAliases();
+
+                        // To make sure setPristine() is executed after all $watch functions are complete
+                        $timeout(function () {
+                            $scope.organization_form.$setPristine();
+                         }, 1);
                     }
 
                     showToastr(vm.ctrpOrg.name);
@@ -101,7 +101,7 @@
         vm.addNameAlias= function () {
             if (vm.alias) {
                 var aliasIndex = Common.indexOfObjectInJsonArray(vm.addedNameAliases, 'name', vm.alias);
-                if (aliasIndex == -1) {
+                if (aliasIndex === -1) {
                     var newAlias = {name: vm.alias, _destroy: false};
                     vm.addedNameAliases.unshift(newAlias);
                 }
@@ -111,7 +111,7 @@
 
         // Delete the associations
         vm.toggleSelection = function (index, type) {
-            if (type == 'other_id') {
+            if (type === 'other_id') {
                 if (index < vm.addedNameAliases.length) {
                     vm.addedNameAliases[index]._destroy = !vm.addedNameAliases[index]._destroy;
                 }
@@ -126,7 +126,6 @@
             watchGlobalWriteModeChanges();
             //prepare the modal window for existing organizations
             if (vm.ctrpOrg && !vm.ctrpOrg.new) {
-                prepareModal();
                 appendNameAliases();
             }
         }
@@ -157,7 +156,7 @@
                 return _.contains(context, item.source_context_name);
             })[0];
             return ve;
-        };
+        }
 
         // Append associations for existing Trial
         function appendNameAliases() {
@@ -207,32 +206,6 @@
                 })
             }
         } //listenToStatesProvinces
-
-        function prepareModal() {
-            vm.confirmDelete = function (size) {
-                var modalInstance = $uibModal.open({
-                    animation: true,
-                    templateUrl: 'delete_confirm_template.html',
-                    controller: 'ModalInstanceCtrl as vm',
-                    size: size,
-                    resolve: {
-                        orgId: function () {
-                            return vm.ctrpOrg.id;
-                        }
-                    }
-                });
-
-                modalInstance.result.then(function (selectedItem) {
-                    // console.log("about to delete the orgDetail " + vm.ctrpOrg.id);
-                    $state.go('main.organizations');
-                }, function () {
-                    console.log("operation canceled")
-                    // $state.go('main.orgDetail', {orgId: vm.ctrpOrg.id});
-                });
-
-            } //prepareModal
-        }; //confirmDelete
-
 
         //Function that checks if an Organization - based on Name & source context is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the organization/unique Rails end point.
         vm.checkUniqueOrganization = function() {
@@ -317,4 +290,4 @@
         };
 
     }
-})();
+}());

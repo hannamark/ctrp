@@ -11,15 +11,17 @@ json.orgs do
         :name,
         :address,
         :address2,
+        :address3,
         :city,
         :state_province,
         :postal_code,
         :country,
         :email,
-        :phone,
+        :phone_with_ext,
         :ctrp_id,
         :aff_families_names,
         :org_assoc_date,
+        :service_request_name
         :updated_by,
         :updated_at
         json.ctep_id organization.multiview_ctep_id

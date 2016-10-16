@@ -601,7 +601,7 @@
                         $scope.warningMessage = '';
                     }
 
-                    if (newVal !== oldVal) {
+                    if (newVal !== oldVal && $scope.gridApi) {
                         $scope.gridApi.grid.refresh();
                     }
                 });

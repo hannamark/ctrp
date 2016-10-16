@@ -442,6 +442,7 @@ class Organization < ActiveRecord::Base
   time_parser_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy')"
   scope :all_orgs_data, -> () {
     join_clause = "
+      LEFT JOIN service_requests ON organizations.service_request_id = service_requests.id
       LEFT JOIN name_aliases ON organizations.id = name_aliases.organization_id
       INNER JOIN source_contexts ON organizations.source_context_id = source_contexts.id
       INNER JOIN source_statuses ON organizations.source_status_id = source_statuses.id
@@ -465,7 +466,15 @@ class Organization < ActiveRecord::Base
     "
 
     select_clause = "
-      organizations.*,
+      DISTINCT organizations.*,
+      service_requests.name as service_request_name,
+       (
+          CASE
+            WHEN organizations.extension IS NOT null AND organizations.extension <> ''
+            THEN COALESCE(organizations.phone, '') || ' | ' || COALESCE(organizations.extension, '')
+            ELSE organizations.phone
+          END
+       ) as phone_with_ext,
        (
           CASE
             WHEN source_contexts.code = 'CTEP'
