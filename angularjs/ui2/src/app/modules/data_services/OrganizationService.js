@@ -88,7 +88,7 @@
                     minWidth: '100',
                     width: '*'},
 
-                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'multiview_ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '100', width: '*'},
 
                 {
                     name: 'name', enableSorting: true, minWidth: '300', width: '*', sort: { direction: 'asc', priority: 1},

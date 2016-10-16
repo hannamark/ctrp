@@ -1,13 +1,13 @@
 <h4>View Organization</h4>
 <div class="row md-sidenav-push-in-target">
     <div ng-include src="'app/po/organization/_allOrgDetailRO.html'" onload="[curOrg = orgDetailView.ctepOrg]"></div>
-    <div class="row"  ng-if="orgDetailView.ctepOrg.source_status_name === 'Active' && orgDetailView.curOrgEditable">
+    <div class="row"  ng-if="orgDetailView.curOrgEditable">
         <div class="form-group col-xs-12 col-sm-6 has-feedback">
             <label class="control-label col-xs-6 col-sm-6">Clone:</label>
             <div class="form-group col-xs-6 col-sm-6 form-text">
                 <button type="button" class="btn btn-primary" id="clone_button" restriction-field
-                        ng-show="!orgDetailView.hasCtrpContext"
-                        ng-click="orgDetailView.cloneCtepOrg(orgDetailView.curOrg.id)">Clone</button>
+                        ng-disabled = "orgDetailView.ctrpOrg"
+                        ng-click = "orgDetailView.cloneCtepOrg(orgDetailView.curOrg.id)">Clone</button>
             </div>
         </div>
     </div>
