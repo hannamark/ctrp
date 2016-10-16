@@ -309,7 +309,7 @@
             };
             
             $scope.getSourceStatusArr = function() {
-                OrgService.getSourceStatuses({view_type: "search", view_context: $scope.searchParams.source_context}).then(function (statuses) {
+                OrgService.getSourceStatuses().then(function (statuses) {
                     var status = statuses.server_response.status;
                     if (status >= 200 && status <= 210) {
                         if (statuses && angular.isArray(statuses)) {

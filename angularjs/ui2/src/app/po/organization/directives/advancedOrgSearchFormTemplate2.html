@@ -165,8 +165,8 @@
                 <div class="col-xs-12 col-sm-9">
                     <select ng-init="searchParams.service_request"
                             class="form-control input-sm" id="service_request"
-                            ng-model="searchParams.service_request"
-                            ng-options="request.id as request.name for request in serviceRequests">
+                            ng-model="searchParams.service_request_name"
+                            ng-options="request.name as request.name for request in serviceRequests">
                             <option value="">
                                 Please select --
                             </option>
