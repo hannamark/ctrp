@@ -489,6 +489,12 @@ OnholdReason.find_or_create_by(code: 'POC').update(name: 'Pending Organization C
 OnholdReason.find_or_create_by(code: 'PIC').update(name: 'Pending Intervention Curation')
 OnholdReason.find_or_create_by(code: 'POT').update(name: 'Pending Other (CTRO)')
 
+RegistrationType.find_or_create_by(code: 'INV').update(name: 'Investigator')
+RegistrationType.find_or_create_by(code:'NONPIV').update(name: 'Non Physician Investigator')
+RegistrationType.find_or_create_by(code:'ASP').update(name: 'Associate Plus')
+RegistrationType.find_or_create_by(code:'ASSO').update(name: 'Associate')
+RegistrationType.find_or_create_by(code:'ASB').update(name: 'Associate Basic')
+
 ########### SEEDING STATIC DATA ENDS #######################
 
 ########## SEEDING APP SETTINGS BEGINS ##########

@@ -65,11 +65,11 @@
             $scope.invContactArray = [];
             $scope.itemsOptions = {
                 data: [
-                    {id: 1, value: 25},
+                    {id: 1, value: 10},
                     {id: 2, value: 50},
                     {id: 3, value: 100}
                 ],
-                selectedOption: {id: 1, value: 25}
+                selectedOption: {id: 1, value: 10}
             };
 
             $scope.updatePs = function() {
@@ -78,7 +78,7 @@
 
                 $scope.curPs.trial_id = $scope.curTrial.id;
 
-                if ($scope.selectedPiArray.length > 0) {
+                if ($scope.selectedPiArray.length) {
                     $scope.curPs.participating_site_investigators_attributes = [];
                     var psInvestigatorObj = {person_id: $scope.selectedPiArray[0].id, investigator_type: 'Principal Investigator'};
                     if (!$scope.curPs.new && $scope.curPs.participating_site_investigators.length) {
@@ -149,6 +149,9 @@
                 $scope.selectedPersonContactArray = [];
                 $scope.selectedInvContact;
                 $scope.invContactArray = [];
+                $scope.status_date = null;
+                $scope.sr_status_id = null;
+                $scope.status_comment = null;
 
                 //$scope.curPs = angular.copy($scope.curPsOriginal);
                 setupPs('reset');
@@ -246,8 +249,9 @@
             $scope.addPs = function() {
                 $scope.editMode = false;
                 $scope.addMode = true;
-                $scope.curPs = {};
-                $scope.curPs.new = true;
+                $scope.curPs = {
+                    participating_site_investigators: []
+                };
                 $scope.addedStatuses = [];
                 $scope.srsNum = 0;
                 $scope.selectedPiArray = [];
@@ -318,6 +322,7 @@
 
                 configurePsInvList();
 
+/*
                 _.each($scope.curPs.participating_site_investigators, function(inv) {
                     if (inv.set_as_contact) {
                         var invContact = inv;
@@ -328,6 +333,7 @@
                         });
                     }
                 });
+*/
             }
 
             // Redirect to search page if this user is not allowed to mange sites
@@ -344,7 +350,7 @@
              *
              */
             function appendNewPsFlag() {
-                if ($state.$current.name.indexOf('add') > -1 || $state.$current.name.indexOf('manage') > -1) {
+                if ($state.$current.name.indexOf('add') > -1 || $scope.addMode) {
                     $scope.curPs.new = true;
                 } else {
                     $scope.curPs.new = false;

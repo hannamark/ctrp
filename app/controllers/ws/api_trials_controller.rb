@@ -212,7 +212,6 @@ class Ws::ApiTrialsController < Ws::BaseApiController
   def import_trial
     @import_trial_service = ImportTrialService.new()
     @import_trial_service.validate_clinical_trials_gov(params[:id])
-    p @import_trial_service
 
     if !@import_trial_service.errors.empty?
       render xml: @import_trial_service.errors, status: '404'
@@ -221,8 +220,8 @@ class Ws::ApiTrialsController < Ws::BaseApiController
       url = url.sub('NCT********', params[:id])
       xml = Nokogiri::XML(open(url))
 
-      trial_service = TrialService.new({trial: nil})
-      @trial = Trial.new(trial_service.import_params(xml, @current_user))
+      import_trial_service = ImportTrialService.new()
+      @trial = Trial.new(import_trial_service.import_params(xml, @current_user))
       @trial.current_user = @current_user
 
 

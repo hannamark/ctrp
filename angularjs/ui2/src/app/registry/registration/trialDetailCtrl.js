@@ -100,11 +100,11 @@
         vm.proHighlightedDoc = {file_name: ''};
         vm.itemsOptions = {
             data: [
-                {id: 1, value: 25},
+                {id: 1, value: 10},
                 {id: 2, value: 50},
                 {id: 3, value: 100}
             ],
-            selectedOption: {id: 1, value: 25}
+            selectedOption: {id: 1, value: 10}
         };
 
         var milestones = getMilestoneCodes(vm.curTrial);
@@ -1138,7 +1138,7 @@
             isOpenByDefault value is only important for accordion groups that do not have any writeable fields when edit_type === 'update'
         */
         vm.isOpenByDefault =  vm.curTrial.new || vm.curTrial.edit_type === 'complete' || vm.curTrial.edit_type === 'amend';
-        vm.accordions = [true, true, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, true, true, true, true, vm.isOpenByDefault, true];
+        vm.accordions = [true, true, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, vm.isOpenByDefault, true, true, true, true, true, true];
 
         /****************** implementations below ***************/
         function activate() {

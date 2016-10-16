@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161013170523) do
+ActiveRecord::Schema.define(version: 20161013173121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -833,7 +833,6 @@ ActiveRecord::Schema.define(version: 20161013170523) do
     t.integer  "service_request_id"
     t.integer  "ctep_org_type_id"
     t.integer  "org_funding_mechanism_id"
-    t.datetime "association_date"
   end
 
   add_index "organizations", ["ctep_org_type_id"], name: "index_organizations_on_ctep_org_type_id", using: :btree
@@ -964,10 +963,11 @@ ActiveRecord::Schema.define(version: 20161013170523) do
     t.string   "extension",              limit: 255
     t.string   "processing_status"
     t.datetime "association_start_date"
-    t.string   "service_request"
     t.string   "registration_type"
+    t.integer  "service_request_id"
   end
 
+  add_index "people", ["service_request_id"], name: "index_people_on_service_request_id", using: :btree
   add_index "people", ["source_context_id"], name: "index_people_on_source_context_id", using: :btree
   add_index "people", ["source_status_id"], name: "index_people_on_source_status_id", using: :btree
 
@@ -1046,6 +1046,13 @@ ActiveRecord::Schema.define(version: 20161013170523) do
     t.string   "uuid",         limit: 255
     t.integer  "lock_version",             default: 0
     t.string   "section"
+  end
+
+  create_table "registration_types", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "research_categories", force: :cascade do |t|
@@ -1691,6 +1698,7 @@ ActiveRecord::Schema.define(version: 20161013170523) do
   add_foreign_key "participating_sites", "organizations"
   add_foreign_key "participating_sites", "people"
   add_foreign_key "participating_sites", "trials"
+  add_foreign_key "people", "service_requests"
   add_foreign_key "people", "source_contexts"
   add_foreign_key "people", "source_statuses"
   add_foreign_key "po_affiliations", "organizations"
@@ -1833,6 +1841,7 @@ ActiveRecord::Schema.define(version: 20161013170523) do
   create_sequence "processing_status_wrappers_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "processing_statuses_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "protocol_id_origins_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
+  create_sequence "registration_types_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "research_categories_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "responsible_parties_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
   create_sequence "secondary_purposes_id_seq", :increment => 1, :min => 1, :max => 9223372036854775807, :start => 1, :cache => 1, :cycle => false
