@@ -106,6 +106,11 @@ class Organization < ActiveRecord::Base
     return isNullifiable
   end
 
+  def org_assoc_date
+    if self.association_date.present?
+      return self.association_date.strftime("%d-%b-%Y %H:%M:%S %Z")
+    end
+  end
 
   def org_created_date
    if self.created_at.present?
@@ -461,8 +466,6 @@ class Organization < ActiveRecord::Base
 
     select_clause = "
       organizations.*,
-" + time_parser_start + "organizations.created_at" + time_parser_end + " as org_created_date,
-" + time_parser_start + "organizations.updated_at" + time_parser_end + " as org_updated_date,
        (
           CASE
             WHEN source_contexts.code = 'CTEP'

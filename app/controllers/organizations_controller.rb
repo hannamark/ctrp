@@ -55,21 +55,31 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1.json
   def update
     @organization.updated_by = @current_user.username unless @current_user.nil?
-
-    if organization_params[:new_ctep_org_id] then
-      @ctepchange = updateOlderContextAssociation "CTEP", organization_params[:ctrp_id], organization_params[:new_ctep_org_id]
-    end
-    if organization_params[:new_nlm_org_id] then
-      @nlmchange = updateOlderContextAssociation "NLM", organization_params[:ctrp_id], organization_params[:new_nlm_org_id]
-    end
-
-    respond_to do |format|
-      if @organization.update(organization_params.except(:new_ctep_org_id, :new_nlm_org_id))
-        format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
-        format.json { render :show, status: :ok, location: @organization }
-      else
-        format.html { render :edit }
-        format.json { render json: @organization.errors, status: :unprocessable_entity }
+    if organization_params[:ctrp_id] && @organization.ctrp_id != organization_params[:ctrp_id] &&
+        ( @organization.source_context_id == SourceContext.find_by_code("CTEP").id || @organization.source_context_id == SourceContext.find_by_code("NLM").id ) then
+      respond_to do |format|
+        @organization.ctrp_id = organization_params[:ctrp_id]
+        @organization.association_date = DateTime.now
+        old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @organization.source_context_id})
+                       .where('id <> ' + (@organization.id).to_s)
+        old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
+        if @organization.save
+          @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
+          format.json { render :associated }
+        else
+          format.html { render :edit }
+          format.json { render json: @organization.errors, status: :unprocessable_entity }
+        end
+      end
+    elsif @organization.source_context_id == SourceContext.find_by_code("CTRP").id
+      respond_to do |format|
+        if @organization.update(organization_params.except(:ctrp_id))
+          format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
+          format.json { render :show, status: :ok, location: @organization }
+        else
+          format.html { render :edit }
+          format.json { render json: @organization.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -139,7 +149,11 @@ class OrganizationsController < ApplicationController
     active_org = Organization.find(params[:id])
     @associated_orgs = {}
     @active_context = SourceContext.find(active_org.source_context_id).name
-    @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
+    if !active_org.ctrp_id.blank?
+      @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
+    else
+      @associated_orgs = filterSearch Organization.all_orgs_data().where(:id => active_org.id)
+    end
   end
 
   def search
@@ -263,24 +277,11 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
   end
 
-  def updateOlderContextAssociation context_val, ctrp_id_val, new_context_org_id
-    old_orgs = Organization.where({:ctrp_id => ctrp_id_val, :source_context_id => SourceContext.find_by_code(context_val).id})
-                   .where('id NOT IN (?)', [ctrp_id_val, new_context_org_id])
-    old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
-    new_org = Organization.where('id = ?', new_context_org_id)
-    if new_org[0].ctrp_id != ctrp_id_val
-      new_org.update_all(ctrp_id: ctrp_id_val) if !new_org.blank?
-    else
-      new_org = []
-    end
-    return (old_orgs.size + new_org.size) > 0
-  end
-
   # Never trust parameters from the scary internet, only allow the white list through.
   def organization_params
     params.require(:organization).permit(:source_id, :name, :address, :address2, :address3, :city, :state_province, :postal_code,
-                                         :country, :email, :phone, :extension, :source_status_id, :ctrp_id,
-                                         :source_context_id, :lock_version, :processing_status, :new_ctep_org_id, :new_nlm_org_id,
+                                         :country, :email, :phone, :extension, :source_status_id, :ctrp_id, :association_date,
+                                         :source_context_id, :lock_version, :processing_status,
                                          name_aliases_attributes: [:id,:organization_id,:name,:_destroy])
   end
 end

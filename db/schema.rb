@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161013173121) do
+ActiveRecord::Schema.define(version: 20161016031557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 20161013173121) do
     t.integer  "anatomic_site_id"
     t.integer  "trial_id"
     t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "updated_at"
     t.string   "uuid",             limit: 255
     t.integer  "lock_version",                 default: 0
   end
@@ -930,7 +930,7 @@ ActiveRecord::Schema.define(version: 20161013173121) do
     t.integer  "organization_id"
     t.integer  "person_id"
     t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
+    t.datetime "updated_at"
     t.string   "uuid",                   limit: 255
     t.integer  "lock_version",                       default: 0
     t.string   "extension",              limit: 255

@@ -16,9 +16,9 @@
                             <div ng-show="!orgDetailView.curOrgEditable && !orgDetailView.ctrpOrg.new" ng-include src="'app/po/organization/_ctrpOrgDetailRO.html'"></div>
                         </md-content>
                     </md-tab>
-                    <md-tab label="NLM" md-active="orgDetailView.defaultTab === 'NLM'" ng-if="orgDetailView.nmlOrg">
+                    <md-tab label="NLM" md-active="orgDetailView.defaultTab === 'NLM'" ng-if="orgDetailView.nlmOrg">
                         <md-content class="md-padding">
-                            <div ng-include src="'app/po/organization/_nlmOrgDetail.html'" onload="curOrg = orgDetailView.nlmOrg"></div>
+                            <div ng-include src="'app/po/organization/_nlmOrgDetailRO.html'"></div>
                         </md-content>
                     </md-tab>
                 </md-tabs>
@@ -26,3 +26,20 @@
         </form>
     </div>
 </div>
+<modal visible="orgDetailView.confirmOverrideContextPopUp" title="Please confirm" id="confirmChangeOverrideContextPopup">
+    <div class="modal-body">
+        This organization is already associated.
+    </div>
+    <div class="modal-footer">
+        <div class="btn-toolbar">
+            <button type="button" class="btn btn-primary pull-right"  id="confirmChangeOverrideContext"
+                    ng-click="orgDetailView.associateOrgs()"><i class="glyphicon glyphicon-ok"></i>
+                Associate
+            </button>
+            <button type="button" class="btn btn-warning pull-right" id="cancelChangeOverrideContext"
+                    ng-click="orgDetailView.cancelAssociateOrgs()"><i class="glyphicon glyphicon-remove"></i>
+                Cancel
+            </button>
+        </div>
+    </div>
+</modal>

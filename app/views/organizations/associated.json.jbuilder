@@ -28,7 +28,10 @@ json.associated_orgs do
                   :ctep_id,
                   :uuid,
                   :org_created_date,
-                  :org_updated_date
+                  :org_updated_date,
+                  :aff_families_names,
+                  :org_assoc_date
     json.ctep_id organization.multiview_ctep_id
   end
 end
+json.active_context @active_context

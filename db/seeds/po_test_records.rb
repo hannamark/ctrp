@@ -90,18 +90,18 @@ usa = "United States"
                                         address: '3540 Clemmons Rd', city: 'Clemmons', state_province:'North Carolina', country:usa, postal_code: '78778', email: "owilde@clemmhealth.com")
 
   org10 = Organization.find_or_create_by(id: 36296062, source_id: 'NC273', processing_status: 'Active',  name: 'Wake Forest University at Elkin', phone:'315-425-2707',
-                                         source_context: SourceContext.find_by_code('CTEP'),
-                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                         source_context: SourceContext.find_by_code('NLM'),
+                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
                                          address: '200 Johnson Ridge Medical Park', city: 'Elkin', state_province:'North Carolina', country:usa, postal_code: '27345', email: "rstevenson@elkinhealth.com")
 
   org11 = Organization.find_or_create_by(id: 36296115, source_id: 'NC274', processing_status: 'Active',  name: 'Wake Forest University at Lexington', phone:'315-425-2707',
-                                         source_context: SourceContext.find_by_code('CTEP'),
-                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                         source_context: SourceContext.find_by_code('NLM'),
+                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
                                          address: '250 Hospital Drive', city: 'Lexington', state_province:'North Carolina', country:usa, postal_code: '3427157', email: "jswift@lexhealth.com")
 
   org12 = Organization.find_or_create_by(id: 36296009, source_id: 'NC272', processing_status: 'Active',  name: 'Wake Forest University at Mount Airy', phone:'315-425-2707',
-                                         source_context: SourceContext.find_by_code('CTEP'),
-                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                         source_context: SourceContext.find_by_code('NLM'),
+                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
                                          address: '910 Worth St.', city: 'Mt. Airy', state_province:'North Carolina', country:usa, postal_code: '5627157', email: "jrrtolkien@airyhealth.com")
 
   org13 = Organization.find_or_create_by(id: 149074, source_id: 'NC002', processing_status: 'Active',  name: 'Wake Forest University Health Sciences', phone:'315-425-2707',
