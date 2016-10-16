@@ -18,30 +18,28 @@
                                     </div>
                                 </div>
 
-                            <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3">Source Context:</label>
-                                <div class="col-xs-12 col-sm-6 form-text">
-                                    CTRP
+                                <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new">
+                                    <label class="control-label col-xs-12 col-sm-3">Source Context:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">
+                                        CTRP
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new">
+                                    <!--  Make source ID a R/O field -->
+                                    <label class="control-label col-xs-12 col-sm-3">Source ID:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">
+                                        {{orgDetailView.ctrpOrg.source_id}}
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new">
+                                    <label class="control-label col-xs-12 col-sm-3">Source Status:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.ctrpOrg.source_status_name}}</div>
                                 </div>
 
-                                <div class="col-xs-12 col-sm-6 form-text" ng-if="!orgDetailView.curOrgEditable">{{clusterOrg.context}}</div>
-                            </div>
-                            <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new">
-                                <!--  Make source ID a R/O field -->
-                                <label class="control-label col-xs-12 col-sm-3">Source ID:</label>
-                                <div class="col-xs-12 col-sm-6 form-text">
-                                    {{orgDetailView.ctrpOrg.source_id}}
+                                <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new">
+                                    <label class="control-label col-xs-12 col-sm-3">Processing Status:</label>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.ctrpOrg.processing_status}}</div>
                                 </div>
-                            </div>
-                            <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new">
-                                <label class="control-label col-xs-12 col-sm-3">Source Status:</label>
-                                <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.ctrpOrg.source_status_name}}</div>
-                            </div>
-
-                            <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new">
-                                <label class="control-label col-xs-12 col-sm-3">Processing Status:</label>
-                                <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.ctrpOrg.processing_status}}</div>
-                            </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">Name Alias:</label>
@@ -202,7 +200,7 @@
                                         <label class="control-label col-md-3 col-lg-3 col-xl-3 col-sm-3 col-xs-6">Extension:</label>
                                         <div class="form-group col-md-3 col-lg-3 col-xl-3 col-sm-3 col-xs-6" ng-if="orgDetailView.curOrgEditable">
                                             <input type="text" restriction-field class="form-control input-sm" id="extension" name="extension" maxlength="30"
-                                                   ng-model="orgDetailView.ctrpOrg.extension" placeholder="Phone Extension">
+                                                   ng-model="orgDetailView.ctrpOrg.extension" placeholder="Phone Ext">
                                             <span ng-show="organization_form.extension.$dirty">{{30 - orgDetailView.ctrpOrg.extension.length}} left</span>
                                         </div>
                                         <div class="col-xs-12 col-sm-2 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.ctrpOrg.extension}}</div>

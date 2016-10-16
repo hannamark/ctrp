@@ -21,20 +21,6 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
 
-
-        //set orgs and default tab
-        if (associatedOrgsObj) {
-            vm.associatedOrgs = associatedOrgsObj.associated_orgs;
-            console.log("found:     ",vm.associatedOrgs)
-            vm.defaultTab = associatedOrgsObj.active_context;
-            vm.ctepOrg = getOrgByContext('CTEP');
-            vm.nlmOrg = getOrgByContext('NLM');
-            vm.ctrpOrg = orgDetailObj;
-            console.log("found:     ",vm.ctrpOrg)
-        } else {
-            vm.ctrpOrg = {name: '', country: '', state: '', source_status_id: ''};
-        }
-
         vm.sourceContextArr = sourceContextObj;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
@@ -96,7 +82,6 @@
             toastr.success('Organization ' + orgName + ' has been recorded', 'Operation Successful!');
         }
 
-        vm.ctrpOrgCopy= angular.copy(vm.ctrpOrg);
         vm.resetForm = function() {
             angular.copy(vm.ctrpOrgCopy, vm.ctrpOrg);
             vm.addedNameAliases = [];
@@ -136,22 +121,35 @@
 
         /****************** implementations below ***************/
         function activate() {
-
+            initiateOrgs();
             listenToStatesProvinces();
             watchGlobalWriteModeChanges();
-            appendNewOrgFlag();
             //prepare the modal window for existing organizations
             if (!vm.ctrpOrg.new) {
                 prepareModal();
                 appendNameAliases();
             }
-            filterSourceContext();
         }
         activate();
 
         /**
          * get orgs by context
          */
+        function initiateOrgs() {
+            //set orgs and default tab
+            if (associatedOrgsObj) {
+                vm.associatedOrgs = associatedOrgsObj.associated_orgs;
+                vm.defaultTab = associatedOrgsObj.active_context;
+                vm.ctepOrg = getOrgByContext('CTEP');
+                vm.nlmOrg = getOrgByContext('NLM');
+                vm.ctrpOrg = getOrgByContext('CTRP');
+                vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
+            } else {
+                vm.ctrpOrg = {};
+                vm.ctrpOrg.new = true;
+            }
+        }
+
         function getOrgByContext(context){
             var ve = _.filter(vm.associatedOrgs, function (item) {
                 return _.contains(context, item["source_context_name"]);
@@ -184,26 +182,6 @@
             });
         }
 
-        /**
-         * Filter out NLM and CTEP source contexts from UI
-         * @return {void}
-         */
-        function filterSourceContext() {
-            var clonedSourceContextArr = angular.copy(vm.sourceContextArr);
-            if (!vm.ctrpOrg.new) {
-                var curOrgSourceContextIndex = Common.indexOfObjectInJsonArray(clonedSourceContextArr, 'id', vm.ctrpOrg.source_context_id);
-                // _.findWhere(vm.sourceContextArr, {id: vm.ctrpOrg.source_context_id});
-                vm.curSourceContextName = curOrgSourceContextIndex > -1 ? vm.sourceContextArr[curOrgSourceContextIndex].name : '';
-            } else {
-                vm.curSourceContextName = 'CTRP'; //CTRP is the only source context available to new organization
-                vm.ctrpSourceContextIndex = Common.indexOfObjectInJsonArray(vm.sourceContextArr, 'code', 'CTRP');
-                vm.ctrpOrg.source_context_id = vm.ctrpSourceContextIndex > -1 ? vm.sourceContextArr[vm.ctrpSourceContextIndex].id : '';
-            }
-            //delete 'CTEP' and 'NLM' from the sourceContextArr
-            vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'CTEP'}));
-            vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'NLM'}));
-        }
-
 
         /**
          * Listen to the message for availability of states or provinces
@@ -225,23 +203,6 @@
                 vm.states = [];
             })
         } //listenToStatesProvinces
-
-
-        /**
-         * Append a 'new' key to the vm.curOrg to
-         * indicate this is a new organization, not an organization
-         * for editing/curating
-         *
-         */
-        function appendNewOrgFlag() {
-            if ($state.$current.name.indexOf('add') > -1) {
-                vm.ctrpOrg.new = true;  //
-                vm.ctrpOrg.processing_status = "Complete";
-                vm.ctrpOrg.source_status_id = _.filter(vm.sourceContextArr, function (item) {
-                    return _.contains("CTRP", item.code);
-                })[0].id;
-            }
-        }
 
         function prepareModal() {
             vm.confirmDelete = function (size) {
