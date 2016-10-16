@@ -100,31 +100,41 @@
 
                 },
                 {name: 'source_status', displayName: 'Source Status',
-                    enableSorting: true, minWidth: '175', width: '*'},
+                    enableSorting: true, width: '150'},
                 {name: 'source_context', displayName: 'Source Context',
-                    enableSorting: true, minWidth: '175', width: '*'},
+                    enableSorting: true, width: '150'},
                 {name: 'source_id', displayName: 'Source ID',
-                    enableSorting: true, minWidth: '175', width: '*'},
+                    enableSorting: true, width: '150'},
 
-                {name: 'aff_families_names', displayName: 'Families',
-                    enableSorting: true, minWidth: '100', width: '*',height: '50%',
+                {name: 'aff_families_names', displayName: 'Family Name',
+                    enableSorting: true, minWidth: '150', width: '*',height: '50%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" ng-repeat="fam in row.entity.aff_families_names track by $index"' +
                     ' title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
                 },
-                {name: 'phone', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'email', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'phone_with_ext', displayName: 'Phone', enableSorting: true, minWidth: '170', width: '*'},
+                {name: 'email', enableSorting: true, minWidth: '200', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
+                {name: 'city', displayName: 'City',
+                    enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'state_province', displayName: 'State',
+                    enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'country', displayName: 'Country',
+                    enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'postal_code', displayName: 'Postal Code',
+                    enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'id', displayName: 'Context Org ID',
+                    enableSorting: true, minWidth: '150', width: '150'},
+                {name: 'processing_status', displayName: 'Processing Status',
+                    enableSorting: true, minWidth: '150', width: '150'},
+                {name: 'service_request_name', displayName: 'Service Request',
+                    enableSorting: true, minWidth: '150', width: '150'},
                 {name: 'updated_by', displayName: 'Last Updated By',
                     enableSorting: true, minWidth: '150', width: '*'},
                 {name: 'updated_at', displayName: 'Last Updated Date',
                     type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"',
-                    enableSorting: true, minWidth: '160', width: '*'},
-                {name: 'city', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'state_province', displayName: 'State', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'country', displayName: 'Country', enableSorting: true, minWidth: '100', width:'*'},
-                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, minWidth: '120', width:'*'}
+                    enableSorting: true, minWidth: '160', width: '*'}
 
 
             ]

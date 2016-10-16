@@ -22,6 +22,7 @@ json.orgs do
         :aff_families_names,
         :org_assoc_date,
         :service_request_name,
+        :processing_status,
         :updated_by,
         :updated_at
         json.ctep_id organization.multiview_ctep_id
