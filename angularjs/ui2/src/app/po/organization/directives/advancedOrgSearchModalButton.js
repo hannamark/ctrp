@@ -13,7 +13,7 @@
         .controller('advancedOrgSearchForm2ModalCtrl', advancedOrgSearchForm2ModalCtrl)
         .directive('ctrpOrgAdvSearchModalButton', ctrpOrgAdvSearchModalButton);
 
-    advancedOrgSearchForm2ModalCtrl.$inject = ['$scope', '$uibModalInstance', 'maxRowSelectable', 'filteredContexts', 'preSearch']; //for modal controller
+    advancedOrgSearchForm2ModalCtrl.$inject = ['$scope', 'MESSAGES', '$uibModalInstance', 'maxRowSelectable', 'filteredContexts', 'preSearch', 'Common']; //for modal controller
     ctrpOrgAdvSearchModalButton.$inject = ['$uibModal', '$compile', '_', '$timeout', 'Common']; //modal button directive
 
 
@@ -37,7 +37,7 @@
 
         function linkerFn(scope, element, attrs) {
             $compile(element.contents())(scope);
-            scope.buttonLabel   = attrs.buttonLabel || 'Search Organizations';
+            scope.buttonLabel   = attrs.buttonLabel;
             scope.filteredContexts = attrs.filteredContexts || 'CTRP';
             scope.preSearch     = attrs.preSearch ? JSON.parse(attrs.preSearch) : '{"source_status": "Active"}';
         } //linkerFn
@@ -112,7 +112,7 @@
                 if (intention === 'removeAll') {
                     $scope.savedSelection.length = 0;
                 }
-            }
+            };
         } //orgAdvSearchModalButtonController
     } //ctrpOrgAdvSearchModalButton
 
@@ -126,7 +126,7 @@
      * @param $scope
      * @param $uibModalInstance
      */
-    function advancedOrgSearchForm2ModalCtrl($scope, $uibModalInstance, maxRowSelectable, filteredContexts, preSearch) {
+    function advancedOrgSearchForm2ModalCtrl($scope, MESSAGES, $uibModalInstance, maxRowSelectable, filteredContexts, preSearch, Common) {
         var vm = this;
         vm.maxRowSelectable = maxRowSelectable || 'undefined'; //to be passed to the adv org search form
         vm.filteredContexts = filteredContexts; //to be passed to the adv org search form
@@ -160,6 +160,14 @@
         function watchSelectedOrgs() {
             $scope.$watchCollection('selectedOrgsArray', function(newVal, oldVal) {
                 //TODO: do something here if necessary
+                
+                //dynamically closed if newVal = -1
+                if(newVal === -1) {
+                    vm.cancel();
+                    Common.broadcastMsg(MESSAGES.ORG_SEARCH_NIL_DISMISS);
+                } else {
+                    vm.preSearch.nilclose = undefined;
+                }
             }, true);
 
         } //watchSelectedOrgs
