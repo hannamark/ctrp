@@ -363,7 +363,7 @@
                                 </div> <!-- row ends -->
                             </div>
                         </div>
-                        <div class="form-group" ng-show="clusterPerson.context == 'CTEP'"> <!--  && !personDetailView.hasCtrpContext -->
+                        <div class="form-group" ng-show="clusterPerson.context == 'CTEP' && !personDetailView.curPerson.ctrp_id"> <!--  && !personDetailView.hasCtrpContext -->
                             <div class="col-xs-12 col-sm-3"></div>
                             <div class="col-xs-12 col-sm-6 form-text pull-left">
                                 <button type="button" class="btn btn-primary" id="clone_button" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN"
