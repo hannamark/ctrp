@@ -135,6 +135,7 @@
                 if (vm.ctrpOrgCopy) {
                     vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                 }
+                vm.disableClone = vm.ctrpOrg && vm.ctepOrg && vm.ctepOrg.ctrp_id;
             } else {
                 vm.ctrpOrg = {};
                 vm.ctrpOrg.new = true;
@@ -171,16 +172,24 @@
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                 vm.curOrgEditable = UserService.isCurationModeEnabled();
             });
-        }
+        };
 
+        $scope.cloneBtnClicked = function () {
+            vm.cloningCTEP = true;
+            vm.nilclose = true;
+        };
+        
         vm.cloningCTEP = false;
         vm.nilclose = true;
         $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
             if (vm.cloningCTEP) {
-                //reset cloning flag
-                vm.cloningCTEP = false;
-                vm.nilclose = true;
-                console.log("DEGIN CLONE",vm.ctepOrg);
+                // To make sure setPristine() is executed after all $watch functions are complete
+                $timeout(function () {
+                    //reset cloning flag
+                    vm.cloningCTEP = false;
+                    vm.nilclose = true;
+                    vm.cloneCtepOrg();
+                }, 1);
             }
         });
 
@@ -189,22 +198,6 @@
          * for the selected country
          */
         function listenToStatesProvinces() {
-            if (vm.ctrpOrg) {
-                if (vm.ctrpOrg.country) {
-                    vm.watchCountrySelection(vm.ctrpOrg.country);
-                } else {
-                    vm.ctrpOrg.country = 'United States'; //default country
-                    vm.watchCountrySelection(vm.ctrpOrg.country);
-                }
-
-                $scope.$on(MESSAGES.STATES_AVAIL, function () {
-                    vm.states = OrgService.getStatesOrProvinces();
-                });
-
-                $scope.$on(MESSAGES.STATES_UNAVAIL, function () {
-                    vm.states = [];
-                })
-            }
         } //listenToStatesProvinces
 
         //Function that checks if an Organization - based on Name & source context is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the organization/unique Rails end point.
@@ -258,7 +251,7 @@
                         associateOrgsRefresh();
                         toastr.success('Organization has been associated.', 'Operation Successful!');
                     }).catch(function (err) {
-                        console.log("error in associating organization " + JSON.stringify(vm.curOrg));
+                        console.log("error in associating organization " + JSON.stringify(vm.ctrpOrg));
                     });
                 });
             }
@@ -281,11 +274,29 @@
             }
         });
 
-        vm.cloneCtepOrg = function(ctepOrgId) {
-            OrgService.cloneCtepOrg(ctepOrgId).then(function(response) {
-                console.info('clone response: ', response);
-            }).catch(function(err) {
-                console.error('clone error: ', err);
+        vm.cloneCtepOrg = function() {
+            OrgService.cloneCtepOrg(vm.ctepOrg.id).then(function(response) {
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    if (status === 200) {
+
+                        $timeout(function () {
+                            vm.associatedOrgs = response.associated_orgs;
+                            associateOrgsRefresh();
+                            vm.ctrpOrg = getOrgByContext(vm.associatedOrgs, 'CTRP');
+                            vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
+                            vm.ctrpUpdateTime = Date.now();
+                            toastr.success('Organization has been associated.', 'Operation Successful!');
+                        }, 1);
+                    }
+                }
+            }).catch(function (err) {
+                console.log("error in cloning ctep organization " + JSON.stringify(vm.ctepOrg));
+            }).finally(function() {
+                vm.disableBtn = false;
+                vm.cloningCTEP = false;
+                vm.nilclose = true;
             });
         };
 

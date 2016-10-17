@@ -1,5 +1,6 @@
 <div class="row">
-    <button type="button" class="btn btn-primary" restriction-field id="org_search_modal" ng-click="searchOrgs('lg')">
+    <button type="button" class="btn btn-primary" restriction-field
+            id="org_search_modal" ng-click="searchOrgs('lg')" ng-disabled="preSearch.disable">
         <span ng-if="!buttonLabel"><i class="glyphicon glyphicon-search"></i> Search Organizations</span>
         <span ng-if="buttonLabel">{{buttonLabel}}</span>
     </button>
