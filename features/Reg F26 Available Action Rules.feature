@@ -35,16 +35,30 @@ As any CTRP User, I can select available Actions
     Given I am logged into the CTRP Registration application
     And I do not have Administrative Privileges
     And I am on the Clinical Trials search Results
-     When my participating Site is added to the trial
-     Then the only available action is to update my participating site in the trial
      When my participating site is not added to the Trial 
+     And my participating site is "Active"
      Then the only available Action is to add my participating Site to the trial
+     When my participating Site is added to the trial
+     And my participatin site is "Active"
+     Then the only available action is to update my participating site in the trial
+    
+     Scenario: #3a Available Actions when Trial is Imported from ClinicalTrials.gov
+    Given I am logged into the CTRP Registration application
+    When I do not have Administrative Privileges
+    And I am on the Clinical Trials Search Results page
+    When my participating site is not added to the Trial 
+     And my participating site is "Inactive"
+     Then the action to add my participating site will not be available
+     When my participating Site is added to the trial
+     And my participatin site is "Inactive"
+     Then the action to update my participating site will not be available 
 
  Scenario: #4 Available Actions when Trial is Imported from ClinicalTrials.gov
     Given I am logged into the CTRP Registration application
     When I am a site admin
     And I am on the Clinical Trials Search Results page
     And my affiliated organization is associated with a family
+    And the Family status is "Active"
    And the organization affiliation to the family is not expired
     Then the available Action will be "Manage My Sites"
     And I can add any organization in my family as a participating site
@@ -55,6 +69,7 @@ As any CTRP User, I can select available Actions
     When I am a site admin
     And I am on the Clinical Trials Search Results page
     And my affiliated organization is associated with a family
+    And the Family status is "Active"
     And the organization affiliation to the family is expired
     And my affiliated organization is "Active"
     Then the available Action will be "Manage My Sites"
@@ -66,7 +81,7 @@ As any CTRP User, I can select available Actions
     Given I am logged into the CTRP Registration application
     When I am a site admin 
     And I am on the Clinical Trials Search Results page
-    And my affiliated organization is not associated with a family
+    And my affiliated organization is not associated with a family (Orphan)
     And my affiliated organization is "Active"
     Then the available Action will be "Manage My Sites"
     And I can add only my organization as a participating site
@@ -76,6 +91,7 @@ As any CTRP User, I can select available Actions
     Given I am logged into the CTRP Registration application
     When I am a site admin 
     And I am on the Clinical Trials Search Results page
+    And And my affiliated organization is not associated with a family
     And my affiliated organization is "Inactive"
     Then the Action "Manage My Sites" will not be available 
     
