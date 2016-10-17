@@ -20,22 +20,21 @@
             name : '',
             alias: true,
             wc_search: true,
-            // po_id : '',
-            ctrp_id : '',
-            source_context : '',
-            source_id : '',
-            source_status : '',
-            family_name : '',
-            address : '',
-            address2 : '',
-            city : '',
+            ctrp_id: '',
+            source_context: '',
+            source_id: '',
+            source_status: '',
+            family_name: '',
+            address: '',
+            address2: '',
+            city: '',
             state_province : '',
-            country : '', //default country ? United States ?
-            email : '',
-            postal_code : '',
+            country: '', //default country ? United States ?
+            email: '',
+            postal_code: '',
             phone: '',
             processing_status: '',
-            service_request: '',
+            service_request_name: '',
 
             //for pagination and sorting
             sort: '',
@@ -241,11 +240,13 @@
 
 
         function getGridOptions(usedInModal) {
-            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
+            var allowedROLES= ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_ABSTRACTOR', 'ROLE_CURATOR'];
+            var user_role = UserService.getUserRole() ? UserService.getUserRole().toUpperCase() : '';
+
             var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
             var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
-            var curator_role = 'curator';
-            if(user_role.toUpperCase() !== curator_role.toUpperCase()) {
+
+            if(!_.contains(allowedROLES, user_role)) {
                 if (updated_at_index >= 0 )
                     gridOptions.columnDefs.splice(updated_at_index,1);
                 if (updated_by_index >= 0)

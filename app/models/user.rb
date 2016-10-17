@@ -246,9 +246,9 @@ class  User < ActiveRecord::Base
   end
 
 
-  scope :org_write_access, -> (current_user) {
-    ['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR'].include? current_user.role
-  }
+  def self.org_write_access(current_user)
+    return ['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR'].include? current_user.role
+  end
 
   def ldap_before_save
     Rails.logger.info "In ldap_before_save"

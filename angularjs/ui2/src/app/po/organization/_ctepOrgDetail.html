@@ -6,7 +6,7 @@
             <label class="control-label col-xs-6 col-sm-6">Clone:</label>
             <div class="form-group col-xs-6 col-sm-6 form-text">
                 <button type="button" class="btn btn-primary" id="clone_button" restriction-field
-                        ng-disabled = "orgDetailView.ctrpOrg"
+                        ng-disabled = "orgDetailView.ctrpOrg && orgDetailView.ctepOrg.ctrp_id"
                         ng-click = "orgDetailView.cloneCtepOrg(orgDetailView.curOrg.id)">Clone</button>
             </div>
         </div>
