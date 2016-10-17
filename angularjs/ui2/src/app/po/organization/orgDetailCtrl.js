@@ -135,11 +135,15 @@
                 if (vm.ctrpOrgCopy) {
                     vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                 }
-                vm.disableClone = vm.ctrpOrg && vm.ctepOrg && vm.ctepOrg.ctrp_id;
+                checkToDisableClone();
             } else {
                 vm.ctrpOrg = {};
                 vm.ctrpOrg.new = true;
             }
+        }
+
+        function checkToDisableClone() {
+            vm.disableClone = vm.ctrpOrg && vm.ctepOrg && vm.ctepOrg.ctrp_id;
         }
 
         function getOrgByContext(orgsArr, context){
@@ -291,12 +295,12 @@
         });
 
         vm.cloneCtepOrg = function() {
+            vm.disableCloneFresh = true;
             OrgService.cloneCtepOrg(vm.ctepOrg.id).then(function(response) {
                 var status = response.server_response.status;
 
                 if (status >= 200 && status <= 210) {
                     if (status === 200) {
-
                         $timeout(function () {
                             vm.associatedOrgs = response.associated_orgs;
                             associateOrgsRefresh();

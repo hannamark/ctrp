@@ -4,9 +4,9 @@
     <div class="row"  ng-if="orgDetailView.curOrgEditable">
         <div class="form-group col-xs-12 col-sm-6 has-feedback">
             <div class="control-label col-xs-6 col-sm-6"></div>
-            <div class="form-group col-xs-6 col-sm-6 form-text">
+            <div class="form-group col-xs-6 col-sm-6 form-text" ng-hide="orgDetailView.disableCloneFresh === true">
                 <ctrp-org-adv-search-modal-button
-                        ng-click="orgDetailView.cloningCTEP = true"
+                        ng-click="orgDetailView.cloningCTEP = true;"
                         pre-search = '{
                                             "nosave": true,
                                             "source_context": "CTRP",
