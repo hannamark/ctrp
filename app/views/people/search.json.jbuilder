@@ -7,6 +7,7 @@ json.people do
     #eager loading po_affiliations
     json.affiliated_orgs_count person.po_affiliations.length
     json.affiliated_orgs person.po_affiliations.map{ |po_affiliation| po_affiliation.organization.name}.join("; ")
+
   end
 end
 json.start params[:start]
