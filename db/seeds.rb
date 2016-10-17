@@ -1427,6 +1427,11 @@ CtGovImportExport.find_or_create_by(from:'Retrospective', to:'Retrospective',imp
 CtGovImportExport.find_or_create_by(from:'Cross sectional', to:'Cross sectional',import_or_export:'export' ,model:'TimePerspectives')
 CtGovImportExport.find_or_create_by(from:'Other', to:'Other',import_or_export:'export' ,model:'TimePerspectives')
 
+CtGovImportExport.find_or_create_by(from:'No', to:'No',import_or_export:'import' ,model:'AcceptVol')
+CtGovImportExport.find_or_create_by(from:'Accepts Healthy Volunteers', to:'Yes',import_or_export:'import' ,model:'AcceptVol')
+CtGovImportExport.find_or_create_by(from:'No', to:'No',import_or_export:'export' ,model:'AcceptVol')
+CtGovImportExport.find_or_create_by(from:'Yes', to:'Accepts Healthy Volunteers',import_or_export:'export' ,model:'AcceptVol')
+
 
 
 ########## SEEDING CTGOV IMPORT EXPORT ENDS ##########
