@@ -122,7 +122,7 @@
                                         </td>
                                         <td class="col-md-2">
                                             <div>
-                                                <button type="button" restriction-field class="btn btn-primary btn-add" ng-click="trialDetailView.addOtherId()">
+                                                <button type="button" restriction-field class="btn btn-primary btn-add" ng-click="trialDetailView.addOtherId()" ng-disabled="!trialDetailView.protocol_id.length">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -1330,7 +1330,7 @@
                                             <td class="col-sm-1">{{ps.contact_name}}</td>
                                             <td class="col-sm-1">{{ps.contact_email}}</td>
                                             <td class="col-sm-1">
-                                                {{ps.contact_phone}} 
+                                                {{ps.contact_phone}}
                                                 <span ng-show="ps.extension">
                                                     x{{ps.extension}}
                                                 </span>
