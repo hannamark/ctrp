@@ -332,10 +332,10 @@
                                                 {{person.phone}}
                                             </td>
                                             <td>
-                                                --TODO--
+                                                <span ng-repeat="org in person.affiliated_orgs">{{org}}</span>
                                             </td>
                                             <td>
-                                                what is?
+                                                {{person.id}}
                                             </td>
                                             <td>
                                                 {{person.processing_status}}
