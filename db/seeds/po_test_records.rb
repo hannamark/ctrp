@@ -275,17 +275,17 @@ if Person.all.size == 0
   person8 = Person.find_or_create_by(id:2026171, source_id:'35504',
                                      source_context: SourceContext.find_by_code('CTRP'),
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
-                                     fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
+                                     fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245', processing_status: 'Complete')
 
   Person.find_or_create_by(source_id:'AB123',
                            source_context: SourceContext.find_by_code('CTEP'),
                            source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
-                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@ctep', phone:'123-456-7890', ctrp_id: person8.id, service_request_id: 1, registration_type: 'Investigator')
+                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@ctep', phone:'123-456-7890', ctrp_id: person8.id, service_request_id: 1, processing_status: 'Incomplete', registration_type: 'Investigator')
 
-  Person.find_or_create_by(source_id:'098',
-                           source_context: SourceContext.find_by_code('NLM'),
-                           source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
-                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@nlm', phone:'098-765-4321', ctrp_id: person8.id)
+  # Person.find_or_create_by(source_id:'098',
+  #                          source_context: SourceContext.find_by_code('NLM'),
+  #                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
+  #                          fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@nlm', phone:'098-765-4321', ctrp_id: person8.id)
 
   person9 = Person.find_or_create_by(id:672434, source_id:'19844',
                                      source_context: SourceContext.find_by_code('CTEP'),
