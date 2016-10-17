@@ -432,7 +432,10 @@
                                            </span>
                                         </div>
                                         <div class="col-xs-12 col-sm-4" ng-show="psView.currentParticipatingSite.contact_type == 'Person'">
-                                            <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.selectedPerson.array"></ctrp-person-adv-search-modal-button>
+                                            <!-- <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="psView.selectedPerson.array"></ctrp-person-adv-search-modal-button> -->
+                                            <button type="button" class="btn btn-primary" id="person_search_modal" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="psView.selectedPerson.array" restriction-field>
+                                                <i class="glyphicon glyphicon-search"></i> Search Persons
+                                            </button>
                                         </div>
                                     </div>
 

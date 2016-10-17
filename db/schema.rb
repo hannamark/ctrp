@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161013152925) do
+ActiveRecord::Schema.define(version: 20161016031557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 20161013152925) do
     t.integer  "anatomic_site_id"
     t.integer  "trial_id"
     t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "updated_at"
     t.string   "uuid",             limit: 255
     t.integer  "lock_version",                 default: 0
   end
@@ -833,6 +833,7 @@ ActiveRecord::Schema.define(version: 20161013152925) do
     t.integer  "service_request_id"
     t.integer  "ctep_org_type_id"
     t.integer  "org_funding_mechanism_id"
+    t.datetime "association_date"
   end
 
   add_index "organizations", ["ctep_org_type_id"], name: "index_organizations_on_ctep_org_type_id", using: :btree
@@ -929,7 +930,7 @@ ActiveRecord::Schema.define(version: 20161013152925) do
     t.integer  "organization_id"
     t.integer  "person_id"
     t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
+    t.datetime "updated_at"
     t.string   "uuid",                   limit: 255
     t.integer  "lock_version",                       default: 0
     t.string   "extension",              limit: 255
@@ -963,10 +964,11 @@ ActiveRecord::Schema.define(version: 20161013152925) do
     t.string   "extension",              limit: 255
     t.string   "processing_status"
     t.datetime "association_start_date"
-    t.string   "service_request"
     t.string   "registration_type"
+    t.integer  "service_request_id"
   end
 
+  add_index "people", ["service_request_id"], name: "index_people_on_service_request_id", using: :btree
   add_index "people", ["source_context_id"], name: "index_people_on_source_context_id", using: :btree
   add_index "people", ["source_status_id"], name: "index_people_on_source_status_id", using: :btree
 
@@ -1697,6 +1699,7 @@ ActiveRecord::Schema.define(version: 20161013152925) do
   add_foreign_key "participating_sites", "organizations"
   add_foreign_key "participating_sites", "people"
   add_foreign_key "participating_sites", "trials"
+  add_foreign_key "people", "service_requests"
   add_foreign_key "people", "source_contexts"
   add_foreign_key "people", "source_statuses"
   add_foreign_key "po_affiliations", "organizations"

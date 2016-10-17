@@ -89,6 +89,10 @@
                                 {{personDetailView.curPerson.source_id}}
                             </div>
                         </div>
+                        <div class="form-group" ng-show="clusterPerson.context === 'CTEP'">
+                            <label class="control-label col-xs-12 col-sm-3">Service Request:</label>
+                            <div class="col-xs-12 col-sm-3 form-text">{{personDetailView.curPerson.service_request}}</div>
+                        </div>
                         <div class="form-group has-feedback required" ng-hide="personDetailView.curSourceContextName === 'CTRP'" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new && personDetailView.curSourceContextName !== 'CTRP'}">
                             <label class="control-label col-xs-12 col-sm-3">Processing Status: </label>
                             <div class="col-xs-12 col-sm-3">
@@ -265,7 +269,7 @@
                             ng-if="personDetailView.curSourceContextName === 'CTRP' && !personDetailView.curPerson.new" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
                             <label for="person_context" class="control-label col-sm-3 col-xs-12">Associate Person Context:</label>
                             <div class="col-sm-5 col-xs-12">
-                                <button type="button" class="btn btn-primary" id="person_search_modal" id="person_search_modal" person-search-modal-button2 source-context-only="'CTEP'" ng-model="personDetailView.associatedPersonContexts" restriction-field>
+                                <button type="button" class="btn btn-primary" id="person_search_modal" person-search-modal-button2 source-context-only="'CTEP'" ng-model="personDetailView.associatedPersonContexts" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
                                     <i class="glyphicon glyphicon-search"></i> Search Persons
                                 </button>
                             </div>
@@ -328,10 +332,10 @@
                                                 {{person.phone}}
                                             </td>
                                             <td>
-                                                --TODO--
+                                                <span ng-repeat="org in person.affiliated_orgs">{{org}}</span>
                                             </td>
                                             <td>
-                                                what is?
+                                                {{person.id}}
                                             </td>
                                             <td>
                                                 {{person.processing_status}}
@@ -349,8 +353,73 @@
                                                 {{person.association_start_date | date: "dd-MMM-yyyy H:mm"}}
                                             </td>
                                             <td class="text-center td-icon">
-                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.toggleSelection($index)" title="Mark for deletion">
+                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.removeAssociation(person.id)" title="Mark for deletion">
                                                     <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div> <!-- row ends -->
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="clusterPerson.context == 'CTEP' && !personDetailView.curPerson.ctrp_id"> <!--  && !personDetailView.hasCtrpContext -->
+                            <div class="col-xs-12 col-sm-3"></div>
+                            <div class="col-xs-12 col-sm-6 form-text pull-left">
+                                <button type="button" class="btn btn-primary" id="clone_button" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN"
+                                    ng-click="personDetailView.cloneCtepPerson(personDetailView.curPerson.id)">Clone</button>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="personDetailView.matchedCtrpPersons.length > 0">
+
+                            <label class="control-label col-xs-12 col-sm-3">Possible Matching CTRP Persons:</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <div class="row animated-item top-offset-tiny table-responsive search-calendar-grid">
+                                    <table class="table table-bordered table-striped table-condensed">
+                                        <thead>
+                                            <th width="6%" class="nowrap">CTRP Person ID</th>
+                                            <th>Prefix</th>
+                                            <th width="4%" class="min-width-md">First Name</th>
+                                            <th width="3%" class="min-width-md">Middle Name</th>
+                                            <th width="4%" class="min-width-md">Last Name</th>
+                                            <th width="2%" class="nowrap">Suffix</th>
+                                            <th width="3%" class="nowrap">Source Status</th>
+                                            <th width="3%" class="nowrap">Source Context</th>
+                                            <th width="10%" class="nowrap">Email</th>
+                                            <th width="8%" class="nowrap">Phone</th>
+                                            <th width="8%" class="nowrap">Associate</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="person in personDetailView.matchedCtrpPersons">
+                                            <td>{{person.ctrp_id}}</td>
+                                            <td>{{person.prefix}}</td>
+                                            <td>{{person.fname}}</td>
+                                            <td>
+                                                {{person.mname}}
+                                            </td>
+                                            <td>
+                                                {{person.lname}}
+                                            </td>
+                                            <td>
+                                                {{person.suffix}}
+                                            </td>
+                                            <td>
+                                                <!-- {{person.source_status}} -->
+                                                Active
+                                            </td>
+                                            <td>
+                                                <!-- {{person.source_context}} -->
+                                                CTRP
+                                            </td>
+                                            <td>
+                                                {{person.email}}
+                                            </td>
+                                            <td>
+                                                {{person.phone}}
+                                            </td>
+                                            <td class="text-center">
+                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.associate(person.id)" title="Association" ng-disabled="true">
+                                                    Associate
                                                 </button>
                                             </td>
                                         </tr>

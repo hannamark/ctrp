@@ -326,13 +326,14 @@ class TrialsController < ApplicationController
           @trials = Trial.matches('lead_org_id', current_user.organization_id).where(nih_nci_prog: nil).filter_rejected.active_submissions
         end
       end
-    elsif params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
+    elsif params[:org].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.filter_rejected
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
       @trials = @trials.with_phases(params[:phases]) if params[:phases].present?
       @trials = @trials.with_purposes(params[:purposes]) if params[:purposes].present?
       @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
+      @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       if params[:pi].present?
         splits = params[:pi].split(',').map(&:strip)
         @trials = @trials.with_pi_lname(splits[0])
@@ -355,13 +356,40 @@ class TrialsController < ApplicationController
       end
       @trials = @trials.is_not_draft if params[:searchType] == 'All Trials'
       @trials = @trials.is_draft(@current_user.username) if params[:searchType] == 'Saved Drafts'
-      @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
+      #@trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
+      @trials = @trials.sort_by_col(params).page(params[:start]).per(params[:rows])
 
        #@trials = @trials.filter(@trials, {:phases => params[:phases], :purposes => params[:purposes]})
 
       @trials.each do |trial|
         trial.current_user = @current_user
       end
+      #### Write here a join query to avoid the access of db tables from View.
+      ###
+      Rails.logger.info "Started querying multitable with Trials to avoid the access of db tables from View"
+
+      join_clause  = "LEFT OUTER JOIN phases ON trials.phase_id = phases.id LEFT OUTER JOIN primary_purposes ON trials.primary_purpose_id = primary_purposes.id "
+      join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
+      join_clause += "LEFT JOIN organizations as sponsor ON sponsor.id = trials.sponsor_id "
+      join_clause += "LEFT JOIN people as pi ON pi.id = trials.id "
+      join_clause += "LEFT JOIN study_sources as study_source ON study_source.id = trials.study_source_id "
+
+      join_clause += "LEFT JOIN research_categories as research_category ON research_category.id = trials.research_category_id "
+      join_clause += "LEFT JOIN responsible_parties as responsible_party ON responsible_party.id = trials.responsible_party_id "
+      join_clause += "LEFT JOIN accrual_disease_terms as accrual_disease_term ON accrual_disease_term.id = trials.accrual_disease_term_id "
+
+      #join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
+      #join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
+      #join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
+
+
+
+      @trials = @trials.joins(join_clause).select('trials.*, phases.name as phase_name,primary_purposes.name as purpose,
+                            trial_lead_org.name as lead_org_name,sponsor.name as sponsor_name,
+                            pi.fname  as pi_name, study_source.name as study_source_name ,
+                            research_category.name as research_category_name, responsible_party.name as responsible_party_name,
+                            accrual_disease_term.name as accrual_disease_term_name')
+
     else
       @trials = []
     end

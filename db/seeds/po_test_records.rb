@@ -29,7 +29,7 @@ usa = "United States"
 
   org1 = Organization.find_or_create_by( id: 139020,
                                          source_id: 'MN021',
-                                         name: 'University of Minnesota/Masonic Children\'s Hospital',
+                                         processing_status: 'Active',  name: 'University of Minnesota/Masonic Children\'s Hospital',
                                          phone:'301-999-200f',
                                          source_context: SourceContext.find_by_code('CTEP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
@@ -48,140 +48,168 @@ usa = "United States"
     org2.name_aliases.find_or_create_by(name: 'Masonic Cancer Center, University of Minnesota')
   end
 
-  org3 = Organization.find_or_create_by(id: 153109, source_id: 'NC164', name: 'Coastal Carolina Radiation Oncology', phone:'315-425-2707',
+  org3 = Organization.find_or_create_by(id: 153109, source_id: 'NC164', processing_status: 'Incomplete',  name: 'Coastal Carolina Radiation Oncology', phone:'315-425-2707',
                                         source_context: SourceContext.find_by_code('CTEP'),
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                        service_request: SourceStatus.find_by_code('CREATE'),
                                         address: '1988 S 16th St', city: 'Wilmington', state_province:'North Carolina', country:usa, postal_code: '56456', email: "rdahl@wilmhealth.com")
 
-  org4 = Organization.find_or_create_by(id: 12733422, name: 'Comprehensive Cancer Center of Wake Forest University', phone:'315-425-2707',
+  org4 = Organization.find_or_create_by(id: 12733422, processing_status: 'Complete',  name: 'Comprehensive Cancer Center of Wake Forest University', phone:'315-425-2707',
                                         source_context: SourceContext.find_by_code('CTRP'),
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                         address: '1 Medical Center Blvd', city: '', state_province:'North Carolina', country: usa, postal_code: '12344', email: "fforsyth@wakehealth.com") #labeled unknown in directory
 
-  org5 = Organization.find_or_create_by(id: 117163, source_id: 'LA032', name: 'Ochsner Baptist Medical Center', phone:'315-425-2707',
+  org5 = Organization.find_or_create_by(id: 117163, source_id: 'LA032', processing_status: 'Incomplete',  name: 'Ochsner Baptist Medical Center', phone:'315-425-2707',
                                         source_context: SourceContext.find_by_code('CTEP'),
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                        service_request: SourceStatus.find_by_code('CREATE'),
                                         address: '2700 Napoleon Ave', city: 'New Orleans', state_province:'Louisiana', country:usa, postal_code: '082345', email: "jlahiri@loiushealth.com")
   if !org5.new_record?
     org5.name_aliases.find_or_create_by(name: 'Ochsner Baptist Medical Center')
   end
-  org6 = Organization.find_or_create_by(id: 173475, source_id: 'NY139', name: 'Syracuse Veterans Administration Medical Center',
+  org6 = Organization.find_or_create_by(id: 173475, source_id: 'NY139', processing_status: 'Incomplete',  name: 'Syracuse Veterans Administration Medical Center',
                                         phone:'315-425-2707',
                                         source_context: SourceContext.find_by_code('CTEP'),
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                        service_request: SourceStatus.find_by_code('CREATE'),
                                         address: ' 800 Irving Ave', city: 'Syracuse', state_province:'New York', country:usa, postal_code: '12347', email: "kdesai@syrhealth.com")
 
-  org7 = Organization.find_or_create_by(id: 150970, source_id: 'NC088', name: 'Veterans Administration Medical Center.', phone:'315-425-2707',
+  org7 = Organization.find_or_create_by(id: 150970, source_id: 'NC088', processing_status: 'Incomplete',  name: 'Veterans Administration Medical Center.', phone:'315-425-2707',
                                         source_context: SourceContext.find_by_code('CTEP'),
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                        service_request: SourceStatus.find_by_code('CREATE'),
                                         address: '50 Irving St NW', city: '', state_province:'District of Columbia', country:usa, postal_code: '95673', email: "pcoaehlo@columbiahealth.com")
 
-  org8 = Organization.find_or_create_by(id: 213850, source_id: 'WAKE', name: 'Wake Forest NCORP Research Base', phone:'315-425-2707',
+  org8 = Organization.find_or_create_by(id: 213850, source_id: 'WAKE', processing_status: 'Incomplete',  name: 'Wake Forest NCORP Research Base', phone:'315-425-2707',
                                         source_context: SourceContext.find_by_code('CTEP'),
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                        service_request: SourceStatus.find_by_code('CREATE'),
                                         address: 'Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, postal_code: '27157', email: "gmarquez@salemhealth.com")
 
   if !org8.new_record?
     org8.name_aliases.create(name: 'Wake Forest Cancer Center Research Base')
   end
-  org9 = Organization.find_or_create_by(id: 36296220, source_id: 'NC275', name: 'Wake Forest University at Clemmons', phone:'315-425-2707',
+  org9 = Organization.find_or_create_by(id: 36296220, source_id: 'NC275', processing_status: 'Incomplete',  name: 'Wake Forest University at Clemmons', phone:'315-425-2707',
                                         source_context: SourceContext.find_by_code('CTEP'),
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                        service_request: SourceStatus.find_by_code('CREATE'),
                                         address: '3540 Clemmons Rd', city: 'Clemmons', state_province:'North Carolina', country:usa, postal_code: '78778', email: "owilde@clemmhealth.com")
 
-  org10 = Organization.find_or_create_by(id: 36296062, source_id: 'NC273', name: 'Wake Forest University at Elkin', phone:'315-425-2707',
-                                         source_context: SourceContext.find_by_code('CTEP'),
-                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+  org10 = Organization.find_or_create_by(id: 36296062, source_id: 'NC273', processing_status: 'Incomplete',  name: 'Wake Forest University at Elkin', phone:'315-425-2707',
+                                         source_context: SourceContext.find_by_code('NLM'),
+                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
+                                         service_request: SourceStatus.find_by_code('CREATE'),
                                          address: '200 Johnson Ridge Medical Park', city: 'Elkin', state_province:'North Carolina', country:usa, postal_code: '27345', email: "rstevenson@elkinhealth.com")
 
-  org11 = Organization.find_or_create_by(id: 36296115, source_id: 'NC274', name: 'Wake Forest University at Lexington', phone:'315-425-2707',
-                                         source_context: SourceContext.find_by_code('CTEP'),
-                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+  org11 = Organization.find_or_create_by(id: 36296115, source_id: 'NC274', processing_status: 'Incomplete',  name: 'Wake Forest University at Lexington', phone:'315-425-2707',
+                                         source_context: SourceContext.find_by_code('NLM'),
+                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
+                                         service_request: SourceStatus.find_by_code('CREATE'),
                                          address: '250 Hospital Drive', city: 'Lexington', state_province:'North Carolina', country:usa, postal_code: '3427157', email: "jswift@lexhealth.com")
 
-  org12 = Organization.find_or_create_by(id: 36296009, source_id: 'NC272', name: 'Wake Forest University at Mount Airy', phone:'315-425-2707',
-                                         source_context: SourceContext.find_by_code('CTEP'),
-                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+  org12 = Organization.find_or_create_by(id: 36296009, source_id: 'NC272', processing_status: 'Incomplete',  name: 'Wake Forest University at Mount Airy', phone:'315-425-2707',
+                                         source_context: SourceContext.find_by_code('NLM'),
+                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
+                                         service_request: SourceStatus.find_by_code('CREATE'),
                                          address: '910 Worth St.', city: 'Mt. Airy', state_province:'North Carolina', country:usa, postal_code: '5627157', email: "jrrtolkien@airyhealth.com")
 
-  org13 = Organization.find_or_create_by(id: 149074, source_id: 'NC002', name: 'Wake Forest University Health Sciences', phone:'315-425-2707',
+  org13 = Organization.find_or_create_by(id: 149074, source_id: 'NC002', processing_status: 'Incomplete',  name: 'Wake Forest University Health Sciences', phone:'315-425-2707',
                                          source_context: SourceContext.find_by_code('CTEP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                         service_request: SourceStatus.find_by_code('CREATE'),
                                          address: '1 Medical Center Blvd', city: 'Winston-Salem', state_province:'North Carolina', country:usa, postal_code: '3427157', email: "mtwain@wakehealth.com") #no source id
 
-  org14 = Organization.find_or_create_by(id: 149221, source_id: 'NC008', name: 'Wake Medical Center-Breast Screening and Diagnostic',
+  org14 = Organization.find_or_create_by(id: 149221, source_id: 'NC008', processing_status: 'Incomplete',  name: 'Wake Medical Center-Breast Screening and Diagnostic',
                                          phone:'315-425-2707',
                                          source_context: SourceContext.find_by_code('CTEP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                         service_request: SourceStatus.find_by_code('CREATE'),
                                          address: '3000 New Bern Avenue ', city: 'Raleigh', state_province:'North Carolina', country:usa, postal_code: '4527157', email: "jausten@wakehealth.com")
 
-  org15 = Organization.find_or_create_by(id: 23875109, name: 'ACORN Research, LLC', phone:'315-425-2707',
+  org15 = Organization.find_or_create_by(id: 23875109, processing_status: 'Complete',  name: 'ACORN Research, LLC', phone:'315-425-2707',
                                          source_context: SourceContext.find_by_code('CTRP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('PEND', ctrp.id),
+                                         service_request: SourceStatus.find_by_code('NULL'),
                                          address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: '23456') #no source id
 
-  org16 = Organization.find_or_create_by(id: 24068, source_id: 'ACT', phone:'315-425-2707', name: 'Actelion Pharmaceuticals Switzerland',
+  org16 = Organization.find_or_create_by(id: 24068, source_id: 'ACT', phone:'315-425-2707', processing_status: 'Incomplete',  name: 'Actelion Pharmaceuticals Switzerland',
                                          source_context: SourceContext.find_by_code('CTEP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                         service_request: SourceStatus.find_by_code('CREATE'),
                                          address: 'Gewerbestrasse 16', city: 'Allschwil', state_province:'Basel-Landschaft', country: 'Switzerland', postal_code: '34527157', email: "ebronte@wakehealth.com")
 
   if !org16.new_record?
     org16.name_aliases.find_or_create_by(name: 'Actelion')
   end
-  org17 = Organization.find_or_create_by(id: 8352734, name: 'Boston University School Of Public Health',
+  org17 = Organization.find_or_create_by(id: 8352734, processing_status: 'Complete',  name: 'Boston University School Of Public Health',
                                          source_context: SourceContext.find_by_code('CTRP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
+                                         service_request: SourceStatus.find_by_code('NULL'),
                                          address: '715 Albany St', city: 'Boston', state_province:'Massachusetts', country: usa, postal_code: '27157', email: "cbronte@masshealth.com") #no source id
 
-  org18 = Organization.find_or_create_by(id: 34563051, name: 'UCB, Inc.',
+  org18 = Organization.find_or_create_by(id: 34563051, processing_status: 'Complete',  name: 'UCB, Inc.',
                                          source_context: SourceContext.find_by_code('CTRP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
+                                         service_request: SourceStatus.find_by_code('NULL'),
                                          address: '1950 Lake Park Drive', city: 'Smyrna', state_province:'Georgia', country: usa, email: "enesbit@smyrnahealth.com") #no source id
 
   if !org18.new_record?
     org18.name_aliases.find_or_create_by(name: 'UCB Pharma')
   end
 
-  org19 = Organization.find_or_create_by(name: 'ACORN Research, LLC',
+  org19 = Organization.find_or_create_by(processing_status: 'Complete',  name: 'ACORN Research, LLC',
                                          source_context: SourceContext.find_by_code('CTEP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('INACT', ctep.id),
+                                         service_request: SourceStatus.find_by_code('NULL'),
                                          address: '6555 Quince Rd', city: 'Memphis', state_province:'Tennessee', country: usa, source_id: "ACRN", ctrp_id: org15.id, postal_code: '23455', email: "vhugo@memphishealth.com") #no source id
 
-  org20 = Organization.find_or_create_by(id: 226701, source_id: 'TX111', name: 'Texas Health Harris Methodist Hospital Fort Worth',
+  org20 = Organization.find_or_create_by(id: 226701, source_id: 'TX111', processing_status: 'Complete',  name: 'Texas Health Harris Methodist Hospital Fort Worth',
                                          phone:'865-541-1812',
                                          source_context: SourceContext.find_by_code('CTRP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
+                                         service_request: SourceStatus.find_by_code('NULL'),
                                          email: "jgrisham@texashealth.com", address: '1300 West Terrell', city: 'Fort Worth', state_province:'Texas', country:usa, postal_code:"147892")
 
-org21 = Organization.find_or_create_by(id: 595150, source_id: 'CO029', name: 'Memorial Hospital Colorado Springs', phone:'865-541-1813',
+org21 = Organization.find_or_create_by(id: 595150, source_id: 'CO029', processing_status: 'Complete',  name: 'Memorial Hospital Colorado Springs', phone:'865-541-1813',
                                        source_context: SourceContext.find_by_code('CTRP'),
                                        source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
+                                       service_request: SourceStatus.find_by_code('NULL'),
                                        email: "mcrichton@boulderhealth.com", address: '1400 East Boulder', city: 'Colorado Springs', state_province:'Colorado', country:usa, postal_code:"37498")
 
-  org22 = Organization.find_or_create_by(id: 2118412, source_id: 'MA043', name: 'Boston Medical Center', phone:'617-353-7571',
+  org22 = Organization.find_or_create_by(id: 2118412, source_id: 'MA043', processing_status: 'Complete',  name: 'Boston Medical Center', phone:'617-353-7571',
                                          source_context: SourceContext.find_by_code('CTRP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
+                                         service_request: SourceStatus.find_by_code('NULL'),
                                          email: "rcook@bostonhealth.com",  address: '1 Medical Center Drive', city: 'Boston', state_province:'Massachussets', country:usa, postal_code:"3849504")
 
-  org23 = Organization.find_or_create_by(id: 33699872, source_id: 'NVRF', name: 'Nevada Cancer Research Foundation CCOP', phone:'702-541-1815',
+  org23 = Organization.find_or_create_by(id: 33699872, source_id: 'NVRF', processing_status: 'Complete',  name: 'Nevada Cancer Research Foundation CCOP', phone:'702-541-1815',
                                          source_context: SourceContext.find_by_code('CTRP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
+                                         service_request: SourceStatus.find_by_code('NULL'),
                                          email: "rludlum@lasvegashealth.com",  address: '1 Rancho Drive', city: 'Las Vegas', state_province:'Nevada', country:usa, postal_code:"926344")
 
-  org24 = Organization.find_or_create_by(id: 8149074, source_id: 'WA002', name: 'Harborview Medical Center', phone:'865-541-1816',
+  org24 = Organization.find_or_create_by(id: 8149074, source_id: 'WA002', processing_status: 'Complete',  name: 'Harborview Medical Center', phone:'865-541-1816',
                                          source_context: SourceContext.find_by_code('CTRP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
+                                         service_request: SourceStatus.find_by_code('NULL'),
                                          email: "dbrown@seattlehealth.com", address: '23 Wheeling Drive', city: 'Seattle', state_province:'Washington', country:usa, postal_code:"123683") #no source id
 
-  org25 = Organization.find_or_create_by(id: 23170023,  name: 'National Cancer Institute', phone:'301-555-0000',
+  org25 = Organization.find_or_create_by(id: 23170023,  processing_status: 'Active',  name: 'National Cancer Institute', phone:'301-555-0000',
                                          source_context: SourceContext.find_by_code('CTRP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                          email: "cancerhelp@nih.gov", address: '9609 Medical Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20850") #no source id
 
-  org26 = Organization.find_or_create_by(id: 16108126,  name: 'NCI - Center for Cancer Research', phone:'301-496-4365',
+  org26 = Organization.find_or_create_by(id: 16108126,  processing_status: 'Active',  name: 'NCI - Center for Cancer Research', phone:'301-496-4365',
                                          source_context: SourceContext.find_by_code('CTRP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
+                                         service_request: SourceStatus.find_by_code('NULL'),
                                          email: "cancerhelp@nih.gov", address: '31 Center Drive', city: 'Rockville', state_province:'Maryland', country:usa, postal_code:"20892") #no source id
+
+  org27 = Organization.find_or_create_by(id: 81490749, source_id: 'WA002', processing_status: 'Incomplete',  name: 'Harborview Medical Center', phone:'865-541-1816',
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
+                                         service_request: SourceStatus.find_by_code('CREATE'),
+                                       email: "dbrown@seattlehealth.com", address: '23 Wheeling Drive', city: 'Seattle', state_province:'Washington', country:usa, postal_code:"123683") #no source id
 
   puts "...Seeding families"
   family1 = Family.create(name: 'Masonic Cancer Center')
@@ -208,6 +236,7 @@ org21 = Organization.find_or_create_by(id: 595150, source_id: 'CO029', name: 'Me
 
 if Person.all.size == 0
   puts "...Seeding persons"
+
   person1 = Person.find_or_create_by(id:1699192, source_id:'33303',
                                      source_context: SourceContext.find_by_code('CTEP'),
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
@@ -251,7 +280,7 @@ if Person.all.size == 0
   Person.find_or_create_by(source_id:'AB123',
                            source_context: SourceContext.find_by_code('CTEP'),
                            source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
-                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@ctep', phone:'123-456-7890', ctrp_id: person8.id, registration_type: 'Investigator')
+                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@ctep', phone:'123-456-7890', ctrp_id: person8.id, service_request_id: 1, registration_type: 'Investigator')
 
   Person.find_or_create_by(source_id:'098',
                            source_context: SourceContext.find_by_code('NLM'),
@@ -261,7 +290,7 @@ if Person.all.size == 0
   person9 = Person.find_or_create_by(id:672434, source_id:'19844',
                                      source_context: SourceContext.find_by_code('CTEP'),
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
-                                     fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100', registration_type: 'Investigator')
+                                     fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100', service_request_id: 1, registration_type: 'Investigator')
 
   person10 = Person.find_or_create_by(id:1426655, source_id:'15179',
                                       source_context: SourceContext.find_by_code('CTRP'),

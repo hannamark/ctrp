@@ -75,6 +75,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Trial Status  |
       |Trial Dates|
       |Participating Sites|
+      And the latest submission Amendment Details "Amendment Date" and "Amendment Number" will be displayed even when the trial milestone is set to "Submission Terminated"
       
       
         Scenario:#4a Participating Sites Table Columns description for all trials (Protocol and Imported)
@@ -83,7 +84,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
      And the table displays the columns type
      
      |CTRP Org ID|
-     # CTRP Org ID=Group ID
+     # CTRP Org ID=Source ID when Source CTRP org
      |CTRP Organization Name|
      |Principal Investigator|
      # Principal Investigator Format (Last Name, First Name)
@@ -215,6 +216,12 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Other|
 
 
+       Scenario:#15 View Trial Details displayed fields rules 
+    Given I am on the trial Details screen
+     When Fields names don't have a value added
+     Then all field names without field values will be displayed 
+     And field names with field values will be displayed 
+    
 
 
  

@@ -1034,8 +1034,8 @@ class Trial < TrialBase
     end
 
     family_organizations = family_organizations.join(',')
-    join_clause = "LEFT JOIN participating_sites ON participating_sites.trial_id = trials.id"
-    where_clause = "participating_sites.organization_id in ("+param.join(',')+")"
+    join_clause = "LEFT JOIN participating_sites _ps1 ON _ps1.trial_id = trials.id"
+    where_clause = "_ps1.organization_id in ("+param.join(',')+")"
     joins(join_clause).where(where_clause)
   }
 
@@ -1043,8 +1043,8 @@ class Trial < TrialBase
   scope :with_current_user_org_as_ps, -> (value) {
     current_user = value
     organization = current_user.organization
-    join_clause = "LEFT JOIN participating_sites ON participating_sites.trial_id = trials.id"
-    where_clause = "participating_sites.organization_id =? "
+    join_clause = "LEFT JOIN participating_sites _ps ON _ps.trial_id = trials.id"
+    where_clause = "_ps.organization_id =? "
     joins(join_clause).where(where_clause, organization)
   }
 
@@ -1245,7 +1245,7 @@ class Trial < TrialBase
 
     #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
     #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
-    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN participating_sites ON participating_sites.trial_id = trials.id LEFT JOIN organizations sites ON sites.id = participating_sites.organization_id"
+    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN participating_sites ps ON ps.trial_id = trials.id LEFT JOIN organizations sites ON sites.id = ps.organization_id"
     where_clause = ""
     conditions = []
 

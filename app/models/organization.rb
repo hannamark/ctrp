@@ -106,6 +106,11 @@ class Organization < ActiveRecord::Base
     return isNullifiable
   end
 
+  def org_assoc_date
+    if self.association_date.present?
+      return self.association_date.strftime("%d-%b-%Y %H:%M:%S %Z")
+    end
+  end
 
   def org_created_date
    if self.created_at.present?
@@ -433,8 +438,11 @@ class Organization < ActiveRecord::Base
     where("organizations.updated_at BETWEEN ? and ?", start_date, end_date)
   }
 
+  time_parser_start = "to_char((("
+  time_parser_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy')"
   scope :all_orgs_data, -> () {
     join_clause = "
+      LEFT JOIN service_requests ON organizations.service_request_id = service_requests.id
       LEFT JOIN name_aliases ON organizations.id = name_aliases.organization_id
       INNER JOIN source_contexts ON organizations.source_context_id = source_contexts.id
       INNER JOIN source_statuses ON organizations.source_status_id = source_statuses.id
@@ -450,15 +458,23 @@ class Organization < ActiveRecord::Base
         GROUP BY families_list.organization_id
       )  as unexpired_family_membership ON organizations.id = unexpired_family_membership.organization_id
       LEFT JOIN (
-              SELECT organizations_for_ctep.ctrp_id, string_agg(organizations_for_ctep.source_id, '; ') as ctep_id from organizations as organizations_for_ctep
+              SELECT organizations_for_ctep.ctrp_id as ctep_ctrp_id, string_agg(organizations_for_ctep.source_id, '; ') as ctep_id from organizations as organizations_for_ctep
               INNER JOIN source_contexts ON source_contexts.id = organizations_for_ctep.source_context_id
               where source_contexts.code = 'CTEP' and organizations_for_ctep.ctrp_id is not null
               GROUP BY organizations_for_ctep.ctrp_id
-      ) as all_cteps_by_ctrp_id on organizations.ctrp_id = all_cteps_by_ctrp_id.ctrp_id
+      ) as all_cteps_by_ctrp_id on organizations.ctrp_id = ctep_ctrp_id
     "
 
     select_clause = "
-      organizations.*,
+      DISTINCT organizations.*,
+      service_requests.name as service_request_name,
+       (
+          CASE
+            WHEN organizations.extension IS NOT null AND organizations.extension <> ''
+            THEN COALESCE(organizations.phone, '') || ' | ' || COALESCE(organizations.extension, '')
+            ELSE organizations.phone
+          END
+       ) as phone_with_ext,
        (
           CASE
             WHEN source_contexts.code = 'CTEP'

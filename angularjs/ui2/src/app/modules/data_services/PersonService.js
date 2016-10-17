@@ -137,7 +137,9 @@
             curatePerson : curatePerson,
             checkUniquePerson : checkUniquePerson,
             extractFullName: extractFullName,
-            associatePersonContext: associatePersonContext
+            associatePersonContext: associatePersonContext,
+            removePersonAssociation: removePersonAssociation,
+            cloneCtepPerson: cloneCtepPerson,
         };
 
         return services;
@@ -286,6 +288,16 @@
             url = url.replace('{:ctrp_id}', ctrpId);
             return PromiseTimeoutService.getData(url);
         }
+        /**
+         * Remove person context association
+         * @param  {[type]} ctepPersonId [description]
+         * @return {[type]}              [description]
+         */
+        function removePersonAssociation(ctepPersonId) {
+            var url = URL_CONFIGS.REMOVE_PERSON_ASSOCIATION;
+            url = url.replace('{:ctep_person_id}', ctepPersonId);
+            return PromiseTimeoutService.getData(url);
+        }
 
 
         /**
@@ -295,6 +307,14 @@
          */
         function curatePerson(curationObject) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CURATE_PERSON, curationObject);
+        }
+
+        function cloneCtepPerson(ctepPersonId, forceClone) {
+            var data = {
+                ctep_person_id: ctepPersonId,
+                force_clone: forceClone || false,
+            };
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.CLONE_CTEP_PERSON, data);
         }
 
 

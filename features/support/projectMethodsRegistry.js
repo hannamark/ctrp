@@ -404,7 +404,12 @@ var projectMethodsRegistry = function () {
                     addOrg.setAddEmail('searchTrialOrg@email.com');
                     addOrg.setAddPhone('545-487-8956');
                  //   addOrg.setAddFax('898-487-4242');
+                    addOrg.setAddExtension('01');
                     addOrg.clickSave();
+                    //browser.takeScreenshot().then(function (png) {
+                    //    helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/CTRPIDOrgID' + moment().format('MMMDoYY hmmss') + '.png');
+                    //});
+                    helper.wait(addOrg.addOrgCTRPID,'CTRPID from Organization Page');
                     orgSourceId = addOrg.addOrgCTRPID.getText();
                     commonFunctions.onPrepareLoginTest(userWhoWillCreateTrial);
                     //login.login('ctrptrialsubmitter', 'Welcome01');
@@ -492,6 +497,7 @@ var projectMethodsRegistry = function () {
                     addOrg.setAddEmail('searchTrialOrg@email.com');
                     addOrg.setAddPhone('545-487-8956');
                     //     addOrg.setAddFax('898-487-4242');
+                    addOrg.setAddExtension('01');
                     addOrg.clickSave();
                     menuItem.clickPeople();
                     menuItem.clickAddPerson();
@@ -1091,6 +1097,7 @@ var projectMethodsRegistry = function () {
                         addOrg.setAddEmail('editTrialOrg@email.com');
                         addOrg.setAddPhone('589-8888-956');
                       //  addOrg.setAddFax('898-9420-442');
+                        addOrg.setAddExtension('01');
                         addOrg.clickSave();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                     });
@@ -1150,6 +1157,7 @@ var projectMethodsRegistry = function () {
                         addOrg.setAddEmail('searchTrialOrg@email.com');
                         addOrg.setAddPhone('545-487-8956');
                         //     addOrg.setAddFax('898-487-4242');
+                        addOrg.setAddExtension('01');
                         addOrg.clickSave();
                         menuItem.clickPeople();
                         menuItem.clickAddPerson();
@@ -1770,7 +1778,8 @@ var projectMethodsRegistry = function () {
                     addOrg.setAddPostalCode('25252');
                     addOrg.setAddEmail('PSImportedTrial@email.com');
                     addOrg.setAddPhone('545-999-8956');
-                    addOrg.setAddFax('898-222-4242');
+               //     addOrg.setAddFax('898-222-4242');
+                    addOrg.setAddExtension('01');
                     addOrg.clickSave();
                     menuItem.clickPeople();
                     menuItem.clickAddPerson();

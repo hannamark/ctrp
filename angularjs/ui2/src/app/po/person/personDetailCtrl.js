@@ -26,18 +26,27 @@
         vm.associatedPersonContexts = [];
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.selectedOrgFilter = '';
+        vm.hasCtrpContext = _.findIndex(vm.curPerson.cluster || [], {context: 'CTRP'}) > -1;
         var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
         vm.processStatusArr = OrgService.getProcessingStatuses();
         vm.formTitleLabel = 'Add Person'; //default form title
         vm.affiliatedOrgError = true; // flag for empty org affiliations
+        vm.matchedCtrpPersons = []; // CTRP persons found from attempt to clone ctep person
         var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
+
+
+        // actions:
+        vm.removeAssociation = removePersonAssociation;
+        vm.cloneCtepPerson = cloneCtepPerson;
 
         //update person (vm.curPerson)
         vm.updatePerson = function () {
             if (vm.savedSelection.length === 0) {
                 vm.affiliatedOrgError = true;
+                console.info('affiliated org error, return!');
                 return;
             }
+            console.info('NO affiliated org error!');
             vm.affiliatedOrgError = false;
             vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection); //append an array of affiliated organizations
             _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
@@ -64,13 +73,14 @@
                 var status = response.status || response.server_response.status;
                 if (newPerson.new && status === 201) {
                     // created
-                    showToastr(vm.curPerson.lname);
+                    // 'Person ' + personName + ' has been recorded'
+                    showToastr('Person ' + vm.curPerson.lname + ' has been recorded');
                     vm.curPerson.new = false;
                     $state.go('main.personDetail', {personId: response.data.id});
                 } else if (status === 200) {
                     // updated
                     vm.curPerson = response.data;
-                    showToastr(vm.curPerson.lname);
+                    showToastr('Person ' + vm.curPerson.lname + ' has been recorded');
                     vm.curPerson.new = false;
 
                     // To make sure setPristine() is executed after all $watch functions are complete
@@ -83,9 +93,9 @@
             });
         }; // updatePerson
 
-        function showToastr(personName) {
+        function showToastr(message) {
             toastr.clear();
-            toastr.success('Person ' + personName + ' has been recorded', 'Operation Successful!');
+            toastr.success(message, 'Operation Successful!');
         }
 
         vm.resetForm = function() {
@@ -316,7 +326,6 @@
                 var ctrpSourceContextObj = _.findWhere(vm.sourceContextArr, {code: 'CTRP'});
                 vm.curPerson.source_context_id = !!ctrpSourceContextObj ? ctrpSourceContextObj.id : '';
             }
-            console.info('vm.curSourceContextName: ', vm.curSourceContextName);
             //delete 'CTEP and 'NLM' from the sourceContextArr
             vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'CTEP'}));
             vm.sourceContextArr = _.without(vm.sourceContextArr, _.findWhere(vm.sourceContextArr, {name: 'NLM'}));
@@ -373,24 +382,29 @@
                             // nothing here
                         }).finally(function() {
                             if (isConfirmed) {
-                                return _associateCtepPerson(ctepPerson);
+                                return _associateCtepPerson(ctepPerson, vm.curPerson.ctrp_id);
                             }
                         });
                     } else {
-                        return _associateCtepPerson(ctepPerson);
+                        return _associateCtepPerson(ctepPerson, vm.curPerson.ctrp_id);
                     }
                 }
             });
         }
 
-        function _associateCtepPerson(ctepPerson) {
-            PersonService.associatePersonContext(ctepPerson.id, vm.curPerson.ctrp_id).then(function(res) {
+        vm.associate = _.partial(_associateCtepPerson, vm.curPerson.id); // used for associating ctep person to ctrp person, vm.curPerson.id is CTEP person id
+        function _associateCtepPerson(ctepPerson, ctrpId) {
+            PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
                 console.info('res with association person: ', res); // resp.person
-                vm.associatedPersonContexts = []; // clean up
-                if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: 'CTEP'}) === -1) {
-                    vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id});
-                    vm.curPerson.associated_persons.push(res.person); // TODO: populate the source_context and source_status with string
+                if (res.server_response.status >= 200 && res.server_response.status < 226) {
+                    vm.associatedPersonContexts = []; // clean up
+                    vm.matchedCtrpPersons = []; // clean up
+                    if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: 'CTEP'}) === -1) {
+                        vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id});
+                        vm.curPerson.associated_persons.push(res.person); // TODO: populate the source_context and source_status with string
+                    }
                 }
+
             }).catch(function(err) {
                 console.error('err: ', err);
             });
@@ -453,6 +467,36 @@
 
             } //prepareModal
         }; //confirmDelete
+
+        function removePersonAssociation(ctepPersonId) {
+            PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
+                console.info('res: ',res);
+                if (res.is_removed) {
+                    vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, _.findWhere(vm.curPerson.associated_persons, {id: ctepPersonId}));
+                    showToastr('The selected person context association was deleted');
+                    // TODO: remove the tab
+                }
+            }).catch(function(err) {
+                console.error('err: ', err);
+            }).finally(function() {
+            });
+        }
+
+        function cloneCtepPerson(ctepPersonId, forceClone) {
+            PersonService.cloneCtepPerson(ctepPersonId, forceClone).then(function(res) {
+                console.info('res in cloning person: ', res);
+                if (res.is_cloned) {
+                    showToastr('The CTEP person context has been successfully cloned');
+                    vm.matchedCtrpPersons = [];
+                    vm.curPerson.cluster.push({context: 'CTRP', id: res.id});
+                    vm.curPerson.associated_persons.push(res.matched);
+                } else {
+                    vm.matchedCtrpPersons = res.matched;
+                }
+            }).catch(function(err) {
+                console.error('err in cloning person: ', err);
+            });
+        }
 
 
         //Function that checks if a user name - based on First & Last names is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the person/unique Rails end point.

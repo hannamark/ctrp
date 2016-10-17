@@ -70,6 +70,7 @@ var projectMethods = function() {
         addOrg.setAddEmail(email);
         addOrg.setAddPhone(phone);
     //    addOrg.setAddFax(fax);
+        addOrg.setAddExtension('01');
         addOrg.clickSave();
     };
     /***********************************************
@@ -721,6 +722,7 @@ var projectMethods = function() {
                         addOrg.setAddEmail('searchOrg@email.com');
                         addOrg.setAddPhone('222-487-8956');
                       //  addOrg.setAddFax('222-487-4242');
+                        addOrg.setAddExtension('01');
                         addOrg.clickSave();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                         menuItem.clickOrganizations();
@@ -799,6 +801,7 @@ var projectMethods = function() {
                         addOrg.setAddEmail(orgEmail);
                         addOrg.setAddPhone(orgPhone);
                      //   addOrg.setAddFax(orgFax);
+                        addOrg.setAddExtension('01');
                         addOrg.clickSave();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                         menuItem.clickOrganizations();
@@ -885,6 +888,7 @@ var projectMethods = function() {
                         addOrg.setAddEmail('editOrg@email.com');
                         addOrg.setAddPhone('589-687-8956');
                      //   addOrg.setAddFax('898-420-4242');
+                        addOrg.setAddExtension('01');
                         addOrg.clickSave();
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                     });
