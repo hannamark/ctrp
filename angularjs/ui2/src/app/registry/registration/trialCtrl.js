@@ -88,7 +88,7 @@
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
-                        name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
+                        name: 'lead_org_name', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
@@ -116,10 +116,10 @@
                         cellTemplate: actionTemplate, cellClass: 'action-btn'
                     },
                     {
-                        name: 'accrual_disease_term', displayName: 'Accrual Disease Terminology', enableSorting: false, minWidth: '90', width: '*'
+                        name: 'accrual_disease_term_name', displayName: 'Accrual Disease Terminology', enableSorting: false, minWidth: '90', width: '*'
                     },
                     {
-                        name: 'phase', enableSorting: true, minWidth: '90', width: '*'
+                        name: 'phase_name', enableSorting: true, minWidth: '90', width: '*'
                     },
                     {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
@@ -129,21 +129,21 @@
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
-                        name: 'research_category', displayName: 'Clinical Research Category', enableSorting: false, minWidth: '120', width: '*'
+                        name: 'research_category_name', displayName: 'Clinical Research Category', enableSorting: false, minWidth: '120', width: '*'
                     },
                     {
                         name: 'start_date', displayName: 'Trial Start Date', enableSorting: false, minWidth: '120', width: '*',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS | date: "dd-MMM-yyyy"}}</div>'
                     },
                     {
-                        name: 'responsible_party', enableSorting: false, minWidth: '170', width: '*'
+                        name: 'responsible_party_name', enableSorting: false, minWidth: '170', width: '*'
                     },
                     {
-                        name: 'sponsor', enableSorting: true, minWidth: '200', width: '*',
+                        name: 'sponsor_name', enableSorting: true, minWidth: '200', width: '*',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
-                        name: 'study_source', enableSorting: true, minWidth: '170', width: '*',
+                        name: 'study_source_name', enableSorting: true, minWidth: '170', width: '*',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
@@ -194,7 +194,7 @@
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
-                        name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
+                        name: 'lead_org_name', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
@@ -224,7 +224,7 @@
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
-                        name: 'lead_org', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
+                        name: 'lead_org_name', displayName: 'Lead Organization', enableSorting: true, minWidth: '200', width: '*',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
