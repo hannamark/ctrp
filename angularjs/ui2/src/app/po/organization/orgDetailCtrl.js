@@ -285,9 +285,10 @@
                             vm.associatedOrgs = response.associated_orgs;
                             associateOrgsRefresh();
                             vm.ctrpOrg = getOrgByContext(vm.associatedOrgs, 'CTRP');
+                            vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                             vm.ctrpUpdateTime = Date.now();
                             toastr.success('Organization has been associated.', 'Operation Successful!');
-                        }, 500);
+                        }, 1);
                     }
                 }
             }).catch(function (err) {
