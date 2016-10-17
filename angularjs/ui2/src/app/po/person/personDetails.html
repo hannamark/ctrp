@@ -93,24 +93,26 @@
                             <label class="control-label col-xs-12 col-sm-3">Service Request:</label>
                             <div class="col-xs-12 col-sm-3 form-text">{{personDetailView.curPerson.service_request}}</div>
                         </div>
-                        <div class="form-group has-feedback required" ng-hide="personDetailView.curSourceContextName === 'CTRP'" ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new && personDetailView.curSourceContextName !== 'CTRP'}">
+                        <!-- ng-class="{'has-error': ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new && personDetailView.curSourceContextName !== 'CTRP'}" -->
+                        <div class="form-group">
                             <label class="control-label col-xs-12 col-sm-3">Processing Status: </label>
                             <div class="col-xs-12 col-sm-3">
                                 <div class="form-text" ng-if="personDetailView.curPerson.new" id="processing_status">{{personDetailView.curPerson.processing_status}}</div>
-                                <div ng-if="!personDetailView.curPerson.new && personDetailView.curSourceContextName === 'CTRP'">
+                                <div ng-if="!personDetailView.curPerson.new && personDetailView.curSourceContextName !== 'CTRP'">
                                     <select name="processing_status" id="processing_status" class="form-control input-sm"
                                         restriction-field
                                         ng-model="personDetailView.curPerson.processing_status"
+
                                         ng-init="personDetailView.processStatusArr[0]"
-                                        ng-required="!personDetailView.curPerson.new && personDetailView.curSourceContextName === 'CTRP'"
                                         ng-options="status.name as status.name for status in personDetailView.processStatusArr">
                                         <option value="">
                                             Select a processing status
                                         </option>
                                     </select>
-                                    <span class="help-block" ng-show="ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new">
+                                    <!--                                         ng-required="!personDetailView.curPerson.new && personDetailView.curSourceContextName === 'CTRP'" -->
+                                    <!-- <span class="help-block" ng-show="ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new">
                                         Processing Status is Required
-                                    </span>
+                                    </span> -->
                                 </div>
                             </div>
                         </div>
@@ -201,7 +203,7 @@
                             <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
                             <div class="col-xs-12 col-sm-9">
                                 <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
-                                <span class="help-block" ng-show="personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.savedselection.length == 0)">
+                                <span class="help-block" ng-show="personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length == 0)">
                                     Organization Affiliation is Required
                                 </span>
                                 <!-- ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0 && personDetailView.curPersonEditable) -->
@@ -269,7 +271,7 @@
                             ng-if="personDetailView.curSourceContextName === 'CTRP' && !personDetailView.curPerson.new" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
                             <label for="person_context" class="control-label col-sm-3 col-xs-12">Associate Person Context:</label>
                             <div class="col-sm-5 col-xs-12">
-                                <button type="button" class="btn btn-primary" id="person_search_modal" person-search-modal-button2 source-context-only="'CTEP'" ng-model="personDetailView.associatedPersonContexts" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
+                                <button type="button" class="btn btn-primary" id="person_search_modal" person-search-modal-button2 source-context-only="'CTEP'" ng-model="personDetailView.associatedPersonContexts" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN" ng-disabled="personDetailView.curPerson.associated_persons.length > 0">
                                     <i class="glyphicon glyphicon-search"></i> Search Persons
                                 </button>
                             </div>
@@ -332,10 +334,10 @@
                                                 {{person.phone}}
                                             </td>
                                             <td>
-                                                --TODO--
+                                                <span ng-repeat="org in person.affiliated_orgs">{{org}}</span>
                                             </td>
                                             <td>
-                                                what is?
+                                                {{person.id}}
                                             </td>
                                             <td>
                                                 {{person.processing_status}}
@@ -363,7 +365,7 @@
                                 </div> <!-- row ends -->
                             </div>
                         </div>
-                        <div class="form-group" ng-show="clusterPerson.context == 'CTEP'"> <!--  && !personDetailView.hasCtrpContext -->
+                        <div class="form-group" ng-show="clusterPerson.context == 'CTEP' && !personDetailView.curPerson.ctrp_id"> <!--  && !personDetailView.hasCtrpContext -->
                             <div class="col-xs-12 col-sm-3"></div>
                             <div class="col-xs-12 col-sm-6 form-text pull-left">
                                 <button type="button" class="btn btn-primary" id="clone_button" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN"
@@ -418,7 +420,7 @@
                                                 {{person.phone}}
                                             </td>
                                             <td class="text-center">
-                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.associate(person.id)" title="Association">
+                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.associate(person.id)" title="Association" ng-disabled="true">
                                                     Associate
                                                 </button>
                                             </td>

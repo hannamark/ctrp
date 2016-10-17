@@ -122,7 +122,7 @@
                                         </td>
                                         <td class="col-md-2">
                                             <div>
-                                                <button type="button" restriction-field class="btn btn-primary btn-add" ng-click="trialDetailView.addOtherId()">
+                                                <button type="button" restriction-field class="btn btn-primary btn-add" ng-click="trialDetailView.addOtherId()" ng-disabled="!trialDetailView.protocol_id.length">
                                                     <i class="glyphicon glyphicon-plus"></i> Add
                                                 </button>
                                             </div>
@@ -1306,7 +1306,7 @@
                                 <h5>List of Participating Sites:</h5>
                                 <table st-table="trialDetailView.curTrial.participating_sites" class="table table-bordered table-striped table-condensed">
                                     <thead>
-                                        <th>CTRP ID</th>
+                                        <th>CTRP Org ID</th>
                                         <th>CTRP Organization Name</th>
                                         <th>Principal Investigator</th>
                                         <th>Local Trial Id</th>
@@ -1315,12 +1315,12 @@
                                         <th>Current Site Recruitment Status Date</th>
                                         <th>Primary Contact</th>
                                         <th>Email</th>
-                                        <th>Phone</th>
+                                        <th>Phone/Ext</th>
                                         <th>Edit</th>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="ps in trialDetailView.curTrial.participating_sites track by $index">
-                                            <td class="col-sm-1">{{ps.organization.id}}</td>
+                                            <td class="col-sm-1">{{ps.organization.source_id}}</td>
                                             <td class="col-sm-2">{{ps.organization.name}}</td>
                                             <td class="col-sm-1">{{ps.site_pi.fname}} {{ps.site_pi.lname}}</td>
                                             <td class="col-sm-1">{{ps.protocol_id}}</td>
@@ -1332,7 +1332,7 @@
                                             <td class="col-sm-1">
                                                 {{ps.contact_phone}}
                                                 <span ng-show="ps.extension">
-                                                    ext. {{ps.extension}}
+                                                    x{{ps.extension}}
                                                 </span>
                                             </td>
                                             <td class="col-sm-1">

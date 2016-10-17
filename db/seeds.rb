@@ -1225,28 +1225,28 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                         "name": "Curator",
                                         "assign_access": "",
                                         "org_source_status_access": "ACT,PEND,INACT",
-                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,LEG"
                                      },
                                      {
                                         "id": "ROLE_ABSTRACTOR",
                                         "name": "Abstractor",
                                         "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU",
                                         "org_source_status_access": "ACT,PEND,INACT",
-                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,LEG"
                                      },
                                      {
                                         "id": "ROLE_SUPER",
                                         "name": "Super",
                                         "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU",
                                         "org_source_status_access": "ACT,PEND,INACT",
-                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,LEG"
                                      },
                                      {
                                         "id": "ROLE_ADMIN",
                                         "name": "Admin",
                                         "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST",
                                         "org_source_status_access": "ACT,PEND,INACT",
-                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,LEG"
                                      },
                                      {
                                         "id": "ROLE_TRIAL-SUBMITTER",
@@ -1278,25 +1278,25 @@ AppSetting.find_or_create_by(code: 'Federated_USER_FUNCTIONS').update(descriptio
 
 ########## SEEDING CTGOV IMPORT EXPORT STARTS ##########
 
-CtGovImportExport.find_or_create_by(from:'N/A', to:'N/A',import_or_export:'import' ,model:'Allocation')
-CtGovImportExport.find_or_create_by(from:'Randomized', to:'Randomized Controlled Trial',import_or_export:'import' ,model:'Allocation')
-CtGovImportExport.find_or_create_by(from:'Nonrandomized', to:'Non-Randomized Trial',import_or_export:'import' ,model:'Allocation')
+CtGovImportExport.find_or_create_by(from:'N/A', from:'N/A',import_or_export:'import' ,model:'Allocation')
+CtGovImportExport.find_or_create_by(from:'Randomized', from:'Randomized',import_or_export:'import' ,model:'Allocation')
+CtGovImportExport.find_or_create_by(to:'Non-Randomized', from:'Non-Randomized',import_or_export:'import' ,model:'Allocation')
 
 
 CtGovImportExport.find_or_create_by(from:'N/A', to:'N/A',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Safety Study', to:'Safety',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Efficacy Study', to:'Efficacy',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Safety/Efficacy Study', to:'Safety/Efficacy',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Bio-availability Stud', to:'Bioavailability',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Bio-equivalence Study', to:'Bioequivalence',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Pharmacodynamics Study', to:'Pharmacodynamics',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Pharmacokinetics Study', to:'Pharmacokinetics',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Pharmacokinetics/dynamics Study', to:'Pharmacokinetics/Pharmacodynamics',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Safety Study', to:'Safety Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Efficacy Study', to:'Efficacy Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Safety/Efficacy Study', to:'Safety/Efficacy Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Bio-availability StudY', to:'Bioavailability Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Bio-equivalence Study', to:'Bioequivalence Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacodynamics Study', to:'Pharmacodynamics Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacokinetics Study', to:'Pharmacokinetics Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacokinetics/dynamics Study', to:'Pharmacokinetics/Pharmacodynamics Study',import_or_export:'import' ,model:'StudyClassification')
 
-CtGovImportExport.find_or_create_by(from:'Single Group Assignment', to:'Single Group',import_or_export:'import' ,model:'InterventionModel')
-CtGovImportExport.find_or_create_by(from:'Parallel Assignment', to:'Parallel',import_or_export:'import' ,model:'InterventionModel')
-CtGovImportExport.find_or_create_by(from:'Cross-over Assignment', to:'Cross-Over',import_or_export:'import' ,model:'InterventionModel')
-CtGovImportExport.find_or_create_by(from:'Factorial Assignment', to:'Factorial',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Single Group Assignment', to:'Single Group Assignment',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Parallel Assignment', to:'Parallel Assignment',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Crossover Assignment', to:'Crossover Assignment',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Factorial Assignment', to:'Factorial Assignment',import_or_export:'import' ,model:'InterventionModel')
 
 CtGovImportExport.find_or_create_by(from:'Treatment', to:'Treatment',import_or_export:'import' ,model:'PrimaryPurpose')
 CtGovImportExport.find_or_create_by(from:'Prevention', to:'Prevention',import_or_export:'import' ,model:'PrimaryPurpose')
@@ -1426,6 +1426,11 @@ CtGovImportExport.find_or_create_by(from:'Prospective', to:'Prospective',import_
 CtGovImportExport.find_or_create_by(from:'Retrospective', to:'Retrospective',import_or_export:'export' ,model:'TimePerspectives')
 CtGovImportExport.find_or_create_by(from:'Cross sectional', to:'Cross sectional',import_or_export:'export' ,model:'TimePerspectives')
 CtGovImportExport.find_or_create_by(from:'Other', to:'Other',import_or_export:'export' ,model:'TimePerspectives')
+
+CtGovImportExport.find_or_create_by(from:'No', to:'No',import_or_export:'import' ,model:'AcceptVol')
+CtGovImportExport.find_or_create_by(from:'Accepts Healthy Volunteers', to:'Yes',import_or_export:'import' ,model:'AcceptVol')
+CtGovImportExport.find_or_create_by(from:'No', to:'No',import_or_export:'export' ,model:'AcceptVol')
+CtGovImportExport.find_or_create_by(from:'Yes', to:'Accepts Healthy Volunteers',import_or_export:'export' ,model:'AcceptVol')
 
 
 

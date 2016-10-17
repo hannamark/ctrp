@@ -16,5 +16,6 @@ json.associated_persons do
     json.merge! p.attributes # get all the attributes in person
     json.set! :source_context, SourceContext.find(p.source_context_id).name if p.source_context_id.present?
     json.set! :source_status, SourceStatus.find(p.source_status_id).name if p.source_status_id.present?
+    json.set! :affiliated_orgs, p.po_affiliations.map{ |po_affiliation| po_affiliation.organization.name}.join("; ")
   end
 end

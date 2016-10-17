@@ -93,7 +93,7 @@
                         <div class="form-group">
                             <label for="org" class="control-label col-xs-12 col-sm-4">Organization: </label>
                             <div class="col-xs-12 col-sm-8">
-                                <input type="text" ng-if="!trialView.userChosenOrg" id="organization_name" class="input-sm" name="organization_name" required
+                                <input type="text" ng-if="!trialView.userChosenOrg" id="organization_name" class="input-sm form-control" name="organization_name" required
                                        autocomplete="off" placeholder="Organization"
                                        ng-model="trialView.searchParams.org"
                                        typeahead-on-select="trialView.setTypeAheadOrg($item)"

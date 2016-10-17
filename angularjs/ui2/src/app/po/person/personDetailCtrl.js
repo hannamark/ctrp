@@ -374,6 +374,7 @@
             }, function(newVal, oldVal) {
                 if (!!newVal && angular.isArray(newVal) && newVal.length > 0) {
                     var ctepPerson = newVal[0];
+                    console.info('ctep person: ', ctepPerson);
                     if (angular.isDefined(ctepPerson.ctrp_id) && ctepPerson.ctrp_id !== vm.curPerson.ctrp_id) {
                         var isConfirmed = false;
                         Common.alertConfirm('This CTEP person has been assodicated to another CTRP Person Context, click OK to change the existing association').then(function(ok) {
@@ -401,7 +402,9 @@
                     vm.matchedCtrpPersons = []; // clean up
                     if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: 'CTEP'}) === -1) {
                         vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id});
-                        vm.curPerson.associated_persons.push(res.person); // TODO: populate the source_context and source_status with string
+                        res.person.source_context = ctepPerson.source_context;
+                        res.person.source_status = ctepPerson.source_status;
+                        vm.curPerson.associated_persons.push(res.person);                        
                     }
                 }
 

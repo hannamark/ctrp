@@ -14,6 +14,8 @@ class SourceStatusesController < ApplicationController
     search_type = params[:view_type] == 'search' ? 'org_source_status_search_access' : 'org_source_status_access'
     search_context = params[:view_context] && params[:view_context].length > 1 ? params[:view_context] : 'CTRP'
     org_source_status_access = (current_ctrp_user_role_details @current_user.role)[search_type]
+
+    #search_context
     if org_source_status_access
       @source_statuses = SourceStatus.source_statuses_with_active_record_status
                              .where("source_context_id=?", SourceContext.find_by_code(search_context).id)

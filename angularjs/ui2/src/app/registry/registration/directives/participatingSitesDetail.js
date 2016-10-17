@@ -255,7 +255,7 @@
                 $scope.addedStatuses = [];
                 $scope.srsNum = 0;
                 $scope.selectedPiArray = [];
-                //setDefaultOrg();
+
                 setupPs();
             };
 
@@ -263,13 +263,10 @@
                 $scope.editMode = true;
                 $scope.addMode = false;
                 $scope.curPs = $scope.curTrial.participating_sites[psIdx];
-                //$scope.curPs = $scope.curTrial.sitesu_sites[psIdx];
                 $scope.addedStatuses = [];
                 $scope.srsNum = 0;
                 $scope.selectedPiArray = [];
 
-                //setSitePi();
-                //appendStatuses();
                 setupPs();
             };
 
@@ -307,6 +304,7 @@
                     watchContactTypeSelection();
                     watchInvContactSelection();
                     watchPersonContactSelection();
+                    watchSelectedPiArray()
                 }
 
                 $scope.curPs.contact_type = $scope.curPs.contact_type ? $scope.curPs.contact_type : 'General';
@@ -375,8 +373,6 @@
 
             // Set the Site PI from many participating_site_investigators
             function setSitePi() {
-                //$scope.selectedPiArray.pop();
-
                 for (var i = 0; i < $scope.curPs.participating_site_investigators.length; i++) {
                     if ($scope.curPs.participating_site_investigators[i].investigator_type === 'Principal Investigator') {
                         $scope.sitePiIdx = i;
@@ -417,7 +413,6 @@
                 $scope.invContactArray = [];
 
                 _.each(invList, function(inv) {
-                    console.log('inv investigator type is: ', inv.investigator_type);
                     if (inv.investigator_type === 'Principal Investigator') {
                         var invObj = {
                             id: inv.id,
@@ -433,6 +428,28 @@
             }
 
             /* Watches */
+            function watchSelectedPiArray() {
+                /* Keeps Site Principal Investigator and Contact information (if contact_type = PI), in sync */
+                $scope.$watch(function() {return $scope.selectedPiArray;}, function(newVal, oldVal) {
+                    if (newVal.length) {
+                        var newInv = newVal[0];
+                        console.log('new selected pi is: ', newVal[0]);
+                        $scope.invContactArray[0] = {
+                           id: newInv.id,
+                           name: newInv.fname + ' ' + newInv.lname,
+                           email: newInv.email,
+                           phone: newInv.phone,
+                           extension: newInv.extension
+                       };
+
+                       if ($scope.curPs.contact_type === 'PI') {
+                           updateSelectedInvestigator();
+                       }
+                    }
+
+                }, true);
+            }
+
             function watchContactTypeSelection() {
                 $scope.$watch(function() {return $scope.curPs.contact_type;}, function(newVal, oldVal) {
                     if (newVal !== oldVal) {
@@ -444,10 +461,11 @@
                     }
 
                     if (newVal === 'PI') {
-                        $scope.selectedInvContact = $scope.invContactArray[0];
+                        updateSelectedInvestigator();
                     }
                 });
             }
+
 
             function watchInvContactSelection() {
                 $scope.$watch(function() {return $scope.selectedInvContact;}, function(newVal, oldVal) {
@@ -456,10 +474,10 @@
                     if ($scope.curPs.contact_type === 'PI') {
                         if (newVal) {
                             selectedInv = newVal;
-                            $scope.curPs.contact_name = $scope.curPs.contact_name ? $scope.curPs.contact_name : selectedInv.name;
-                            $scope.curPs.contact_phone = $scope.curPs.contact_phone ? $scope.curPs.contact_phone : selectedInv.phone;
-                            $scope.curPs.extension = $scope.curPs.extension ? $scope.curPs.extension : selectedInv.extension;
-                            $scope.curPs.contact_email = $scope.curPs.contact_email ? $scope.curPs.contact_email : selectedInv.email;
+                            $scope.curPs.contact_name = selectedInv.name;
+                            $scope.curPs.contact_phone = selectedInv.phone;
+                            $scope.curPs.extension = selectedInv.extension;
+                            $scope.curPs.contact_email = selectedInv.email;
                         } else {
                             $scope.curPs.contact_name = null;
                             $scope.curPs.contact_phone = null;
@@ -496,6 +514,10 @@
                         }
                     });
                 }
+            }
+
+            function updateSelectedInvestigator() {
+                $scope.selectedInvContact = $scope.invContactArray[0];
             }
         }
     }

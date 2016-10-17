@@ -6,8 +6,8 @@ ctep = SourceContext.find_by_code('CTEP')
 ctrp = SourceContext.find_by_code('CTRP')
 nlm = SourceContext.find_by_code('NLM')
 
-source_act = SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
-    source_pend = SourceStatus.find_by_code_and_source_context_id('PEND', ctrp.id)
+source_act = SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id)
+source_pend = SourceStatus.find_by_code_and_source_context_id('PEND', ctrp.id)
 source_inact = SourceStatus.find_by_code_and_source_context_id('INACT', ctrp.id)
 source_nullified = SourceStatus.find_by_code_and_source_context_id('NULLIFIED', ctrp.id)
 
@@ -238,87 +238,87 @@ if Person.all.size == 0
   puts "...Seeding persons"
 
   person1 = Person.find_or_create_by(id:1699192, source_id:'33303',
-                                     source_context: SourceContext.find_by_code('CTEP'),
+                                     source_context: ctep,
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
                                      fname:'Ajeet', lname:'Gajra', prefix:'Dr.', suffix:'', email:'gajraa@upstate.edu', phone:'315-425-2707')
 
   person2 = Person.find_or_create_by(id:7857011, source_id:'518786',
-                                     source_context: SourceContext.find_by_code('CTRP'),
+                                     source_context: ctrp,
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                      fname:'Alicia', lname:'Kunin-Batson', prefix:'Dr.', suffix:'', email:'kunin003@umn.edu', phone:'612-624-6931')
 
   person3 = Person.find_or_create_by(id:3567738, source_id:'515762',
-                                     source_context: SourceContext.find_by_code('CTEP'),
+                                     source_context: ctep,
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
                                      fname:'Amy', mname:'M.', lname:'Linabery', prefix:'Ms.', suffix:'', email:'devr0053@umn.edu', phone:'612-624-0146')
 
   person4 = Person.find_or_create_by(id:2944806, source_id:'41379',
-                                     source_context: SourceContext.find_by_code('CTRP'),
+                                     source_context: ctrp,
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                      fname:'Amy', mname:'L.', lname:'Jonson', prefix:'Dr.', suffix:'', email:'jonso001@umn.edu', phone:'612-624-2620')
 
   person5 = Person.find_or_create_by(id:1832268, source_id:'34482',
-                                     source_context: SourceContext.find_by_code('CTEP'),
+                                     source_context: ctep,
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
                                      fname:'Badrinath', mname:'R.', lname:'Konety', prefix:'Dr.', suffix:'', email:'brkonety@umn.edu', phone:'612-624-2620')
 
   person6 = Person.find_or_create_by(id:10161459, source_id:'46120',
-                                     source_context: SourceContext.find_by_code('CTRP'),
+                                     source_context: ctrp,
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                      fname:'Christine', lname:'Holmberg', prefix:'Dr.', suffix:'', email:'christine.holmberg@charite.de', phone:'-1152')
 
   person7 = Person.find_or_create_by(id:366649, source_id:'11640',
-                                     source_context: SourceContext.find_by_code('CTEP'),
+                                     source_context: ctep,
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
                                      fname:'Christopher', mname:'Yancey', lname:'Thomas', prefix:'Dr.', suffix:'', email:'cythomas@wakehealth.edu', phone:'434-243-6143', registration_type: 'Investigator')
 
   person8 = Person.find_or_create_by(id:2026171, source_id:'35504',
-                                     source_context: SourceContext.find_by_code('CTRP'),
+                                     source_context: ctrp,
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
-                                     fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245')
+                                     fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@mdanderson.org', phone:'713-792-3245', processing_status: 'Complete')
 
   Person.find_or_create_by(source_id:'AB123',
-                           source_context: SourceContext.find_by_code('CTEP'),
+                           source_context: ctep,
                            source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
-                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@ctep', phone:'123-456-7890', ctrp_id: person8.id, service_request_id: 1, registration_type: 'Investigator')
+                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@ctep', phone:'123-456-7890', ctrp_id: person8.id, service_request_id: 1, processing_status: 'Incomplete', registration_type: 'Investigator', association_start_date: Time.now)
 
-  Person.find_or_create_by(source_id:'098',
-                           source_context: SourceContext.find_by_code('NLM'),
-                           source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
-                           fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@nlm', phone:'098-765-4321', ctrp_id: person8.id)
+  # Person.find_or_create_by(source_id:'098',
+  #                          source_context: SourceContext.find_by_code('NLM'),
+  #                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
+  #                          fname:'Daniel', mname:'Evan', lname:'Epner', prefix:'Dr.', suffix:'', email:'depner@nlm', phone:'098-765-4321', ctrp_id: person8.id)
 
   person9 = Person.find_or_create_by(id:672434, source_id:'19844',
-                                     source_context: SourceContext.find_by_code('CTEP'),
+                                     source_context: ctep,
                                      source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
                                      fname:'David', mname:'Marc', lname:'Peereboom', prefix:'Dr.', suffix:'', email:'peerebd@ccf.org', phone:'866-223-8100', service_request_id: 1, registration_type: 'Investigator')
 
   person10 = Person.find_or_create_by(id:1426655, source_id:'15179',
-                                      source_context: SourceContext.find_by_code('CTRP'),
+                                      source_context: ctrp,
                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                       fname:'Gisele', lname:'Sarosy', prefix:'Dr.', suffix:'', email:'gsarosy@mail.nih.gov', phone:'800-411-1222')
 
   person11 = Person.find_or_create_by(id:28417522, source_id:'15178',
-                                      source_context: SourceContext.find_by_code('CTRP'),
+                                      source_context: ctrp,
                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                       fname:'Rachel', lname:'Nusbaum', prefix:'Dr.', suffix:'', email:'rhm23@georgetown.edu', phone:'800-555-1244')
 
   person12 = Person.find_or_create_by(id:1950481, source_id:'15177',
-                                      source_context: SourceContext.find_by_code('CTRP'),
+                                      source_context: ctrp,
                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                       fname:'Alessandra', lname:'Ferrajol', prefix:'Dr.', suffix:'', email:'aferrajo@mdanderson.org', phone:'800-111-1244')
 
   person13 = Person.find_or_create_by(id:28186245, source_id:'15176',
-                                      source_context: SourceContext.find_by_code('CTRP'),
+                                      source_context: ctrp,
                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                       fname:'Kristi', lname:'Graves', prefix:'Dr.', suffix:'', email:'kdg9@georgetown.edu', phone:'800-777-1244')
 
   person14 = Person.find_or_create_by(id:3561594, source_id:'15175',
-                                      source_context: SourceContext.find_by_code('CTRP'),
+                                      source_context: ctrp,
                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                       fname:'Diane', lname:'Roulston', prefix:'Dr.', suffix:'', email:'droulstn@umich.edu', phone:'800-777-1244')
 
   person15 = Person.find_or_create_by(id:1500960, source_id:'15180',
-                                      source_context: SourceContext.find_by_code('CTRP'),
+                                      source_context: ctrp,
                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                       fname:'James', lname:'Lee', prefix:'Mr.', suffix:'', email:'jal2024@med.cornell.edu', phone:'800-777-1244')
 
