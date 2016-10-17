@@ -48,7 +48,7 @@
                         }
 
                         if (formController.$invalid) { //|| formController.$pristine
-                            //$log.error('form submission invalid or untouched!');
+                            $log.error('form submission invalid or untouched!');
                             return false;
                         } else if (!hasSecondaryTask) {
                             /* Execute the form action normally if valid/and no secondary tasks */
@@ -91,7 +91,7 @@
                            a CRUD form when list/CRUD views are displayed separately in the UI
                         */
 
-                        if (fieldModelController) {                            
+                        if (fieldModelController) {
                             return formController.$submitted && fieldModelController.$invalid &&
                                 (fieldModelController.$dirty || this.attempted);
                         } else {
