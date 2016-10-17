@@ -1306,7 +1306,7 @@
                                 <h5>List of Participating Sites:</h5>
                                 <table st-table="trialDetailView.curTrial.participating_sites" class="table table-bordered table-striped table-condensed">
                                     <thead>
-                                        <th>CTRP ID</th>
+                                        <th>CTRP Org ID</th>
                                         <th>CTRP Organization Name</th>
                                         <th>Principal Investigator</th>
                                         <th>Local Trial Id</th>
@@ -1320,7 +1320,7 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="ps in trialDetailView.curTrial.participating_sites track by $index">
-                                            <td class="col-sm-1">{{ps.organization.id}}</td>
+                                            <td class="col-sm-1">{{ps.organization.source_id}}</td>
                                             <td class="col-sm-2">{{ps.organization.name}}</td>
                                             <td class="col-sm-1">{{ps.site_pi.fname}} {{ps.site_pi.lname}}</td>
                                             <td class="col-sm-1">{{ps.protocol_id}}</td>
