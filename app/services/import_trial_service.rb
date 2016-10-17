@@ -142,8 +142,8 @@ class ImportTrialService
     end
 
     import_params[:data_monitor_indicator] = xml.xpath('//oversight_info/has_dmc').text if xml.xpath('//oversight_info/has_dmc').present?
-    import_params[:brief_summary] = xml.xpath('//brief_summary').text
-    import_params[:detailed_description] = xml.xpath('//detailed_description').text
+    import_params[:brief_summary] = xml.xpath('//brief_summary').text.lstrip.chop if xml.xpath('//brief_summary').present?
+    import_params[:detailed_description] = xml.xpath('//detailed_description').text.lstrip.chop if xml.xpath('//detailed_description')
 
     import_params[:trial_status_wrappers_attributes] = []
     ctrp_status_code = map_status(xml.xpath('//overall_status').text)
@@ -160,8 +160,11 @@ class ImportTrialService
     ctrp_phase_code = map_phase(xml.xpath('//phase').text)
     ctrp_phase = Phase.find_by_code(ctrp_phase_code)
     import_params[:phase_id] = ctrp_phase.id if ctrp_phase.present?
-
-    ctrp_research_category = ResearchCategory.find_by_name(xml.xpath('//study_type').text)
+    ctgov_research_category = xml.xpath('//study_type').text
+    if ctgov_research_category == "Observational [Patient Registry]"
+      ctgov_research_category = "Observational"
+    end
+    ctrp_research_category = ResearchCategory.find_by_name(ctgov_research_category)
     import_params[:research_category_id] = ctrp_research_category.id if ctrp_research_category.present?
 
     xml.xpath('//study_design').text.split(',').each do |study_design|
