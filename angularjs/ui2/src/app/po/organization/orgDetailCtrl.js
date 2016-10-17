@@ -289,10 +289,11 @@
 
             } else if (newValue && newValue[0] && newValue[0].ctrp_id ) {
                 var newAssociatedOrg = newValue[0];
-                var ctepIsSame = (newAssociatedOrg.source_context_name === 'CTEP' && (!vm.ctepOrg  || (newAssociatedOrg.id !== vm.ctepOrg.id)));
-                var nlmIsSame =  (newAssociatedOrg.source_context_name === 'NLM' && (!vm.nlmOrg   ||  ( newAssociatedOrg.id !== vm.nlmOrg.id)));
-                var notAlreadyAssociated = !( ctepIsSame || nlmIsSame );
-                if (notAlreadyAssociated) {
+                var ctepIsSame = ((!vm.ctepOrg && newAssociatedOrg.source_context_name === 'CTEP') || (newAssociatedOrg.source_context_name === 'CTEP' && (newAssociatedOrg.id !== vm.ctepOrg.id)));
+                var nlmIsSame =  ((!vm.nlmOrg && newAssociatedOrg.source_context_name === 'NLM')   || (newAssociatedOrg.source_context_name === 'NLM' &&  (newAssociatedOrg.id !== vm.nlmOrg.id)));
+                var alreadyAssociated = ( !ctepIsSame && !nlmIsSame );
+                console.log(newAssociatedOrg.id,"pppp", vm.ctepOrg.id, alreadyAssociated, ctepIsSame, nlmIsSame)
+                if (newAssociatedOrg) {
                     vm.confirmOverrideAssociatePopUp = true;
                 } else {
                     toastr.success('The chosen organization is already associated to this organization.', 'Operation Cancelled!');
