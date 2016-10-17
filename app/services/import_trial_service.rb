@@ -264,7 +264,10 @@ class ImportTrialService
       end
     end
 
-    import_params[:accept_vol] = xml.xpath('//healthy_volunteers').text if xml.xpath('//healthy_volunteers').present?
+    if xml.xpath('//healthy_volunteers').present?
+      accept_vol = xml.xpath('//healthy_volunteers').text
+      import_params[:accept_vol] = CtGovImportExport.find_by_from_and_import_or_export(accept_vol,"import").to
+    end
     import_params[:verification_date] = convert_date(xml.xpath('//verification_date').text) if xml.xpath('//verification_date').present?
 
     submission_params = {}
