@@ -291,10 +291,11 @@
                 var newAssociatedOrg = newValue[0];
                 var ctepIsSame = (newAssociatedOrg.source_context_name === 'CTEP' && (!vm.ctepOrg  || (newAssociatedOrg.id !== vm.ctepOrg.id)));
                 var nlmIsSame =  (newAssociatedOrg.source_context_name === 'NLM' && (!vm.nlmOrg   ||  ( newAssociatedOrg.id !== vm.nlmOrg.id)));
-                var notAlreadyAssociated = ( ctepIsSame || nlmIsSame );
-                toastr.success('The chosen organization is already associated to this organization.', 'Operation Cancelled!');
+                var notAlreadyAssociated = !( ctepIsSame || nlmIsSame );
                 if (notAlreadyAssociated) {
                     vm.confirmOverrideAssociatePopUp = true;
+                } else {
+                    toastr.success('The chosen organization is already associated to this organization.', 'Operation Cancelled!');
                 }
             } else {
                 vm.associateOrgs();
