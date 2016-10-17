@@ -84,7 +84,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
      And the table displays the columns type
      
      |CTRP Org ID|
-     # CTRP Org ID=Group ID
+     # CTRP Org ID=Source ID when Source CTRP org
      |CTRP Organization Name|
      |Principal Investigator|
      # Principal Investigator Format (Last Name, First Name)
