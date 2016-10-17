@@ -46,7 +46,8 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
   Scenario: #3 Rules for Clinical Trial Record view after Amendment submission 
     Given I am on the Clinical Trial Search Results screen for trials where I am listed as a trial owner
     When I select a trial from the Clinical Trial Search Results
-     Then I will be able to view the Trial Details type
+    Then the latest Active Trial information will be displayed
+     And I will be able to view the Trial Details type
       
       |Trials Identifiers  |
       |Amendments Details  |
@@ -65,7 +66,8 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
      Scenario: #4 Rules for Clinical Trial Record view after Amendment submission 
     Given I am on the Clinical Trial Search Results screen for all trials where I am not listed as a trial owner
     When I select a trial from the Clinical Trial Search Results
-     Then I will be able to view the Trial Details type
+    Then the latest Active Trial information will be displayed
+     And  I will be able to view the Trial Details type
      
       |Trials Identifiers  |
       |Amendment Details  |
@@ -75,7 +77,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Trial Status  |
       |Trial Dates|
       |Participating Sites|
-      And the latest submission Amendment Details "Amendment Date" and "Amendment Number" will be displayed even when the trial milestone is set to "Submission Terminated"
+      
       
       
         Scenario:#4a Participating Sites Table Columns description for all trials (Protocol and Imported)
