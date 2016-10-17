@@ -180,7 +180,6 @@
                 } else {
                     PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
                         var status = response.status;
-
                         if (status >= 200 && status <= 210) {
                             personContextCache[contextKey] = angular.copy(response.data);
                             vm.curPerson = personContextCache[contextKey];
@@ -404,7 +403,7 @@
                         vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id});
                         res.person.source_context = ctepPerson.source_context;
                         res.person.source_status = ctepPerson.source_status;
-                        vm.curPerson.associated_persons.push(res.person);                        
+                        vm.curPerson.associated_persons.push(res.person);
                     }
                 }
 
@@ -491,7 +490,8 @@
                 if (res.is_cloned) {
                     showToastr('The CTEP person context has been successfully cloned');
                     vm.matchedCtrpPersons = [];
-                    vm.curPerson.cluster.push({context: 'CTRP', id: res.id});
+                    // personContextCache['CTRP'] = res.matched; // CTRP person context
+                    vm.curPerson.cluster.push({context: 'CTRP', id: res.matched.id});
                     vm.curPerson.associated_persons.push(res.matched);
                 } else {
                     vm.matchedCtrpPersons = res.matched;
