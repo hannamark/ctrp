@@ -59,7 +59,7 @@ usa = "United States"
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctrp.id),
                                         address: '1 Medical Center Blvd', city: '', state_province:'North Carolina', country: usa, postal_code: '12344', email: "fforsyth@wakehealth.com") #labeled unknown in directory
 
-  org5 = Organization.find_or_create_by(id: 117163, source_id: 'LA032', processing_status: 'Inomplete',  name: 'Ochsner Baptist Medical Center', phone:'315-425-2707',
+  org5 = Organization.find_or_create_by(id: 117163, source_id: 'LA032', processing_status: 'Incomplete',  name: 'Ochsner Baptist Medical Center', phone:'315-425-2707',
                                         source_context: SourceContext.find_by_code('CTEP'),
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
                                         service_request: SourceStatus.find_by_code('CREATE'),
@@ -67,14 +67,14 @@ usa = "United States"
   if !org5.new_record?
     org5.name_aliases.find_or_create_by(name: 'Ochsner Baptist Medical Center')
   end
-  org6 = Organization.find_or_create_by(id: 173475, source_id: 'NY139', processing_status: 'Inomplete',  name: 'Syracuse Veterans Administration Medical Center',
+  org6 = Organization.find_or_create_by(id: 173475, source_id: 'NY139', processing_status: 'Incomplete',  name: 'Syracuse Veterans Administration Medical Center',
                                         phone:'315-425-2707',
                                         source_context: SourceContext.find_by_code('CTEP'),
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
                                         service_request: SourceStatus.find_by_code('CREATE'),
                                         address: ' 800 Irving Ave', city: 'Syracuse', state_province:'New York', country:usa, postal_code: '12347', email: "kdesai@syrhealth.com")
 
-  org7 = Organization.find_or_create_by(id: 150970, source_id: 'NC088', processing_status: 'Inomplete',  name: 'Veterans Administration Medical Center.', phone:'315-425-2707',
+  org7 = Organization.find_or_create_by(id: 150970, source_id: 'NC088', processing_status: 'Incomplete',  name: 'Veterans Administration Medical Center.', phone:'315-425-2707',
                                         source_context: SourceContext.find_by_code('CTEP'),
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
                                         service_request: SourceStatus.find_by_code('CREATE'),
@@ -89,7 +89,7 @@ usa = "United States"
   if !org8.new_record?
     org8.name_aliases.create(name: 'Wake Forest Cancer Center Research Base')
   end
-  org9 = Organization.find_or_create_by(id: 36296220, source_id: 'NC275', processing_status: 'Inomplete',  name: 'Wake Forest University at Clemmons', phone:'315-425-2707',
+  org9 = Organization.find_or_create_by(id: 36296220, source_id: 'NC275', processing_status: 'Incomplete',  name: 'Wake Forest University at Clemmons', phone:'315-425-2707',
                                         source_context: SourceContext.find_by_code('CTEP'),
                                         source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
                                         service_request: SourceStatus.find_by_code('CREATE'),
@@ -107,13 +107,13 @@ usa = "United States"
                                          service_request: SourceStatus.find_by_code('CREATE'),
                                          address: '250 Hospital Drive', city: 'Lexington', state_province:'North Carolina', country:usa, postal_code: '3427157', email: "jswift@lexhealth.com")
 
-  org12 = Organization.find_or_create_by(id: 36296009, source_id: 'NC272', processing_status: 'Inomplete',  name: 'Wake Forest University at Mount Airy', phone:'315-425-2707',
+  org12 = Organization.find_or_create_by(id: 36296009, source_id: 'NC272', processing_status: 'Incomplete',  name: 'Wake Forest University at Mount Airy', phone:'315-425-2707',
                                          source_context: SourceContext.find_by_code('NLM'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', nlm.id),
                                          service_request: SourceStatus.find_by_code('CREATE'),
                                          address: '910 Worth St.', city: 'Mt. Airy', state_province:'North Carolina', country:usa, postal_code: '5627157', email: "jrrtolkien@airyhealth.com")
 
-  org13 = Organization.find_or_create_by(id: 149074, source_id: 'NC002', processing_status: 'Inomplete',  name: 'Wake Forest University Health Sciences', phone:'315-425-2707',
+  org13 = Organization.find_or_create_by(id: 149074, source_id: 'NC002', processing_status: 'Incomplete',  name: 'Wake Forest University Health Sciences', phone:'315-425-2707',
                                          source_context: SourceContext.find_by_code('CTEP'),
                                          source_status: SourceStatus.find_by_code_and_source_context_id('ACT', ctep.id),
                                          service_request: SourceStatus.find_by_code('CREATE'),

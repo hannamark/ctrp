@@ -12,8 +12,8 @@
                     </md-tab>
                     <md-tab label="CTRP" md-active="orgDetailView.defaultTab === 'CTRP'" ng-if="orgDetailView.ctrpOrg">
                         <md-content class="md-padding">
-                            <div ng-show="orgDetailView.curOrgEditable || orgDetailView.ctrpOrg.new" ng-include src="'app/po/organization/_ctrpOrgDetailWR.html'"></div>
-                            <div ng-show="!orgDetailView.curOrgEditable && !orgDetailView.ctrpOrg.new" ng-include src="'app/po/organization/_ctrpOrgDetailRO.html'"></div>
+                            <div ng-show="orgDetailView.curOrgEditable || orgDetailView.ctrpOrg.new" ng-include src="'app/po/organization/_ctrpOrgDetailWR.html?_rload='+orgDetailView.ctrpUpdateTime"></div>
+                            <div ng-show="!orgDetailView.curOrgEditable && !orgDetailView.ctrpOrg.new" ng-include src="'app/po/organization/_ctrpOrgDetailRO.html?_rload='+orgDetailView.ctrpUpdateTime"></div>
                         </md-content>
                     </md-tab>
                     <md-tab label="NLM" md-active="orgDetailView.defaultTab === 'NLM'" ng-if="orgDetailView.nlmOrg">

@@ -223,12 +223,27 @@ class OrganizationsController < ApplicationController
   end
 
   def clone
-    @organization = Organization.new(Organization.find(params[:org_id]).attributes)
-    #@allorganizations = Organization.find(Organization.find(params[:org_id]).attributes)
-    @organization.id = nil
-    @organization.ctrp_id = @organization.ctrp_id
+    ctepOrg = Organization.find(params[:org_id])
+    ctepOrg.processing_status = 'Complete'
+    ctepOrg.updated_by = @current_user.username unless @current_user.nil?
+    ctepOrg.updated_at = Time.zone.now
+    @organization = Organization.new(ctepOrg.attributes)
+    @organization.id                = nil
     @organization.source_context_id = SourceContext.find_by_code("CTRP").id
-    @organization.save
+    @organization.created_by = ctepOrg.updated_by
+    @organization.created_at = Time.zone.now
+    respond_to do |format|
+      if @organization.save
+         ctepOrg.ctrp_id            = @organization.ctrp_id
+         ctepOrg.service_request_id = ServiceRequest.find_by_code('NULL').id
+         ctepOrg.save
+         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
+        format.json { render :associated }
+      else
+        format.html { render :edit }
+        format.json { render json: @organization.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def countOrgsWithSameName

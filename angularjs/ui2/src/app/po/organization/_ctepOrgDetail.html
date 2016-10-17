@@ -2,8 +2,7 @@
 <div class="row md-sidenav-push-in-target">
     <div ng-include src="'app/po/organization/_allOrgDetailRO.html?_rload='+orgDetailView.updateTime" onload="[curOrg = orgDetailView.ctepOrg]" ng-model="ctepOrg"></div>
     <div class="row"  ng-if="orgDetailView.curOrgEditable">
-        <div class="form-group col-xs-12 col-sm-6 has-feedback"
-             ng-disabled = "orgDetailView.ctrpOrg && orgDetailView.ctepOrg.ctrp_id">
+        <div class="form-group col-xs-12 col-sm-6 has-feedback">
             <div class="control-label col-xs-6 col-sm-6"></div>
             <div class="form-group col-xs-6 col-sm-6 form-text">
                 <ctrp-org-adv-search-modal-button
@@ -14,9 +13,10 @@
                                             "name": "{{orgDetailView.ctepOrg.name}}",
                                             "state_province": "{{orgDetailView.ctepOrg.state_province}}",
                                             "country": "{{orgDetailView.ctepOrg.country}}",
-                                            "preload": true,
-                                            "hideform": true,
-                                            "nilclose": true
+                                            "preload": {{orgDetailView.nilclose}},
+                                            "hideform": {{orgDetailView.nilclose}},
+                                            "nilclose": true,
+                                            "disable": {{!!(orgDetailView.ctrpOrg && orgDetailView.ctepOrg.ctrp_id)}}
                                         }'
                         class="pull-left"
                         max-row-selectable="1" use-built-in-template="false" allow-overwrite="true"
