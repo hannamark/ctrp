@@ -474,10 +474,10 @@
                     if ($scope.curPs.contact_type === 'PI') {
                         if (newVal) {
                             selectedInv = newVal;
-                            $scope.curPs.contact_name = $scope.curPs.contact_name ? $scope.curPs.contact_name : selectedInv.name;
-                            $scope.curPs.contact_phone = $scope.curPs.contact_phone ? $scope.curPs.contact_phone : selectedInv.phone;
-                            $scope.curPs.extension = $scope.curPs.extension ? $scope.curPs.extension : selectedInv.extension;
-                            $scope.curPs.contact_email = $scope.curPs.contact_email ? $scope.curPs.contact_email : selectedInv.email;
+                            $scope.curPs.contact_name = selectedInv.name;
+                            $scope.curPs.contact_phone = selectedInv.phone;
+                            $scope.curPs.extension = selectedInv.extension;
+                            $scope.curPs.contact_email = selectedInv.email;
                         } else {
                             $scope.curPs.contact_name = null;
                             $scope.curPs.contact_phone = null;
