@@ -198,6 +198,22 @@
          * for the selected country
          */
         function listenToStatesProvinces() {
+            if (vm.ctrpOrg) {
+                if (vm.ctrpOrg.country) {
+                    vm.watchCountrySelection(vm.ctrpOrg.country);
+                } else {
+                    vm.ctrpOrg.country = 'United States'; //default country
+                    vm.watchCountrySelection(vm.ctrpOrg.country);
+                }
+
+                $scope.$on(MESSAGES.STATES_AVAIL, function () {
+                    vm.states = OrgService.getStatesOrProvinces();
+                });
+
+                $scope.$on(MESSAGES.STATES_UNAVAIL, function () {
+                    vm.states = [];
+                })
+            }
         } //listenToStatesProvinces
 
         //Function that checks if an Organization - based on Name & source context is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the organization/unique Rails end point.
