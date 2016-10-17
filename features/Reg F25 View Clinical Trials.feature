@@ -75,6 +75,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Trial Status  |
       |Trial Dates|
       |Participating Sites|
+      And the latest submission Amendment Details "Amendment Date" and "Amendment Number" will be displayed even when the trial milestone is set to "Submission Terminated"
       
       
         Scenario:#4a Participating Sites Table Columns description for all trials (Protocol and Imported)
