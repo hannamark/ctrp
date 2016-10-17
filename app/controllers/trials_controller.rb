@@ -307,10 +307,7 @@ class TrialsController < ApplicationController
       params[:sort] = 'nci_id' if params[:sort].blank?
       params[:order] = 'desc' if params[:order].blank?
       #@organizations = @organizations.order("#{sortBy} #{params[:order]}")
-
     end
-
-
 
     if params[:trial_ownership].present?
 
@@ -363,9 +360,7 @@ class TrialsController < ApplicationController
 
        #@trials = @trials.filter(@trials, {:phases => params[:phases], :purposes => params[:purposes]})
 
-      @trials.each do |trial|
-        trial.current_user = @current_user
-      end
+
       #### Write here a join query to avoid the access of db tables from View.
       ###
       Rails.logger.info "Started querying multitable with Trials to avoid the access of db tables from View"
@@ -391,6 +386,9 @@ class TrialsController < ApplicationController
                             pi.fname  as pi_name, study_source.name as study_source_name ,
                             research_category.name as research_category_name, responsible_party.name as responsible_party_name,
                             accrual_disease_term.name as accrual_disease_term_name')
+      @trials.each do |trial|
+        trial.current_user = @current_user
+      end
 
     else
       @trials = []
