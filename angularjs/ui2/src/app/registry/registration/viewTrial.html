@@ -360,7 +360,7 @@
                                 <th>Current Site Recruitment Status Date</th>
                                 <th>Primary Contact</th>
                                 <th>Email</th>
-                                <th>Phone</th>
+                                <th>Phone/Ext</th>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="ps in viewTrialView.curTrial.participating_sites track by $index">
@@ -376,7 +376,7 @@
                                     <td class="col-sm-2">
                                         {{ps.contact_phone}}
                                         <span ng-show="ps.extension">
-                                            ext. {{ps.extension}}
+                                            x{{ps.extension}}
                                         </span>
                                     </td>
                                 </tr>

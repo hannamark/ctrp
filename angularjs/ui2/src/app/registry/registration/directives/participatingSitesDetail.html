@@ -1,8 +1,8 @@
 <div class="col-xs-12" ng-class="{'drop-shadow': !usedInModal}">
     <div class="row" ng-hide="usedInModal">
-        <h4 ng-show="!isManageScreen && curPs.new">Add Participating Site</h4>
-        <h4 ng-show="!isManageScreen && !curPs.new">Update Participating Site</h4>
-        <h4 ng-show="isManageScreen">Manage Participating Site</h4>
+        <h4 ng-show="addMode && curPs.new">Add Participating Site</h4>
+        <h4 ng-show="editMode && !curPs.new">Update Participating Site</h4>
+        <h4 ng-show="isManageScreen && !(addMode || editMode)">Manage Participating Sites</h4>
     </div>
 
     <div class="row">
@@ -21,7 +21,7 @@
                             <th>Current Site Recruitment Status Date</th>
                             <th>Primary Contact</th>
                             <th>Email</th>
-                            <th>Phone</th>
+                            <th>Phone/Ext</th>
                             <th>Edit</th>
                         </thead>
                         <tbody>
@@ -38,7 +38,7 @@
                                 <td class="col-sm-1">
                                     {{ps.contact_phone}}
                                     <span ng-show="ps.extension">
-                                        ext. {{ps.extension}}
+                                        x{{ps.extension}}
                                     </span>
                                 </td>
                                 <td class="col-sm-1">

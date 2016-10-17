@@ -1315,7 +1315,7 @@
                                         <th>Current Site Recruitment Status Date</th>
                                         <th>Primary Contact</th>
                                         <th>Email</th>
-                                        <th>Phone</th>
+                                        <th>Phone/Ext</th>
                                         <th>Edit</th>
                                     </thead>
                                     <tbody>
@@ -1330,9 +1330,9 @@
                                             <td class="col-sm-1">{{ps.contact_name}}</td>
                                             <td class="col-sm-1">{{ps.contact_email}}</td>
                                             <td class="col-sm-1">
-                                                {{ps.contact_phone}}
+                                                {{ps.contact_phone}} 
                                                 <span ng-show="ps.extension">
-                                                    ext. {{ps.extension}}
+                                                    x{{ps.extension}}
                                                 </span>
                                             </td>
                                             <td class="col-sm-1">
