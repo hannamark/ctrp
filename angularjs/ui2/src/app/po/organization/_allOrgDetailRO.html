@@ -24,14 +24,13 @@
                                     <label class="control-label col-xs-12 col-sm-3">Source Status:</label>
                                     <div class="col-xs-12 col-sm-6">{{curOrg.source_status_name}}</div>
                                 </div>
-                                <div class="form-group" ng-if="curOrg.source_context_name === 'CTRP'">
+                                <div class="form-group" ng-if="curOrg.source_context_name === 'CTRP' && orgDetailView.addedNameAliases.length">
                                     <label class="control-label col-xs-12 col-sm-3">Name Alias:</label>
                                     <div class="col-xs-12 col-sm-6">
                                         <table class="table table-bordered table-striped table-condensed animated-item" ng-show="orgDetailView.addedNameAliases.length > 0">
                                             <tbody>
                                             <thead>
                                             <th>Alias</th>
-                                            <th class="td-icon" ng-show="orgDetailView.curOrgEditable">Delete</th>
                                             </thead>
                                             <tr ng-repeat="nameAlias in orgDetailView.addedNameAliases track by $index" ng-class="nameAlias._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                                                 <td class="col-md-7">{{nameAlias.name}}</td>

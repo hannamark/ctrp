@@ -1278,25 +1278,25 @@ AppSetting.find_or_create_by(code: 'Federated_USER_FUNCTIONS').update(descriptio
 
 ########## SEEDING CTGOV IMPORT EXPORT STARTS ##########
 
-CtGovImportExport.find_or_create_by(from:'N/A', to:'N/A',import_or_export:'import' ,model:'Allocation')
-CtGovImportExport.find_or_create_by(from:'Randomized', to:'Randomized Controlled Trial',import_or_export:'import' ,model:'Allocation')
-CtGovImportExport.find_or_create_by(from:'Nonrandomized', to:'Non-Randomized Trial',import_or_export:'import' ,model:'Allocation')
+CtGovImportExport.find_or_create_by(from:'N/A', from:'N/A',import_or_export:'import' ,model:'Allocation')
+CtGovImportExport.find_or_create_by(from:'Randomized', from:'Randomized',import_or_export:'import' ,model:'Allocation')
+CtGovImportExport.find_or_create_by(to:'Non-Randomized', from:'Non-Randomized',import_or_export:'import' ,model:'Allocation')
 
 
 CtGovImportExport.find_or_create_by(from:'N/A', to:'N/A',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Safety Study', to:'Safety',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Efficacy Study', to:'Efficacy',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Safety/Efficacy Study', to:'Safety/Efficacy',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Bio-availability Stud', to:'Bioavailability',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Bio-equivalence Study', to:'Bioequivalence',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Pharmacodynamics Study', to:'Pharmacodynamics',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Pharmacokinetics Study', to:'Pharmacokinetics',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Pharmacokinetics/dynamics Study', to:'Pharmacokinetics/Pharmacodynamics',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Safety Study', to:'Safety Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Efficacy Study', to:'Efficacy Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Safety/Efficacy Study', to:'Safety/Efficacy Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Bio-availability StudY', to:'Bioavailability Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Bio-equivalence Study', to:'Bioequivalence Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacodynamics Study', to:'Pharmacodynamics Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacokinetics Study', to:'Pharmacokinetics Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacokinetics/dynamics Study', to:'Pharmacokinetics/Pharmacodynamics Study',import_or_export:'import' ,model:'StudyClassification')
 
-CtGovImportExport.find_or_create_by(from:'Single Group Assignment', to:'Single Group',import_or_export:'import' ,model:'InterventionModel')
-CtGovImportExport.find_or_create_by(from:'Parallel Assignment', to:'Parallel',import_or_export:'import' ,model:'InterventionModel')
-CtGovImportExport.find_or_create_by(from:'Cross-over Assignment', to:'Cross-Over',import_or_export:'import' ,model:'InterventionModel')
-CtGovImportExport.find_or_create_by(from:'Factorial Assignment', to:'Factorial',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Single Group Assignment', to:'Single Group Assignment',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Parallel Assignment', to:'Parallel Assignment',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Crossover Assignment', to:'Crossover Assignment',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Factorial Assignment', to:'Factorial Assignment',import_or_export:'import' ,model:'InterventionModel')
 
 CtGovImportExport.find_or_create_by(from:'Treatment', to:'Treatment',import_or_export:'import' ,model:'PrimaryPurpose')
 CtGovImportExport.find_or_create_by(from:'Prevention', to:'Prevention',import_or_export:'import' ,model:'PrimaryPurpose')
