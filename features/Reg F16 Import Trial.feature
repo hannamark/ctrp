@@ -29,13 +29,40 @@ Scenario:#2a  NLM Context will be created for an Imported trial
     Given I am logged into the CTRP
     When a trial has been imported with a "Sponsor Name" that exists in the NLM Context in CTRP
     And the NLM context is mapped to a CTRP Organization Context
-    Adnd the CTRP Organization is "Active"
+    And the CTRP Organization is "Active"
     Then the CTRP Organization will be used as 
     
     |Trial Sponsor|
     |Trial Funding Source|
     |Lead Org|
     
+   Scenario:#2a' NLM Context will be created for an Imported trial  
+    Given I am logged into the CTRP
+    When a trial has been imported with a "Sponsor Name" that exists in the NLM Context in CTRP
+    And the NLM context is mapped to a CTRP Organization Context
+    And the CTRP Organization is "Inactive"
+    And the information type will be NULL until the curated
+    
+    |Trial Sponsor: Null|
+    |Trial Funding Source: Null|
+    |Lead org: Null|
+    
+    
+    
+   Scenario:#2b NLM Context will be created for an Imported trial  
+    Given I am logged into the CTRP
+    When a trial has been imported with a "Sponsor Name" that exists in the NLM Context in CTRP
+    And there are more than one NLM organization that matches the "Sponsor Name"
+    Then the trial will be imported
+    And the information type will be NULL until the curated
+    
+    |Trial Sponsor: Null|
+    |Trial Funding Source: Null|
+    |Lead org: Null|
+    
+    
+    Scenario:#2c NLM Context will be created for an Imported trial  
+    Given I am logged into the CTRP
      When a trial has been imported with a "Sponsor Name" that exists in the NLM Context in CTRP
     And the NLM context is not mapped to a CTRP Organization Context
     Then the information type will be NULL until the NLM Organization context is affiliated to a CTRP Organization Context
@@ -44,7 +71,9 @@ Scenario:#2a  NLM Context will be created for an Imported trial
     |Trial Funding Source: Null|
     |Lead org: Null|
     
-     When a trial has been imported with a "Sponsor Name" that does not exist in the NLM Context in the CTRP
+     Scenario:#2d NLM Context will be created for an Imported trial  
+    Given I am logged into the CTRP
+      When a trial has been imported with a "Sponsor Name" that does not exist in the NLM Context in the CTRP
      And that "Sponsor Name" does not match an organization name "Agency" name in CTRP
      Then an NLM Context with an NLM Context Status of "Active" will be automatically created in CTRP
      And the processing status is "Incomplete"
@@ -55,7 +84,7 @@ Scenario:#2a  NLM Context will be created for an Imported trial
     |Trial Funding Source: Null|
     |Lead org: Null|
   
-  Scenario:#2a' Organization Source Status NLM available list
+  Scenario:#2e Organization Source Status NLM available list
     Given I am logged into the CTRP Application
      When an NLM Organization is created in the CTRP 
      Then the available organization source status will be
