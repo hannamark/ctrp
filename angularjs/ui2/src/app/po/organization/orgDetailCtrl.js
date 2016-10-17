@@ -288,7 +288,14 @@
                 console.log("DEGIN MATCH",vm.selectedOrgsArray);
 
             } else if (newValue && newValue[0] && newValue[0].ctrp_id ) {
-                vm.confirmOverrideAssociatePopUp = true;
+                var newAssociatedOrg = newValue[0];
+                var ctepIsSame = (newAssociatedOrg.source_context_name === 'CTEP' && (!vm.ctepOrg  || (newAssociatedOrg.id !== vm.ctepOrg.id)));
+                var nlmIsSame =  (newAssociatedOrg.source_context_name === 'NLM' && (!vm.nlmOrg   ||  ( newAssociatedOrg.id !== vm.nlmOrg.id)));
+                var notAlreadyAssociated = ( ctepIsSame || nlmIsSame );
+                toastr.success('The chosen organization is already associated to this organization.', 'Operation Cancelled!');
+                if (notAlreadyAssociated) {
+                    vm.confirmOverrideAssociatePopUp = true;
+                }
             } else {
                 vm.associateOrgs();
             }
