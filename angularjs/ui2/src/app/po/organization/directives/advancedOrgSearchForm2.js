@@ -153,6 +153,12 @@
                                 $scope.gridOptions.data = data.orgs;
                                 $scope.gridOptions.totalItems = data.total;
 
+                                // if set to close on no results send flag through false
+                                // selectedOrgsArray to close modal
+                                if ($scope.searchParams.nilclose && (data.total < 1) ) {
+                                    $scope.$parent.selectedOrgsArray = -1;
+                                }
+
                                 //pin the selected rows, if any, at the top of the results
                                 _.each($scope.selectedRows, function (curRow, idx) {
                                     var ctrpId = curRow.entity.id;
@@ -703,7 +709,9 @@
                         $scope.searchParams[property] = $scope.preSearch[property];
                     }
                 }
-                
+                if ($scope.preSearch.preload) {
+                    $scope.searchOrgs();
+                }
                 //trigger country on-change
                 if($scope.preSearch["country"]) {
                     $timeout(function() {

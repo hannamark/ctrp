@@ -109,16 +109,6 @@
             }
         };
 
-        // Delete the associations
-        vm.toggleSelection = function (index, type) {
-            if (type === 'other_id') {
-                if (index < vm.addedNameAliases.length) {
-                    vm.addedNameAliases[index]._destroy = !vm.addedNameAliases[index]._destroy;
-                }
-            }
-        };// toggleSelection
-
-
         /****************** implementations below ***************/
         function activate() {
             initiateOrgs();
@@ -183,6 +173,16 @@
             });
         }
 
+        vm.cloningCTEP = false;
+        vm.nilclose = true;
+        $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
+            if (vm.cloningCTEP) {
+                //reset cloning flag
+                vm.cloningCTEP = false;
+                vm.nilclose = true;
+                console.log("DEGIN CLONE",vm.ctepOrg);
+            }
+        });
 
         /**
          * Listen to the message for availability of states or provinces
@@ -240,10 +240,11 @@
         var associateOrgsRefresh = function (){
             vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP');
             vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM');
+            vm.updateTime = Date.now();
         };
 
-        vm.associateOrgs = function (){
-            vm.confirmOverrideContextPopUp = false;
+        vm.associateOrgs = function () {
+            vm.confirmOverrideAssociatePopUp = false;
             if (vm.selectedOrgsArray) {
                 angular.forEach(vm.selectedOrgsArray, function(value) {
                     var newAssociatedOrg = value;
@@ -253,11 +254,9 @@
                     outerOrg.id = newAssociatedOrg.id;
                     outerOrg.organization = newAssociatedOrg;
                     OrgService.upsertOrg(outerOrg).then(function (response) {
-                        var orgsWithAssociateDate = response.associated_orgs;
-                        var newOrg = getOrgByContext(orgsWithAssociateDate, newAssociatedOrg.source_context_name);
-                        vm.associatedOrgs = orgsWithAssociateDate;
+                        vm.associatedOrgs = response.associated_orgs;
                         associateOrgsRefresh();
-                        toastr.success('Organization \'' + newOrg.name + '\' has been associated.', 'Operation Successful!');
+                        toastr.success('Organization has been associated.', 'Operation Successful!');
                     }).catch(function (err) {
                         console.log("error in associating organization " + JSON.stringify(vm.curOrg));
                     });
@@ -265,21 +264,22 @@
             }
         };
 
-        vm.cancelAssociateOrgs = function () {
-          vm.confirmOverrideContextPopUp = false;
-        };
-
         // Swap context when different tab is selected
         $scope.$watch(function() {
             return vm.selectedOrgsArray;
         }, function(newValue, oldValue) {
-            if (newValue && newValue[0] && newValue[0].ctrp_id ) {
-                vm.confirmOverrideContextPopUp = true;
+            if (vm.cloningCTEP) {
+                //reset cloning flag after existing match
+                vm.cloningCTEP = false;
+                vm.nilclose = true;
+                console.log("DEGIN MATCH",vm.selectedOrgsArray);
+
+            } else if (newValue && newValue[0] && newValue[0].ctrp_id ) {
+                vm.confirmOverrideAssociatePopUp = true;
             } else {
                 vm.associateOrgs();
             }
         });
-
 
         vm.cloneCtepOrg = function(ctepOrgId) {
             OrgService.cloneCtepOrg(ctepOrgId).then(function(response) {

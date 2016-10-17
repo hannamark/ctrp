@@ -26,7 +26,7 @@
         </form>
     </div>
 </div>
-<modal visible="orgDetailView.confirmOverrideContextPopUp" title="Please confirm" id="confirmChangeOverrideContextPopup">
+<modal visible="orgDetailView.confirmOverrideAssociatePopUp" title="Please confirm" id="confirmChangeOverrideContextPopup">
     <div class="modal-body">
         This organization is already associated.
     </div>
@@ -37,7 +37,7 @@
                 Associate
             </button>
             <button type="button" class="btn btn-warning pull-right" id="cancelChangeOverrideContext"
-                    ng-click="orgDetailView.cancelAssociateOrgs()"><i class="glyphicon glyphicon-remove"></i>
+                    ng-click="orgDetailView.confirmOverrideAssociatePopUp = false"><i class="glyphicon glyphicon-remove"></i>
                 Cancel
             </button>
         </div>
