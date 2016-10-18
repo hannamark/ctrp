@@ -33,7 +33,8 @@
         vm.affiliatedOrgError = true; // flag for empty org affiliations
         vm.matchedCtrpPersons = []; // CTRP persons found from attempt to clone ctep person
         var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
-
+        var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
+        vm.isAllowedToComment = _.contains(USER_ROLES_ALLOWED_COMMENT, UserService.getUserRole());
 
         // actions:
         vm.removeAssociation = removePersonAssociation;

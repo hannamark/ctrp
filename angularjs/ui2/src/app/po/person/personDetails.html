@@ -31,7 +31,7 @@
             </p>
         </div>
         <div class="row">
-          <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field="" model="person"></ctrp-comment>
+          <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field="" model="person" ng-show="personDetailView.isAllowedToComment"></ctrp-comment>
           <form class="form-horizontal" role="form" name="person_form" novalidate ctrp-submit="personDetailView.updatePerson()" unsaved-changes>
             <md-tabs md-dynamic-height md-border-bottom md-selected="personDetailView.tabIndex">
                 <md-tab ng-repeat="clusterPerson in personDetailView.curPerson.cluster track by $index">
@@ -212,7 +212,7 @@
                             <div class="col-xs-12 col-sm-2"></div>
                             <div class="col-xs-12 col-sm-9">
                                 <div class="row animated-item top-offset-tiny table-responsive search-calendar-grid" ng-show="personDetailView.savedSelection.length > 0">
-                                    <input type="text" ng-model="personDetailView.selectedOrgFilter" restriction-field class="form-control input-sm" placeholder="Filter selected organizations"/>
+                                    <input type="text" ng-model="personDetailView.selectedOrgFilter" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN,ROLE_ABSTRACTOR,ROLE_RO,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU" class="form-control input-sm" placeholder="Filter selected organizations"/>
                                     <table class="table table-bordered table-striped table-condensed">
                                         <thead>
                                         <th width="6%" class="nowrap">CTRP ID</th>
@@ -277,8 +277,9 @@
                         </div>
                         <!-- table of associated persons below -->
                         <div class="form-group" ng-show="personDetailView.curPerson.associated_persons.length > 0 && personDetailView.curPerson.is_ctrp_context">
-                            <div class="col-xs-12">
+                            <div class="col-xs-12" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN,ROLE_ABSTRACTOR,ROLE_RO">
                                 <div class="row animated-item top-offset-tiny table-responsive search-calendar-grid">
+                                    <h4>Associated Person Contexts:</h4>
                                     <table class="table table-bordered table-striped table-condensed">
                                         <thead>
                                             <th width="6%" class="nowrap">CTRP Person ID</th>
