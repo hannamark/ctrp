@@ -66,6 +66,7 @@ Scenario Outline: #1c Participating site required fields
 Given I am logged into the CTRP Protocol Abstraction application
 And I have added a Participating Site
 Then the following fields will be required
+     # CTRP Org ID=Source ID when Source CTRP org
      |CTRP ID|
      |CTRP Organization Name|
      |Investigators, Role (Principal Investigator or Sub-Investigator)|
