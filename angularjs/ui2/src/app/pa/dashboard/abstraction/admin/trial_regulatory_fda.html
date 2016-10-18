@@ -70,7 +70,7 @@
                             </span>
                         </div>
                         <div class="col-xs-12 col-sm-3" ng-if="paTrialOverview.trialDetailObj.pa_editable" ng-show="!trialDetailView.showInvSearchBtn && ['update'].indexOf(trialDetailView.curTrial.edit_type) < 0">
-                            <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedIaArray"></ctrp-org-adv-search-modal-button>
+                            <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" pre-search = '{"source_contextfilter": ["CTRP"]}' selected-orgs-array="trialDetailView.selectedIaArray"></ctrp-org-adv-search-modal-button>
                         </div>
                     </div>
                     <div ng-show="trialDetailView.showSponsor">

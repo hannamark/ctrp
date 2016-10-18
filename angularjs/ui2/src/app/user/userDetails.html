@@ -151,6 +151,7 @@
                             <input class="form-control input-sm" type="text" id="lead_org" name="lead_organization" ng-model="userDetailView.selectedOrgsArray[0].name" disabled placeholder="Affiliated Organization" ng-required="true">
                         </div>
                         <ctrp-org-adv-search-modal-button
+                                pre-search = '{"source_contextfilter": ["CTRP"]}'
                                 ng-if="(userDetailView.userRole === 'ROLE_SUPER' || userDetailView.userRole === 'ROLE_ADMIN' || userDetailView.userRole === 'ROLE_SITE-SU' || userDetailView.userRole === 'ROLE_ACCOUNT-APPROVER' || userDetailView.userRole === 'ROLE_ABSTRACTOR') || userDetailView.isCurrentUser"
                                 class="col-xs-12 col-sm-3"
                                 max-row-selectable="1" use-built-in-template="false" allow-overwrite="true"

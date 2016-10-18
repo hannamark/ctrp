@@ -29,6 +29,25 @@
             $state.go('main.addParticipatingSite', {trialId: vm.curTrial.id});
         };
 
+        vm.showPrimaryPurposeOther = false;
+        vm.showSecondaryPurposeOther = false;
+        if (vm.curTrial.primary_purpose && vm.curTrial.primary_purpose.name == 'Other'){
+                vm.showPrimaryPurposeOther = true;
+            } else {
+                vm.showPrimaryPurposeOther = false;
+                vm.curTrial.primary_purpose_other = '';
+            }
+
+
+        if (vm.curTrial.secondary_purpose && vm.curTrial.secondary_purpose.name == 'Other') {
+                vm.showSecondaryPurposeOther = true;
+            } else {
+                vm.showSecondaryPurposeOther = false;
+                vm.curTrial.secondary_purpose_other = '';
+            }
+
+
+
         activate();
 
         /****************************** implementations **************************/

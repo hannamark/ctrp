@@ -306,7 +306,7 @@
                                 </span>
                             </div>
                             <div class="col-xs-12 col-xs-3" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
-                                <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedLoArray"></ctrp-org-adv-search-modal-button>
+                                <ctrp-org-adv-search-modal-button max-row-selectable="1" pre-search = '{"source_contextfilter": ["CTRP"]}' use-built-in-template="false" selected-orgs-array="trialDetailView.selectedLoArray"></ctrp-org-adv-search-modal-button>
                             </div>
                         </div>
 
@@ -344,7 +344,7 @@
                                 </span>
                             </div>
                             <div class="col-xs-12 col-sm-3" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
-                                <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedSponsorArray"></ctrp-org-adv-search-modal-button>
+                                <ctrp-org-adv-search-modal-button pre-search ='{"source_contextfilter": ["CTRP"]}' max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedSponsorArray"></ctrp-org-adv-search-modal-button>
                             </div>
                         </div>
 
@@ -358,7 +358,7 @@
                         <div class="form-group required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)}">
                             <label class="control-label col-xs-12 col-sm-3">Data Table 4 Funding Source:</label>
                             <div class="col-xs-12 col-sm-9" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1">
-                                <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedFsArray" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
+                                <ctrp-org-adv-search-modal-button pre-search ='{"source_contextfilter": ["CTRP"]}' max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedFsArray" allow-overwrite="false"></ctrp-org-adv-search-modal-button>
                                 <input type="hidden" name="fs_dummy" ng-model="trialDetailView.dummyField" ng-required="trialDetailView.fsNum === 0">
                                 <span class="help-block" ng-show="ctrpbtn.trial_form.needsAttention(trial_form.fs_dummy)">
                                     Funding Source is Required
@@ -968,7 +968,7 @@
                                 </span>
                             </div>
                             <div class="col-xs-12 col-sm-3" ng-show="!trialDetailView.showInvSearchBtn && ['update'].indexOf(trialDetailView.curTrial.edit_type) < 0">
-                                <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedIaArray"></ctrp-org-adv-search-modal-button>
+                                <ctrp-org-adv-search-modal-button pre-search='{"source_contextfilter": ["CTRP"]}' max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedIaArray"></ctrp-org-adv-search-modal-button>
                             </div>
                         </div>
 
@@ -1306,7 +1306,7 @@
                                 <h5>List of Participating Sites:</h5>
                                 <table st-table="trialDetailView.curTrial.participating_sites" class="table table-bordered table-striped table-condensed">
                                     <thead>
-                                        <th>CTRP ID</th>
+                                        <th>CTRP Org ID</th>
                                         <th>CTRP Organization Name</th>
                                         <th>Principal Investigator</th>
                                         <th>Local Trial Id</th>
@@ -1320,7 +1320,7 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="ps in trialDetailView.curTrial.participating_sites track by $index">
-                                            <td class="col-sm-1">{{ps.organization.id}}</td>
+                                            <td class="col-sm-1">{{ps.organization.source_id}}</td>
                                             <td class="col-sm-2">{{ps.organization.name}}</td>
                                             <td class="col-sm-1">{{ps.site_pi.fname}} {{ps.site_pi.lname}}</td>
                                             <td class="col-sm-1">{{ps.protocol_id}}</td>

@@ -324,7 +324,6 @@
                         if (statuses && angular.isArray(statuses)) {
                             statuses.sort(Common.a2zComparator());
                             $scope.sourceStatuses = statuses;
-                            console.log("88888",$scope.sourceStatuses)
                         }
                     }
                 });

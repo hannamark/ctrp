@@ -1,20 +1,15 @@
 <h4>View Organization</h4>
 <div class="row md-sidenav-push-in-target">
     <div ng-include src="'app/po/organization/_allOrgDetailRO.html?_rload='+orgDetailView.updateTime" onload="[curOrg = orgDetailView.ctrpOrg]"></div>
+
     <div class="row">
-        <div class="form-group col-xs-12 col-sm-12 has-feedback" ng-hide="!curOrg.created_by">
-            <label class="control-label col-xs-12 col-sm-3">Created By:</label>
-            <div class="form-group col-xs-12 col-sm-6 form-text">{{curOrg.created_by}} ({{curOrg.org_created_date}})</div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-xs-12 col-sm-12 has-feedback" ng-hide="curOrg.new || !curOrg.updated_by">
+        <div class="form-group col-xs-12 col-sm-12 has-feedback">
             <label class="control-label col-xs-12 col-sm-3">Updated By:</label>
             <div class="form-group col-xs-12 col-sm-6 form-text">{{curOrg.updated_by}} ({{curOrg.org_updated_date}})</div>
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-xs-12 col-sm-6 has-feedback" ng-show="curOrg.families.length > 0" class="form-group">
+        <div class="form-group col-xs-12 col-sm-12 has-feedback" >
             <label class="control-label col-xs-12 col-sm-3">Families:</label>
             <div class="form-group col-xs-12 col-sm-6 form-text">
                 <p ng-repeat="family in curOrg.families">

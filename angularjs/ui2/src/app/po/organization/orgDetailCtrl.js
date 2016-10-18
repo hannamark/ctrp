@@ -55,11 +55,13 @@
                         // created
                         $state.go('main.orgDetail', {orgId: response.id});
                     } else if (status === 200) {
-
+                        $state.go('main.orgDetail', {orgId: response.id});
                         //update name aliases
                         vm.ctrpOrg.name_aliases = response.name_aliases;
                         vm.addedNameAliases = [];
                         appendNameAliases();
+
+                        $route.reload();
 
                         // To make sure setPristine() is executed after all $watch functions are complete
                         $timeout(function () {
@@ -139,6 +141,7 @@
             } else {
                 vm.ctrpOrg = {};
                 vm.ctrpOrg.new = true;
+                vm.ctrpOrg.processing_status = 'Incomplete';
             }
         }
 
@@ -236,7 +239,7 @@
                 if (status >= 200 && status <= 210) {
                     vm.name_unqiue = response.name_unique;
 
-                    if(!response.name_unique && vm.ctrpOrg.name.length > 0)
+                    if(response.name_unique === true)
                         vm.showUniqueWarning = true;
                 }
             }).catch(function (err) {
@@ -272,6 +275,35 @@
                         toastr.success('Organization has been associated.', 'Operation Successful!');
                     }).catch(function (err) {
                         console.log("error in associating organization " + JSON.stringify(vm.ctrpOrg));
+                    }).finally(function() {
+                        vm.defaultTab = 'CTRP';
+                    });
+                });
+            }
+        };
+
+        vm.ctepAssociateOrgs = function () {
+            vm.confirmOverrideAssociatePopUp = false;
+            if (vm.selectedOrgsArray) {
+                angular.forEach(vm.selectedOrgsArray, function(value) {
+                    var newAssociatedOrg = value;
+                    vm.ctepOrg.ctrp_id = newAssociatedOrg.ctrp_id;
+                    // An outer param wrapper is needed for nested attributes to work
+                    var outerOrg = {};
+                    outerOrg.id = vm.ctepOrg.id;
+                    outerOrg.organization = vm.ctepOrg;
+                    OrgService.upsertOrg(outerOrg).then(function (response) {
+                        if (status >= 200 && status <= 210) {
+                            if (status === 200) {
+                                vm.associatedOrgs = response.associated_orgs;
+                                $route.reload()
+                                vm.defaultTab = 'CTRP';
+                            }
+                        }
+                    }).catch(function (err) {
+                        console.log("error in associating organization " + JSON.stringify(vm.ctrpOrg));
+                    }).finally(function() {
+                        vm.defaultTab = 'CTRP';
                     });
                 });
             }
@@ -283,17 +315,12 @@
         }, function(newValue, oldValue) {
             if (vm.cloningCTEP) {
                 //reset cloning flag after existing match
-                vm.cloningCTEP = false;
-                vm.nilclose = true;
-                console.log("DEGIN MATCH",vm.selectedOrgsArray);
+                vm.nilclose = true; //reset
+                vm.ctepAssociateOrgs();
 
-            } else if (newValue && newValue[0] && newValue[0].ctrp_id ) {
+            } else if (newValue && newValue[0] && newValue[0].ctrp_id && newValue[0].source_context_name !== 'NLM') {
                 var newAssociatedOrg = newValue[0];
-                var ctepIsSame = ((!vm.ctepOrg && newAssociatedOrg.source_context_name === 'CTEP') || (newAssociatedOrg.source_context_name === 'CTEP' && (newAssociatedOrg.id !== vm.ctepOrg.id)));
-                var nlmIsSame =  ((!vm.nlmOrg && newAssociatedOrg.source_context_name === 'NLM')   || (newAssociatedOrg.source_context_name === 'NLM' &&  (newAssociatedOrg.id !== vm.nlmOrg.id)));
-                var alreadyAssociated = ( !ctepIsSame && !nlmIsSame );
-                console.log(newAssociatedOrg.id,"pppp", vm.ctepOrg.id, alreadyAssociated, ctepIsSame, nlmIsSame)
-                if (newAssociatedOrg) {
+                if (newAssociatedOrg.id !== vm.ctepOrg.id) {
                     vm.confirmOverrideAssociatePopUp = true;
                 } else {
                     toastr.success('The chosen organization is already associated to this organization.', 'Operation Cancelled!');
@@ -316,6 +343,7 @@
                             vm.ctrpOrg = getOrgByContext(vm.associatedOrgs, 'CTRP');
                             vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                             vm.ctrpUpdateTime = Date.now();
+                            vm.defaultTab = 'CTRP';
                             toastr.success('Organization has been associated.', 'Operation Successful!');
                         }, 1);
                     }
@@ -326,6 +354,7 @@
                 vm.disableBtn = false;
                 vm.cloningCTEP = false;
                 vm.nilclose = true;
+                vm.defaultTab = 'CTRP';
             });
         };
 

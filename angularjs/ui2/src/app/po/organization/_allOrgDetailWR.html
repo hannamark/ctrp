@@ -3,14 +3,14 @@
                                     <label class="control-label col-xs-12 col-sm-3">CTRP Organization ID:</label>
                                     <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.ctrpOrg.ctrp_id}}</div>
                                 </div>
-                                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.name) || orgDetailView.showUniqueWarning}">
+                                <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.name)}">
                                     <label for="organization_name" class="control-label col-xs-12 col-sm-3">Name:</label>
                                     <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
                                         <input type="text" restriction-field class="form-control input-sm" name="name" id="organization_name" maxlength="160" ng-model="orgDetailView.ctrpOrg.name" auto-focus required ng-blur="orgDetailView.checkUniqueOrganization()">
                                         <span class="form-control-feedback" ng-show="orgDetailView.ctrpOrg.name.length"></span>
                                         <span ng-show="organization_form.name.$dirty">{{160 - orgDetailView.ctrpOrg.name.length}} left</span>
                                         <span class="help-block" ng-show="organization_form.name.$error.required && ctrpbtn.organization_form.needsAttention(organization_form.name)">Name is Required</span>
-                                        <div class="has-error" ng-show="orgDetailView.showUniqueWarning && orgDetailView.ctrpOrg.name.length > 0">
+                                        <div class="has-error" ng-show="orgDetailView.showUniqueWarning===true">
                                         <span class="help-block">
                                             Warning: Organization exists in the database. Please verify and create a new Organization record.
                                         </span>
@@ -18,30 +18,56 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new">
+                                <div class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">Source Context:</label>
                                     <div class="col-xs-12 col-sm-6 form-text">
                                         CTRP
                                     </div>
                                 </div>
-                                <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new">
+                                <div class="form-group">
                                     <!--  Make source ID a R/O field -->
                                     <label class="control-label col-xs-12 col-sm-3">Source ID:</label>
                                     <div class="col-xs-12 col-sm-6 form-text">
                                         {{orgDetailView.ctrpOrg.source_id}}
                                     </div>
                                 </div>
-                                <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new">
+                                <div class="form-group" ng-if="orgDetailView.ctrpOrg.new || !orgDetailView.curOrgEditable">
                                     <label class="control-label col-xs-12 col-sm-3">Source Status:</label>
                                     <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.ctrpOrg.source_status_name}}</div>
                                 </div>
 
-                                <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new">
+                            <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new && orgDetailView.curOrgEditable">
+                                <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status:</label>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="animated-item">
+                                        <select restriction-field
+                                                class="input-sm" id="source_status"
+                                                ng-model="orgDetailView.ctrpOrg.source_status_id"
+                                                ng-options="status.id as status.name for status in orgDetailView.sourceStatusArr">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="form-group" ng-if="orgDetailView.ctrpOrg.new || !orgDetailView.curOrgEditable">
                                     <label class="control-label col-xs-12 col-sm-3">Processing Status:</label>
-                                    <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.ctrpOrg.processing_status}}</div>
+                                    <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.ctrpOrg.processing_status || 'Incomplete'}}</div>
                                 </div>
 
-                                <div class="form-group">
+                            <div class="form-group" ng-if="!orgDetailView.ctrpOrg.new && orgDetailView.curOrgEditable">
+                                <label for="processing_status" class="control-label col-xs-12 col-sm-3">Processing Status:</label>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="animated-item">
+                                        <select restriction-field ng-init="orgDetailView.ctrpOrg.processing_status"
+                                                class="input-sm" id="processing_status"
+                                                ng-model="orgDetailView.ctrpOrg.processing_status"
+                                                ng-options="status.name as status.name for status in orgDetailView.processStatusArr">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
                                     <label class="control-label col-xs-12 col-sm-3">Name Alias:</label>
                                     <div class="col-xs-12 col-sm-6">
                                         <table class="table table-striped table-condensed" ng-if="orgDetailView.curOrgEditable" ctrp-hint>

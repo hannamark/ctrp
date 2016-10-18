@@ -166,7 +166,10 @@
                     vm.cancel();
                     Common.broadcastMsg(MESSAGES.ORG_SEARCH_NIL_DISMISS);
                 } else {
-                    vm.preSearch.nilclose = undefined;
+                    if( vm.preSearch && !vm.preSearch.size && vm.preSearch.nilclose ) {
+                        //needed to show search auto initiate
+                        vm.preSearch.nilclose = undefined;
+                    }
                 }
             }, true);
 

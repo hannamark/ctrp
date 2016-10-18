@@ -327,6 +327,9 @@ json.current_trial_why_stopped @trial.trial_status_wrappers.present? ?
 
 json.processing_status @trial.current_processing_status.nil? ? nil : @trial.current_processing_status.name
 
+# Returns a check to see if it's an amendment
+json.has_amd @trial.has_atleast_one_active_amendment_sub
+
 if SubmissionType.find_by_code('AMD')
   last_amd = @trial.submissions.where('submission_type_id = ?', SubmissionType.find_by_code('AMD').id).last
 else
