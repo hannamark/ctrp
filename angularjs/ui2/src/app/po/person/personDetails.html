@@ -38,6 +38,18 @@
                     <md-tab-label>{{clusterPerson.context}}</md-tab-label>
                     <md-tab-body>
                       <div class="row md-sidenav-push-in-target">
+                          <div class="form-group" ng-show="personDetailView.curPerson.is_ctrp_context">
+                              <label class="control-label col-xs-12 col-sm-3">CTRP Person ID:</label>
+                              <div class="col-xs-12 col-sm-3">
+                                  <div class="form-text">{{personDetailView.curPerson.id}}</div>
+                              </div>
+                          </div>
+                          <div class="form-group" ng-show="!personDetailView.curPerson.new">
+                              <label class="control-label col-xs-12 col-sm-3">CTRP Context Person ID:</label>
+                              <div class="col-xs-12 col-sm-3">
+                                  <div class="form-text">{{personDetailView.curPerson.ctrp_id}}</div>
+                              </div>
+                          </div>
                         <div class="form-group">
                             <label for="prefix" class="control-label col-xs-12 col-sm-3">Prefix:</label>
                             <div class="col-xs-12 col-sm-6" ng-if="personDetailView.curPersonEditable">
@@ -148,12 +160,6 @@
                             <div class="col-xs-12 col-sm-3 form-text"> {{personDetailView.curPerson.registration_type}} </div>
                         </div>
 
-                        <div class="form-group" ng-show="!personDetailView.curPerson.new">
-                            <label class="control-label col-xs-12 col-sm-3">CTRP Context Person ID:</label>
-                            <div class="col-xs-12 col-sm-3">
-                                <div class="form-text">{{personDetailView.curPerson.ctrp_id}}</div>
-                            </div>
-                        </div>
                         <div class="form-group has-feedback required" ng-class="{'has-error': (person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email) && person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone))}">
                             <div class="row">
                                 <label for="email" class="control-label col-xs-12 col-sm-3">Email:</label>
