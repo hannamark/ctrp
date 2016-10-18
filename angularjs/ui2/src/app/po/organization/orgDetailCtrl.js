@@ -320,7 +320,7 @@
 
             } else if (newValue && newValue[0] && newValue[0].ctrp_id && newValue[0].source_context_name !== 'NLM') {
                 var newAssociatedOrg = newValue[0];
-                if (newAssociatedOrg.id ==! vm.ctepOrg.id) {
+                if (newAssociatedOrg.id !== vm.ctepOrg.id) {
                     vm.confirmOverrideAssociatePopUp = true;
                 } else {
                     toastr.success('The chosen organization is already associated to this organization.', 'Operation Cancelled!');
