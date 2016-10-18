@@ -380,12 +380,18 @@ class TrialsController < ApplicationController
       #join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
 
 
-
       @trials = @trials.joins(join_clause).select('trials.*, phases.name as phase_name,primary_purposes.name as purpose,
                             trial_lead_org.name as lead_org_name,sponsor.name as sponsor_name,
                             pi.fname  as pi_name, study_source.name as study_source_name ,
                             research_category.name as research_category_name, responsible_party.name as responsible_party_name,
-                            accrual_disease_term.name as accrual_disease_term_name')
+                            accrual_disease_term.name as accrual_disease_term_name').group(:'trials.id',:'phases.name',
+                                                                                           :'primary_purposes.name',:'trial_lead_org.name',
+                                                                                           :'sponsor.name',:'pi.fname',
+                                                                                           :'study_source.name',:'research_category.name',
+                                                                                           :'responsible_party.name',:'accrual_disease_term.name')
+
+     # @trials = @trials.uniq
+
 
       @trials.each do |trial|
         trial.current_user = @current_user
