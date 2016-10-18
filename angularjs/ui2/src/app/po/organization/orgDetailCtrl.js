@@ -292,7 +292,7 @@
                 var ctepIsSame = ((!vm.ctepOrg && newAssociatedOrg.source_context_name === 'CTEP') || (newAssociatedOrg.source_context_name === 'CTEP' && (newAssociatedOrg.id !== vm.ctepOrg.id)));
                 var nlmIsSame =  ((!vm.nlmOrg && newAssociatedOrg.source_context_name === 'NLM')   || (newAssociatedOrg.source_context_name === 'NLM' &&  (newAssociatedOrg.id !== vm.nlmOrg.id)));
                 var alreadyAssociated = ( !ctepIsSame && !nlmIsSame );
-                console.log(newAssociatedOrg.id,"pppp", vm.ctepOrg.id, alreadyAssociated, ctepIsSame, nlmIsSame)
+                //console.log(newAssociatedOrg.id,"pppp", vm.ctepOrg.id, alreadyAssociated, ctepIsSame, nlmIsSame)
                 if (newAssociatedOrg) {
                     vm.confirmOverrideAssociatePopUp = true;
                 } else {
