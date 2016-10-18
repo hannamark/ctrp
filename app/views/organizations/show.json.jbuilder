@@ -26,7 +26,7 @@ json.extract! @organization,
               :lock_version,
               :org_created_date,
               :org_updated_date
-
+:org_exists
 # p @organization.created_at
 # p @organization.updated_at
 # p @organization.org_created_date
