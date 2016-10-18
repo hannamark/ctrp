@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: PAA F04 Add and Edit Regulatory Information Human Subject Safety
 
 As any CTRP PA User, I can add and edit Regulatory Information � Human Subject Safety
@@ -109,3 +109,12 @@ Examples:
 |Denied                 |Displayed            |Hidden               |Displayed                    |Displayed |
 |Not required           |Displayed            |Hidden               |Hidden                       |Hidden    |
 
+
+Scenario: #10 PA Regulatory Information � Human Subject Safety Board Name field character count
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the Regulatory Information � Human Subject Safety Screen
+Then a comment appears below the Board Name field to display the number of characters available to enter into the field.  
+|160 characters left|
+And "x characters left" will be displayed as characters are added
+When 160 characters have been entered
+Then no additional text can be entered

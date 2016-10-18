@@ -164,6 +164,14 @@ And I change the e-mail address in the format "text"@"text"."text"
 When I change the e-mail address and the format is not "text"@"text"."text"
 Then the system displays a warning message that says "The E-mail address is incorrect"
 
+Scenario: #18 PA General Trials Details Keywords field character count
+Given I am logged into the CTRP Protocol Abstraction application
+And I am on the General Trails Details Screen
+Then a comment appears below the Keywords field to display the number of characters available to enter into the field.  
+|4000 characters left|
+And "x characters left" will be displayed as characters are added
+When 4000 characters have been entered
+Then no additional text can be entered
 
 
 
