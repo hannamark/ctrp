@@ -201,7 +201,7 @@
                             restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
                             <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
                             <div class="col-xs-12 col-sm-9">
-                                <ctrp-org-adv-search-modal-button use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
+                                <ctrp-org-adv-search-modal-button pre-search = '{"source_contextfilter": ["CTRP"]}' use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
                                 <span class="help-block" ng-show="personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length == 0)">
                                     Organization Affiliation is Required
                                 </span>

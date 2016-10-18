@@ -160,7 +160,7 @@
                 </div>
                 <div class="col-sm-3">
                     <!-- <button class="btn btn-primary">Look Up Organization</button> -->
-                    <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="generalTrialDetailView.leadOrg.array"></ctrp-org-adv-search-modal-button>
+                    <ctrp-org-adv-search-modal-button pre-search = '{"source_contextfilter": ["CTRP"]}' max-row-selectable="1" use-built-in-template="false" selected-orgs-array="generalTrialDetailView.leadOrg.array"></ctrp-org-adv-search-modal-button>
                 </div>
             </div>
 
@@ -196,7 +196,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <!-- <button class="btn btn-primary">Look Up Sponsor</button> -->
-                    <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="generalTrialDetailView.sponsor.array"></ctrp-org-adv-search-modal-button>
+                    <ctrp-org-adv-search-modal-button max-row-selectable="1" pre-search = '{"source_contextfilter": ["CTRP"]}' use-built-in-template="false" selected-orgs-array="generalTrialDetailView.sponsor.array"></ctrp-org-adv-search-modal-button>
                 </div>
             </div>
           </fieldset>
