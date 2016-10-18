@@ -72,6 +72,7 @@
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
             $scope.sourceContextArr = []; //sourceContextObj;
             $scope.sourceStatusArr = []; //sourceStatusObj;
+            $scope.curSourceStatuses = []; // subset of source statuses for the selected source context
             $scope.nullifiedId = '';
             $scope.warningMessage = '';
             $scope.selectedRows = [];
@@ -427,7 +428,6 @@
 
 
             function getPromisedData() {
-
                 OrgService.getSourceContexts().then(function(data) {
                     var status = data.server_response.status;
 
@@ -441,7 +441,7 @@
                     }
                 });
 
-                OrgService.getSourceStatuses().then(function(data) {
+                OrgService.getSourceStatuses2().then(function(data) {
                     var status = data.server_response.status;
 
                     if (status >= 200 && status <= 210) {
@@ -451,6 +451,7 @@
                                 return s.code === 'ACT';
                             });
                         }
+                        watchSourceContext(); // trigger the watch for source context selection
                     }
                 });
 
@@ -629,7 +630,6 @@
                 return deselectedRow;
             }
 
-
             function watchCurationMode() {
                 $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                    watchCurationModeSubRoutine();
@@ -638,6 +638,18 @@
 
             function watchCurationModeSubRoutine() {
                 $scope.curationShown = UserService.isCurationModeEnabled() || false;
+            }
+
+            // dynamically select the list of source statuses for the selected source context
+            function watchSourceContext() {
+                $scope.$watch('searchParams.source_context', function(newVal, oldVal) {
+                    newVal = !!newVal ? newVal : 'CTRP'; // if newVal is undefined, 'CTRP' as default
+                    var context = _.findWhere($scope.sourceContextArr, {code: newVal});
+                    var contextId = !!context ? context.id : 2;
+                    $scope.curSourceStatuses = $scope.sourceStatusArr.filter(function(status) {
+                        return status.source_context_id === contextId;
+                    });
+                });
             }
 
         } //advPersonSearchDirectiveController
