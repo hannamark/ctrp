@@ -64,30 +64,31 @@
             <div class="col-xs-12">
                 <h4>Associated Organizations</h4>
                 <div class="row animated-item top-offset-tiny table-responsive search-calendar-grid">
-                    <table class="table table-bordered table-striped table-condensed class-by-name">
+                    <table class="table table-bordered table-striped table-condensed class-by-fielde">
                         <thead>
-                        <th class="ctrp_id nowrap">CTRP Organization ID</th>
-                        <th class="ctep_id nowrap">CTEP Organization ID</th>
-                        <th class="org_name nowrap">Name</th>
-                        <th class="source_status nowrap">Source Status</th>
-                        <th class="source_context nowrap">Source Context</th>
-                        <th class="source_id nowrap">Source ID</th>
-                        <th class="family_name nowrap">Family Name</th>
-                        <th class="phone nowrap">Phone</th>
-                        <th class="email nowrap">Email</th>
-                        <th class="city nowrap">City</th>
-                        <th class="state nowrap">State</th>
-                        <th class="country nowrap">Country</th>
-                        <th class="postal_code nowrap">Postal Code</th>
-                        <th class="context_org_id nowrap">Context Org ID</th>
-                        <th class="processing_status nowrap">Processing Status</th>
-                        <th class="updated_by nowrap">Last Updated by</th>
-                        <th class="updated_date nowrap">Last Updated Date</th>
-                        <th class="association_date nowrap">Association Start Date</th>
-                        <th class="td-icon">Delete</th>
+                            <th class="ctrp_id"><span>CTRP Organization ID</span></th>
+                            <th class="ctep_id"><span>CTEP Organization ID</span></th>
+                            <th class="org_name"><span>Name</span></th>
+                            <th class="source_status"><span>Source Status</span></th>
+                            <th class="source_context"><span>Source Context</span></th>
+                            <th class="source_id"><span>Source ID</span></span></th>
+                            <th class="family_name"><span>Family Name</span></th>
+                            <th class="phone"><span>Phone</span></th>
+                            <th class="email"><span>Email</span></th>
+                            <th class="city"><span>City</span></th>
+                            <th class="state"><span>State</span></th>
+                            <th class="country"><span>Country</span></th>
+                            <th class="postal_code"><span>Postal Cod</span></th>
+                            <th class="context_org_id"><span>Context Org ID</span></th>
+                            <th class="processing_status"><span>Processing Status</span></th>
+                            <th class="updated_by"><span>Last Updated by</span></th>
+                            <th class="updated_date"><span>Last Updated Date</span></th>
+                            <th class="association_date"><span>Association Start Date</span></th>
+                        <th class="td-icon"><span>Delete</span></th>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="org in orgDetailView.associatedOrgs" ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
+                        <tr ng-repeat="org in orgDetailView.associatedOrgs"
+                            ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
                             <td>{{org.ctrp_id}}</td>
                             <td>{{org.ctep_id}}</td>
                             <td>{{org.name}}</td>

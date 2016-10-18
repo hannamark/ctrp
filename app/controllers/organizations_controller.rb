@@ -31,7 +31,7 @@ class OrganizationsController < ApplicationController
   # POST /organizations.json
   def create
     @organization = Organization.new(organization_params)
-    @organization.processing_status = 'Complete'
+    @organization.processing_status = 'Incomplete'
     @organization.source_status_id = SourceStatus.ctrp_context_source_statuses.find_by_code('ACT').id
     @organization.source_context_id = SourceContext.find_by_code('CTRP').id
     @organization.created_by = @current_user.username unless @current_user.nil?
@@ -54,15 +54,20 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1
   # PATCH/PUT /organizations/1.json
   def update
+    ctepId = SourceContext.find_by_code("CTEP").id
+    nlmId = SourceContext.find_by_code("NLM").id
+    ctrpId = SourceContext.find_by_code("CTRP").id
     @organization.updated_by = @current_user.username unless @current_user.nil?
     if organization_params[:ctrp_id] && @organization.ctrp_id != organization_params[:ctrp_id] &&
-        ( @organization.source_context_id == SourceContext.find_by_code("CTEP").id || @organization.source_context_id == SourceContext.find_by_code("NLM").id ) then
+        ( @organization.source_context_id == ctepId || @organization.source_context_id == nlmId ) then
       respond_to do |format|
         @organization.ctrp_id = organization_params[:ctrp_id]
         @organization.association_date = DateTime.now
-        old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @organization.source_context_id})
-                       .where('id <> ' + (@organization.id).to_s)
-        old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
+        if @organization.source_context_id == ctepId
+          old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @organization.source_context_id})
+                         .where('id <> ' + (@organization.id).to_s).where('source_context_id <> ' + (nlmId).to_s)
+          old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
+        end
         if @organization.save
           @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
           format.json { render :associated }
@@ -71,7 +76,7 @@ class OrganizationsController < ApplicationController
           format.json { render json: @organization.errors, status: :unprocessable_entity }
         end
       end
-    elsif @organization.source_context_id == SourceContext.find_by_code("CTRP").id
+    elsif @organization.source_context_id == ctrpId
       respond_to do |format|
         if @organization.update(organization_params.except(:ctrp_id))
           format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
@@ -257,19 +262,22 @@ class OrganizationsController < ApplicationController
 
   #Method to check for Uniqueness while creating organizations - check on name & source context. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
   def unique
-    count = countOrgsWithSameName
-    is_unique = true
-
-    if params[:org_exists] == true
-      @dbOrg = Organization.find_by_name(params[:org_name])
+    is_unique = false
+    if params[:org_exists] == true && params[:org_name] && params[:org_id]
+      #edit
+      @dbOrgs1 = Organization.where("name = '#{params[:org_name]}'")
+      @dbOrgs = Organization.where("id <> #{params[:org_id]} AND name = '#{params[:org_name]}'") unless @dbOrgs1.blank?
       #if on the Edit screen, then check for name changes and ignore if database & screen names are the same.
       #if params[:org_name] == @dbOrg.name, both are equal. Must not warn
       #However if on the edit screen and the user types in a name that is the same as another org, then complain, both are different. Must warn.
-      if !@dbOrg.nil? && !(params[:org_name] == @dbOrg.name || count == 0)
-        is_unique = false
-      end
-    elsif params[:org_exists] == false && count > 0
-      is_unique = false
+
+      is_unique = true unless @dbOrgs.blank?
+
+    elsif params[:org_exists] == true && params[:org_name]
+      #new
+      @dbOrgs = Organization.find_by_name(params[:org_name])
+
+      is_unique = true unless @dbOrgs.blank?
     end
 
     respond_to do |format|
