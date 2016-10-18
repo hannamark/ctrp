@@ -16,9 +16,7 @@ class SourceStatusesController < ApplicationController
     org_source_status_access = (current_ctrp_user_role_details @current_user.role)[search_type]
 
     #search_context
-    if (['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_SUPER','ROLE_ABSTRACTOR'].include? @current_user.role) && params[:view_context].empty?
-      @source_statuses = SourceStatus.all
-    elsif org_source_status_access
+    if org_source_status_access
       @source_statuses = SourceStatus.source_statuses_with_active_record_status
                              .where("source_context_id=?", SourceContext.find_by_code(search_context).id)
                              .order(code: :asc)
