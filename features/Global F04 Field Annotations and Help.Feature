@@ -1,4 +1,4 @@
-@PA @global
+﻿@PA @global
 Feature: Global F04 Field Annotations and Help
 
 As any CTRP PA User, I will see helpful comments on Trial Date and Status fields
@@ -35,24 +35,5 @@ Then the comment appears below the Trial Status?
 |Complete - Trial has been closed to accrual; participants have completed treatment/intervention, and the study has met its primary objectives.|
 |Administratively Complete - Trial has been completed prematurely (for example, due to poor accrual, insufficient drug supply, IND closure, etc.)|
 |Withdrawn - Trial has been withdrawn from development and review.|
-
-
-Scenario: #8 PA General Trials Details Keywords field character count
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the General Trails Details Screen
-Then a comment appears below the Keywords field to display the number of characters available to enter into the field.  
-|4000 characters left|
-And "x characters left" will be displayed as characters are added
-When 4000 characters have been entered
-Then no additional text can be entered
-
-Scenario: #9 PA Regulatory Information � Human Subject Safety Board Name field character count
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Regulatory Information � Human Subject Safety Screen
-Then a comment appears below the Board Name field to display the number of characters available to enter into the field.  
-|160 characters left|
-And "x characters left" will be displayed as characters are added
-When 160 characters have been entered
-Then no additional text can be entered
 
 
