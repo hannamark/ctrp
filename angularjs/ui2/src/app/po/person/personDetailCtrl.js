@@ -16,7 +16,7 @@
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
-        console.info('vm.curPerson: ', vm.curPerson);
+        // console.info('vm.curPerson: ', vm.curPerson);
         vm.curPerson.processing_status = 'Complete';
         vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;

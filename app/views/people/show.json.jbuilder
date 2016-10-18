@@ -11,6 +11,7 @@ ctep_active_source_status_id = ctep_active_source_status.present? ? ctep_active_
 
 json.set! :is_ctrp_context, ctrp_context_id == @person.source_context_id # flag if this person is ctrp context
 json.set! :service_request, ServiceRequest.find(@person.service_request_id).name if @person.service_request_id.present?
+json.set! :source_status, SourceStatus.find(@person.source_status_id).name if @person.source_status_id.present?
 
 @associated_persons = Person.where("ctrp_id = ? AND source_context_id = ?", @person.ctrp_id, ctep_context_id) if @person.ctrp_id.present? && @person.source_context_id == ctrp_context_id
 
