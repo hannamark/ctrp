@@ -93,7 +93,7 @@ var PoCommonBar = function(){
 
     this.clickAddOrganizations = function(){
         helper.clickLink(this.addOrganizations, "Add Organization link");
-        expect(this.add_Org_Page.getText()).to.eventually.equal(add_Org_Page_Text);
+     //  expect(this.add_Org_Page.getText()).to.eventually.equal(add_Org_Page_Text);
     };
 
     this.clickPeople = function(){

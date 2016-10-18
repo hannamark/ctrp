@@ -732,9 +732,9 @@ var dbConnection = function () {
     };
 
     this.dbConnectionMailVerification = function (typeOfIDNCIORLeadProtocol, identifier, emailTO, emailSubject, emailBody,err) {
-            //if (err) {
-            //    return console.error('could not connect to postgres', err);
-            //}
+            if (err) {
+                return console.error('could not connect to postgres', err);
+            }
             //if(typeOfIDNCIORLeadProtocol.toUpperCase() === 'NCI')
             //{
             //client.query("SELECT * FROM trials where nci_id = '" + identifier + "'", function (err, trialID) {
@@ -778,8 +778,11 @@ var dbConnection = function () {
                             assert.fail(0, 1, 'error running Query.');
                         }
                         console.log('mailI/d from db');
-                        console.log(mailID.rows[0].to);
-                        if (emailTO !== '') {
+                        console.log(mailID.rows[0]);
+                        return mailID.rows[0];
+                        mailTOFromDB = mailID.rows[0].to;
+                        mailBodyFromDB = mailID.rows[0].body;
+                   /*     if (emailTO !== '') {
                             expect(mailID.rows[0].to).to.equal(emailTO, 'Verification of Email TO');
                         }
                         if (emailSubject !== '') {
@@ -787,18 +790,26 @@ var dbConnection = function () {
                         }
                         if (emailBody !== '') {
                             expect(mailID.rows[0].body).to.equal(emailBody, 'Verification of Email Body');//.and.notify(err);
-                        }
+                        }*/
                         expect(mailID.rows[0].result).to.equal('Success', 'Verify Email Result is Success');
-                        client.on('end', function () {
+                        client.on('end', function (result) {
+                            client.end();
+                            res.writeHead(200, {'Content-Type': 'text/plain'});
+                            res.write(JSON.stringify(result.rows, null, "    ") + "\n");
+                            console.log('**********'+result.rows[0].body);
+                            res.end();
+                           // console.log('**********'+result.rows[0].to);
+                           // mailTOFromDB = result.rows[0].to;
+                           // mailBodyFromDB = result.rows[0].body;
                             console.log("Client was disconnected.")
                         });
                     });
                 });
             }
-            else {
-                assert.fail(0, 1, 'Please select the correct Criteria for selection of Trial. Type should be either "NCI" OR "LEADPROTOCOLID". ' +
-                'Current provided type is: ' + typeOfIDNCIORLeadProtocol + 'which does not match with existing types.');
-            }
+            //else {
+            //    assert.fail(0, 1, 'Please select the correct Criteria for selection of Trial. Type should be either "NCI" OR "LEADPROTOCOLID". ' +
+            //    'Current provided type is: ' + typeOfIDNCIORLeadProtocol + 'which does not match with existing types.');
+            //}
 
 
     };
