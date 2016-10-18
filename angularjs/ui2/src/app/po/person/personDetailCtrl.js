@@ -473,11 +473,10 @@
 
         function removePersonAssociation(ctepPersonId) {
             PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
-                console.info('res: ',res);
                 if (res.is_removed) {
                     vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, _.findWhere(vm.curPerson.associated_persons, {id: ctepPersonId}));
+                    vm.curPerson.cluster = _.without(vm.curPerson.cluster, _.findWhere(vm.curPerson.cluster, {id: ctepPersonId})); // remove the tab
                     showToastr('The selected person context association was deleted');
-                    // TODO: remove the tab
                 }
             }).catch(function(err) {
                 console.error('err: ', err);
@@ -487,7 +486,6 @@
 
         function cloneCtepPerson(ctepPersonId, forceClone) {
             PersonService.cloneCtepPerson(ctepPersonId, forceClone).then(function(res) {
-                console.info('res in cloning person: ', res);
                 if (res.is_cloned) {
                     showToastr('The CTEP person context has been successfully cloned');
                     vm.matchedCtrpPersons = [];

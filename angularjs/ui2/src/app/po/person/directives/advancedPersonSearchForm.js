@@ -446,7 +446,6 @@
 
                     if (status >= 200 && status <= 210) {
                         $scope.sourceStatusArr = data.sort(Common.a2zComparator());
-                        console.info('sourceStatusArr: ', $scope.sourceStatusArr);
                         if ($scope.usedInModal) {
                             $scope.sourceStatusArr = $scope.sourceStatusArr.filter(function(s) {
                                 return s.code === 'ACT';
@@ -462,7 +461,6 @@
                     if (status >= 200 && status <= 210) {
                         $scope.serviceRequests = requests;
                     }
-
                     delete requests.server_response;
                 });
             } //getPromisedData
