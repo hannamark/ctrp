@@ -461,7 +461,6 @@
                     if (status >= 200 && status <= 210) {
                         $scope.serviceRequests = requests;
                     }
-
                     delete requests.server_response;
                 });
             } //getPromisedData
@@ -643,12 +642,20 @@
             // dynamically select the list of source statuses for the selected source context
             function watchSourceContext() {
                 $scope.$watch('searchParams.source_context', function(newVal, oldVal) {
-                    newVal = !!newVal ? newVal : 'CTRP'; // if newVal is undefined, 'CTRP' as default
-                    var context = _.findWhere($scope.sourceContextArr, {code: newVal});
-                    var contextId = !!context ? context.id : 2;
-                    $scope.curSourceStatuses = $scope.sourceStatusArr.filter(function(status) {
-                        return status.source_context_id === contextId;
-                    });
+
+                    if (!newVal) {
+                        // for All source contexts
+                        $scope.curSourceStatuses = _.uniq($scope.sourceStatusArr, function(status, key, code) {
+                            return status.code;
+                        });
+                    } else {
+                        var context = _.findWhere($scope.sourceContextArr, {code: newVal});
+                        var contextId = !!context ? context.id : 2;
+                        $scope.curSourceStatuses = $scope.sourceStatusArr.filter(function(status) {
+                            return status.source_context_id === contextId;
+                        });
+                    }
+
                 });
             }
 
