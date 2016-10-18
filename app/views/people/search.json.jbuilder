@@ -7,6 +7,7 @@ json.people do
     #eager loading po_affiliations
     json.affiliated_orgs_count person.po_affiliations.length
     json.affiliated_orgs person.po_affiliations.map{ |po_affiliation| po_affiliation.organization.name}.join("; ")
+    json.service_request ServiceRequest.find(person.service_request_id).name if person.service_request_id.present?
 
   end
 end
