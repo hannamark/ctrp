@@ -15,6 +15,7 @@ json.associated_orgs do
                   :postal_code,
                   :country,
                   :email,
+                  :phone,
                   :phone_with_ext,
                   :extension,
                   :ctrp_id,
