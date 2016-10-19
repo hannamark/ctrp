@@ -18,6 +18,9 @@ var mailVerificationPage = require('../support/mailVerification');
 var searchTrialPage = require('../support/searchTrialPage');
 var databaseConnection = require('../support/databaseConnection');
 var userProfilePage = require('../support/userProfilePage');
+var loginPage = require('../support/LoginPage');
+var assert = require('assert');
+
 
 
 module.exports = function () {
@@ -31,6 +34,7 @@ module.exports = function () {
     var searchTrial = new searchTrialPage();
     var dbConnect = new databaseConnection();
     var userProfile = new userProfilePage();
+    var login = new loginPage();
 
     var leadOrgTrialIdentifier = 'SSDftLdOg';
     var grantOption = 'yes';
@@ -147,7 +151,8 @@ module.exports = function () {
 
     this.Given(/^the an email entitled "([^"]*)" will be sent to the user \( Emails list can be found on the share drive under functional\/Registartion: CTRP System Generated Emails\)$/, function (arg1) {
         return browser.sleep(25).then(function () {
-            storeLeadProtocolId.then(function (leadProtocolID) {
+            assert.fail(0,1,'Email of Draft does not match with requirement');
+         /*   storeLeadProtocolId.then(function (leadProtocolID) {
                 element(by.linkText('ctrptrialsubmitter')).click();
                 userProfile.userProfileFirstName.getAttribute('value').then(function (userFirstName) {
                     userProfile.userProfileLastName.getAttribute('value').then(function (userLastName) {
@@ -177,12 +182,25 @@ module.exports = function () {
                                 '                            \<p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov</p>\n' +
                                 '                            \<p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>\n' +
                                 '                            \</body></html>';
-                            dbConnect.dbConnectionMailVerification('leadprotocolID', leadProtocolID, userCurrentEmail, emailSubject, emailBody,getDBConnection);
+
+                            browser.driver.wait(function () {
+                                console.log('wait here');
+                                return true;
+                            }, 40).then(function () {
+                                dbConnect.dbConnectionMailVerification('leadprotocolID', leadProtocolID, userCurrentEmail, emailSubject, emailBody,getDBConnection);
+                                login.clickWriteMode('On');
+                                mailID.rows[0].then(function(value){
+
+
+                                console.log('&&&%&%&% HERE' + value);// mailID.rows[0].to);
+                                });
+                              //  expect(mailBodyFromDB).to.equal(emailBody, 'Verification of Email TO')
+                            });
                         });
                     });
                 });
-            });
-       // browser.sleep(25).then(callback);
+            });*/
+    //    browser.sleep(25).then(callback);
         });
     });
 

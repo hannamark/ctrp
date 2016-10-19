@@ -303,8 +303,12 @@ class ImportTrialService
   # Maps the ClinicalTrials.gov status to CTRP status code
 
   def map_status (ct_status)
+    p "$$$$$$$$$$"
+    p ct_status
     import_trial_statuses = CtGovImportExport.import_trial_statuses
+    p change_code(import_trial_statuses,TrialStatus,ct_status)
     return change_code(import_trial_statuses,TrialStatus,ct_status)
+
   end
 
   def map_phase (ct_phase)

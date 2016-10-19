@@ -142,7 +142,7 @@
                             <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status:</label>
                             <div class="col-xs-12 col-sm-3">
                                 <!--TODO: if editable -->
-                                <div ng-if="!personDetailView.curPersonEditable" class="form-text">{{personDetailView.curSourceStatusName}}</div>
+                                <div ng-if="!personDetailView.curPersonEditable" class="form-text">{{personDetailView.curPerson.source_status}}</div>
                                 <div ng-if="personDetailView.curPersonEditable">
                                     <select ng-init="personDetailView.curPerson.source_status_id"
                                         restriction-field

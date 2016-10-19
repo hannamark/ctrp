@@ -474,7 +474,7 @@ class TrialService
     ctepIdentifierObj = @trial.other_ids.any?{|a| a.protocol_id_origin_id == ctep_origin_id} ? @trial.other_ids.find {|a| a.protocol_id_origin_id == ctep_origin_id} : nil
     ctepIdentifier = ctepIdentifierObj.present? ? ctepIdentifierObj.protocol_id : nil
     dcpIdentifierObj = @trial.other_ids.any?{|a| a.protocol_id_origin_id == dcp_origin_id} ? @trial.other_ids.find {|a| a.protocol_id_origin_id == dcp_origin_id} : nil
-    dcpIdentifier = dcpIdentifierObj.present? ? dcpIdentifier.protocol_id : nil
+    dcpIdentifier = dcpIdentifierObj.present? ? dcpIdentifierObj.protocol_id : nil
 
     nci_id = @trial.nci_id
     lead_org_protocol_id = @trial.lead_protocol_id

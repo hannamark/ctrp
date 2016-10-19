@@ -1326,7 +1326,7 @@ CtGovImportExport.find_or_create_by(from:'Enrolling by Invitation', to:'Enrollin
 CtGovImportExport.find_or_create_by(from:'Suspended', to:'Temporarily Closed to Accrual',import_or_export:'import' ,model:'Trial Status')
 CtGovImportExport.find_or_create_by(from:'Active, not recruiting', to:'Closed to Accrual',import_or_export:'import' ,model:'Trial Status')
 CtGovImportExport.find_or_create_by(from:'Terminated', to:'Administratively Complete',import_or_export:'import' ,model:'Trial Status')
-CtGovImportExport.find_or_create_by(from:'Completed', to:'Completed',import_or_export:'import' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(from:'Completed', to:'Complete',import_or_export:'import' ,model:'Trial Status')
 
 
 CtGovImportExport.find_or_create_by(to:'Not yet recruiting', from:'In Review',import_or_export:'export' ,model:'Trial Status')

@@ -163,6 +163,7 @@
             getServiceRequests: getServiceRequests,
             getProcessingStatuses: getProcessingStatuses,
             cloneCtepOrg: cloneCtepOrg,
+            getSourceStatuses2: getSourceStatuses2,
         };
 
         return services;
@@ -391,6 +392,11 @@
         function getSourceStatuses(searchParams) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SOURCE_STATUSES, searchParams);
         } //getSourceStatuses
+
+        // retrieve ALL source statuses using GET
+        function getSourceStatuses2() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SOURCE_STATUSES2);
+        }
 
 
         /**

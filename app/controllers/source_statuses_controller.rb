@@ -16,7 +16,7 @@ class SourceStatusesController < ApplicationController
     org_source_status_access = (current_ctrp_user_role_details @current_user.role)[search_type]
 
     #search_context
-    if (['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_SUPER','ROLE_ABSTRACTOR'].include? @current_user.role) &&
+    if (['ROLE_ADMIN','ROLE_ACCOUNT-APPROVER','ROLE_SUPER','ROLE_ABSTRACTOR','ROLE_CURATOR'].include? @current_user.role) &&
           params  && params[:view_context] &&  params[:view_context].empty? &&  params[:view_type] == 'search'
       @source_statuses = SourceStatus.all
     elsif org_source_status_access

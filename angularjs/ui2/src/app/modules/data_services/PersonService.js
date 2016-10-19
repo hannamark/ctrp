@@ -108,7 +108,7 @@
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'affiliated_orgs', displayName:'Affiliated Orgs',
-                    minWidth: '150', width: '*',
+                    minWidth: '150', width: '*', enableSorting: false, enableFiltering: false,
                     cellTemplate:'<div class="ui-grid-cell-contents tooltip-uigrid" ng-if="row.entity.affiliated_orgs.length > 0" title="{{COL_FIELD}}">{{COL_FIELD}}</div>' +
                     //' <master-directive button-label="Click to see" mod="row.entity.affiliated_orgs">' +
                     //'</master-directive></div>' +
@@ -119,7 +119,10 @@
                 {name: 'updated_by', displayName: 'Last Updated By',
                     enableSorting: true, minWidth: '150', width: '*'},
                 {name: 'prefix', enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'suffix', enableSorting: true, minWidth: '75', width: '*'}
+                {name: 'suffix', enableSorting: true, minWidth: '75', width: '*'},
+                {name: 'context_person_id', displayName: 'Context Person ID', enableSorting: false, minWidth: '75', width: '*'},
+                {name: 'processing_status', displayName: 'Processing Status', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'service_request', displayName: 'Service Request', enableSorting: false, minWidth: '75', width: '*'},
             ]
         };
 
