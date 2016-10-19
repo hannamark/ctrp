@@ -1631,7 +1631,6 @@ div[disabled] {
 
 /* Set modal to mimic default browser look/feel */
 
-
 .modal-default .modal-header {
     padding: 10px;
     background-color: #D5D5D5;
@@ -1913,7 +1912,7 @@ body.trial-abstraction-search .form-horizontal label.control-label.checkbox3 {
     color: #444;
 }
 
-.class-by-field td span {width: 200px;  display: block;}
+
 .ctrp_id {}
 .ctep_id {}
 .org_name {}
@@ -1921,7 +1920,7 @@ body.trial-abstraction-search .form-horizontal label.control-label.checkbox3 {
 .source_context {}
 .source_id {}
 .family_name {}
-.phone span {}
+.phone {}
 .email {}
 .city {}
 .state {}
