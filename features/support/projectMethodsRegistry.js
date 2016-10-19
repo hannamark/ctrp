@@ -76,15 +76,19 @@ var projectMethodsRegistry = function () {
         trialMenuItem.clickListSearchTrialLink();
         if (trialType === 'National') {
             trialMenuItem.clickRegisterNationalTrialLink();
+            login.clickWriteMode('On');
         }
         else if (trialType === 'Externally Peer-Reviewed') {
             trialMenuItem.clickRegisterExternallyPeerReviewedTrialLink();
+            login.clickWriteMode('On');
         }
         else if (trialType === 'Institutional') {
             trialMenuItem.clickRegisterInstitutionalTrialLink();
+            login.clickWriteMode('On');
         }
         else if (trialType === 'Industrial/Other') {
             trialMenuItem.clickRegisterIndustrialOtherTrialLink();
+            login.clickWriteMode('On');
         }
         else {
             assert.fail(0, 1, 'Given Trial type does not match any criteria. The Trial types in the list are National, Externally Peer-Reviewed, Institutional and Industrial/Other');
@@ -1123,6 +1127,8 @@ var projectMethodsRegistry = function () {
             menuItem.clickListPeople();
             searchPeople.setPersonFirstName(perName + moment().format('MMMDoYY'));
             per4 = searchPeople.personFirstName.getAttribute('value');
+        searchPeople.setPersonOrgAffiliation('trialPerAffOrg' + moment().format('MMMDoYY'));
+        cukeOrganization = searchPeople.personOrgAffiliation.getAttribute('value');
             searchPeople.clickSearch();
             return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
                 if (state === true) {
@@ -2185,6 +2191,7 @@ var projectMethodsRegistry = function () {
                    console.log('value.clinical_study.primary_completion_date');
                     console.log(value.clinical_study.primary_completion_date);
                 }
+                /*
                 addTrial.viewTrialLeadOrganization.isPresent().then(function(stateLeadOrg){
                     if(stateLeadOrg){
                         addTrial.viewTrialLeadOrganization.getText().then(function (trialLeadOrg) {
@@ -2192,13 +2199,22 @@ var projectMethodsRegistry = function () {
                         });
                     }
                 });
+
+                addTrial.viewTrialSponsor.isPresent().then(function(stateLeadSponsor){
+                    if(stateLeadSponsor){
+                        addTrial.viewTrialSponsor.getText().then(function (trialLeadSponsor) {
+                            expect(trialLeadSponsor).to.eql(value.clinical_study.sponsors.lead_sponsor.agency, 'Verification of Sponsor Org for Imported Trial');
+                        });
+                    }
+                });
+
                 addTrial.viewTrialDataTable4FundingSourceValues.isPresent().then(function(stateDataTbl){
                     if(stateDataTbl) {
                         addTrial.viewTrialDataTable4FundingSourceValues.getText().then(function (trialDataTblOrg) {
                             expect(trialDataTblOrg).to.eql(value.clinical_study.sponsors.lead_sponsor.agency, 'Verification of Data Tbl Org for Imported Trial');
                         });
                     }
-                });
+                });*/
             });
         });
     };
@@ -3187,6 +3203,72 @@ var projectMethodsRegistry = function () {
             initialEmailEnv = '[CTRP AUM: development]';
         }
     };
+
+    /** ******************************** ******************************** ******************************** ******************************** ********************************
+     * Method: This will create Organization for Trial, it creates a new org then checks if it exist then use the same one
+     ******************************** ******************************** ******************************** ******************************** ********************************/
+    this.createOrgForImportedTrial = function (orgName, userWhoWillImportTrial) {
+        menuItem.clickJustOrganizations();
+        menuItem.clickListOrganizations();
+        searchOrg.setOrgName(orgName);
+        searchOrg.clickExactSearch('true');
+        searchOrg.clickSearchButton();
+        return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
+            if (state === true) {
+                console.log('Organization: ' + orgName + 'exists');
+            }
+            else {
+                browser.driver.wait(function () {
+                    console.log('wait here');
+                    return true;
+                }, 40).then(function () {
+                    commonFunctions.onPrepareLoginTest('ctrpcurator');
+                });
+                //login.login('ctrpcurator', 'Welcome01');
+                //login.accept();
+                browser.driver.wait(function () {
+                    console.log('wait here');
+                    return true;
+                }, 40).then(function () {
+                    menuItem.clickHomeEnterOrganizations();
+                    login.clickWriteMode('On');
+                    menuItem.clickOrganizations();
+                    menuItem.clickAddOrganizations();
+                    addOrg.setAddOrgName(orgName);
+                    addOrg.setAddAlias('shAliasIMP');
+                    addOrg.clickSaveAlias();
+                    addOrg.setAddAddress('9609 MedicalTrial Center DriveIMP');
+                    addOrg.setAddAddress2('9609 MedicalTrial Center DriveIMP');
+                    selectValue.selectCountry('Poland');
+                    selectValue.selectState('Lubuskie');
+                    addOrg.setAddCity('searchTrialCityIMP');
+                    addOrg.setAddPostalCode('55578');
+                    addOrg.setAddEmail('searchTrialIMP@email.com');
+                    addOrg.setAddPhone('545-487-8956');
+                    //   addOrg.setAddFax('898-487-4242');
+                    addOrg.setAddExtension('01');
+                    addOrg.clickSave();
+                    //browser.takeScreenshot().then(function (png) {
+                    //    helper.writeScreenShot(png, process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/testScreenShot/CTRPIDOrgID' + moment().format('MMMDoYY hmmss') + '.png');
+                    //});
+                    helper.wait(addOrg.addOrgCTRPID,'CTRPID from Organization Page');
+                    orgSourceId = addOrg.addOrgCTRPID.getText();
+                    commonFunctions.onPrepareLoginTest(userWhoWillImportTrial);
+                    //login.login('ctrptrialsubmitter', 'Welcome01');
+                    //login.accept();
+                    browser.driver.wait(function () {
+                        console.log('wait here');
+                        return true;
+                    }, 40).then(function () {
+                        trialMenuItem.clickHomeSearchTrial();
+                        login.clickWriteMode('On');
+                        self.selectTrials('Industrial/Other');//selectTrials(trialType);
+                    });
+                });
+            }
+        });
+    };
+
 
 };
 module.exports = projectMethodsRegistry;

@@ -13,6 +13,7 @@ var testConfiguration = process.env.TEST_RESULTS_DIR || process.cwd() + '/tests/
 var assert = require('assert');
 var moment = require('moment');
 var projectFunctionRegistryPage = require('../support/projectMethodsRegistry');
+var addTrialPage = require('../support/registerTrialPage');
 
 var configurationFile;
 configurationFile = '' + testConfiguration + '/testSettings.json';
@@ -33,6 +34,7 @@ var dbConnection = function () {
 
     var projectFunctions = new projectFunctionsPage();
     var projectFunctionsRegistry = new projectFunctionRegistryPage();
+    var addTrial = new addTrialPage();
 
     if(browser.baseUrl === configuration.baseMainUrlQA){
         console.log('browser.baseUrl.current qa');
@@ -779,10 +781,10 @@ var dbConnection = function () {
                         }
                         console.log('mailI/d from db');
                         console.log(mailID.rows[0]);
-                        return mailID.rows[0];
+                      //  return mailID.rows[0];
                         mailTOFromDB = mailID.rows[0].to;
                         mailBodyFromDB = mailID.rows[0].body;
-                   /*     if (emailTO !== '') {
+                       if (emailTO !== '') {
                             expect(mailID.rows[0].to).to.equal(emailTO, 'Verification of Email TO');
                         }
                         if (emailSubject !== '') {
@@ -790,7 +792,7 @@ var dbConnection = function () {
                         }
                         if (emailBody !== '') {
                             expect(mailID.rows[0].body).to.equal(emailBody, 'Verification of Email Body');//.and.notify(err);
-                        }*/
+                        }
                         expect(mailID.rows[0].result).to.equal('Success', 'Verify Email Result is Success');
                         client.on('end', function (result) {
                             client.end();
@@ -812,6 +814,25 @@ var dbConnection = function () {
             //}
 
 
+    };
+
+
+    this.dbConnectionPSViewTable = function (userWhoImportedTrial, PSTableValues, err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+        }
+        client.query("select * from users where username = '" + userWhoImportedTrial + "'", function (err, userTable) {
+            if (err) {
+                console.error('error running the Select query to find the userName from Users table', err);
+                assert.fail(0, 1, 'error running Query.');
+            }
+            userTableDBOrgID = userTable.rows[0].organization_id;
+            viewPSWithOrgID = userTableDBOrgID + ' ' + viewPS;
+            addTrial.getViewTrialParticipatingSites(viewPSWithOrgID.split());
+            client.on('end', function () {
+                console.log("Client was disconnected.")
+            });
+        });
     };
 };
 module.exports = dbConnection;
