@@ -393,7 +393,7 @@
             });
         }
 
-        vm.associate = _.partial(_associateCtepPerson, vm.curPerson.id); // used for associating ctep person to ctrp person, vm.curPerson.id is CTEP person id
+        vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // used for associating ctep person to ctrp person, vm.curPerson is CTEP person id
         function _associateCtepPerson(ctepPerson, ctrpId) {
             PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
                 console.info('res with association person: ', res); // resp.person
