@@ -81,7 +81,7 @@
                     visible: false
                 },
                 {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', minWidth: '100', width: '*'},
-                {name: 'ctep_id', enableSorting: true, displayName: 'CTEP ID', minWidth: '100', width: '*'},
+                {name: 'ctep_source_id', enableSorting: true, displayName: 'CTEP ID', minWidth: '100', width: '*'},
                 {name: 'fname', displayName: 'First', enableSorting: true,  minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'

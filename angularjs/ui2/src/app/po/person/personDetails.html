@@ -38,16 +38,16 @@
                     <md-tab-label>{{clusterPerson.context}}</md-tab-label>
                     <md-tab-body>
                       <div class="row md-sidenav-push-in-target">
-                          <div class="form-group" ng-show="personDetailView.curPerson.is_ctrp_context">
+                          <div class="form-group" ng-show="!personDetailView.curPerson.new">
                               <label class="control-label col-xs-12 col-sm-3">CTRP Person ID:</label>
                               <div class="col-xs-12 col-sm-3">
-                                  <div class="form-text">{{personDetailView.curPerson.id}}</div>
+                                  <div class="form-text">{{personDetailView.curPerson.ctrp_id}}</div>
                               </div>
                           </div>
-                          <div class="form-group" ng-show="!personDetailView.curPerson.new">
+                          <div class="form-group">
                               <label class="control-label col-xs-12 col-sm-3">CTRP Context Person ID:</label>
                               <div class="col-xs-12 col-sm-3">
-                                  <div class="form-text">{{personDetailView.curPerson.ctrp_id}}</div>
+                                  <div class="form-text">{{personDetailView.curPerson.id}}</div>
                               </div>
                           </div>
                         <div class="form-group">
@@ -276,20 +276,21 @@
                             ng-if="personDetailView.curSourceContextName === 'CTRP' && !personDetailView.curPerson.new" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
                             <label for="person_context" class="control-label col-sm-3 col-xs-12">Associate Person Context:</label>
                             <div class="col-sm-5 col-xs-12">
-                                <button type="button" class="btn btn-primary" id="person_search_modal" person-search-modal-button2 source-context-only="'CTEP'" ng-model="personDetailView.associatedPersonContexts" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN" ng-disabled="personDetailView.curPerson.associated_persons.length > 0">
+                                <button type="button" class="btn btn-primary" id="person_search_modal" person-search-modal-button2 source-context-only="'CTEP'" ng-model="personDetailView.associatedPersonContexts" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN" ng-disabled="personDetailView.curPerson.associated_persons.length > 1">
                                     <i class="glyphicon glyphicon-search"></i> Search Persons
                                 </button>
                             </div>
                         </div>
                         <!-- table of associated persons below -->
-                        <div class="form-group" ng-show="personDetailView.curPerson.associated_persons.length > 0 && personDetailView.curPerson.is_ctrp_context">
+                        <div class="form-group" ng-show="personDetailView.curPerson.associated_persons.length > 1 && personDetailView.curPerson.is_ctrp_context">
                             <div class="col-xs-12" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN,ROLE_ABSTRACTOR,ROLE_RO">
+                                <!-- person association grid -->
                                 <div class="row animated-item top-offset-tiny table-responsive search-calendar-grid">
                                     <h4>Associated Person Contexts:</h4>
                                     <table class="table table-bordered table-striped table-condensed">
                                         <thead>
-                                            <th width="6%" class="nowrap">CTRP Person ID</th>
-                                            <th width="6%" class="nowrap">CTEP Person ID</th>
+                                            <th width="6%" class="nowrap">CTRP ID</th>
+                                            <th width="6%" class="nowrap">CTEP ID</th>
                                             <th>Prefix</th>
                                             <th width="7%" class="min-width-md">First Name</th>
                                             <th width="3%" class="min-width-md">Middle Name</th>
@@ -311,8 +312,8 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="person in personDetailView.curPerson.associated_persons" ng-class="person._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                                            <td>{{person.ctrp_id}}</td>
-                                            <td>{{person.id}}</td>
+                                            <td>{{person.ctrp_source_id}}</td>
+                                            <td>{{person.source_id}}</td>
                                             <td>{{person.prefix}}</td>
                                             <td>{{person.fname}}</td>
                                             <td>
@@ -340,10 +341,10 @@
                                                 {{person.phone}}
                                             </td>
                                             <td>
-                                                <span ng-repeat="org in person.affiliated_orgs">{{org}}</span>
+                                                <span ng-repeat="org in person.affiliated_orgs track by $index">{{org}}</span>
                                             </td>
                                             <td>
-                                                {{person.id}}
+                                                {{person.context_person_id}}
                                             </td>
                                             <td>
                                                 {{person.processing_status}}
@@ -361,7 +362,7 @@
                                                 {{person.association_start_date | date: "dd-MMM-yyyy H:mm"}}
                                             </td>
                                             <td class="text-center td-icon">
-                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.removeAssociation(person.id)" title="Mark for deletion">
+                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.removeAssociation(person.id, person.ctrp_source_id)" title="Mark for deletion" ng-hide="person.source_context === 'CTRP'">
                                                     <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
                                                 </button>
                                             </td>
