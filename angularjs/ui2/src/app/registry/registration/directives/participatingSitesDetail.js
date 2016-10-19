@@ -62,6 +62,7 @@
             $scope.editMode = false; // Flag used in manage sites screen
             $scope.addMode = false;
             $scope.selectedInvContact;
+            $scope.init = true;         // Used when first loading Site PI and Contact Information values
             $scope.invContactArray = [];
             $scope.itemsOptions = {
                 data: [
@@ -156,6 +157,7 @@
                 //$scope.curPs = angular.copy($scope.curPsOriginal);
                 setupPs('reset');
                 $scope.ps_form.$setPristine();
+                $scope.init = true;
 
                 /* Execute in a $timeout because Angular 'contact_type' watch needs to run before these values are reset */
                 $timeout(function() {
@@ -163,7 +165,8 @@
                    $scope.curPs.contact_email = $scope.curPsOriginal.contact_email;
                    $scope.curPs.contact_phone = $scope.curPsOriginal.contact_phone;
                    $scope.curPs.extension = $scope.curPsOriginal.extension;
-               }, 1);
+                   $scope.init = false;
+               }, 1000);
 
             }
 
@@ -301,10 +304,10 @@
                     $scope.curPs = angular.copy($scope.curPsOriginal);
                 } else {
                     $scope.curPsOriginal = angular.copy($scope.curPs);
+                    watchSelectedPiArray()
                     watchContactTypeSelection();
                     watchInvContactSelection();
                     watchPersonContactSelection();
-                    watchSelectedPiArray()
                 }
 
                 $scope.curPs.contact_type = $scope.curPs.contact_type ? $scope.curPs.contact_type : 'General';
@@ -319,6 +322,10 @@
                 }
 
                 configurePsInvList();
+
+                $timeout(function() {
+                    $scope.init = false;
+                }, 1000);
 
 /*
                 _.each($scope.curPs.participating_site_investigators, function(inv) {
@@ -416,7 +423,7 @@
                     if (inv.investigator_type === 'Principal Investigator') {
                         var invObj = {
                             id: inv.id,
-                            name: inv.person.fname + ' ' + inv.person.lname,
+                            name: inv.person.lname + ', ' + inv.person.fname,
                             email: inv.person.email,
                             phone: inv.person.phone,
                             extension: inv.person.extension
@@ -429,14 +436,14 @@
 
             /* Watches */
             function watchSelectedPiArray() {
-                /* Keeps Site Principal Investigator and Contact information (if contact_type = PI), in sync */
+                /* Keeps Site Principal Investigator and Contact information (if contact_type === PI), in sync */
                 $scope.$watch(function() {return $scope.selectedPiArray;}, function(newVal, oldVal) {
                     if (newVal.length) {
                         var newInv = newVal[0];
                         console.log('new selected pi is: ', newVal[0]);
                         $scope.invContactArray[0] = {
                            id: newInv.id,
-                           name: newInv.fname + ' ' + newInv.lname,
+                           name: newInv.lname + ', ' + newInv.fname,
                            email: newInv.email,
                            phone: newInv.phone,
                            extension: newInv.extension
@@ -453,11 +460,7 @@
             function watchContactTypeSelection() {
                 $scope.$watch(function() {return $scope.curPs.contact_type;}, function(newVal, oldVal) {
                     if (newVal !== oldVal) {
-                        $scope.curPs.contact_name = null;
-                        $scope.curPs.contact_phone = null;
-                        $scope.curPs.extension = null;
-                        $scope.curPs.contact_email = null;
-                        $scope.selectedInvContact = null;
+                        clearContactInformation(true)
                     }
 
                     if (newVal === 'PI') {
@@ -469,20 +472,24 @@
 
             function watchInvContactSelection() {
                 $scope.$watch(function() {return $scope.selectedInvContact;}, function(newVal, oldVal) {
-                    var selectedInv;
+                    var selectedInv = newVal;
 
                     if ($scope.curPs.contact_type === 'PI') {
-                        if (newVal) {
-                            selectedInv = newVal;
+                        if (selectedInv) {
                             $scope.curPs.contact_name = selectedInv.name;
-                            $scope.curPs.contact_phone = selectedInv.phone;
-                            $scope.curPs.extension = selectedInv.extension;
-                            $scope.curPs.contact_email = selectedInv.email;
+
+                            // when first loading the screen
+                            if ($scope.init) {
+                                $scope.curPs.contact_phone = $scope.curPs.contact_phone;
+                                $scope.curPs.extension = $scope.curPs.extension;
+                                $scope.curPs.contact_email = $scope.curPs.contact_email;
+                            } else {
+                                $scope.curPs.contact_phone = selectedInv.phone ? selectedInv.phone : null;
+                                $scope.curPs.extension = selectedInv.extension ? selectedInv.extension : null;
+                                $scope.curPs.contact_email = selectedInv.email ? selectedInv.email : null;
+                            }
                         } else {
-                            $scope.curPs.contact_name = null;
-                            $scope.curPs.contact_phone = null;
-                            $scope.curPs.extension = null;
-                            $scope.curPs.contact_email = null;
+                            clearContactInformation();
                         }
                     }
                 });
@@ -518,6 +525,18 @@
 
             function updateSelectedInvestigator() {
                 $scope.selectedInvContact = $scope.invContactArray[0];
+            }
+
+            /* Clears out contact information section */
+            function clearContactInformation(clearInvContact) {
+                $scope.curPs.contact_name = null;
+                $scope.curPs.contact_phone = null;
+                $scope.curPs.extension = null;
+                $scope.curPs.contact_email = null;
+
+                if (clearInvContact) {
+                    $scope.selectedInvContact = null;
+                }
             }
         }
     }

@@ -8,7 +8,7 @@
                                     <div class="col-xs-12 col-sm-6" ng-if="orgDetailView.curOrgEditable">
                                         <input type="text" restriction-field class="form-control input-sm" name="name" id="organization_name" maxlength="160" ng-model="orgDetailView.ctrpOrg.name" auto-focus required ng-blur="orgDetailView.checkUniqueOrganization()">
                                         <span class="form-control-feedback" ng-show="orgDetailView.ctrpOrg.name.length"></span>
-                                        <span ng-show="organization_form.name.$dirty">{{160 - orgDetailView.ctrpOrg.name.length}} left</span>
+                                        <span class="help-block" ng-show="organization_form.name.$dirty">{{160 - orgDetailView.ctrpOrg.name.length}} left</span>
                                         <span class="help-block" ng-show="organization_form.name.$error.required && ctrpbtn.organization_form.needsAttention(organization_form.name)">Name is Required</span>
                                         <div class="has-error" ng-show="orgDetailView.showUniqueWarning===true">
                                         <span class="help-block">
@@ -157,7 +157,7 @@
                                          ng-class="{'has-error': organization_form.city.$error && ctrpbtn.organization_form.needsAttention(organization_form.city)}"
                                          required>
                                         <label class="control-label col-xs-6 col-sm-6">City:</label>
-                                        <div class="col-xs-12 col-xs-6 col-sm-6" ng-if="orgDetailView.curOrgEditable" ng-if="orgDetailView.curOrgEditable">
+                                        <div class="col-xs-12 col-xs-6 col-sm-6" ng-if="orgDetailView.curOrgEditable">
                                             <input type="text" restriction-field class="form-control input-sm" id="city" ng-model="orgDetailView.ctrpOrg.city" required name="city">
                                             <span class="form-control-feedback" ng-show="orgDetailView.ctrpOrg.city.length"></span>
                                             <span class="help-block" ng-show="organization_form.city.$error.required && ctrpbtn.organization_form.needsAttention(organization_form.city)">City is Required</span>
@@ -188,7 +188,7 @@
                                                    pattern="[a-zA-Z0-9_\.\+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+"
                                                    ng-model="orgDetailView.ctrpOrg.email" placeholder="Email" name="email">
                                             <span class="form-control-feedback" ng-show="organization_form.email.$viewValue.length" ng-class="!(organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-                                            <span ng-show="organization_form.email.$dirty">{{30 - orgDetailView.ctrpOrg.email.length}} left</span>
+                                            <span class="help-block" ng-show="organization_form.email.$dirty">{{30 - orgDetailView.ctrpOrg.email.length}} left</span>
                                             <div class="has-error"
                                                  ng-if="!organization_form.email.$viewValue.length && organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)">
                                                 <span class="help-block">Email is Required</span>
@@ -213,7 +213,7 @@
                                                  ng-if="organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone)">
                                                 <span class="help-block">Phone is Required</span>
                                             </div>
-                                            <span ng-show="organization_form.phone.$dirty">{{30 - orgDetailView.ctrpOrg.phone.length}} left</span>
+                                            <span class="help-block" ng-show="organization_form.phone.$dirty">{{30 - orgDetailView.ctrpOrg.phone.length}} left</span>
                                             <div class="has-error" ng-show="orgDetailView.ctrpOrg.phone.length && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid">
                                                         <span class="help-block">
                                                             Warning: Phone number invalid for the selected Country.
@@ -227,15 +227,8 @@
                                         <div class="form-group col-md-3 col-lg-3 col-xl-3 col-sm-3 col-xs-6" ng-if="orgDetailView.curOrgEditable">
                                             <input type="text" restriction-field class="form-control input-sm" id="extension" name="extension" maxlength="30"
                                                    ng-model="orgDetailView.ctrpOrg.extension" placeholder="Phone Ext">
-                                            <span ng-show="organization_form.extension.$dirty">{{30 - orgDetailView.ctrpOrg.extension.length}} left</span>
+                                            <span class="help-block" ng-show="organization_form.extension.$dirty">{{30 - orgDetailView.ctrpOrg.extension.length}} left</span>
                                         </div>
                                         <div class="col-xs-12 col-sm-2 form-text" ng-if="!orgDetailView.curOrgEditable">{{orgDetailView.ctrpOrg.extension}}</div>
                                     </div>
                                 </div>
-
-
-
-
-
-
-
