@@ -144,7 +144,7 @@
                 <div class="form-group">
                     <!-- ng-if="viewTrialView.curTrial.pi" -->
                     <label class="control-label col-xs-12 col-sm-3">Principal Investigator:</label>
-                    <div class="col-xs-12 col-sm-6 form-text">
+                    <div ng-if="viewTrialView.curTrial.pi" class="col-xs-12 col-sm-6 form-text">
                         {{viewTrialView.curTrial.pi.lname + ', ' + viewTrialView.curTrial.pi.fname}}
                     </div>
                 </div>
@@ -426,14 +426,6 @@
                     </div>
                 </div>
 
-                <!--<div ng-if="viewTrialView.curTrial.internal_source.code === 'IMP'" class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3"></label>
-                    <div class="col-xs-12 col-sm-9 form-text">
-                        <button ng-if="viewTrialView.curTrial.actions.includes('add-my-site')" type="button" restriction-field class="btn btn-primary pull-right" id="add_site_btn" ng-click="viewTrialView.addMySite()">
-                            Add My Site
-                        </button>
-                    </div>
-                </div> -->
             </form>
         </div>
     </div>
