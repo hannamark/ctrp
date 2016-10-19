@@ -393,7 +393,7 @@
             });
         }
 
-        vm.associate = _.partial(_associateCtepPerson, vm.curPerson.id); // used for associating ctep person to ctrp person, vm.curPerson.id is CTEP person id
+        vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // used for associating ctep person to ctrp person, vm.curPerson is CTEP person id
         function _associateCtepPerson(ctepPerson, ctrpId) {
             PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
                 console.info('res with association person: ', res); // resp.person
@@ -404,6 +404,10 @@
                         vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id});
                         res.person.source_context = ctepPerson.source_context;
                         res.person.source_status = ctepPerson.source_status;
+                        if (!vm.curPerson.associated_persons || !angular.isArray(vm.curPerson.associated_persons)) {
+                            vm.curPerson.associated_persons = [];
+                            vm.curPerson.associated_persons.push(vm.curPerson);
+                        }
                         vm.curPerson.associated_persons.push(res.person);
                     }
                 }
@@ -471,10 +475,14 @@
             } //prepareModal
         }; //confirmDelete
 
-        function removePersonAssociation(ctepPersonId) {
+        function removePersonAssociation(ctepPersonId, ctrp_source_id) {
             PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
                 if (res.is_removed) {
-                    vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, _.findWhere(vm.curPerson.associated_persons, {id: ctepPersonId}));
+                    // filter out the deleted persons (both ctep and its associated ctrp person)
+                    vm.curPerson.associated_persons = _.filter(vm.curPerson.associated_persons, function(p) {
+                        return p.ctrp_source_id !== ctrp_source_id;
+                    });
+                    // vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, _.findWhere(vm.curPerson.associated_persons, {ctrp_source_id: ctrp_source_id})); // remove both ctep and ctrp person contexts in the array
                     vm.curPerson.cluster = _.without(vm.curPerson.cluster, _.findWhere(vm.curPerson.cluster, {id: ctepPersonId})); // remove the tab
                     showToastr('The selected person context association was deleted');
                 }
