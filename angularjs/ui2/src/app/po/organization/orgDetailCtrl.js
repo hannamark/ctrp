@@ -260,7 +260,10 @@
         var associateOrgsRefresh = function (){
             vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP');
             vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM');
-            vm.associatedOrgsOptions.data = vm.associatedOrgs;
+            vm.associatedOrgsOptions.data = _.filter(
+                vm.associatedOrgs, function (item) {
+                    return _.contains(['CTEP','NLM'], item.source_context_name);
+                });
             vm.defaultTab = 'CTRP';
             vm.updateTime = Date.now();
         };
@@ -493,21 +496,9 @@
             enableGridMenu: false
         };
 
-        vm.associatedOrgsOptions.exporterAllDataFn = function () {
-            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, allSearchParams).then(
-                function (data) {
-                    var status = data.server_response.status;
-
-                    if (status >= 200 && status <= 210) {
-                        vm.assciatedOrgsOptions.useExternalPagination = false;
-                        vm.assciatedOrgsOptions.useExternalSorting = false;
-                        vm.assciatedOrgsOptions.data = data['users'];
-                        vm.assciatedOrgsOptions.columnDefs = origGridColumnDefs;
-                    }
-                }
-            );
-        };
-
-        vm.associatedOrgsOptions.data = vm.associatedOrgs;
+        vm.associatedOrgsOptions.data = _.filter(
+            vm.associatedOrgs, function (item) {
+                return _.contains(['CTEP','NLM'], item.source_context_name);
+            });
     }
 }());
