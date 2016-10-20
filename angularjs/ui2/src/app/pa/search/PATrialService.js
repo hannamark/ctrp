@@ -90,7 +90,7 @@
                 {name: 'admin_milestone', enableSorting: true, minWidth: '250', width: '9%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
-                {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
+                {name: 'other_ids',displayName:'Other Identifiers', enableSorting: true, minWidth: '400', width: '25%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
                 {name: 'current_processing_status', enableSorting: true, minWidth: '225', width: '10%',

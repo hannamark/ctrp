@@ -103,6 +103,9 @@
                         name: 'ctg_id', displayName: 'ClinicalTrials.gov Identifier', enableSorting: false, minWidth: '180', width: '*',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
+                    {name: 'other_ids',displayName:'Other Identifiers', enableSorting: true, minWidth: '400', width: '25%',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
                     {
                         name: 'current_trial_status', enableSorting: false, minWidth: '170', width: '*',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
@@ -120,9 +123,6 @@
                     },
                     {
                         name: 'phase_name', enableSorting: true, minWidth: '90', width: '*'
-                    },
-                    {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
-                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
                         name: 'purpose', displayName: 'Primary Purpose', enableSorting: true, minWidth: '120', width: '*',
@@ -201,11 +201,11 @@
                         name: 'lead_protocol_id', displayName: 'Lead Org Trial Identifier', enableSorting: true, minWidth: '170', width: '*', sort: { direction: 'asc', priority: 1},
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '<a ui-sref="main.viewTrial({trialId: row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
                     },
-                    {name: 'other_ids', enableSorting: true, minWidth: '400', width: '25%',
-                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
-                    },
                     {
                         name: 'ctg_id', displayName: 'ClinicalTrials.gov Identifier', enableSorting: false, minWidth: '180', width: '*',
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
+                    },
+                    {name: 'other_ids', displayName:'Other Identifiers',enableSorting: true, minWidth: '400', width: '25%',
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' + '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                     },
                     {
