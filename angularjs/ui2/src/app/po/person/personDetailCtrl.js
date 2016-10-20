@@ -16,7 +16,7 @@
         var vm = this;
         vm.curPerson = personDetailObj || {lname: "", source_status_id: ""}; //personDetailObj.data;
         vm.curPerson = vm.curPerson.data || vm.curPerson;
-        // console.info('vm.curPerson: ', vm.curPerson);
+        console.info('vm.curPerson: ', vm.curPerson);
         vm.curPerson.processing_status = 'Complete';
         vm.masterCopy= angular.copy(vm.curPerson);
         vm.sourceStatusArr = sourceStatusObj;
@@ -383,18 +383,19 @@
                             // nothing here
                         }).finally(function() {
                             if (isConfirmed) {
-                                return _associateCtepPerson(ctepPerson, vm.curPerson.ctrp_id);
+                                return _associateCtepPerson(ctepPerson, vm.curPerson); // vm.curPerson is CTRP person context
                             }
                         });
                     } else {
-                        return _associateCtepPerson(ctepPerson, vm.curPerson.ctrp_id);
+                        return _associateCtepPerson(ctepPerson, vm.curPerson); // vm.curPerson is CTRP person context
                     }
                 }
             });
         }
 
         vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // used for associating ctep person to ctrp person, vm.curPerson is CTEP person id
-        function _associateCtepPerson(ctepPerson, ctrpId) {
+        function _associateCtepPerson(ctepPerson, ctrpPerson) {
+            var ctrpId = ctrpPerson.ctrp_id;
             PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
                 console.info('res with association person: ', res); // resp.person
                 if (res.server_response.status >= 200 && res.server_response.status < 226) {

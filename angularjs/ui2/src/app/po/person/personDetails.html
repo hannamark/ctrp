@@ -399,18 +399,18 @@
                                             <th width="8%" class="nowrap">Associate</th>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="person in personDetailView.matchedCtrpPersons">
-                                            <td>{{person.ctrp_id}}</td>
-                                            <td>{{person.prefix}}</td>
-                                            <td>{{person.fname}}</td>
+                                        <tr ng-repeat="ctrpPerson in personDetailView.matchedCtrpPersons">
+                                            <td>{{ctrpPerson.ctrp_id}}</td>
+                                            <td>{{ctrpPerson.prefix}}</td>
+                                            <td>{{ctrpPerson.fname}}</td>
                                             <td>
-                                                {{person.mname}}
+                                                {{ctrpPerson.mname}}
                                             </td>
                                             <td>
-                                                {{person.lname}}
+                                                {{ctrpPerson.lname}}
                                             </td>
                                             <td>
-                                                {{person.suffix}}
+                                                {{ctrpPerson.suffix}}
                                             </td>
                                             <td>
                                                 <!-- {{person.source_status}} -->
@@ -421,13 +421,13 @@
                                                 CTRP
                                             </td>
                                             <td>
-                                                {{person.email}}
+                                                {{ctrpPerson.email}}
                                             </td>
                                             <td>
-                                                {{person.phone}}
+                                                {{ctrpPerson.phone}}
                                             </td>
                                             <td class="text-center">
-                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.associate(person.id)" title="Association">
+                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.associate(ctrpPerson)" title="Association">
                                                     Associate
                                                 </button>
                                             </td>
