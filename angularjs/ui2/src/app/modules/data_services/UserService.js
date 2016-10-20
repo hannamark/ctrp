@@ -73,11 +73,12 @@
                             }, 500);
                         } else {
                             toastr.error('Login failed', 'Login error', { timeOut: 0});
-                            userObj.processing = false;
                         }
                     }
                 }).catch(function (err) {
                     $log.error('error in log in: ' + JSON.stringify(err));
+                }).finally(function() {
+                    userObj.processing = false;
                 });
         }; //login
 
