@@ -9,8 +9,6 @@ ctep_context_id = SourceContext.find_by_code('CTEP').id
 ctep_active_source_status = SourceStatus.where(source_context_id: ctep_context_id, code: 'ACT')
 ctep_active_source_status_id = ctep_active_source_status.present? ? ctep_active_source_status[0].id : -1
 
-p "showing up here!"
-
 json.set! :is_ctrp_context, ctrp_context_id == @person.source_context_id # flag if this person is ctrp context
 json.set! :service_request, ServiceRequest.find(@person.service_request_id).name if @person.service_request_id.present?
 json.set! :source_status, SourceStatus.find(@person.source_status_id).name if @person.source_status_id.present?
