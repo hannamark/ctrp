@@ -283,7 +283,7 @@
                         </div>
                         <!-- table of associated persons below -->
                         <div class="form-group" ng-show="personDetailView.curPerson.associated_persons.length > 1 && personDetailView.curPerson.is_ctrp_context">
-                            <div class="col-xs-12" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN,ROLE_ABSTRACTOR,ROLE_RO">
+                            <div class="col-xs-12" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN,ROLE_ABSTRACTOR,ROLE_RO" ignore-rw>
                                 <!-- person association grid -->
                                 <div class="row animated-item top-offset-tiny table-responsive search-calendar-grid">
                                     <h4>Associated Person Contexts:</h4>
@@ -432,7 +432,7 @@
                                                 {{ctrpPerson.phone}}
                                             </td>
                                             <td class="text-center">
-                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.associate(ctrpPerson)" title="Association">
+                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.associate(ctrpPerson, 'CTRP')" title="Association">
                                                     Associate
                                                 </button>
                                             </td>
