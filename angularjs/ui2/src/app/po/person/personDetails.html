@@ -362,8 +362,13 @@
                                                 {{person.association_start_date | date: "dd-MMM-yyyy H:mm"}}
                                             </td>
                                             <td class="text-center td-icon">
-                                                <button type="button" restriction-field class="btn btn-warning" ng-click="personDetailView.removeAssociation(person.id, person.ctrp_source_id)" title="Mark for deletion" ng-hide="person.source_context === 'CTRP'">
-                                                    <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
+                                                <button type="button" restriction-field class="btn btn-danger"
+                                                ctrp-confirm
+                                                placement="left"
+                                                ctrp-click="personDetailView.removeAssociation(person.id, person.ctrp_source_id)"
+                                                confirm-msg="Click OK to remove the selected association. Click Cancel to abort."
+                                                title="Delete now" ng-hide="person.source_context === 'CTRP'">
+                                                    <i ng-class="org._destroy == true ? 'glyphicon glyphicon-floppy-saved' : 'glyphicon glyphicon-floppy-remove'"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -383,7 +388,7 @@
 
                             <label class="control-label col-xs-12 col-sm-3">Possible Matching CTRP Persons:</label>
                             <div class="col-xs-12 col-sm-9">
-                                <div class="row animated-item top-offset-tiny table-responsive search-calendar-grid">
+                                <div class="row top-offset-tiny table-responsive search-calendar-grid">
                                     <table class="table table-bordered table-striped table-condensed">
                                         <thead>
                                             <th width="6%" class="nowrap">CTRP Person ID</th>

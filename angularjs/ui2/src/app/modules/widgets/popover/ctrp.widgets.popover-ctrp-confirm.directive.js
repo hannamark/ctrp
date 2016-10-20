@@ -58,7 +58,7 @@
                     templateUrl: attrs.confirmTemplate || defaultTemplateUrl,
                     html: true,
                     trigger: 'manual',
-                    placement: 'top',
+                    placement: attrs.placement || 'top',
                     animation: 'am-flip-x',
                     content: newVal || 'Are you sure?',
                     autoClose: true,
