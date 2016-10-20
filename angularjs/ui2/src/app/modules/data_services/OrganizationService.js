@@ -163,7 +163,7 @@
             getServiceRequests: getServiceRequests,
             getProcessingStatuses: getProcessingStatuses,
             cloneCtepOrg: cloneCtepOrg,
-            getSourceStatuses2: getSourceStatuses2,
+            getSourceStatuses2: getSourceStatuses2
         };
 
         return services;

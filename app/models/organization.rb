@@ -419,7 +419,6 @@ class Organization < ActiveRecord::Base
     else
       where("family_name ilike ?", "#{value}")
     end
-    select(:organizations).distinct
   }
 
   scope :without_family, -> () {

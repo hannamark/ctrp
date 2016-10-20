@@ -827,12 +827,271 @@ var dbConnection = function () {
                 assert.fail(0, 1, 'error running Query.');
             }
             userTableDBOrgID = userTable.rows[0].organization_id;
-            viewPSWithOrgID = userTableDBOrgID + ' ' + viewPS;
+            viewPSWithOrgID = userTableDBOrgID + ' ' + PSTableValues;
             addTrial.getViewTrialParticipatingSites(viewPSWithOrgID.split());
             client.on('end', function () {
                 console.log("Client was disconnected.")
             });
         });
     };
+
+/*
+    this.dbConnAddAllMilestone = function (NCIID, wantREJ, wantSTR, err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+        }
+        client.query("select * from trials where nci_id = '" + NCIID + "'", function (err, trialIDTrialTbl) {
+            if (err) {
+                console.error('error running the Select query to find the TrialID from trial table', err);
+                assert.fail(0, 1, 'error running Query.');
+            }
+            trialDBID = trialIDTrialTbl.rows[0].id;
+            console.log('Trial DB Id' + trialDBID);
+        });
+        client.query("select * from submissions where trial_id = " + trialDBID + "ORDER BY id DESC LIMIT 1", function (err, submissionID) {
+            if (err) {
+                console.error('error running the Select query to find the ID of Submission', err);
+                assert.fail(0, 1, 'error running Query.');
+            }
+            submissionDBID = submissionID.rows[0].id;
+        });
+
+        client.query("select * from milestones where name in ('Administrative Processing Completed Date',"+
+            "'Administrative Processing Start Date',"+
+            "'Administrative QC Completed Date',"+
+            "'Administrative QC Start Date',"+
+            "'Initial Abstraction Verified Date',"+
+            "'On-going Abstraction Verified Date',"+
+            "'Ready for Administrative QC Date',"+
+            "'Ready for Scientific QC Date',"+
+            "'Ready for Trial Summary Report Date',"+
+            "'Scientific Processing Completed Date',"+
+            "'Scientific Processing Start Date',"+
+            "'Scientific QC Completed Date',"+
+            "'Scientific QC Start Date',"+
+            "'Submission Acceptance Date',"+
+            "'Submitter Trial Summary Report Feedback Date',"+
+            "'Trial Summary Report Date',"+
+            "'Validation Processing Completed Date',"+
+            "'Validation Processing Start Date') order by name", function (err, milestoneID) {
+            if (err) {
+                console.error('error running the Select query to find the ID of Milestone', err);
+                assert.fail(0, 1, 'error running Query.');
+            }
+            var milestoneAPCDBID = milestoneID.rows[0].id;
+            var milestoneAPSDBID = milestoneID.rows[1].id;
+            var milestoneAQCDBID = milestoneID.rows[2].id;
+            var milestoneAQSDBID = milestoneID.rows[3].id;
+            var milestoneIAVDBID = milestoneID.rows[4].id;
+            var milestoneONGDBID = milestoneID.rows[5].id;
+            var milestoneRAQDBID = milestoneID.rows[6].id;
+            var milestoneRSQDBID = milestoneID.rows[7].id;
+            var milestoneRTSDBID = milestoneID.rows[8].id;
+            var milestoneSPCDBID = milestoneID.rows[9].id;
+            var milestoneSPSDBID = milestoneID.rows[10].id;
+            var milestoneSQCDBID = milestoneID.rows[11].id;
+            var milestoneSQSDBID = milestoneID.rows[12].id;
+            var milestoneSACDBID = milestoneID.rows[13].id;
+            var milestoneSTSDBID = milestoneID.rows[14].id;
+            var milestoneTSRDBID = milestoneID.rows[15].id;
+            var milestoneVPCDBID = milestoneID.rows[16].id;
+            var milestoneVPSDBID = milestoneID.rows[17].id;
+            client.query("select count(*) from milestone_wrappers where trial_id = " + trialDBID + " and milestone_id = " + milestoneAPCDBID, function (err, milestoneCntAPC) {
+                if (err) {
+                    console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                    assert.fail(0, 1, 'error running Query.');
+                }
+                console.log('Count of Rows : ' + milestoneCntAPC.rows[0].count);
+                if(milestoneCntAPC.rows[0].count === '0') {
+                    client.query("insert into milestone_wrappers values(DEFAULT , CURRENT_DATE ,  " + milestoneAPCDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_generate_v4(), 0, " + submissionDBID + ", '', 3, 'Lathiramalaynathan, Frederick' )", function (err) {
+                        if (err) {
+                            console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                            assert.fail(0, 1, 'error running Query.');
+                        }
+                        client.query("select count(*) from milestone_wrappers where trial_id = " + trialDBID + " and milestone_id = " + milestoneAPCDBID, function (err, milestoneCntAPC) {
+                            if (err) {
+                                console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                                assert.fail(0, 1, 'error running Query.');
+                            }
+                            console.log('Count of Rows : ' + milestoneCntAPC.rows[0].count);
+                            if(milestoneCntAPC.rows[0].count === '0') {
+                                client.query("insert into milestone_wrappers values(DEFAULT , CURRENT_DATE ,  " + milestoneAPCDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_generate_v4(), 0, " + submissionDBID + ", '', 3, 'Lathiramalaynathan, Frederick' )", function (err) {
+                                    if (err) {
+                                        console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                                        assert.fail(0, 1, 'error running Query.');
+                                    }
+                                    client.query("select count(*) from milestone_wrappers where trial_id = " + trialDBID + " and milestone_id = " + milestoneAPCDBID, function (err, milestoneCntAPC) {
+                                        if (err) {
+                                            console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                                            assert.fail(0, 1, 'error running Query.');
+                                        }
+                                        console.log('Count of Rows : ' + milestoneCntAPC.rows[0].count);
+                                        if(milestoneCntAPC.rows[0].count === '0') {
+                                            client.query("insert into milestone_wrappers values(DEFAULT , CURRENT_DATE ,  " + milestoneAPCDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_generate_v4(), 0, " + submissionDBID + ", '', 3, 'Lathiramalaynathan, Frederick' )", function (err) {
+                                                if (err) {
+                                                    console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                                                    assert.fail(0, 1, 'error running Query.');
+                                                }
+                                                client.query("select count(*) from milestone_wrappers where trial_id = " + trialDBID + " and milestone_id = " + milestoneAPCDBID, function (err, milestoneCntAPC) {
+                                                    if (err) {
+                                                        console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                                                        assert.fail(0, 1, 'error running Query.');
+                                                    }
+                                                    console.log('Count of Rows : ' + milestoneCntAPC.rows[0].count);
+                                                    if(milestoneCntAPC.rows[0].count === '0') {
+                                                        client.query("insert into milestone_wrappers values(DEFAULT , CURRENT_DATE ,  " + milestoneAPCDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_generate_v4(), 0, " + submissionDBID + ", '', 3, 'Lathiramalaynathan, Frederick' )", function (err) {
+                                                            if (err) {
+                                                                console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                                                                assert.fail(0, 1, 'error running Query.');
+                                                            }
+                                                            client.query("select count(*) from milestone_wrappers where trial_id = " + trialDBID + " and milestone_id = " + milestoneAPCDBID, function (err, milestoneCntAPC) {
+                                                                if (err) {
+                                                                    console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                                                                    assert.fail(0, 1, 'error running Query.');
+                                                                }
+                                                                console.log('Count of Rows : ' + milestoneCntAPC.rows[0].count);
+                                                                if(milestoneCntAPC.rows[0].count === '0') {
+                                                                    client.query("insert into milestone_wrappers values(DEFAULT , CURRENT_DATE ,  " + milestoneAPCDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_generate_v4(), 0, " + submissionDBID + ", '', 3, 'Lathiramalaynathan, Frederick' )", function (err) {
+                                                                        if (err) {
+                                                                            console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                                                                            assert.fail(0, 1, 'error running Query.');
+                                                                        }
+                                                                    });
+                                                                }
+
+
+
+
+
+
+                        client.query("select count(*) from other_ids where protocol_id = '" + NCTID + "'", function (err, trialCntOtherIDTbl) {
+            if (err) {
+                console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                assert.fail(0, 1, 'error running Query.');
+            }
+            console.log('Count of Rows : ' + trialCntOtherIDTbl.rows[0].count);
+            if(trialCntOtherIDTbl.rows[0].count === '1') {
+                client.query("select * from other_ids where protocol_id = '" + NCTID + "'" + " ORDER BY id DESC LIMIT 1", function (err, trialIDOtherIDTbl) {
+                    if (err) {
+                        console.error('error running the Select query to find the TrialID from Other_ids table', err);
+                        assert.fail(0, 1, 'error running Query.');
+                    }
+
+                    trialDBID = trialIDOtherIDTbl.rows[0].trial_id;
+                    console.log('Trial DB Id' + trialDBID);
+                });
+            }
+            else {
+                projectFunctionsRegistry.parseXMLFromCtGov(NCTID);
+                ctGovElement.then(function (value) {
+                    var ctGovLeadProtocolID = value.clinical_study.id_info.org_study_id;
+                    var ctGovLeadOrg = value.clinical_study.sponsors.lead_sponsor.agency;
+                    client.query("select * from trials where lead_protocol_id = '" + ctGovLeadProtocolID + "' and study_source_id = 4 ORDER BY id DESC LIMIT 1", function (err, trialIDTrialTbl) {
+                        if (err) {
+                            console.error('error running the Select query to find the TrialID from trial table', err);
+                            assert.fail(0, 1, 'error running Query.');
+                        }
+
+                        trialDBID = trialIDTrialTbl.rows[0].id;
+                        console.log('Trial DB Id' + trialDBID);
+                    });
+                });
+            }
+
+            client.query("select * from processing_statuses where name = 'Submission Terminated' OR name = 'Rejected' OR name = 'Submission Reactivated' order by name desc", function (err, processingStatusID) {
+                if (err) {
+                    console.error('error running the Select query to find the ID of Processing Status', err);
+                    assert.fail(0, 1, 'error running Query.');
+                }
+                var STRDBID = processingStatusID.rows[0].id;
+                var SREDBID = processingStatusID.rows[1].id;
+                var REJDBID = processingStatusID.rows[2].id;
+                client.query("select * from processing_status_wrappers where trial_id = " + trialDBID + " ORDER BY id DESC LIMIT 1", function (err, processingStatusWrapperID) {
+                    if (err) {
+                        console.error('error running the Select query to find the latest processing status', err);
+                        assert.fail(0, 1, 'error running Query.');
+                    }
+                    var processingStatusDBID = processingStatusWrapperID.rows[0].processing_status_id;
+                    client.query("select * from milestones where name = 'Submission Reactivated Date' OR name = 'Submission Terminated Date' " +
+                    "OR name = 'Submission Rejection Date' OR name = 'Late Rejection Date' order by name", function (err, milestoneID) {
+                        if (err) {
+                            console.error('error running the Select query to find the ID of Milestone', err);
+                            assert.fail(0, 1, 'error running Query.');
+                        }
+                        var milestoneLRDDBID = milestoneID.rows[0].id;
+                        var milestoneSREDBID = milestoneID.rows[1].id;
+                        var milestoneSRJDBID = milestoneID.rows[2].id;
+                        var milestoneSTRDBID = milestoneID.rows[3].id;
+                        client.query("select * from submissions where trial_id = " + trialDBID + "ORDER BY id DESC LIMIT 1", function (err, submissionID) {
+                            if (err) {
+                                console.error('error running the Select query to find the ID of Submission', err);
+                                assert.fail(0, 1, 'error running Query.');
+                            }
+                            var submissionDBID = submissionID.rows[0].id;
+
+
+                            if (processingStatusDBID === STRDBID && wantSTR.toUpperCase() === 'NO') {
+                                console.log('Trial Processing Status is Submission Terminated');
+                                client.query("insert into milestone_wrappers values(DEFAULT , CURRENT_DATE ,  " + milestoneSREDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_generate_v4(), 0, " + submissionDBID + ", '', 3, 'Lathiramalaynathan, Frederick' )", function (err) {
+                                    if (err) {
+                                        console.error('error running the Insert query to Milestone Wrappers to Reactivate a submission Terminated Trial', err);
+                                        assert.fail(0, 1, 'error running Query.');
+                                    }
+                                });
+                                client.query("insert into processing_status_wrappers values(DEFAULT , CURRENT_DATE ,  " + SREDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_generate_v4(), 0, " + submissionDBID + " )", function (err) {
+                                    if (err) {
+                                        console.error('error running the Insert query to Processing Status Wrappers to Reactivate a submission Terminated Trial', err);
+                                        assert.fail(0, 1, 'error running Query.');
+                                    }
+                                });
+                            }
+
+                            if (processingStatusDBID !== STRDBID && wantSTR.toUpperCase() === 'YES') {
+                                console.log('Trial Processing Status is Not Submission Terminated');
+                                client.query("insert into milestone_wrappers values(DEFAULT , CURRENT_DATE ,  " + milestoneSTRDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_generate_v4(), 0, " + submissionDBID + ", '', 3, 'Lathiramalaynathan, Frederick' )", function (err) {
+                                    if (err) {
+                                        console.error('error running the Insert query to Milestone Wrappers to Terminated a submission ', err);
+                                        assert.fail(0, 1, 'error running Query.');
+                                    }
+                                });
+                                client.query("insert into processing_status_wrappers values(DEFAULT , CURRENT_DATE ,  " + STRDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_generate_v4(), 0, " + submissionDBID + " )", function (err) {
+                                    if (err) {
+                                        console.error('error running the Insert query to Processing Status Wrappers to Terminated a submission', err);
+                                        assert.fail(0, 1, 'error running Query.');
+                                    }
+                                });
+                            }
+
+                            if (processingStatusDBID === REJDBID && wantREJ.toUpperCase() === 'NO') {
+                                assert.fail(0, 1, 'Unrejecting a trial not implemented Now');
+                                console.log('Trial Processing Status is Rejected');
+                            }
+                            if (processingStatusDBID !== REJDBID && wantREJ.toUpperCase() === 'YES') {
+                                console.log('Trial Processing Status is NOT Rejected');
+                                client.query("insert into milestone_wrappers values(DEFAULT , CURRENT_DATE ,  " + milestoneSRJDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_generate_v4(), 0, " + submissionDBID + ", '', 3, 'Lathiramalaynathan, Frederick' )", function (err) {
+                                    if (err) {
+                                        console.error('error running the Insert query to Milestone Wrappers to Reject a submission ', err);
+                                        assert.fail(0, 1, 'error running Query.');
+                                    }
+                                });
+                                client.query("insert into processing_status_wrappers values(DEFAULT , CURRENT_DATE ,  " + REJDBID + ", " + trialDBID + ", current_timestamp, current_timestamp, uuid_generate_v4(), 0, " + submissionDBID + " )", function (err) {
+                                    if (err) {
+                                        console.error('error running the Insert query to Processing Status Wrappers to Reject a submission', err);
+                                        assert.fail(0, 1, 'error running Query.');
+                                    }
+                                });
+                            }
+                            else {
+                                console.log('Trial Processing Status is neither Rejected nor Submission Terminated.');
+                            }
+                            client.on('end', function () {
+                                console.log("Client was disconnected.")
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    };*/
 };
 module.exports = dbConnection;

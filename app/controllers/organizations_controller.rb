@@ -262,22 +262,21 @@ class OrganizationsController < ApplicationController
 
   #Method to check for Uniqueness while creating organizations - check on name & source context. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
   def unique
-    is_unique = false
+    is_unique = true
     if params[:org_exists] == true && params[:org_name] && params[:org_id]
       #edit
-      @dbOrgs1 = Organization.where("name = '#{params[:org_name]}'")
-      @dbOrgs = Organization.where("id <> #{params[:org_id]} AND name = '#{params[:org_name]}'") unless @dbOrgs1.blank?
+      @dbOrgs = Organization.where("id <> #{params[:org_id]} AND name = '#{params[:org_name]}'")
       #if on the Edit screen, then check for name changes and ignore if database & screen names are the same.
       #if params[:org_name] == @dbOrg.name, both are equal. Must not warn
       #However if on the edit screen and the user types in a name that is the same as another org, then complain, both are different. Must warn.
-
-      is_unique = true unless @dbOrgs.blank?
-
+      if !@dbOrgs.blank?
+        is_unique = false
+      end
     elsif params[:org_exists] == true && params[:org_name]
       #new
       @dbOrgs = Organization.find_by_name(params[:org_name])
 
-      is_unique = true unless @dbOrgs.blank?
+      is_unique = true unless !@dbOrgs.blank?
     end
 
     respond_to do |format|
