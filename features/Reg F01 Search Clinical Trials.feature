@@ -15,7 +15,9 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |Lead Org Trial Identifier|
 |Principal Investigator|
 |ClinicalTrials.gov Identifier|
-|Other Identifiers (Other ID Source and Other ID i.e.DCP:  12345, CTEP:  12345)|
+#(Other ID Source and Other ID i.e.DCP:  12345, CTEP:  12345)
+# Clinical Trial Identifier should not be included in other identifiers
+|Other Identifiers |
 |Current Trial Status|
 |Current Processing Status|
 |Available Actions|
