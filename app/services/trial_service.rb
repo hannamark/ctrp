@@ -366,7 +366,7 @@ class TrialService
 
     validation_result = []
     paa_site_rules.each do |rule|
-      if (rule.code == 'PAA')
+      
       if (rule.code == 'PAA93' and !is_all_sites_uniq) || (rule.code == 'PAA94' and is_all_sites_pi_uniq.include?(false))
         ## errors block
         validation_result << rule
