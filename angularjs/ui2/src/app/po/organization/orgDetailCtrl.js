@@ -58,7 +58,6 @@
                         vm.ctrpOrg.name_aliases = response.name_aliases;
                         vm.addedNameAliases = [];
                         appendNameAliases();
-                        $route.reload();
                         // To make sure setPristine() is executed after all $watch functions are complete
                         $timeout(function () {
                             $scope.organization_form.$setPristine();
@@ -301,11 +300,12 @@
                     OrgService.upsertOrg(outerOrg).then(function (response) {
                         if (status >= 200 && status <= 210) {
                             if (status === 200) {
-                                $route.reload();
-                                // To make sure setPristine() is executed after all $watch functions are complete
-                                $timeout(function () {
-                                    $scope.organization_form.$setPristine();
-                                }, 100);
+                                vm.associatedOrgs = response.associated_orgs;
+                                associateOrgsRefresh();
+                                vm.ctrpOrg = getOrgByContext(vm.associatedOrgs, 'CTRP');
+                                vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
+                                vm.ctrpUpdateTime = Date.now();
+                                toastr.success('Organization has been associated.', 'Operation Successful!');
                             }
                         }
                     }).catch(function (err) {
