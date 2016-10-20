@@ -288,6 +288,16 @@ class Trial < TrialBase
   # The set_defaults will only work if the object is new
   after_initialize :set_defaults, unless: :persisted?
 
+  def participating_sites_with_active_orgs 
+    participating_sites_with_active_orgs = [] 
+    self.participating_sites.each do |e| 
+       if SourceStatus.find_by_id(Organization.find_by_id(e.organization_id).source_status_id).code == 'ACT'
+          participating_sites_with_active_orgs.push(e)
+        end 
+    end 
+    return participating_sites_with_active_orgs
+  end
+
   # Array of actions can be taken on this Trial
   def actions
     actions = []

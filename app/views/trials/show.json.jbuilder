@@ -158,6 +158,8 @@ json.collaborators_attributes do
   end
 end
 
+@trial.participating_sites = @trial.participating_sites_with_active_orgs
+
 json.participating_sites do
   json.array!(@trial.participating_sites) do |participating_site|
     json.id participating_site.id
