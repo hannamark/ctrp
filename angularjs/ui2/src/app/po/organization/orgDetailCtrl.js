@@ -182,6 +182,7 @@
             //Listen to the write-mode switch
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                 vm.curOrgEditable = UserService.isCurationModeEnabled();
+                vm.updateTime = Date.now();
             });
         };
 

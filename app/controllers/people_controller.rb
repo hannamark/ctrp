@@ -198,24 +198,28 @@ class PeopleController < ApplicationController
       @matched = Person.where(fname: ctep_person.fname, lname: ctep_person.lname, source_context_id: ctrp_source_context_id)
       @matched = @matched.with_source_status_context('ACT', ctrp_source_context_id)
       # TODO: match against the state and address in affiliated organization
-      p "matched person size: #{@matched.size}"
 
-      is_cloned = false
+      @matched.each do |m|
+        m.is_associated = true #Person.where(ctrp_id: m.ctrp_id).size > 1
+      end
+
+      @is_cloned = false
       if (@matched.size > 0 && params[:force_clone] == true) || @matched.size == 0
-        @matched = ctep_person.dup   # TODO: reserve associations here for the clone
-        @matched.source_context_id = ctrp_source_context_id
-        @matched.association_start_date = nil
+        clone = ctep_person.dup   # TODO: reserve associations here for the clone
+        clone.source_context_id = ctrp_source_context_id
+        clone.association_start_date = nil
+        @matched = [clone]
         # @matched.processing_status = nil
         # @matched.registration_type = nil
         # @matched.service_request_id = nil
-        is_cloned = @matched.save()
+        @is_cloned = clone.save()
         # link the CTEP to the new CTRP person clone
-        ctep_person.update_attributes('ctrp_id': @matched.ctrp_id, 'association_start_date': Time.now, 'processing_status': 'Complete')
+        ctep_person.update_attributes('ctrp_id': clone.ctrp_id, 'association_start_date': Time.now, 'processing_status': 'Complete')
       end
     end
 
     respond_to do |format|
-      format.json { render :json => {:matched => @matched, :is_cloned => is_cloned} }
+      format.json { render :json => {:matched => @matched, :is_cloned => @is_cloned} }
     end
 
   end

@@ -383,26 +383,27 @@
                             // nothing here
                         }).finally(function() {
                             if (isConfirmed) {
-                                return _associateCtepPerson(ctepPerson, vm.curPerson); // vm.curPerson is CTRP person context
+                                return _associateCtepPerson(ctepPerson, vm.curPerson, 'CTEP'); // vm.curPerson is CTRP person context
                             }
                         });
                     } else {
-                        return _associateCtepPerson(ctepPerson, vm.curPerson); // vm.curPerson is CTRP person context
+                        return _associateCtepPerson(ctepPerson, vm.curPerson, 'CTEP'); // vm.curPerson is CTRP person context
                     }
                 }
             });
         }
 
         vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // used for associating ctep person to ctrp person, vm.curPerson is CTEP person id
-        function _associateCtepPerson(ctepPerson, ctrpPerson) {
+        function _associateCtepPerson(ctepPerson, ctrpPerson, sourceContext) {
             var ctrpId = ctrpPerson.ctrp_id;
+            console.info('ctrp person to be associated: ', ctrpPerson);
             PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
                 console.info('res with association person: ', res); // resp.person
                 if (res.server_response.status >= 200 && res.server_response.status < 226) {
                     vm.associatedPersonContexts = []; // clean up
                     vm.matchedCtrpPersons = []; // clean up
-                    if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: 'CTEP'}) === -1) {
-                        vm.curPerson.cluster.push({context: 'CTEP', id: res.person.id});
+                    if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: sourceContext}) === -1) {
+                        vm.curPerson.cluster.push({context: sourceContext, id: res.person.id});
                         res.person.source_context = ctepPerson.source_context;
                         res.person.source_status = ctepPerson.source_status;
                         if (!vm.curPerson.associated_persons || !angular.isArray(vm.curPerson.associated_persons)) {
@@ -495,6 +496,7 @@
 
         function cloneCtepPerson(ctepPersonId, forceClone) {
             PersonService.cloneCtepPerson(ctepPersonId, forceClone).then(function(res) {
+                console.info('res from clone: ', res);
                 if (res.is_cloned) {
                     showToastr('The CTEP person context has been successfully cloned');
                     vm.matchedCtrpPersons = [];
