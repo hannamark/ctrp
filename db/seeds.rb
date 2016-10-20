@@ -1908,6 +1908,49 @@ family0.organizations << org0
 family0.organizations << org1
 family0.organizations << org2
 
+ctep_org1 = Organization.find_or_create_by( id: 999000009,
+                                       source_id: '9999995',
+                                       name: 'CTEP ORG For Testing 1',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', SourceContext.find_by_code('CTEP').id),
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+ctep_org2 = Organization.find_or_create_by( id: 99000008,
+                                       source_id: '9999995',
+                                       name: 'CTEP ORG For Testing 3',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', SourceContext.find_by_code('CTEP').id),
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       address: '9606 Medical Center Dr',
+                                       city: 'Germantown',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+ctep_org3 = Organization.find_or_create_by( id: 9990000007,
+                                       source_id: '9999995',
+                                       name: 'CTEP ORG For Testing 3',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', SourceContext.find_by_code('CTEP').id),
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       address: '9607 Medical Center Dr',
+                                       city: 'Frederick',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+
 org3 = Organization.find_or_create_by( id: 9999995,
                                        source_id: '9999995',
                                        name: 'AAA test org for test accounts',
