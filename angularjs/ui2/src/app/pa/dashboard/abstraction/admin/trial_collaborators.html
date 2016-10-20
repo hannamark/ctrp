@@ -60,7 +60,7 @@
                     </th>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators | orderBy:'org_name':false:trialDetailView.disableOrderBy track by $index" class="animated-item" ng-class="collaborator._destroy ? 'deleted-text' : ''">
+                    <tr ng-repeat="collaborator in trialDetailView.curTrial.collaborators | orderBy:'org_name' track by $index" class="animated-item" ng-class="collaborator._destroy ? 'deleted-text' : ''">
                         <td>
                             {{collaborator.organization_id}}
                         </td>

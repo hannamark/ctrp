@@ -142,6 +142,10 @@
     height: 550px;
 }
 
+.ui-grid-canvas {
+    min-height: 465px;
+}
+
 .grid-small {
     width: 100%;
     height: 200px;
@@ -552,6 +556,13 @@ form label {
     -webkit-border-radius: 6px 0 6px 6px;
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
+}
+
+.dropdown-fixed {
+    position: fixed;
+    z-index: 1000;
+    top: 60px;
+    margin-right: 64px;
 }
 
 

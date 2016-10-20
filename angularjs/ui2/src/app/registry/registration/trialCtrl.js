@@ -36,7 +36,7 @@
         };
 
         //ui-grid plugin options
-        var actionTemplate = '<div ng-if="row.entity.actions.length > 0" class="btn-group" ng-class="grid.renderContainers.body.visibleRowCache.indexOf(row) > 4 ? \'dropup\' : \'\'">'
+        var actionTemplate = '<div ng-if="row.entity.actions.length > 0" class="btn-group" ng-class="{\'dropup\': grid.renderContainers.body.visibleRowCache.indexOf(row) > 4}">'
             + '<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
             + 'Action <span class="caret"></span>'
             + '</button>'
