@@ -31,6 +31,7 @@ module.exports = function () {
     var login = new loginPage();
     var commonFunctions = new abstractionCommonMethods();
     var verifyTrialData = new trialDataVerificationPage();
+    var dbConnect = new databaseConnection();
 
 
     var userCtrpTrialSubmitter = 'ctrptrialsubmitter';
@@ -118,6 +119,7 @@ module.exports = function () {
                 trialMenuItem.clickTrials();
                 trialMenuItem.clickListSearchTrialLink();
                 nciIDNT.then(function (trialNciIDNT) {
+                    dbConnect.dbConnAddAllMilestoneProcessingStatus(trialNciIDNT,getDBConnection);
                     searchTrial.setSearchTrialProtocolID(trialNciIDNT);
                     searchTrial.clickMyTrials();
                     expect(projectFunctions.inSearchResults(trialNciIDNT)).to.eventually.equal('true', 'Verify Trial is present in Search Result');
