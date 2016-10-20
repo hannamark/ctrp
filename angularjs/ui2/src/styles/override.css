@@ -1912,22 +1912,6 @@ body.trial-abstraction-search .form-horizontal label.control-label.checkbox3 {
     color: #444;
 }
 
-
-.ctrp_id {}
-.ctep_id {}
-.org_name {}
-.source_status {}
-.source_context {}
-.source_id {}
-.family_name {}
-.phone {}
-.email {}
-.city {}
-.state {}
-.country {}
-.postal_code {}
-.context_org_id {}
-.processing_status {}
-.updated_by {}
-.updated_date {}
-.association_date {}
+.auto-height.ui-grid, .ui-grid-viewport {
+    height: auto !important;
+}
