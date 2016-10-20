@@ -1936,7 +1936,7 @@ ctep_org2 = Organization.find_or_create_by( id: 99000008,
                                        email: "ncictrpdev@mail.nih.gov"
 )
 
-ctep_org3 = Organization.find_or_create_by( id: 9990000007,
+ctep_org3 = Organization.find_or_create_by( id: 9990007,
                                        source_id: '9999995',
                                        name: 'CTEP ORG For Testing 3',
                                        phone:'240-276-0000',
