@@ -110,7 +110,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div ng-if="paTrialOverview.trialDetailObj.pa_editable">
+                                        <div ng-show="paTrialOverview.trialDetailObj.pa_editable">
                                             <button type="button" restriction-field class="btn btn-primary btn-add" ng-click="trialDetailView.addAuthority()" ng-disabled="!trialDetailView.authority_org || !trialDetailView.authority_country">
                                                 <i class="glyphicon glyphicon-plus"></i> Add
                                             </button>
