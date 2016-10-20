@@ -255,8 +255,8 @@ class TrialService
         validation_results << rule
 
       elsif (rule.code == 'PAS41' and @trial.detailed_description.present? and @trial.detailed_description.length > 32000) ||
-          (rule.code == 'PAS42' and @trial.brief_title.present? and @trial.brief_title.length <= 18) ||
-          (rule.code == 'PAS49' and @trial.brief_title.present? and @trial.brief_title.length >= 300)
+          (rule.code == 'PAS42' and @trial.brief_title.present? and @trial.brief_title.length < 18) ||
+          (rule.code == 'PAS49' and @trial.brief_title.present? and @trial.brief_title.length > 300)
 
         ## warnings
         validation_results << rule
@@ -367,22 +367,23 @@ class TrialService
     validation_result = []
     paa_site_rules.each do |rule|
       
-      if (rule.code == 'PAA93' and !is_all_sites_uniq) || (rule.code == 'PAA94' and is_all_sites_pi_uniq.include?(false))
+      if (rule.code == 'PAA93' && !is_all_sites_uniq) ||
+          (rule.code == 'PAA94' && is_all_sites_pi_uniq.include?(false))
         ## errors block
         validation_result << rule
 
-      elsif (rule.code == 'PAA196' and @@is_cur_trial_status_approved and is_any_site_status_active) ||
+      elsif
+      (rule.code == 'PAA196' and @@is_cur_trial_status_approved and is_any_site_status_active) ||
           (rule.code == 'PAA197' and @@is_cur_trial_status_approved and is_any_site_status_enroll_by_invitation) ||
           (rule.code == 'PAA198' and @@is_cur_trial_status_inreview and is_any_site_status_active) ||
           (rule.code == 'PAA199' and @@is_cur_trial_status_inreview and is_any_site_status_enroll_by_invitation) ||
           (rule.code = 'PAA200' and @@is_cur_trial_status_withdrawn and is_any_site_status_active) ||
-          (rule.code = 'PAA201' and @@is_cur_trial_status_withdrawn and is_any_site_status_enroll_by_invitation) ||
+          (rule.code = 'PAA201' and @@is_cur_trial_status_withdrawn and is_any_site_status_enroll_by_invitation)
           # (rule.code = 'PAA202' and is_any_site_status_active == false) ||
           (rule.code = 'PAA202' and @trial.participating_sites.size == 0)
 
         ## warnings block
         validation_result << rule
-        p "is here #{rule.code}"
         # TODO: finish this warning block
         # TODO: PAA203, PAA204, PAA205, and PAA206 (ask BA: what is primary xxx ?)
 
