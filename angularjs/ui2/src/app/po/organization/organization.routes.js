@@ -31,7 +31,7 @@
                       return OrgService.getSourceContexts();
                   },
                   sourceStatusObj: function(OrgService) {
-                      return OrgService.getSourceStatuses();
+                      return OrgService.getSourceStatuses({"view_type": "all"});
                   },
                   serviceRequests: function(OrgService) {
                     return OrgService.getServiceRequests();
@@ -65,7 +65,7 @@
                       return OrgService.getSourceContexts();
                   },
                   sourceStatusObj : function(OrgService) {
-                      return OrgService.getSourceStatuses();
+                      return OrgService.getSourceStatuses({"view_type": "all"});
                   },
                   serviceRequests: function(OrgService) {
                     return OrgService.getServiceRequests();
