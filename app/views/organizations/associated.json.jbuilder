@@ -29,6 +29,7 @@ json.associated_orgs do
                   :updated_by,
                   :ctep_id,
                   :uuid,
+                  :ctep_org_type_name,
                   :org_created_date,
                   :org_updated_date,
                   :aff_families_names,

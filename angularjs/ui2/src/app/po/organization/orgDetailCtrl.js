@@ -490,19 +490,7 @@
                 }
             ],
             enableRowHeaderSelection : true,
-            enableGridMenu: true,
-            enableSelectAll: true,
-            exporterCsvFilename: 'associated-trials.csv',
-            exporterMenuAllData: true,
-            exporterMenuPdf: false,
-            exporterMenuCsv: false,
-            gridMenuCustomItems: [{
-                title: 'Export All Data As CSV',
-                order: 100,
-                action: function ($event){
-                    this.grid.api.exporter.csvExport(uiGridExporterConstants.ALL, uiGridExporterConstants.ALL);
-                }
-            }]
+            enableGridMenu: false
         };
 
         vm.associatedOrgsOptions.exporterAllDataFn = function () {
