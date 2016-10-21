@@ -239,12 +239,14 @@ class OrganizationsController < ApplicationController
   end
 
   def disAssociateTwoOrgs ctrpOrgId, org
-    org.processing_status = 'Incomplete'
-    org.updated_by = @current_user.username unless @current_user.nil?
-    org.updated_at = Time.zone.now
-    org.ctrp_id            = nil
-    org.service_request_id = nil
-    org.association_date = nil
+    if ctrpOrgId == org.ctrp_id
+      org.processing_status = 'Incomplete'
+      org.updated_by = @current_user.username unless @current_user.nil?
+      org.updated_at = Time.zone.now
+      org.ctrp_id            = nil
+      org.service_request_id = nil
+      org.association_date = nil
+    end
     return org
   end
 
