@@ -46,7 +46,6 @@ class Organization < ActiveRecord::Base
   belongs_to :service_request
   belongs_to :ctep_org_type
   belongs_to :org_funding_mechanism
-  #belongs_to :source_cluster
   has_many :trial_funding_sources
   has_many :fs_trials, through: :trial_funding_sources, source: :trial
   has_many :trial_co_lead_orgs
@@ -64,7 +63,6 @@ class Organization < ActiveRecord::Base
 
   validates :name, presence: true
   validates :name, length: {maximum: 160}
-  ##validates_length_of :name, :in => 5..255
 
   validates :address, presence: true
   validates :city, presence: true

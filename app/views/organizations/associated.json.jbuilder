@@ -39,3 +39,4 @@ json.associated_orgs do
   end
 end
 json.active_context @active_context
+json.active_id params[:id].to_i

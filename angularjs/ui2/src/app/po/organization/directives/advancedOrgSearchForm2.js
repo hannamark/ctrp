@@ -546,9 +546,9 @@
                     var allSearchParams = angular.copy($scope.searchParams);
                     var origGridColumnDefs = angular.copy($scope.gridOptions.columnDefs);
 
-
                     allSearchParams.start = null;
                     allSearchParams.rows = null;
+                    allSearchParams.allrows = true;
 
                     return OrgService.searchOrgs(allSearchParams).then(
                         function (data) {
