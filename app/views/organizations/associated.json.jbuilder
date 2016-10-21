@@ -28,16 +28,16 @@ json.associated_orgs do
                   :created_by,
                   :updated_by,
                   :ctep_id,
-                  :uuid,
                   :ctep_org_type_name,
                   :org_created_date,
                   :org_updated_date,
                   :aff_families_names,
                   :org_assoc_date,
                   :service_request_name
+    json.uuid @ac_tp ? organization.uuid : nil
     json.ctep_id organization.multiview_ctep_id
   end
 end
 json.active_context @active_context
 json.active_id params[:id].to_i
-json.ac_tp = @ac_tp
+json.ac_tp @ac_tp

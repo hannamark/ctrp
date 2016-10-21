@@ -124,6 +124,7 @@
             if (associatedOrgsObj) {
                 vm.associatedOrgs = associatedOrgsObj.associated_orgs;
                 vm.defaultTab = associatedOrgsObj.active_context;
+                vm.currentUserIsAdmin = associatedOrgsObj.ac_tp;
                 vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP')[0];
                 vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
                 vm.ctrpOrg =  filterOutCTRPOrg();
@@ -287,11 +288,10 @@
                 angular.forEach(vm.selectedOrgsArray, function(value) {
                     var newAssociatedOrg = value;
                     newAssociatedOrg.ctrp_id = vm.ctrpOrg.ctrp_id;
-                    // An outer param wrapper is needed for nested attributes to work
-                    var outerOrg = {};
-                    outerOrg.id = newAssociatedOrg.id;
-                    outerOrg.organization = newAssociatedOrg;
-                    OrgService.upsertOrg(outerOrg).then(function (response) {
+                    OrgService.upsertOrg({
+                        id:             newAssociatedOrg.id,
+                        organization:   newAssociatedOrg
+                    }).then(function (response) {
                         vm.associatedOrgs = response.associated_orgs;
                         associateOrgsRefresh();
                         toastr.success('Organization has been associated.', 'Operation Successful!');
@@ -334,11 +334,10 @@
                 angular.forEach(vm.selectedOrgsArray, function(value) {
                     var newAssociatedOrg = value;
                     vm.ctepOrg.ctrp_id = newAssociatedOrg.ctrp_id;
-                    // An outer param wrapper is needed for nested attributes to work
-                    var outerOrg = {};
-                    outerOrg.id = vm.ctepOrg.id;
-                    outerOrg.organization = vm.ctepOrg;
-                    OrgService.upsertOrg(outerOrg).then(function (response) {
+                    OrgService.upsertOrg({
+                        id:             vm.ctepOrg.id,
+                        organization:   vm.ctepOrg
+                    }).then(function (response) {
                         var status = response.server_response.status;
                         if (status >= 200 && status <= 210) {
                             if (status === 200) {

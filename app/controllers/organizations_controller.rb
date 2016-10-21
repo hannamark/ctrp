@@ -68,19 +68,19 @@ class OrganizationsController < ApplicationController
         end
         if @organization.save
           @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
+          @active_context = 'CTRP'
           format.json { render :associated }
         else
-          format.html { render :edit }
           format.json { render json: @organization.errors, status: :unprocessable_entity }
         end
       end
     elsif @organization.source_context_id == @ctrpId
       respond_to do |format|
         if @organization.update(organization_params.except(:ctrp_id))
+          @active_context = 'CTRP'
           format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
           format.json { render :show, status: :ok, location: @organization }
         else
-          format.html { render :edit }
           format.json { render json: @organization.errors, status: :unprocessable_entity }
         end
       end
@@ -219,6 +219,7 @@ class OrganizationsController < ApplicationController
         ctepOrg = associateTwoOrgs @organization.ctrp_id, ctepOrg
         ctepOrg.save
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
+        @associated_orgs.active_context = 'CTRP'
         format.json { render :associated }
       else
         format.html { render :edit }

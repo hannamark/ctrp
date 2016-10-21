@@ -4,7 +4,7 @@
 <div class="col-xs-12 drop-shadow" ng-if="orgDetailView.defaultTab">
     <h4>{{orgDetailView.ctrpOrg.new?'Add':(orgDetailView.tabOpen === 'CTRP' && orgDetailView.curOrgEditable?'Edit':'View')}} Organization</h4>
     <div class="row">
-        <ctrp-comment instance-uuid="{{orgDetailView.ctrpOrg.uuid}}" button-type="icon" field="" model="organization"></ctrp-comment>
+        <ctrp-comment ng-if="orgDetailView.currentUserIsAdmin" instance-uuid="{{orgDetailView.ctrpOrg.uuid}}" button-type="icon" field="" model="organization"></ctrp-comment>
         <!-- tab views -->
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom md-selected="orgDetailVie.tabIndex">
