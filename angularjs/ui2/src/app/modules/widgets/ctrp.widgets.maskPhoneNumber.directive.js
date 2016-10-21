@@ -14,25 +14,39 @@
         return directive;
 
         function linkerFn(scope, element, attributes, controller) {
-            var elem= element,
+            var elem = element,
+                countryElement = element.closest('form').find('#country'),
+                countryVal = null,
                 ctrl = controller;
 
+
+            countryElement.on('change', function(e) {
+                countryVal = $(this).val();
+                applyMask();
+            });
+
             elem.on('keyup', function(e) {
-                ctrl.$modelValue = applyMask(ctrl.$modelValue);
+                ctrl.$modelValue = applyMask();
             });
 
             ctrl.$formatters.push(function(value) {
                 var output = null;
 
-                if (value) {
-                    output = applyMask(value);
+                if (countryVal && value) {
+                    output = applyMask();
+                    return output;
                 }
-
-                return output;
             });
 
-            function applyMask(value) {
-                return formatLocal('US', value);
+            function applyMask() {
+                var phoneNum = ctrl.$modelValue;
+                var countryCode;
+
+                if (countryVal) {
+                    countryCode = countryToCountryCode(countryVal);
+                }
+
+                return formatLocal(countryCode, phoneNum);
             }
       }
   }

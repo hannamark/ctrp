@@ -202,7 +202,7 @@
             vm.cloningCTEP = true;
             vm.nilclose = true;
         };
-        
+
         vm.cloningCTEP = false;
         vm.nilclose = true;
         $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
@@ -325,7 +325,7 @@
             });
             vm.selectedOrgs = [];
         };
-        
+
         vm.ctepAssociateOrgs = function () {
             vm.confirmOverrideAssociatePopUp = false;
             if (vm.selectedOrgsArray) {
