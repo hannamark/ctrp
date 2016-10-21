@@ -374,7 +374,7 @@
             }, function(newVal, oldVal) {
                 if (!!newVal && angular.isArray(newVal) && newVal.length > 0) {
                     var ctepPerson = newVal[0];
-                    console.info('ctep person: ', ctepPerson);
+                    // console.info('ctep person: ', ctepPerson);
                     if (angular.isDefined(ctepPerson.ctrp_id) && ctepPerson.ctrp_id !== vm.curPerson.ctrp_id) {
                         var isConfirmed = false;
                         Common.alertConfirm('This CTEP person has been associated to another CTRP Person Context, click OK to change the existing association').then(function(ok) {
