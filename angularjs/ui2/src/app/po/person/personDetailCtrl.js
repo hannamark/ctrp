@@ -412,6 +412,7 @@
                             vm.curPerson.associated_persons.push(vm.curPerson);
                         }
                         vm.curPerson.associated_persons.push(res.person);
+                        showToastr('CTEP person context association was successful');
                     }
                 }
 
