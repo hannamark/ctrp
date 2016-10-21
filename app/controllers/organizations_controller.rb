@@ -219,7 +219,7 @@ class OrganizationsController < ApplicationController
         ctepOrg = associateTwoOrgs @organization.ctrp_id, ctepOrg
         ctepOrg.save
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
-        @associated_orgs.active_context = 'CTRP'
+        @active_context = 'CTRP'
         format.json { render :associated }
       else
         format.html { render :edit }
