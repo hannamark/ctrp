@@ -5,7 +5,13 @@ class OrganizationsController < ApplicationController
   before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy, :curate]
 
   respond_to :html, :json
+  before_filter :set_controller_variables
 
+  def set_controller_variables
+    @ctepId = SourceContext.find_by_code("CTEP").id
+    @nlmId = SourceContext.find_by_code("NLM").id
+    @ctrpId = SourceContext.find_by_code("CTRP").id
+  end
 
   # GET /organizations
   # GET /organizations.json
@@ -54,18 +60,13 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1
   # PATCH/PUT /organizations/1.json
   def update
-    ctepId = SourceContext.find_by_code("CTEP").id
-    nlmId = SourceContext.find_by_code("NLM").id
-    ctrpId = SourceContext.find_by_code("CTRP").id
     @organization.updated_by = @current_user.username unless @current_user.nil?
-    if organization_params[:ctrp_id] && @organization.ctrp_id != organization_params[:ctrp_id] &&
-        ( @organization.source_context_id == ctepId || @organization.source_context_id == nlmId ) then
+    if organization_params[:ctrp_id] && @organization.ctrp_id != organization_params[:ctrp_id] && ( @organization.source_context_id == @ctepId || @organization.source_context_id == @nlmId ) then
       respond_to do |format|
-        @organization.ctrp_id = organization_params[:ctrp_id]
-        @organization.association_date = DateTime.now
-        if @organization.source_context_id == ctepId
+        @organization = associateTwoOrgs organization_params[:ctrp_id], @organization
+        if @organization.source_context_id == @ctepId
           old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @organization.source_context_id})
-                         .where('id <> ' + (@organization.id).to_s).where('source_context_id <> ' + (nlmId).to_s)
+                         .where('id <> ' + (@organization.id).to_s).where('source_context_id <> ' + (@nlmId).to_s)
           old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
         end
         if @organization.save
@@ -76,7 +77,7 @@ class OrganizationsController < ApplicationController
           format.json { render json: @organization.errors, status: :unprocessable_entity }
         end
       end
-    elsif @organization.source_context_id == ctrpId
+    elsif @organization.source_context_id == @ctrpId
       respond_to do |format|
         if @organization.update(organization_params.except(:ctrp_id))
           format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
@@ -151,14 +152,23 @@ class OrganizationsController < ApplicationController
   end
 
   def associated
-    active_org = Organization.find(params[:id])
-    @associated_orgs = {}
-    @active_context = SourceContext.find(active_org.source_context_id).name
-    if !active_org.ctrp_id.blank?
-      @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
-    else
-      @associated_orgs = filterSearch Organization.all_orgs_data().where(:id => active_org.id)
+    @associated_orgs = []
+    if params[:id]
+      active_org = Organization.find(params[:id])
+      if !active_org.blank? && !active_org.ctrp_id.blank? && User.org_write_access(@current_user)
+        @active_context = SourceContext.find(active_org.source_context_id).name
+        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
+      elsif !active_org.blank?
+        @associated_orgs = filterSearch Organization.all_orgs_data().where(:id => active_org.id)
+        @active_context = SourceContext.find(active_org.source_context_id).name unless @associated_orgs.blank?
+      end
+    elsif User.org_write_access(@current_user) && params[:remove_ids] && params[:remove_ids] & params[:ctrp_id]
+      params[:remove_ids].each do |org_id|
+        (disAssociateTwoOrgs ctrpOrgId, Organization.find(org_id)).save
+        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
+      end
     end
+
   end
 
   def search
@@ -193,8 +203,8 @@ class OrganizationsController < ApplicationController
       # get total: faster here than in jbuilder (jbuilder counts array; here we use SQL COUNT(*) - faster)
       @total = @organizations.distinct.size
       # finally paginate
-      unless params[:rows].nil?
-        @organizations = Kaminari.paginate_array(@organizations).page(params[:start]).per(params[:rows]) unless @organizations.blank?
+      unless params[:rows].nil? || @organizations.blank?
+        @organizations = Kaminari.paginate_array(@organizations).page(params[:start]).per(params[:rows])
       end
     end
   end
@@ -239,16 +249,29 @@ class OrganizationsController < ApplicationController
     @organization.created_at = Time.zone.now
     respond_to do |format|
       if @organization.save
-         ctepOrg.ctrp_id            = @organization.ctrp_id
-         ctepOrg.service_request_id = ServiceRequest.find_by_code('NULL').id
-         ctepOrg.save
-         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
+        ctepOrg = associateTwoOrgs @organization.ctrp_id, ctepOrg
+        ctepOrg.save
+        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
         format.json { render :associated }
       else
         format.html { render :edit }
         format.json { render json: @organization.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def associateTwoOrgs ctrpOrgId, org
+    org.ctrp_id            = ctrpOrgId
+    org.service_request_id = ServiceRequest.find_by_code('NULL').id
+    org.association_date = DateTime.now
+    return org
+  end
+
+  def disAssociateTwoOrgs ctrpOrgId, org
+    org.ctrp_id            = nil
+    org.service_request_id = nil
+    org.association_date = nil
+    return org
   end
 
   def countOrgsWithSameName

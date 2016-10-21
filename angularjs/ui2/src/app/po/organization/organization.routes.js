@@ -40,12 +40,8 @@
                   countryList : function(GeoLocationService) {
                       return GeoLocationService.getCountryList();
                   },
-                  orgDetailObj : function($stateParams, OrgService) {
-                      console.log("getting org by id: " + $stateParams.orgId);
-                      return OrgService.getOrgById($stateParams.orgId);
-                  },
                   associatedOrgsObj : function($stateParams, OrgService) {
-                      return OrgService.getAssociatedOrgs($stateParams.orgId);
+                      return OrgService.getAssociatedOrgs({id: $stateParams.orgId});
                   }
               }, //resolve the promise and pass it to controller
               ncyBreadcrumb: {
