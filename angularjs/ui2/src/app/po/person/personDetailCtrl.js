@@ -80,6 +80,7 @@
                     $state.go('main.personDetail', {personId: response.data.id});
                 } else if (status === 200) {
                     // updated
+                    console.info('response with update: ', response);
                     vm.curPerson = response.data;
                     showToastr('Person ' + vm.curPerson.lname + ' has been recorded');
                     vm.curPerson.new = false;
