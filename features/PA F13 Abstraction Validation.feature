@@ -7,13 +7,9 @@ Scenario: #1 Successful Abstraction Validation for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
 And I have selected a Trial
 And I select the Abstraction validation option
-When there are no warnings
 And there are no errors
 Then the 'Abstraction is valid' message displays
-And the View Buttons <ViewButtons> type displays
-|ViewButtons|
-|View XML   |
-|View TSR   |
+
 
 
 Scenario: #2 Abstraction Validation with warnings or errors
@@ -23,6 +19,7 @@ When there are warnings
 And there are errors
 Then the messages <MessageType> will be displayed in the sequence below
 
+#Error/warning section will respect the section order for administrative and scientific
 |<MessageType>                                                               |              
 |"Abstraction validation failed. Please check Admin Data Menu error(s)."     |
 |"Abstraction validation failed. Please check Scientific Data Menu error(s)."|             
