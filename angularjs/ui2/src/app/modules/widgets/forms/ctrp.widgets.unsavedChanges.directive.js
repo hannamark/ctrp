@@ -74,7 +74,7 @@
                         stateEventOccurred = true;
 
                         if (!formArray.length) {
-                            if (scope.$parent[formName].$dirty && !scope.$parent[formName].$submitted) {
+                            if (formName && scope.$parent[formName].$dirty && !scope.$parent[formName].$submitted) {
                                 checkSignOut(event);
                                 return;
                             }
