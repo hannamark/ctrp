@@ -20,16 +20,13 @@
         vm.processingStatuses = OrgService.getProcessingStatuses();
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
-
         vm.sourceContextArr = sourceContextObj;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-
         vm.alias = '';
         vm.curationReady = false;
         vm.showPhoneWarning = false;
         vm.disableBtn = false;
-
         vm.processStatusArr = OrgService.getProcessingStatuses();
 
         vm.updateOrg = function () {
@@ -50,11 +47,9 @@
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
                     if (vm.ctrpOrg.new && status === 201) {
-                        // created
                         $state.go('main.orgDetail', {orgId: response.id});
                     } else if (status === 200) {
                         vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
-                        //update name aliases
                         vm.ctrpOrg.name_aliases = response.name_aliases;
                         vm.addedNameAliases = [];
                         appendNameAliases();
@@ -67,7 +62,7 @@
             }).finally(function() {
                 vm.disableBtn = false;
             });
-        }; // updateOrg
+        };
 
         function showToastr(orgName) {
             toastr.clear();
@@ -132,11 +127,9 @@
                 vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP')[0];
                 vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
                 vm.ctrpOrg =  filterOutCTRPOrg();
-
                 if (vm.ctrpOrg) {
                     vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                 }
-
                 checkToDisableClone();
             } else {
                 vm.ctrpOrg = {};
@@ -195,6 +188,14 @@
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                 vm.curOrgEditable = UserService.isCurationModeEnabled();
                 vm.updateTime = Date.now();
+
+                vm.associatedOrgsOptions.data = _.filter(
+                    vm.associatedOrgs, function (item) {
+                        return !_.isEqual(associatedOrgsObj.active_id, item.id);
+                    });
+                vm.associatedOrgsOptions.onRegisterApi = function (gridApi) {
+                    vm.gridApi = gridApi;
+                };
             });
         };
 
@@ -338,13 +339,14 @@
                     outerOrg.id = vm.ctepOrg.id;
                     outerOrg.organization = vm.ctepOrg;
                     OrgService.upsertOrg(outerOrg).then(function (response) {
+                        var status = response.server_response.status;
                         if (status >= 200 && status <= 210) {
                             if (status === 200) {
                                 vm.associatedOrgs = response.associated_orgs;
-                                associateOrgsRefresh();
                                 vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
                                 vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                                 vm.ctrpUpdateTime = Date.now();
+                                associateOrgsRefresh();
                                 toastr.success('Organization has been associated.', 'Operation Successful!');
                             }
                         }
@@ -357,7 +359,6 @@
             }
         };
 
-        // Swap context when different tab is selected
         $scope.$watch(function() {
             return vm.selectedOrgsArray;
         }, function(newValue, oldValue) {
@@ -401,7 +402,6 @@
                 vm.cloningCTEP = false;
                 vm.nilclose = true;
                 vm.tabOpen = 'CTRP';
-                $state.go('main.orgDetail', response, {reload: true});
             });
         };
 

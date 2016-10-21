@@ -261,6 +261,9 @@ class OrganizationsController < ApplicationController
   end
 
   def associateTwoOrgs ctrpOrgId, org
+    org.processing_status = 'Complete'
+    org.updated_by = @current_user.username unless @current_user.nil?
+    org.updated_at = Time.zone.now
     org.ctrp_id            = ctrpOrgId
     org.service_request_id = ServiceRequest.find_by_code('NULL').id
     org.association_date = DateTime.now
@@ -268,23 +271,12 @@ class OrganizationsController < ApplicationController
   end
 
   def disAssociateTwoOrgs ctrpOrgId, org
-
-    p "*****************"
-    p org
-    p "*****************"
-    p "*****************"
-    p "*****************"
-    p "*****************"
-    p "*****************"
-    p "*****************"
-    p "*****************"
-    p "*****************"
-    p "*****************"
-    p "*****||||||||||||||||*******"
+    org.processing_status = 'Incomplete'
+    org.updated_by = @current_user.username unless @current_user.nil?
+    org.updated_at = Time.zone.now
     org.ctrp_id            = nil
     org.service_request_id = nil
     org.association_date = nil
-    p org
     return org
   end
 
