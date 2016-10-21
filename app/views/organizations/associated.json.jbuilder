@@ -40,3 +40,4 @@ json.associated_orgs do
 end
 json.active_context @active_context
 json.active_id params[:id].to_i
+json.ac_tp = @ac_tp

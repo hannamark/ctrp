@@ -1,3 +1,5 @@
+# rubocop:disable ClassLength
+
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
   ## Please comment the next two lines if you donot want the Authorization checks
@@ -5,13 +7,6 @@ class OrganizationsController < ApplicationController
   before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy, :curate]
 
   respond_to :html, :json
-  before_filter :set_controller_variables
-
-  def set_controller_variables
-    @ctepId = SourceContext.find_by_code("CTEP").id
-    @nlmId = SourceContext.find_by_code("NLM").id
-    @ctrpId = SourceContext.find_by_code("CTRP").id
-  end
 
   # GET /organizations
   # GET /organizations.json
@@ -60,13 +55,15 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1
   # PATCH/PUT /organizations/1.json
   def update
+    @ctepId = SourceContext.find_by_code("CTEP").id
+    @nlmId = SourceContext.find_by_code("NLM").id
+    @ctrpId = SourceContext.find_by_code("CTRP").id
     @organization.updated_by = @current_user.username unless @current_user.nil?
     if organization_params[:ctrp_id] && @organization.ctrp_id != organization_params[:ctrp_id] && ( @organization.source_context_id == @ctepId || @organization.source_context_id == @nlmId ) then
       respond_to do |format|
         @organization = associateTwoOrgs organization_params[:ctrp_id], @organization
         if @organization.source_context_id == @ctepId
-          old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @organization.source_context_id})
-                         .where('id <> ' + (@organization.id).to_s).where('source_context_id <> ' + (@nlmId).to_s)
+          old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @organization.source_context_id}).where('id <> ' + (@organization.id).to_s).where('source_context_id <> ' + (@nlmId).to_s)
           old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
         end
         if @organization.save
@@ -152,23 +149,26 @@ class OrganizationsController < ApplicationController
   end
 
   def associated
-    @associated_orgs = []
-    if params[:id]
+      @associated_orgs = []
+      isAdmin = User.org_write_access(@current_user)
       active_org = Organization.find(params[:id])
-      if !active_org.blank? && !active_org.ctrp_id.blank? && User.org_write_access(@current_user)
+      if isAdmin && params[:remove_ids] && params[:ctrp_id]
+        params[:remove_ids].each do |org|
+          contextOrg = Organization.find(org[:id])
+          dissaciated_org = disAssociateTwoOrgs params[:ctrp_id], contextOrg
+          dissaciated_org.save
+        end
+        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
+        @active_context = 'CTRP'
+      elsif isAdmin && !active_org.blank? && !active_org.ctrp_id.blank?
         @active_context = SourceContext.find(active_org.source_context_id).name
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
-      elsif !active_org.blank?
+      elsif params[:id] && params[:remove_ids].blank?
+        active_org = Organization.find(params[:id])
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:id => active_org.id)
         @active_context = SourceContext.find(active_org.source_context_id).name unless @associated_orgs.blank?
       end
-    elsif User.org_write_access(@current_user) && params[:remove_ids] && params[:remove_ids] & params[:ctrp_id]
-      params[:remove_ids].each do |org_id|
-        (disAssociateTwoOrgs ctrpOrgId, Organization.find(org_id)).save
-        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
-      end
-    end
-
+      @ac_tp = isAdmin
   end
 
   def search
@@ -268,9 +268,23 @@ class OrganizationsController < ApplicationController
   end
 
   def disAssociateTwoOrgs ctrpOrgId, org
+
+    p "*****************"
+    p org
+    p "*****************"
+    p "*****************"
+    p "*****************"
+    p "*****************"
+    p "*****************"
+    p "*****************"
+    p "*****************"
+    p "*****************"
+    p "*****************"
+    p "*****||||||||||||||||*******"
     org.ctrp_id            = nil
     org.service_request_id = nil
     org.association_date = nil
+    p org
     return org
   end
 

@@ -53,7 +53,7 @@
                         // created
                         $state.go('main.orgDetail', {orgId: response.id});
                     } else if (status === 200) {
-                        $state.go('main.orgDetail', {orgId: response.id});
+                        vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                         //update name aliases
                         vm.ctrpOrg.name_aliases = response.name_aliases;
                         vm.addedNameAliases = [];
@@ -243,7 +243,7 @@
         //Function that checks if an Organization - based on Name & source context is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the organization/unique Rails end point.
         vm.checkUniqueOrganization = function() {
             vm.showUniqueWarning = false;
-            if (vm.ctrpOrg && vm.ctrpOrg.name && vm.ctrpOrg.name.length > 0) {
+            if (vm.ctrpOrg && vm.ctrpOrg.name && vm.ctrpOrg.name.length > 0 && vm.ctrpOrg.name !== vm.ctrpOrgCopy) {
                 var searchParams = {
                     "org_name": vm.ctrpOrg.name,
                     "source_context_id": vm.ctrpOrg.source_context_id,
@@ -313,6 +313,7 @@
         vm.disAssociateOrgs = function (){
             vm.confirmDisAssociatePopUp = false;
             OrgService.getAssociatedOrgs({
+                id:             vm.ctrpOrg.id,
                 ctrp_id:        vm.ctrpOrg.ctrp_id,
                 remove_ids:     vm.selectedOrgs
             }).then(function (response) {
@@ -400,6 +401,7 @@
                 vm.cloningCTEP = false;
                 vm.nilclose = true;
                 vm.tabOpen = 'CTRP';
+                $state.go('main.orgDetail', response, {reload: true});
             });
         };
 
