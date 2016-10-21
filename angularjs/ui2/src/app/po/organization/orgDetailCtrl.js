@@ -278,7 +278,6 @@
                 vm.associatedOrgs, function (item) {
                     return _.contains(['CTEP','NLM'], item.source_context_name);
                 });
-            vm.tabOpen = 'CTRP';
             vm.updateTime = Date.now();
         };
 
@@ -299,6 +298,7 @@
                     }).catch(function (err) {
                         console.log("error in associating organization " + JSON.stringify(vm.ctrpOrg));
                     }).finally(function() {
+                        vm.tabOpen = 'CTRP';
                     });
                 });
             }
@@ -324,8 +324,8 @@
             }).catch(function (err) {
                 console.log("error in disassociating organization " + JSON.stringify(vm.ctrpOrg));
             }).finally(function() {
+                vm.selectedOrgs = [];
             });
-            vm.selectedOrgs = [];
         };
         
         vm.ctepAssociateOrgs = function () {

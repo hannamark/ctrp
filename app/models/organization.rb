@@ -435,8 +435,6 @@ class Organization < ActiveRecord::Base
     where("organizations.updated_at BETWEEN ? and ?", start_date, end_date)
   }
 
-  time_parser_start = "to_char((("
-  time_parser_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy')"
   scope :all_orgs_data, -> () {
     join_clause = "
       LEFT JOIN ctep_org_types ON organizations.ctep_org_type_id = ctep_org_types.id

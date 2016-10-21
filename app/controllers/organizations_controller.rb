@@ -116,38 +116,6 @@ class OrganizationsController < ApplicationController
 
   end
 
-  def select
-
-    Rails.logger.debug "In Organization Controller, select"
-    Rails.logger.debug "In Organization Controller, params = #{params.select}"
-
-    if local_user_signed_in?
-      user = current_local_user
-      Rails.logger.debug "In Organization Controller, current_local_user = #{current_local_user.inspect}"
-    elsif ldap_user_signed_in?
-      user = current_ldap_user
-      Rails.logger.debug "In Organization Controller, current_ldap_user = #{current_ldap_user.inspect}"
-    end
-    if !params.blank? && !params["selected_org_id"].blank?
-      org_id = params["selected_org_id"]
-      old_org_id = user.organization_id
-      if org_id == "0"
-        user.organization_id = nil
-      else
-        user.organization_id = org_id
-        # When a User changes his organization, he must be reapproved
-        if !old_org_id.nil?
-          user.user_status_id = UserStatus.find_by_code('INR').id
-        end
-      end
-      user.save!
-    end
-    respond_to do |format|
-        format.html { redirect_to users_path }
-    end
-
-  end
-
   def associated
       @associated_orgs = []
       isAdmin = User.org_write_access(@current_user)
@@ -163,8 +131,7 @@ class OrganizationsController < ApplicationController
       elsif isAdmin && !active_org.blank? && !active_org.ctrp_id.blank?
         @active_context = SourceContext.find(active_org.source_context_id).name
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
-      elsif params[:id] && params[:remove_ids].blank?
-        active_org = Organization.find(params[:id])
+      elsif params[:id] && params[:remove_ids].blank? && !active_org.blank?
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:id => active_org.id)
         @active_context = SourceContext.find(active_org.source_context_id).name unless @associated_orgs.blank?
       end
