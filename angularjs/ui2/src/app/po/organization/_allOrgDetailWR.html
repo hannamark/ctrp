@@ -186,7 +186,7 @@
         <label class="control-label col-xs-6 col-sm-6">Phone Number:</label>
         <div class="form-group col-xs-6 col-sm-6">
             <input type="text" restriction-field class="form-control input-sm" id="phone" name="phone" maxlength="30"
-                   ng-model="orgDetailView.ctrpOrg.phone" placeholder="Phone" ng-blur="orgDetailView.isValidPhoneNumber()" mask-phone-number>
+                   ng-model="orgDetailView.ctrpOrg.phone" placeholder="Phone" ng-blur="orgDetailView.isValidPhoneNumber()" mask-phone-number mask-country="{{orgDetailView.ctrpOrg.country}}">
             <span ng-show="orgDetailView.ctrpOrg.phone.length" class="form-control-feedback" ng-class="(orgDetailView.ctrpOrg.phone.length > 0 && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
             <div class="has-error"
                  ng-if="organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone)">

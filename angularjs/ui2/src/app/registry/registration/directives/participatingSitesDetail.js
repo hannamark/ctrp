@@ -501,7 +501,7 @@
 
                     if (newVal.length) {
                         selectedPerson = newVal[0];
-                        $scope.curPs.contact_name = PersonService.extractFullName(selectedPerson);
+                        $scope.curPs.contact_name = PersonService.extractFullName(selectedPerson, 'lf');
                         $scope.curPs.contact_phone = selectedPerson.phone;
                         $scope.curPs.extension = selectedPerson.extension ? selectedPerson.extension : null;
                         $scope.curPs.contact_email = selectedPerson.email;

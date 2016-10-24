@@ -13,41 +13,45 @@
 
         return directive;
 
-        function linkerFn(scope, element, attributes, controller) {
+        function linkerFn(scope, element, attrs, controller) {
             var elem = element,
                 countryElement = element.closest('form').find('#country'),
                 countryVal = null,
                 ctrl = controller;
 
+            console.log(attrs);
 
-            countryElement.on('change', function(e) {
-                countryVal = $(this).val();
-                applyMask();
-            });
+            /* Update phone number format when country value is changed */
+            attrs.$observe('maskCountry', function(newVal) {
+                if (newVal) {
+                    countryVal = newVal;
 
-            elem.on('keyup', function(e) {
-                ctrl.$modelValue = applyMask();
-            });
-
-            ctrl.$formatters.push(function(value) {
-                var output = null;
-
-                if (countryVal && value) {
-                    output = applyMask();
-                    return output;
+                    if (ctrl.$modelValue) {
+                        applyMask(ctrl.$modelValue);
+                    }
                 }
             });
 
-            function applyMask() {
-                var phoneNum = ctrl.$modelValue;
+            //ctrl.$formatters.push(applyMask);
+            ctrl.$parsers.push(applyMask);
+
+            function applyMask(viewValue) {
+                var phoneNum = viewValue;
                 var countryCode;
+                var output;
 
                 if (countryVal) {
                     countryCode = countryToCountryCode(countryVal);
+
+                    output = formatLocal(countryCode, phoneNum);
+                    ctrl.$setViewValue(output);
+                } else {
+                    return viewValue; // If no country, return phone number w/o formatting
                 }
 
-                return formatLocal(countryCode, phoneNum);
+                ctrl.$render(); // update input field with formatted phone number
+                return output;  // update underlying model
             }
-      }
-  }
+        }
+    }
 }());
