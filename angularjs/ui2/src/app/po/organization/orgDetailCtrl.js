@@ -382,7 +382,6 @@
 
             } else if (newValue && newValue[0] && newValue[0].ctrp_id) {
                 var newAssociatedOrg = newValue[0];
-                console.log(newValue[0],vm.nlmOrg,newAssociatedOrg.id);
                 if ( (newValue[0].source_context === 'CTEP' && (!vm.ctepOrg || (vm.ctepOrg && newAssociatedOrg.id !== vm.ctepOrg.id))) ||
                     (newValue[0].source_context === 'NLM' && (!vm.nlmOrg || (vm.nlmOrg && newAssociatedOrg.id !== vm.nlmOrg.id))) ) {
                     vm.confirmOverrideAssociatePopUp = true;
