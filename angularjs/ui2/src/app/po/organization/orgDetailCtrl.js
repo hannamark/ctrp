@@ -204,7 +204,7 @@
             vm.cloningCTEP = true;
             vm.nilclose = true;
         };
-        
+
         vm.cloningCTEP = false;
         vm.nilclose = true;
         $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
@@ -327,7 +327,7 @@
                 vm.selectedOrgs = [];
             });
         };
-        
+
         vm.ctepAssociateOrgs = function () {
             vm.confirmOverrideAssociatePopUp = false;
             if (vm.selectedOrgsArray) {
@@ -537,13 +537,13 @@
             enableGridMenu: false
         };
 
+        vm.associatedOrgsOptions.onRegisterApi = function (gridApi) {
+            vm.gridApi = gridApi;
+        };
         vm.associatedOrgsOptions.data = _.filter(
             vm.associatedOrgs, function (item) {
                 return !_.isEqual(associatedOrgsObj.active_id, item.id);
             });
-        vm.associatedOrgsOptions.onRegisterApi = function (gridApi) {
-            vm.gridApi = gridApi;
-        };
 
     }
 }());

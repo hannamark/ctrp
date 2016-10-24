@@ -172,6 +172,9 @@
             //key mirrors value
             'READONLY': 'READONLY',
             'CURATOR': 'CURATOR'
+        })
+        .constant('FORMATS', {
+            'NUMERIC': /^\d+$/
         });
 
 })();

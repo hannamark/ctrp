@@ -13,27 +13,43 @@
 
         return directive;
 
-        function linkerFn(scope, element, attributes, controller) {
-            var elem= element,
+        function linkerFn(scope, element, attrs, controller) {
+            var elem = element,
+                countryElement = element.closest('form').find('#country'),
+                countryVal = null,
                 ctrl = controller;
 
-            elem.on('keyup', function(e) {
-                ctrl.$modelValue = applyMask(ctrl.$modelValue);
+            /* Update phone number format when country value is changed */
+            attrs.$observe('maskCountry', function(newVal) {
+                if (newVal) {
+                    countryVal = newVal;
+
+                    if (ctrl.$modelValue) {
+                        applyMask(ctrl.$modelValue);
+                    }
+                }
             });
 
-            ctrl.$formatters.push(function(value) {
-                var output = null;
+            //ctrl.$formatters.push(applyMask);
+            ctrl.$parsers.push(applyMask);
 
-                if (value) {
-                    output = applyMask(value);
+            function applyMask(viewValue) {
+                var phoneNum = viewValue;
+                var countryCode;
+                var output;
+
+                if (countryVal) {
+                    countryCode = countryToCountryCode(countryVal); // (ex: 'United States' to 'US')
+
+                    output = formatLocal(countryCode, phoneNum);
+                    ctrl.$setViewValue(output);
+                } else {
+                    return viewValue; // If no country, return phone number w/o formatting
                 }
 
-                return output;
-            });
-
-            function applyMask(value) {
-                return formatLocal('US', value);
+                ctrl.$render(); // update input field with formatted phone number
+                return output;  // update underlying model
             }
-      }
-  }
+        }
+    }
 }());

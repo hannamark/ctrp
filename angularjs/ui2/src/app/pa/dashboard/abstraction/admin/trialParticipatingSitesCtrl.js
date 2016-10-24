@@ -10,9 +10,9 @@
     .controller('trialParticipatingSitesCtrl', trialParticipatingSitesCtrl);
 
     trialPsWarningModalController.$inject = ['$scope', '$uibModalInstance'];
-    trialParticipatingSitesCtrl.$inject = ['TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$window', '$uibModal', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', 'investigatorTypes', '$location', '$anchorScroll'];
+    trialParticipatingSitesCtrl.$inject = ['FORMATS', 'TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$window', '$uibModal', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', 'investigatorTypes', '$location', '$anchorScroll'];
 
-    function trialParticipatingSitesCtrl(TrialService, PATrialService, PersonService, DateService , $scope, $window, $uibModal, $timeout, $state, $stateParams, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, investigatorTypes, $location, $anchorScroll) {
+    function trialParticipatingSitesCtrl(FORMATS, TrialService, PATrialService, PersonService, DateService , $scope, $window, $uibModal, $timeout, $state, $stateParams, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, investigatorTypes, $location, $anchorScroll) {
 
         var vm = this;
 
@@ -85,6 +85,7 @@
         vm.watchContactType = watchContactType;
 
         vm.disableBtn = false;
+        vm.phoneNumberFormat = FORMATS.NUMERIC;
 
         activate();
 
