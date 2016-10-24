@@ -24,7 +24,6 @@ And I can delete existing and add new Trial Status and Trial Status Dates
 And I will be able to update trial start date, primary completion date, and completion date with actual or anticipated dates
 And I will be able to review all existing Trial Related Documents type
 And I will be able to add all Trial Related Documents 
-And the added documents should be added to the existing documents
 When the trial has errors 
 Then the Review Button will be displayed to Review the errors
 When the trial has no errors
@@ -139,7 +138,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |Protocol Document- Current Protocol |
       |IRB Approval- Current IRB Approval  |
       |Informed Consent Document- Current Informed Consent Document |
-      |Other- Current Other Documents |
+      |Other- All Other Documents |
       
 
       When I have selected the Update option when Trial Summary Report Date Milestone is entered
@@ -148,7 +147,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |Protocol Document- Current Protocol |
       |IRB Approval- Current IRB Approval  |
       |Informed Consent Document- Current Informed Consent Document |
-      |Other- Current Other Documents |
+      |Other- All Other Documents |
       |TSR- Current TSR    |
       
 
@@ -164,7 +163,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |IRB Approval- Current IRB Approval  |
       |Change Memo |
       |Protocol Highlighted Document|
-      |Other- Current Other Documents |
+      |Other- All Other Documents |
       
       When I have selected the Update option when Trial Summary Report Date Milestone is entered for an Amendment
      Then the documents type will be displayed during update
@@ -172,7 +171,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |IRB Approval- Current IRB Approval  |
       |Change Memo |
       |Protocol Highlighted Document|
-      |Other- Current Other Documents |
+      |Other- All Other Documents |
       |TSR- Current TSR (Generated after Trial Summary report Date Milestone)   |   
       
 
