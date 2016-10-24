@@ -66,11 +66,6 @@
                   serviceRequests: function(OrgService) {
                     return OrgService.getServiceRequests();
                   },
-                  orgDetailObj: function($q) {
-                      var deferred = $q.defer();
-                      deferred.resolve(null);
-                      return deferred.promise;
-                  },
                   associatedOrgsObj : function($q) {
                       var deferred = $q.defer();
                       deferred.resolve(null);

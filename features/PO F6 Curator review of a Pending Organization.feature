@@ -47,7 +47,6 @@ Feature: PO F6 Curator review of a Pending Organization
     And the name of the Nullified organization will be listed as an alias on the retained Active organization
     And all aliases listed on the Nullified organization will be listed as aliases on the retained organization
     And if both organizations had CTEP IDs only the retained Active organization CTEP ID will be associated with the retained Active organization
-    When the CTEP ID of
     And the status of the organization to be nullified will be "Nullified"
 
   Scenario: #5 As a PO Curator, I cannot Nullify an Organization with Active CTEP Organization ID

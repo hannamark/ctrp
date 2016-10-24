@@ -1,3 +1,5 @@
+# rubocop:disable ClassLength
+
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
   ## Please comment the next two lines if you donot want the Authorization checks
@@ -5,13 +7,6 @@ class OrganizationsController < ApplicationController
   before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy, :curate]
 
   respond_to :html, :json
-  before_filter :set_controller_variables
-
-  def set_controller_variables
-    @ctepId = SourceContext.find_by_code("CTEP").id
-    @nlmId = SourceContext.find_by_code("NLM").id
-    @ctrpId = SourceContext.find_by_code("CTRP").id
-  end
 
   # GET /organizations
   # GET /organizations.json
@@ -60,30 +55,32 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1
   # PATCH/PUT /organizations/1.json
   def update
+    @ctepId = SourceContext.find_by_code("CTEP").id
+    @nlmId = SourceContext.find_by_code("NLM").id
+    @ctrpId = SourceContext.find_by_code("CTRP").id
     @organization.updated_by = @current_user.username unless @current_user.nil?
     if organization_params[:ctrp_id] && @organization.ctrp_id != organization_params[:ctrp_id] && ( @organization.source_context_id == @ctepId || @organization.source_context_id == @nlmId ) then
       respond_to do |format|
         @organization = associateTwoOrgs organization_params[:ctrp_id], @organization
         if @organization.source_context_id == @ctepId
-          old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @organization.source_context_id})
-                         .where('id <> ' + (@organization.id).to_s).where('source_context_id <> ' + (@nlmId).to_s)
+          old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @organization.source_context_id}).where('id <> ' + (@organization.id).to_s).where('source_context_id <> ' + (@nlmId).to_s)
           old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
         end
         if @organization.save
           @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
+          @active_context = 'CTRP'
           format.json { render :associated }
         else
-          format.html { render :edit }
           format.json { render json: @organization.errors, status: :unprocessable_entity }
         end
       end
     elsif @organization.source_context_id == @ctrpId
       respond_to do |format|
         if @organization.update(organization_params.except(:ctrp_id))
+          @active_context = 'CTRP'
           format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
           format.json { render :show, status: :ok, location: @organization }
         else
-          format.html { render :edit }
           format.json { render json: @organization.errors, status: :unprocessable_entity }
         end
       end
@@ -119,56 +116,26 @@ class OrganizationsController < ApplicationController
 
   end
 
-  def select
-
-    Rails.logger.debug "In Organization Controller, select"
-    Rails.logger.debug "In Organization Controller, params = #{params.select}"
-
-    if local_user_signed_in?
-      user = current_local_user
-      Rails.logger.debug "In Organization Controller, current_local_user = #{current_local_user.inspect}"
-    elsif ldap_user_signed_in?
-      user = current_ldap_user
-      Rails.logger.debug "In Organization Controller, current_ldap_user = #{current_ldap_user.inspect}"
-    end
-    if !params.blank? && !params["selected_org_id"].blank?
-      org_id = params["selected_org_id"]
-      old_org_id = user.organization_id
-      if org_id == "0"
-        user.organization_id = nil
-      else
-        user.organization_id = org_id
-        # When a User changes his organization, he must be reapproved
-        if !old_org_id.nil?
-          user.user_status_id = UserStatus.find_by_code('INR').id
-        end
-      end
-      user.save!
-    end
-    respond_to do |format|
-        format.html { redirect_to users_path }
-    end
-
-  end
-
   def associated
-    @associated_orgs = []
-    if params[:id]
+      @associated_orgs = []
+      isAdmin = User.org_write_access(@current_user)
       active_org = Organization.find(params[:id])
-      if !active_org.blank? && !active_org.ctrp_id.blank? && User.org_write_access(@current_user)
+      if isAdmin && params[:remove_ids] && params[:ctrp_id]
+        params[:remove_ids].each do |org|
+          contextOrg = Organization.find(org[:id])
+          dissaciated_org = disAssociateTwoOrgs params[:ctrp_id], contextOrg
+          dissaciated_org.save
+        end
+        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
+        @active_context = 'CTRP'
+      elsif isAdmin && !active_org.blank? && !active_org.ctrp_id.blank?
         @active_context = SourceContext.find(active_org.source_context_id).name
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
-      elsif !active_org.blank?
+      elsif params[:id] && params[:remove_ids].blank? && !active_org.blank?
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:id => active_org.id)
         @active_context = SourceContext.find(active_org.source_context_id).name unless @associated_orgs.blank?
       end
-    elsif User.org_write_access(@current_user) && params[:remove_ids] && params[:remove_ids] & params[:ctrp_id]
-      params[:remove_ids].each do |org_id|
-        (disAssociateTwoOrgs ctrpOrgId, Organization.find(org_id)).save
-        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
-      end
-    end
-
+      @ac_tp = isAdmin
   end
 
   def search
@@ -252,6 +219,7 @@ class OrganizationsController < ApplicationController
         ctepOrg = associateTwoOrgs @organization.ctrp_id, ctepOrg
         ctepOrg.save
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
+        @active_context = 'CTRP'
         format.json { render :associated }
       else
         format.html { render :edit }
@@ -261,6 +229,9 @@ class OrganizationsController < ApplicationController
   end
 
   def associateTwoOrgs ctrpOrgId, org
+    org.processing_status = 'Complete'
+    org.updated_by = @current_user.username unless @current_user.nil?
+    org.updated_at = Time.zone.now
     org.ctrp_id            = ctrpOrgId
     org.service_request_id = ServiceRequest.find_by_code('NULL').id
     org.association_date = DateTime.now
@@ -268,9 +239,14 @@ class OrganizationsController < ApplicationController
   end
 
   def disAssociateTwoOrgs ctrpOrgId, org
-    org.ctrp_id            = nil
-    org.service_request_id = nil
-    org.association_date = nil
+    if ctrpOrgId == org.ctrp_id
+      org.processing_status = 'Incomplete'
+      org.updated_by = @current_user.username unless @current_user.nil?
+      org.updated_at = Time.zone.now
+      org.ctrp_id            = nil
+      org.service_request_id = nil
+      org.association_date = nil
+    end
     return org
   end
 
