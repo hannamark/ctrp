@@ -19,8 +19,6 @@
                 countryVal = null,
                 ctrl = controller;
 
-            console.log(attrs);
-
             /* Update phone number format when country value is changed */
             attrs.$observe('maskCountry', function(newVal) {
                 if (newVal) {
