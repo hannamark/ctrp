@@ -36,6 +36,14 @@ Rails.application.routes.draw do
               post '/:id' => 'api_trials#import_trial'
             end
           end
+
+          scope '/organizations' do
+            scope '/complete' do
+              post '/' => 'api_organizations#create'
+              #post '/:idType/:id' => 'api_trials#update',constraints: { idType:  'nci'}
+              #put '/:idType/:id' => 'api_trials#amend',constraints: { idType:  'nci'}
+            end
+          end
         end
       end
     end
