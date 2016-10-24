@@ -537,13 +537,13 @@
             enableGridMenu: false
         };
 
+        vm.associatedOrgsOptions.onRegisterApi = function (gridApi) {
+            vm.gridApi = gridApi;
+        };
         vm.associatedOrgsOptions.data = _.filter(
             vm.associatedOrgs, function (item) {
                 return !_.isEqual(associatedOrgsObj.active_id, item.id);
             });
-        vm.associatedOrgsOptions.onRegisterApi = function (gridApi) {
-            vm.gridApi = gridApi;
-        };
 
     }
 }());
