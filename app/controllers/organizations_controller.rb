@@ -63,7 +63,7 @@ class OrganizationsController < ApplicationController
       respond_to do |format|
         @organization = associateTwoOrgs organization_params[:ctrp_id], @organization
         if @organization.source_context_id == @ctepId
-          old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @organization.source_context_id}).where('id <> ' + (@organization.id).to_s).where('source_context_id <> ' + (@nlmId).to_s)
+          old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @ctepId}).where('id <> ' + (@organization.id).to_s).where('source_context_id <> ' + (@nlmId).to_s)
           old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
         end
         if @organization.save
