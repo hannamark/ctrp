@@ -95,7 +95,7 @@
                 vm.alias = '';
             }
         };
-        
+
         // Delete the associations
         vm.toggleSelection = function (index, type) {
             if (type == 'other_id') {
@@ -382,7 +382,9 @@
 
             } else if (newValue && newValue[0] && newValue[0].ctrp_id) {
                 var newAssociatedOrg = newValue[0];
-                if ( (!vm.ctepOrg || (newAssociatedOrg.id !== vm.ctepOrg.id)) || (vm.nlmOrg || (newAssociatedOrg.id !== vm.nlmOrg.id)) ) {
+                console.log(newValue[0],vm.nlmOrg,newAssociatedOrg.id);
+                if ( (newValue[0].source_context === 'CTEP' && (!vm.ctepOrg || (vm.ctepOrg && newAssociatedOrg.id !== vm.ctepOrg.id))) ||
+                    (newValue[0].source_context === 'NLM' && (!vm.nlmOrg || (vm.nlmOrg && newAssociatedOrg.id !== vm.nlmOrg.id))) ) {
                     vm.confirmOverrideAssociatePopUp = true;
                 } else {
                     toastr.success('The chosen organization is already associated to this organization.', 'Operation Cancelled!');
