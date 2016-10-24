@@ -158,6 +158,8 @@ json.collaborators_attributes do
   end
 end
 
+@trial.participating_sites = @trial.participating_sites_with_active_orgs
+
 json.participating_sites do
   json.array!(@trial.participating_sites) do |participating_site|
     json.id participating_site.id
@@ -178,6 +180,7 @@ json.participating_sites do
     json.extension participating_site.extension
     json.contact_email participating_site.contact_email
     json.contact_type participating_site.contact_type
+    json.local_trial_identifier participating_site.local_trial_identifier
     json.protocol_id participating_site.protocol_id
     json.program_code participating_site.program_code
     json.person participating_site.person

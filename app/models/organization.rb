@@ -46,7 +46,6 @@ class Organization < ActiveRecord::Base
   belongs_to :service_request
   belongs_to :ctep_org_type
   belongs_to :org_funding_mechanism
-  #belongs_to :source_cluster
   has_many :trial_funding_sources
   has_many :fs_trials, through: :trial_funding_sources, source: :trial
   has_many :trial_co_lead_orgs
@@ -64,7 +63,6 @@ class Organization < ActiveRecord::Base
 
   validates :name, presence: true
   validates :name, length: {maximum: 160}
-  ##validates_length_of :name, :in => 5..255
 
   validates :address, presence: true
   validates :city, presence: true
@@ -419,7 +417,6 @@ class Organization < ActiveRecord::Base
     else
       where("family_name ilike ?", "#{value}")
     end
-    select(:organizations).distinct
   }
 
   scope :without_family, -> () {
@@ -438,10 +435,9 @@ class Organization < ActiveRecord::Base
     where("organizations.updated_at BETWEEN ? and ?", start_date, end_date)
   }
 
-  time_parser_start = "to_char((("
-  time_parser_end = " AT TIME ZONE 'UTC') AT TIME ZONE '" + Time.now.in_time_zone(Rails.application.config.time_zone).strftime('%Z') + "'),  'DD-Mon-yyyy')"
   scope :all_orgs_data, -> () {
     join_clause = "
+      LEFT JOIN ctep_org_types ON organizations.ctep_org_type_id = ctep_org_types.id
       LEFT JOIN service_requests ON organizations.service_request_id = service_requests.id
       LEFT JOIN name_aliases ON organizations.id = name_aliases.organization_id
       INNER JOIN source_contexts ON organizations.source_context_id = source_contexts.id
@@ -467,6 +463,7 @@ class Organization < ActiveRecord::Base
 
     select_clause = "
       DISTINCT organizations.*,
+      ctep_org_types.name as ctep_org_type_name,
       service_requests.name as service_request_name,
        (
           CASE

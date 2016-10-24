@@ -81,7 +81,7 @@
                     visible: false
                 },
                 {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', minWidth: '100', width: '*'},
-                {name: 'ctep_id', enableSorting: true, displayName: 'CTEP ID', minWidth: '100', width: '*'},
+                {name: 'ctep_source_id', enableSorting: true, displayName: 'CTEP ID', minWidth: '100', width: '*'},
                 {name: 'fname', displayName: 'First', enableSorting: true,  minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
@@ -334,9 +334,10 @@
         /**
          * Extract the person's full name from the personObj
          * @param  {JSON} personObj [required fields: fname (String); mname (String); lname (String)]
+         * @param  {String} format  'fl': 'first name last name', 'lf': 'last name, first name', 'lfm': 'last name, first name middle name'
          * @return {String}           [full name, e.g. 'John Middle Doe']
          */
-        function extractFullName(personObj) {
+        function extractFullName(personObj, format) {
             if (!personObj) {
                 return '';
             }
@@ -345,16 +346,24 @@
             var middleName = personObj.mname || '';
             var lastName = personObj.lname || '';
 
-            fullName += firstName;
-            fullName += !!middleName ? (' ' + middleName) : '';
-            fullName += !!lastName ? (' ' + lastName) : '';
+            if (format) {
+                switch (format) {
+                    case 'lf':
+                        fullName = lastName + ', ' + firstName;
+                        break;
+                    case 'lfm':
+                        fullName = lastName + ', ' + firstName + ' ' + middleName;
+                        break;
+                    default:
+                        fullName = firstName + lastName;
+                }
+            } else {
+                fullName += firstName;
+                fullName += !!middleName ? (' ' + middleName) : '';
+                fullName += !!lastName ? (' ' + lastName) : '';
+            }
 
             return fullName;
         }
-
-
-
     }
-
-
 })();

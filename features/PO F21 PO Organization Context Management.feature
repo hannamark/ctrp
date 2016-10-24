@@ -17,8 +17,12 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     And I can search CTEP Context organizations
     When I select an org from the search results
   	Then I can view CTEP Context Organization fields below 
+   
+   #CTRP Organizaiton ID is the Source ID when the Source Context is CTRP
+   #Phone Number “|” Extension (#Single Field)
+    #Context Organization ID is the Organization Primary Key
     
-    |CTRP Organization ID (Grouping ID)|
+    |CTRP Organization ID|
     |Source Context: CTEP|
     |Source ID|
     |CTEP Organization Type|
@@ -32,8 +36,8 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Postal Code|
     |Country|
     |Email|
-    |Phone Number “|” Extension (#Single Field) |
-    |Context Organization ID (#Primary Key)|
+    |Phone Number Extension |
+    |Context Organization ID |
     |Service Request |
     |Processing Status|
     

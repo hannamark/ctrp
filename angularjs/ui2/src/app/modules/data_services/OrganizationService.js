@@ -163,7 +163,7 @@
             getServiceRequests: getServiceRequests,
             getProcessingStatuses: getProcessingStatuses,
             cloneCtepOrg: cloneCtepOrg,
-            getSourceStatuses2: getSourceStatuses2,
+            getSourceStatuses2: getSourceStatuses2
         };
 
         return services;
@@ -204,8 +204,8 @@
          * @param getAssociatedOrgs
          * @returns {*}
          */
-        function getAssociatedOrgs(orgId) {
-            return PromiseTimeoutService.getData(URL_CONFIGS.ASSOCIATED_ORGS + orgId + '.json');
+        function getAssociatedOrgs(orgObj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ASSOCIATED_ORGS, orgObj);
         } //getAssociatedOrgs
 
         /**

@@ -223,7 +223,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Change Memo Document  |
       |Protocol Highlighted Document|
       |TSR  |
-      |Other|
+      |All Other|
 
 
       

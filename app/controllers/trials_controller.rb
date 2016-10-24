@@ -343,8 +343,6 @@ class TrialsController < ApplicationController
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
 
-
-      p @trials.pluck(:nci_id)
       if params[:searchType] == 'My Trials'
         if ['ROLE_SITE-SU'].include? current_user.role
           @trials = @trials.with_owner_and_with_current_user_in_family_as_ps(@current_user)

@@ -52,6 +52,7 @@ Rails.application.routes.draw do
       collection do
         get 'search'
         get '/associated/:id', to: 'organizations#associated'
+        post 'associated', to: 'organizations#associated', defaults: {format: 'json'}
         post 'search'
         post 'select'
         post 'curate'

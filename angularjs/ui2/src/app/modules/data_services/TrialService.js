@@ -300,9 +300,7 @@
                 errorMsg = 'Both Protocol ID Origin and a Protocol ID are Required';
                 return errorMsg;
             }
-            console.info('protocolIdOriginCode: ', protocolIdOriginCode);
-            console.info('protocolId: ', protocolId);
-            var idObj = _.findWhere(addedOtherIds, {'protocol_id_origin_id': protocolIdOriginId});
+            var idObj = _.findWhere(addedOtherIds, {'protocol_id': protocolId});
             // var idObj2 = _.findWhere(addedOtherIds, {'protocol_id': protocolId});
             var codeArr = ['OTH', 'ONCT', 'DNCI']; // these code allow duplicates
             if (angular.isDefined(idObj) && !_.contains(codeArr, protocolIdOriginCode)) {

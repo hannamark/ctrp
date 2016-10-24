@@ -144,7 +144,7 @@
                 <div class="form-group">
                     <!-- ng-if="viewTrialView.curTrial.pi" -->
                     <label class="control-label col-xs-12 col-sm-3">Principal Investigator:</label>
-                    <div class="col-xs-12 col-sm-6 form-text">
+                    <div ng-if="viewTrialView.curTrial.pi" class="col-xs-12 col-sm-6 form-text">
                         {{viewTrialView.curTrial.pi.lname + ', ' + viewTrialView.curTrial.pi.fname}}
                     </div>
                 </div>
@@ -260,7 +260,7 @@
                     </div>
                 </div>
 
-                <div ng-show="viewTrialView.curTrial.is_owner"class="border-bottom">
+                <div ng-show="viewTrialView.curTrial.is_owner" class="border-bottom">
                     <!-- ng-show="viewTrialView.curTrial.ind_ides.length > 0 && viewTrialView.curTrial.is_owner" -->
                     <!-- <h5 ng-if="viewTrialView.curTrial.ind_ides.length > 0 && viewTrialView.curTrial.is_owner" class="border-bottom">FDA IND/IDE Information for applicable trials:</h5> -->
                     <h5 class="border-bottom">FDA IND/IDE Information for applicable trials:</h5>
@@ -392,7 +392,7 @@
                             <tr ng-repeat="ps in viewTrialView.curTrial.participating_sites track by $index">
                                 <td class="col-sm-1">{{ps.organization.id}}</td>
                                 <td class="col-sm-2">{{ps.organization.name}}</td>
-                                <td class="col-sm-1">{{ps.view_investigators}}</td>
+                                <td class="col-sm-1">{{ps.site_pi.lname}}, {{ps.site_pi.fname}}</td>
                                 <td class="col-sm-1">{{ps.protocol_id}}</td>
                                 <td class="col-sm-1">{{ps.program_code}}</td>
                                 <td class="col-sm-1">{{ps.current_status_name}}</td>
@@ -426,14 +426,6 @@
                     </div>
                 </div>
 
-                <!--<div ng-if="viewTrialView.curTrial.internal_source.code === 'IMP'" class="form-group">
-                    <label class="control-label col-xs-12 col-sm-3"></label>
-                    <div class="col-xs-12 col-sm-9 form-text">
-                        <button ng-if="viewTrialView.curTrial.actions.includes('add-my-site')" type="button" restriction-field class="btn btn-primary pull-right" id="add_site_btn" ng-click="viewTrialView.addMySite()">
-                            Add My Site
-                        </button>
-                    </div>
-                </div> -->
             </form>
         </div>
     </div>

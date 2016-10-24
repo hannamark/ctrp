@@ -1,122 +1,63 @@
-<h4><span ng-hide="!orgDetailView.ctrpOrg.new">Add</span><span ng-hide="orgDetailView.ctrpOrg.new">Edit</span> Organization</h4>
-<div class="row md-sidenav-push-in-target">
-    <div ng-include src="'app/po/organization/_allOrgDetailWR.html'"></div>
-    <div class="row"  ng-if="!orgDetailView.ctrpOrg.new">
-        <div class="form-group col-xs-12 col-sm-6 has-feedback">
-            <label class="control-label col-xs-6 col-sm-6">Context Organization ID:</label>
-            <div class="form-group col-xs-6 col-sm-6 form-text">
-                {{orgDetailView.ctrpOrg.id}}
+
+<form class="form form-horizontal" role="form" name="organization_form" novalidate ctrp-submit="orgDetailView.updateOrg()" unsaved-changes>
+    <div class="row md-sidenav-push-in-target">
+        <div ng-include src="'app/po/organization/_allOrgDetailWR.html'"></div>
+        <div class="row"  ng-if="!orgDetailView.ctrpOrg.new">
+            <div class="form-group col-xs-12 col-sm-6 has-feedback">
+                <label class="control-label col-xs-6 col-sm-6">Context Organization ID:</label>
+                <div class="form-group col-xs-6 col-sm-6 form-text">
+                    {{orgDetailView.ctrpOrg.id}}
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-hide="orgDetailView.ctrpOrg.new">
+            <label class="control-label col-xs-12 col-sm-3">Created By:</label>
+            <div class="col-xs-12 col-sm-6 form-text">
+                {{orgDetailView.ctrpOrg.created_by}} ({{orgDetailView.ctrpOrg.org_created_date}})
+            </div>
+        </div>
+        <div class="form-group" ng-hide="orgDetailView.ctrpOrg.new">
+            <label class="control-label col-xs-12 col-sm-3">Updated By:</label>
+            <div class="col-xs-12 col-sm-6 form-text">
+                {{orgDetailView.ctrpOrg.updated_by}} ({{orgDetailView.ctrpOrg.org_updated_date}})
+            </div>
+        </div>
+        <div ng-show="orgDetailView.ctrpOrg.families.length > 0" class="form-group">
+            <label class="control-label col-xs-12 col-sm-3">Families:</label>
+            <div class="col-xs-12 col-sm-6 form-text">
+                <p ng-repeat="family in orgDetailView.ctrpOrg.families">
+                    <a ui-sref="main.familyDetail({familyId : family.id })">{{family.name}}</a>
+                </p>
+            </div>
+        </div>
+        <div class="row" ng-hide="orgDetailView.ctrpOrg.new">
+            <div class="form-group col-xs-12 col-sm-6 has-feedback">
+                <label class="control-label col-xs-6 col-sm-6">Associate Organization Context:</label>
+                <div class="form-group col-xs-6 col-sm-6">
+                    <ctrp-org-adv-search-modal-button
+                            ng-hide="orgDetailView.ctrpOrg.new"
+                            pre-search= '{"nosave": true, "source_contextfilter": ["CTEP","NLM"]}'
+                            class="pull-left"
+                            max-row-selectable="1" use-built-in-template="false" allow-overwrite="true"
+                            filtered-contexts = "CTEP,NLM"
+                            selected-orgs-array="orgDetailView.selectedOrgsArray">
+                    </ctrp-org-adv-search-modal-button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group no-bottom-margin" ng-show="orgDetailView.curOrgEditable">
+            <div class="col-xs-12 col-sm-3"></div>
+            <div class="btn-toolbar col-xs-12 col-sm-6">
+                <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn" ng-disabled="orgDetailView.disableBtn">
+                    <i class="glyphicon glyphicon-ok"></i> Save
+                </button>
+                <button type="button" ng-hide="!orgDetailView.ctrpOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.clearForm()" ng-disabled="orgDetailView.disableBtn">
+                    <i class="glyphicon glyphicon-remove"></i> Reset
+                </button>
+                <button type="button" ng-hide="orgDetailView.ctrpOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.resetForm()" ng-disabled="orgDetailView.disableBtn">
+                    <i class="glyphicon glyphicon-remove"></i> Reset
+                </button>
             </div>
         </div>
     </div>
-    <div class="form-group" ng-hide="orgDetailView.ctrpOrg.new">
-        <label class="control-label col-xs-12 col-sm-3">Created By:</label>
-        <div class="col-xs-12 col-sm-6 form-text">
-            {{orgDetailView.ctrpOrg.created_by}} ({{orgDetailView.ctrpOrg.org_created_date}})
-        </div>
-    </div>
-    <div class="form-group" ng-hide="orgDetailView.ctrpOrg.new">
-        <label class="control-label col-xs-12 col-sm-3">Updated By:</label>
-        <div class="col-xs-12 col-sm-6 form-text">
-            {{orgDetailView.ctrpOrg.updated_by}} ({{orgDetailView.ctrpOrg.org_updated_date}})
-        </div>
-    </div>
-    <div ng-show="orgDetailView.ctrpOrg.families.length > 0" class="form-group">
-        <label class="control-label col-xs-12 col-sm-3">Families:</label>
-        <div class="col-xs-12 col-sm-6 form-text">
-            <p ng-repeat="family in orgDetailView.ctrpOrg.families">
-                <a ui-sref="main.familyDetail({familyId : family.id })">{{family.name}}</a>
-            </p>
-        </div>
-    </div>
-    <div class="row" ng-hide="orgDetailView.ctrpOrg.new">
-        <div class="form-group col-xs-12 col-sm-6 has-feedback">
-            <label class="control-label col-xs-6 col-sm-6">Associate Organization Context:</label>
-            <div class="form-group col-xs-6 col-sm-6 form-text">
-                <ctrp-org-adv-search-modal-button
-                        ng-hide="orgDetailView.ctrpOrg.new"
-                        pre-search = '{"nosave": true, "source_contextfilter": ["CTEP","NLM"]}'
-                        class="pull-left"
-                        max-row-selectable="1" use-built-in-template="false" allow-overwrite="true"
-                        filtered-contexts = "CTEP,NLM"
-                        selected-orgs-array="orgDetailView.selectedOrgsArray">
-                </ctrp-org-adv-search-modal-button>
-            </div>
-        </div>
-    </div>
-    <div class="form-group no-bottom-margin" ng-show="orgDetailView.curOrgEditable">
-        <div class="col-xs-12 col-sm-3"></div>
-        <div class="btn-toolbar col-xs-12 col-sm-6">
-            <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn" ng-disabled="orgDetailView.disableBtn">
-                <i class="glyphicon glyphicon-ok"></i> Save
-            </button>
-            <button type="button" ng-hide="!orgDetailView.ctrpOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.clearForm()" ng-disabled="orgDetailView.disableBtn">
-                <i class="glyphicon glyphicon-remove"></i> Reset
-            </button>
-            <button type="button" ng-hide="orgDetailView.ctrpOrg.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="orgDetailView.resetForm()" ng-disabled="orgDetailView.disableBtn">
-                <i class="glyphicon glyphicon-remove"></i> Reset
-            </button>
-        </div>
-    </div>
-    <div class="form-group no-bottom-margin">
-        <div class="col-xs-12 col-sm-3"></div>
-        <div class="form-group" ng-if="orgDetailView.associatedOrgs && orgDetailView.associatedOrgs.length > 1">
-            <div class="col-xs-12">
-                <h4>Associated Organizations</h4>
-                <div class="row animated-item top-offset-tiny table-responsive search-calendar-grid">
-                    <table class="table table-bordered table-striped table-condensed class-by-fielde">
-                        <thead>
-                            <th class="ctrp_id"><span>CTRP Organization ID</span></th>
-                            <th class="ctep_id"><span>CTEP Organization ID</span></th>
-                            <th class="org_name"><span>Name</span></th>
-                            <th class="source_status"><span>Source Status</span></th>
-                            <th class="source_context"><span>Source Context</span></th>
-                            <th class="source_id"><span>Source ID</span></span></th>
-                            <th class="family_name"><span>Family Name</span></th>
-                            <th class="phone"><span>Phone</span></th>
-                            <th class="email"><span>Email</span></th>
-                            <th class="city"><span>City</span></th>
-                            <th class="state"><span>State</span></th>
-                            <th class="country"><span>Country</span></th>
-                            <th class="postal_code"><span>Postal Cod</span></th>
-                            <th class="context_org_id"><span>Context Org ID</span></th>
-                            <th class="processing_status"><span>Processing Status</span></th>
-                            <th class="updated_by"><span>Last Updated by</span></th>
-                            <th class="updated_date"><span>Last Updated Date</span></th>
-                            <th class="association_date"><span>Association Start Date</span></th>
-                        <th class="td-icon"><span>Delete</span></th>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="org in orgDetailView.associatedOrgs"
-                            ng-class="org._destroy == true ? 'deleted-text animated-item' : 'animated-item'">
-                            <td>{{org.ctrp_id}}</td>
-                            <td>{{org.ctep_id}}</td>
-                            <td>{{org.name}}</td>
-                            <td>{{org.source_status_name}}</td>
-                            <td>{{org.source_context_name}}</td>
-                            <td>{{org.source_id}}</td>
-                            <td>{{org.aff_families_names}}</td>
-                            <td>{{org.phone_with_ext}}</td>
-                            <td>{{org.email}}</td>
-                            <td>{{org.city}}</td>
-                            <td>{{org.state_province}}</td>
-                            <td>{{org.country}}</td>
-                            <td>{{org.postal_code}}</td>
-                            <td>{{org.id}}</td>
-                            <td>{{org.processing_status}}</td>
-                            <td>{{org.updated_by}}</td>
-                            <td>{{org.org_updated_date}}</td>
-                            <td>{{org.org_assoc_date}}</td>
-                            <td class="text-center td-icon">
-                                <button type="button" restriction-field class="btn btn-warning" ng-click="orgDetailView.toggleSelection($index)" title="Mark for deletion">
-                                    <i ng-class="org._destroy == true ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div> <!-- row ends -->
-            </div>
-        </div>
-    </div>
-</div>
+</form>

@@ -288,6 +288,7 @@ class Trial < TrialBase
   # The set_defaults will only work if the object is new
   after_initialize :set_defaults, unless: :persisted?
 
+
   # Array of actions can be taken on this Trial
   def actions
     actions = []
@@ -855,6 +856,16 @@ class Trial < TrialBase
 
   end
 
+  ##Returns sites with onlly active orgs.
+  def participating_sites_with_active_orgs
+    participating_sites_with_active_orgs = []
+      self.participating_sites.each do |e|
+        if SourceStatus.find_by_id(Organization.find_by_id(e.organization_id).source_status_id).code == 'ACT'
+          participating_sites_with_active_orgs.push(e)
+        end
+      end
+    return participating_sites_with_active_orgs
+  end
 
   private
 
@@ -1034,18 +1045,20 @@ class Trial < TrialBase
     end
 
     family_organizations = family_organizations.join(',')
-    join_clause = "LEFT JOIN participating_sites _ps1 ON _ps1.trial_id = trials.id"
-    where_clause = "_ps1.organization_id in ("+param.join(',')+")"
-    joins(join_clause).where(where_clause)
+    join_clause = "LEFT JOIN participating_sites _ps1 ON _ps1.trial_id = trials.id LEFT JOIN internal_sources _is on _is.id = trials.internal_source_id "
+    where_clause = " _ps1.organization_id in ("+param.join(',')+") "
+    where_clause += " AND _is.code = ? "
+    joins(join_clause).where(where_clause,"IMP")
   }
 
 
   scope :with_current_user_org_as_ps, -> (value) {
     current_user = value
     organization = current_user.organization
-    join_clause = "LEFT JOIN participating_sites _ps ON _ps.trial_id = trials.id"
-    where_clause = "_ps.organization_id =? "
-    joins(join_clause).where(where_clause, organization)
+    join_clause = "LEFT JOIN participating_sites _ps ON _ps.trial_id = trials.id LEFT JOIN internal_sources _is on _is.id = trials.internal_source_id  "
+    where_clause = " _ps.organization_id =? "
+    where_clause += " AND _is.code =? "
+    joins(join_clause).where(where_clause, organization, "IMP")
   }
 
   scope :in_family, -> (value, dateLimit) {

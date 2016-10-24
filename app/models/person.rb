@@ -44,6 +44,8 @@ class Person < ActiveRecord::Base
   has_many :participating_site_investigators, -> { order 'participating_site_investigators.id' }
   has_many :participating_sites, through: :participating_site_investigators
 
+  attr_accessor :is_associated
+
   accepts_nested_attributes_for :po_affiliations, allow_destroy: true
 
   validates :fname, presence: true

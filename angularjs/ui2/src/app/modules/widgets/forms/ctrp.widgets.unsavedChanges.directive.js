@@ -48,7 +48,7 @@
 
                 $window.onbeforeunload = function(event) {
                     if (!formArray.length) {
-                        if (formName && scope.$parent[formName].$dirty) {
+                        if (formName && scope.$parent[formName] && scope.$parent[formName].$dirty) {
                             return 'Are you sure you want to leave this page? You may have unsaved changes.';
                         }
                     } else {
@@ -74,7 +74,7 @@
                         stateEventOccurred = true;
 
                         if (!formArray.length) {
-                            if (scope.$parent[formName].$dirty && !scope.$parent[formName].$submitted) {
+                            if (formName && scope.$parent[formName].$dirty && !scope.$parent[formName].$submitted) {
                                 checkSignOut(event);
                                 return;
                             }

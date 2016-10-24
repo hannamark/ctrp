@@ -24,7 +24,6 @@ And I can delete existing and add new Trial Status and Trial Status Dates
 And I will be able to update trial start date, primary completion date, and completion date with actual or anticipated dates
 And I will be able to review all existing Trial Related Documents type
 And I will be able to add all Trial Related Documents 
-And the added documents should be added to the existing documents
 When the trial has errors 
 Then the Review Button will be displayed to Review the errors
 When the trial has no errors
@@ -42,14 +41,17 @@ And I search for a Trial which has been accepted and has a Participating site ad
 And I have selected the Update option
 Then I can view participating sites details
      
-     |CTRP Org ID|#(Group ID)
+     #CTRP Org ID = Group ID
+     |CTRP Org ID|
      |CTRP Organization Name|
-     |Principal Investigator|# (Last Name, First Name)
+     # Principal Investigator Format (Last Name, First Name)
+     |Principal Investigator|
      |Local Trial Identifier|
      |Program Code|
      |Current Site Recruitment Status|
      |Current Site Recruitment Status Date|
-     |Primary Contact|# (Last Name, First Name)
+     # Primary Contact format (Last Name, First Name)
+     |Primary Contact|
      |Email|
      |Phone Number-Extension|
      
@@ -79,15 +81,15 @@ And I can select Contact Type
 |General|
 
 Scenario: #4 I can update contact when contact type is Site investigator
-Given I am on the Contact Screen
+Given I am on the Update Participating Sites screen 
 When the contact type selected is Site Investigator 
-Then I can select the available site principal Investigator 
+Then the site principal Investigator gets populated 
 And the email address will be populated
 And Phone Number and Extention will be populated
 And the populated parameters can be edited
 
 Scenario: #5 I can Update contact when contact type is Person
-Given I am on the Contact Screen
+Given I am on the Update Participating Sites screen
 When the contact type selected is Person 
 Then I can select a person by conducting a Person Search 
 And Contact person name will be selected 
@@ -139,7 +141,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |Protocol Document- Current Protocol |
       |IRB Approval- Current IRB Approval  |
       |Informed Consent Document- Current Informed Consent Document |
-      |Other- Current Other Documents |
+      |Other- All Other Documents |
       
 
       When I have selected the Update option when Trial Summary Report Date Milestone is entered
@@ -148,7 +150,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |Protocol Document- Current Protocol |
       |IRB Approval- Current IRB Approval  |
       |Informed Consent Document- Current Informed Consent Document |
-      |Other- Current Other Documents |
+      |Other- All Other Documents |
       |TSR- Current TSR    |
       
 
@@ -164,7 +166,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |IRB Approval- Current IRB Approval  |
       |Change Memo |
       |Protocol Highlighted Document|
-      |Other- Current Other Documents |
+      |Other- All Other Documents |
       
       When I have selected the Update option when Trial Summary Report Date Milestone is entered for an Amendment
      Then the documents type will be displayed during update
@@ -172,7 +174,7 @@ And an email entitled "Updated Trial" will be sent to the trial owner (Locate Em
       |IRB Approval- Current IRB Approval  |
       |Change Memo |
       |Protocol Highlighted Document|
-      |Other- Current Other Documents |
+      |Other- All Other Documents |
       |TSR- Current TSR (Generated after Trial Summary report Date Milestone)   |   
       
 

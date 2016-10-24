@@ -1908,6 +1908,52 @@ family0.organizations << org0
 family0.organizations << org1
 family0.organizations << org2
 
+ctep_org1 = Organization.find_or_create_by( id: 999000009,
+                                       source_id: '9999995',
+                                       name: 'CTEP ORG For Testing 1',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', SourceContext.find_by_code('CTEP').id),
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       ctep_org_type_id: 7,
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+ctep_org2 = Organization.find_or_create_by( id: 99000008,
+                                       source_id: '9999995',
+                                       name: 'CTEP ORG For Testing 3',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', SourceContext.find_by_code('CTEP').id),
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       ctep_org_type_id: 2,
+                                       address: '9606 Medical Center Dr',
+                                       city: 'Germantown',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+ctep_org3 = Organization.find_or_create_by( id: 9990007,
+                                       source_id: '9999995',
+                                       name: 'CTEP ORG For Testing 3',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', SourceContext.find_by_code('CTEP').id),
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       ctep_org_type_id: 1,
+                                       address: '9607 Medical Center Dr',
+                                       city: 'Frederick',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+
 org3 = Organization.find_or_create_by( id: 9999995,
                                        source_id: '9999995',
                                        name: 'AAA test org for test accounts',
@@ -2144,11 +2190,11 @@ CadsrMarkerSynonym.find_or_create_by(id: 7724).update(alternate_name:  'Transcri
 # ValidationRule.find_or_create_by(code: 'PAAE001', section: 'PAA', model: 'trial', category: 'error', item: 'trial_general_details', rule: 'Trial official title cannot be null', description: 'Trial official title is required', remark: 'Follow the menus to Trial General Details screen to do the correction')
 # ValidationRule.find_or_create_by(code: 'PASE001', section: 'PAS', model: 'trial', category: 'error', item: 'trial_design', rule: 'Research category cannot be null', description: 'Research category is required', remark: 'Follow the menus to do the correction')
 
-ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA2', item: 'paa_general_trial_details', rule: 'NCT Number cannot be more than 30 characters', description: 'NCT Number >30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
-ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA3', item: 'paa_general_trial_details', rule: 'CTEP Number cannot be more than 30 characters', description: 'CTEP Number>30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
-ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA6', item: 'paa_general_trial_details', rule: 'DCP Number cannot be more than 30 characters', description: 'DCP Number  >  30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
-ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA7', item: 'paa_general_trial_details', rule: 'Lead Organization Trial Identifier  cannot be more than 30 characters', description: 'Lead Organization Trial Identifier > 30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
-ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA8', item: 'paa_general_trial_details', rule: 'Keywords cannot be more than  160 characters', description: 'Keywords > 160 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
+ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA2', item: 'paa_general_trial_details', rule: 'NCT Number cannot be more than 30 characters', description: 'NCT Number cannot be more than 30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
+ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA3', item: 'paa_general_trial_details', rule: 'CTEP Number cannot be more than 30 characters', description: 'CTEP Number cannot be more than 30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
+ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA6', item: 'paa_general_trial_details', rule: 'DCP Number cannot be more than 30 characters', description: 'DCP Number cannot be more than 30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
+ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA7', item: 'paa_general_trial_details', rule: 'Lead Organization Trial Identifier  cannot be more than 30 characters', description: 'Lead Organization Trial Identifier  cannot be more than 30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
+ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA8', item: 'paa_general_trial_details', rule: 'Keywords cannot be more than  160 characters', description: 'Keywords cannot be more than  160 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
 ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA9', item: 'paa_status', rule: 'Duplicate IN REVIEW status is not allowed', description: 'Duplicate ‘In Review status’', remark: '[Select Trial Status] from Administrative Data menu to view Trial Status.')
 ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA10', item: 'paa_status', rule: 'Invalid status transition from APPROVED to  IN REVIEW', description: 'study status has [IN REVIEW] after [APPROVED]', remark: '[Select Trial Status] from Administrative Data menu to view Trial Status.')
 ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA11', item: 'paa_status', rule: 'Duplicate APPROVED status is not allowed', description: 'Duplicate ‘Approved’ status', remark: '[Select Trial Status] from Administrative Data menu to view Trial Status.')
