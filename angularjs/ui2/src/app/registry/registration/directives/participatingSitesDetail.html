@@ -316,11 +316,11 @@
                     </div>
 
                     <!-- Phone Number -->
-                    <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.ps_form.needsAttention(ps_form.phone) && ps_form.phone.$error && ctrpbtn.ps_form.needsAttention(ps_form.email) && ps_form.email.$error}">
+                    <div class="form-group has-feedback required" ng-class="{'has-error': (!ps_form.phone.$valid && ps_form.$submitted) || ctrpbtn.ps_form.needsAttention(ps_form.phone) && ps_form.phone.$error && ctrpbtn.ps_form.needsAttention(ps_form.email) && ps_form.email.$error}">
                         <label for="phone" class="control-label col-xs-12 col-sm-3">Contact Phone Number:</label>
                         <div class="col-xs-12 col-sm-3">
-                            <input type="text" id="phone" name="phone" maxlength="30" ng-model="curPs.contact_phone" class="form-control input-sm" placeholder="Phone" ng-required="!curPs.contact_email.length">
-                            <span ng-show="ps_form.phone.$viewValue.length" class="form-control-feedback" ng-class="!curPs.contact_phone.length && ctrpbtn.ps_form.needsAttention(ps_form.email) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                            <input type="text" id="phone" name="phone" maxlength="30" ng-model="curPs.contact_phone" class="form-control input-sm" ng-pattern="phoneNumberFormat" placeholder="Phone" ng-required="!curPs.contact_email.length">
+                            <span ng-show="ps_form.phone.$viewValue.length" class="form-control-feedback" ng-class="!ps_form.phone.$valid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                         </div>
                         <div class="col-xs-12 col-sm-2">
                             <input type="text" class="form-control input-sm no-validate" id="phone_extension" maxlength="14" ng-model="curPs.extension" placeholder="Extension">

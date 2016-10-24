@@ -7,9 +7,9 @@
 
     angular.module('ctrp.app.registry').directive('participatingSitesDetail', participatingSitesDetail);
 
-    participatingSitesDetail.$inject = ['PersonService', 'toastr', '$state', '$timeout', '$rootScope'];
+    participatingSitesDetail.$inject = ['FORMATS', 'PersonService', 'toastr', '$state', '$timeout', '$rootScope'];
 
-    function participatingSitesDetail(PersonService, toastr, $state, $timeout, $rootScope) {
+    function participatingSitesDetail(FORMATS, PersonService, toastr, $state, $timeout, $rootScope) {
 
         var directiveObj = {
           restrict: 'E',
@@ -72,6 +72,7 @@
                 ],
                 selectedOption: {id: 1, value: 10}
             };
+            $scope.phoneNumberFormat = FORMATS.NUMERIC;
 
             $scope.updatePs = function() {
                 // Prevent multiple submissions
