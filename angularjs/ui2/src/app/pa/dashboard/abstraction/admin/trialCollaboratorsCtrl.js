@@ -100,6 +100,7 @@
                     toastr.success(successMsg, 'Operation Successful!');
                     vm.addMode = false;
                     vm.selectedAllCos = false;
+                    vm.selectedDeleteCollaboratorsList.length = 0; // Clear selected items for deletion list after saving trial
 
                     // To make sure setPristine() is executed after all $watch functions are complete
                     $timeout(function() {

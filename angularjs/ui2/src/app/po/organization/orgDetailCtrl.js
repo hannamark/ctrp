@@ -20,16 +20,13 @@
         vm.processingStatuses = OrgService.getProcessingStatuses();
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
-
         vm.sourceContextArr = sourceContextObj;
         vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
-
         vm.alias = '';
         vm.curationReady = false;
         vm.showPhoneWarning = false;
         vm.disableBtn = false;
-
         vm.processStatusArr = OrgService.getProcessingStatuses();
 
         vm.updateOrg = function () {
@@ -50,18 +47,12 @@
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
                     if (vm.ctrpOrg.new && status === 201) {
-                        // created
                         $state.go('main.orgDetail', {orgId: response.id});
                     } else if (status === 200) {
-                        $state.go('main.orgDetail', {orgId: response.id});
-                        //update name aliases
+                        vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                         vm.ctrpOrg.name_aliases = response.name_aliases;
                         vm.addedNameAliases = [];
                         appendNameAliases();
-                        // To make sure setPristine() is executed after all $watch functions are complete
-                        $timeout(function () {
-                            $scope.organization_form.$setPristine();
-                         }, 1);
                     }
                     showToastr(vm.ctrpOrg.name);
                     vm.ctrpOrg.new = false;
@@ -71,7 +62,7 @@
             }).finally(function() {
                 vm.disableBtn = false;
             });
-        }; // updateOrg
+        };
 
         function showToastr(orgName) {
             toastr.clear();
@@ -133,9 +124,10 @@
             if (associatedOrgsObj) {
                 vm.associatedOrgs = associatedOrgsObj.associated_orgs;
                 vm.defaultTab = associatedOrgsObj.active_context;
-                vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP');
-                vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM');
-                vm.ctrpOrg = getOrgByContext(vm.associatedOrgs, 'CTRP');
+                vm.currentUserIsAdmin = associatedOrgsObj.ac_tp;
+                vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP')[0];
+                vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
+                vm.ctrpOrg =  filterOutCTRPOrg();
                 if (vm.ctrpOrg) {
                     vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                 }
@@ -148,6 +140,20 @@
                     vm.ctrpSourceStatusArr, function (item) {
                         return _.isEqual('ACT', item.code);
                     })[0].id;
+                vm.defaultTab = 'CTRP';
+            }
+        }
+
+        function filterOutCTRPOrg(org_id) {
+            var ctrpOrgsArr = getOrgByContext(vm.associatedOrgs, 'CTRP');
+            if (ctrpOrgsArr.length < 2) {
+                return ctrpOrgsArr[0];
+            } else {
+                return vm.ctrpOrg = _.filter(
+                    getOrgByContext(vm.associatedOrgs, 'CTRP'), function (item) {
+                        return _.isEqual(associatedOrgsObj.active_id, item.id);
+                    }
+                )[0];
             }
         }
 
@@ -158,7 +164,7 @@
         function getOrgByContext(orgsArr, context){
             var ve = _.filter(orgsArr, function (item) {
                 return _.contains(context, item.source_context_name);
-            })[0];
+            });
             return ve;
         }
 
@@ -182,6 +188,15 @@
             //Listen to the write-mode switch
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                 vm.curOrgEditable = UserService.isCurationModeEnabled();
+                vm.updateTime = Date.now();
+
+                vm.associatedOrgsOptions.data = _.filter(
+                    vm.associatedOrgs, function (item) {
+                        return !_.isEqual(associatedOrgsObj.active_id, item.id);
+                    });
+                vm.associatedOrgsOptions.onRegisterApi = function (gridApi) {
+                    vm.gridApi = gridApi;
+                };
             });
         };
 
@@ -189,7 +204,7 @@
             vm.cloningCTEP = true;
             vm.nilclose = true;
         };
-        
+
         vm.cloningCTEP = false;
         vm.nilclose = true;
         $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
@@ -230,7 +245,7 @@
         //Function that checks if an Organization - based on Name & source context is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the organization/unique Rails end point.
         vm.checkUniqueOrganization = function() {
             vm.showUniqueWarning = false;
-            if (vm.ctrpOrg && vm.ctrpOrg.name && vm.ctrpOrg.name.length > 0) {
+            if (vm.ctrpOrg && vm.ctrpOrg.name && vm.ctrpOrg.name.length > 0 && vm.ctrpOrg.name !== vm.ctrpOrgCopy.name) {
                 var searchParams = {
                     "org_name": vm.ctrpOrg.name,
                     "source_context_id": vm.ctrpOrg.source_context_id,
@@ -258,10 +273,12 @@
         };
 
         var associateOrgsRefresh = function (){
-            vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP');
-            vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM');
-            vm.associatedOrgsOptions.data = vm.associatedOrgs;
-            vm.defaultTab = 'CTRP';
+            vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP')[0];
+            vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
+            vm.associatedOrgsOptions.data = _.filter(
+                vm.associatedOrgs, function (item) {
+                    return _.contains(['CTEP','NLM'], item.source_context_name);
+                });
             vm.updateTime = Date.now();
         };
 
@@ -271,20 +288,44 @@
                 angular.forEach(vm.selectedOrgsArray, function(value) {
                     var newAssociatedOrg = value;
                     newAssociatedOrg.ctrp_id = vm.ctrpOrg.ctrp_id;
-                    // An outer param wrapper is needed for nested attributes to work
-                    var outerOrg = {};
-                    outerOrg.id = newAssociatedOrg.id;
-                    outerOrg.organization = newAssociatedOrg;
-                    OrgService.upsertOrg(outerOrg).then(function (response) {
+                    OrgService.upsertOrg({
+                        id:             newAssociatedOrg.id,
+                        organization:   newAssociatedOrg
+                    }).then(function (response) {
                         vm.associatedOrgs = response.associated_orgs;
                         associateOrgsRefresh();
                         toastr.success('Organization has been associated.', 'Operation Successful!');
                     }).catch(function (err) {
                         console.log("error in associating organization " + JSON.stringify(vm.ctrpOrg));
                     }).finally(function() {
+                        vm.tabOpen = 'CTRP';
                     });
                 });
             }
+        };
+
+        vm.confirmDisAssociate = function (){
+            vm.selectedOrgs = vm.gridApi.selection.getSelectedRows();
+            if(vm.selectedOrgs.length) {
+                vm.confirmDisAssociatePopUp = true;
+            }
+        };
+
+        vm.disAssociateOrgs = function (){
+            vm.confirmDisAssociatePopUp = false;
+            OrgService.getAssociatedOrgs({
+                id:             vm.ctrpOrg.id,
+                ctrp_id:        vm.ctrpOrg.ctrp_id,
+                remove_ids:     vm.selectedOrgs
+            }).then(function (response) {
+                vm.associatedOrgs = response.associated_orgs;
+                associateOrgsRefresh();
+                toastr.success('Organization(s) association removed.', 'Operation Successful!');
+            }).catch(function (err) {
+                console.log("error in disassociating organization " + JSON.stringify(vm.ctrpOrg));
+            }).finally(function() {
+                vm.selectedOrgs = [];
+            });
         };
 
         vm.ctepAssociateOrgs = function () {
@@ -293,31 +334,30 @@
                 angular.forEach(vm.selectedOrgsArray, function(value) {
                     var newAssociatedOrg = value;
                     vm.ctepOrg.ctrp_id = newAssociatedOrg.ctrp_id;
-                    // An outer param wrapper is needed for nested attributes to work
-                    var outerOrg = {};
-                    outerOrg.id = vm.ctepOrg.id;
-                    outerOrg.organization = vm.ctepOrg;
-                    OrgService.upsertOrg(outerOrg).then(function (response) {
+                    OrgService.upsertOrg({
+                        id:             vm.ctepOrg.id,
+                        organization:   vm.ctepOrg
+                    }).then(function (response) {
+                        var status = response.server_response.status;
                         if (status >= 200 && status <= 210) {
                             if (status === 200) {
                                 vm.associatedOrgs = response.associated_orgs;
-                                associateOrgsRefresh();
-                                vm.ctrpOrg = getOrgByContext(vm.associatedOrgs, 'CTRP');
+                                vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
                                 vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                                 vm.ctrpUpdateTime = Date.now();
+                                associateOrgsRefresh();
                                 toastr.success('Organization has been associated.', 'Operation Successful!');
                             }
                         }
                     }).catch(function (err) {
                         console.log("error in associating organization " + JSON.stringify(vm.ctrpOrg));
                     }).finally(function() {
-                        vm.defaultTab = 'CTRP';
+                        vm.tabOpen = 'CTRP';
                     });
                 });
             }
         };
 
-        // Swap context when different tab is selected
         $scope.$watch(function() {
             return vm.selectedOrgsArray;
         }, function(newValue, oldValue) {
@@ -342,13 +382,12 @@
             vm.disableCloneFresh = true;
             OrgService.cloneCtepOrg(vm.ctepOrg.id).then(function(response) {
                 var status = response.server_response.status;
-
                 if (status >= 200 && status <= 210) {
                     if (status === 200) {
                         $timeout(function () {
                             vm.associatedOrgs = response.associated_orgs;
                             associateOrgsRefresh();
-                            vm.ctrpOrg = getOrgByContext(vm.associatedOrgs, 'CTRP');
+                            vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
                             vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                             vm.ctrpUpdateTime = Date.now();
                             toastr.success('Organization has been associated.', 'Operation Successful!');
@@ -361,7 +400,7 @@
                 vm.disableBtn = false;
                 vm.cloningCTEP = false;
                 vm.nilclose = true;
-                vm.defaultTab = 'CTRP';
+                vm.tabOpen = 'CTRP';
             });
         };
 
@@ -391,6 +430,10 @@
                     name: 'name',
                     displayName: 'Name',
                     enableSorting: false,
+                    sort: { direction: 'asc', priority: 1},
+                    cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
+                        ' title="{{COL_FIELD}}"> <a ui-sref="main.orgDetail({orgId : row.entity.id })">' +
+                        ' {{COL_FIELD CUSTOM_FILTERS}}</a></div>',
                     minWidth: '300'
                 },
                 {
@@ -489,25 +532,18 @@
                     minWidth: '200'
                 }
             ],
+            enableSelectAll: true,
             enableRowHeaderSelection : true,
             enableGridMenu: false
         };
 
-        vm.associatedOrgsOptions.exporterAllDataFn = function () {
-            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SEARCH_USER, allSearchParams).then(
-                function (data) {
-                    var status = data.server_response.status;
-
-                    if (status >= 200 && status <= 210) {
-                        vm.assciatedOrgsOptions.useExternalPagination = false;
-                        vm.assciatedOrgsOptions.useExternalSorting = false;
-                        vm.assciatedOrgsOptions.data = data['users'];
-                        vm.assciatedOrgsOptions.columnDefs = origGridColumnDefs;
-                    }
-                }
-            );
+        vm.associatedOrgsOptions.onRegisterApi = function (gridApi) {
+            vm.gridApi = gridApi;
         };
+        vm.associatedOrgsOptions.data = _.filter(
+            vm.associatedOrgs, function (item) {
+                return !_.isEqual(associatedOrgsObj.active_id, item.id);
+            });
 
-        vm.associatedOrgsOptions.data = vm.associatedOrgs;
     }
 }());
