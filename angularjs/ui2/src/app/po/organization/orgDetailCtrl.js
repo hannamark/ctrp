@@ -321,6 +321,7 @@
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
                     if (status === 200) {
+                        vm.associatedOrgs = response.associated_orgs;
                         associateOrgsRefresh();
                         toastr.success('Organization(s) association removed.', 'Operation Successful!');
                     }
