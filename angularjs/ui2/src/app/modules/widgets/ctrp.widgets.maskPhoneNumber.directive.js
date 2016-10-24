@@ -39,7 +39,7 @@
                 var output;
 
                 if (countryVal) {
-                    countryCode = countryToCountryCode(countryVal);
+                    countryCode = countryToCountryCode(countryVal); // (ex: 'United States' to 'US')
 
                     output = formatLocal(countryCode, phoneNum);
                     ctrl.$setViewValue(output);
