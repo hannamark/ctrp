@@ -81,17 +81,7 @@ And I have not selected a Board Affiliation
 And selected Save at the Regulatory Information� Human Subject Safety screen
 Then the system will display an Error that Board Name and Board Affiliation must be entered in order to associate the Regulatory Information - Human Subject Safety Information for the trial
 
-Scenario: #8 I can add and edit the Board Affiliation 
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Trial Regulatory Information� Human Subject Safety screen
-And I have selected organization look-up at the Regulatory Information� Human Subject Safety screen
-When a list of unique organizations including my organization, the organizations in my family and the organizations associated with this trial (sponsor, Lead, IRB) are displayed in the lookup window
-Then the selected organization will associated with the trial as the Board Affiliation along with the Board
-Then a comment appears below the Board Affiliation field to display the number of characters available to enter into the field.  
-|255 characters left|
-And "x characters left" will be displayed as characters are added
-When 255 characters have been entered
-Then no additional text can be entered
+
 
 
 Scenario Outline: #9 Hide non required fields for  Regulatory Information - Human Subject Safety
@@ -110,11 +100,11 @@ Examples:
 |Not required           |Displayed            |Hidden               |Hidden                       |Hidden    |
 
 
-Scenario: #10 PA Regulatory Information � Human Subject Safety Board Name field character count
-Given I am logged into the CTRP Protocol Abstraction application
-And I am on the Regulatory Information � Human Subject Safety Screen
-Then a comment appears below the Board Name field to display the number of characters available to enter into the field.  
-|160 characters left|
-And "x characters left" will be displayed as characters are added
-When 160 characters have been entered
-Then no additional text can be entered
+#Scenario: #10 PA Regulatory Information � Human Subject Safety Board Name field character count
+#Given I am logged into the CTRP Protocol Abstraction application
+#And I am on the Regulatory Information � Human Subject Safety Screen
+#Then a comment appears below the Board Name field to display the number of characters available to enter into the field.  
+#|160 characters left|
+#And "x characters left" will be displayed as characters are added
+#When 160 characters have been entered
+#Then no additional text can be entered
