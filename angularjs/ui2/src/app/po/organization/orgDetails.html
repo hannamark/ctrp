@@ -17,6 +17,7 @@
                     <md-content class="md-padding" ng-class="{'edit-off': !orgDetailView.curOrgEditable}">
                         <div ng-show="orgDetailView.curOrgEditable || orgDetailView.ctrpOrg.new" ng-include src="'app/po/organization/_ctrpOrgDetailWR.html?_rload='+orgDetailView.ctrpUpdateTime"></div>
                         <div ng-show="!orgDetailView.curOrgEditable && !orgDetailView.ctrpOrg.new" ng-include src="'app/po/organization/_ctrpOrgDetailRO.html?_rload='+orgDetailView.ctrpUpdateTime"></div>
+                        <div ng-include src="'app/po/organization/_associatedOrgs.html?_rload='+orgDetailView.updateTime"></div>
                     </md-content>
                 </md-tab>
                 <md-tab label="NLM" md-active="orgDetailView.defaultTab === 'NLM'" ng-if="orgDetailView.nlmOrg" md-on-select="orgDetailView.tabOpen = 'NLM'">
