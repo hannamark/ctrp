@@ -144,6 +144,7 @@
             getOrgById: getOrgById,
             upsertOrg: upsertOrg,
             getAssociatedOrgs: getAssociatedOrgs,
+            disAssociateOrgs: disAssociateOrgs,
             searchOrgs: searchOrgs,
             getInitialOrgSearchParams: getInitialOrgSearchParams,
             getGridOptions: getGridOptions,
@@ -207,6 +208,17 @@
         function getAssociatedOrgs(orgObj) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ASSOCIATED_ORGS, orgObj);
         } //getAssociatedOrgs
+
+
+        /**
+         * dis associate organizations
+         *
+         * @param disAssociateOrgs
+         * @returns {*}
+         */
+        function disAssociateOrgs(orgObj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.DISASSOCIATE_ORGS, orgObj);
+        } //disAssociateOrgs
 
         /**
          *

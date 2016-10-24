@@ -4,7 +4,8 @@ class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
   ## Please comment the next two lines if you donot want the Authorization checks
   before_filter :wrapper_authenticate_user, :except => [:search, :select] unless Rails.env.test?
-  before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy, :curate, :clone]
+  before_action :set_glob_vars, only: [:create, :edit, :dis_associate, :update, :destroy]
+  before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy, :curate, :clone, :dis_associate]
 
   respond_to :html, :json
 
@@ -26,11 +27,13 @@ class OrganizationsController < ApplicationController
 
   # GET /organizations/1/edit
   def edit
+    return if !@write_access
   end
 
   # POST /organizations
   # POST /organizations.json
   def create
+    return if !@write_access
     @organization = Organization.new(organization_params)
     @organization.processing_status = 'Incomplete'
     @organization.source_status_id = SourceStatus.ctrp_context_source_statuses.find_by_code('ACT').id
@@ -55,9 +58,7 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1
   # PATCH/PUT /organizations/1.json
   def update
-    @ctepId = SourceContext.find_by_code("CTEP").id
-    @nlmId = SourceContext.find_by_code("NLM").id
-    @ctrpId = SourceContext.find_by_code("CTRP").id
+    return if !@write_access
     @organization.updated_by = @current_user.username unless @current_user.nil?
     if organization_params[:ctrp_id] && @organization.ctrp_id != organization_params[:ctrp_id] && ( @organization.source_context_id == @ctepId || @organization.source_context_id == @nlmId ) then
       respond_to do |format|
@@ -90,6 +91,7 @@ class OrganizationsController < ApplicationController
   # DELETE /organizations/1
   # DELETE /organizations/1.json
   def destroy
+    return if !@write_access
     respond_to do |format|
       if @organization.destroy
         format.html { redirect_to organizations_url, notice: 'Organization was successfully destroyed.' }
@@ -116,26 +118,36 @@ class OrganizationsController < ApplicationController
 
   end
 
+
+  def dis_associate
+    @associated_orgs = []
+    return if !@write_access
+    active_org = Organization.find(params[:id])
+    if params[:remove_ids] && params[:ctrp_id]
+      params[:remove_ids].each do |org|
+        contextOrg = Organization.find(org[:id])
+        dissassociated_org = disAssociateTwoOrgs params[:ctrp_id], contextOrg
+        dissassociated_org.save
+      end
+      @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
+      @active_context = 'CTRP'
+    end
+    respond_to do |format|
+      format.json { render :associated }
+    end
+  end
+
   def associated
       @associated_orgs = []
-      isAdmin = User.org_write_access(@current_user)
       active_org = Organization.find(params[:id])
-      if isAdmin && params[:remove_ids] && params[:ctrp_id]
-        params[:remove_ids].each do |org|
-          contextOrg = Organization.find(org[:id])
-          dissaciated_org = disAssociateTwoOrgs params[:ctrp_id], contextOrg
-          dissaciated_org.save
-        end
-        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
-        @active_context = 'CTRP'
-      elsif isAdmin && !active_org.blank? && !active_org.ctrp_id.blank?
+      if User.org_read_all_access(@current_user) && !active_org.blank? && !active_org.ctrp_id.blank?
         @active_context = SourceContext.find(active_org.source_context_id).name
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
       elsif params[:id] && params[:remove_ids].blank? && !active_org.blank?
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:id => active_org.id)
         @active_context = SourceContext.find(active_org.source_context_id).name unless @associated_orgs.blank?
       end
-      @ac_tp = isAdmin
+      @ac_tp = User.org_write_access(@current_user)
   end
 
   def search
@@ -177,7 +189,7 @@ class OrganizationsController < ApplicationController
   end
 
   def filterSearch resultOrgs
-    if @current_user && User.org_write_access(@current_user)
+    if @current_user && User.org_read_all_access(@current_user)
       resultOrgs = resultOrgs.where("source_contexts.name" => params[:source_contextfilter]) if params[:source_contextfilter].present?
       resultOrgs = resultOrgs.matches("source_statuses.name", params[:source_status]) if params[:source_status].present?
       resultOrgs = resultOrgs.matches("source_contexts.name", params[:source_context]) if params[:source_context].present?
@@ -288,6 +300,18 @@ class OrganizationsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_organization
     @organization = Organization.find(params[:id])
+  end
+
+  def set_glob_vars
+    @ctepId = SourceContext.find_by_code("CTEP").id
+    @nlmId = SourceContext.find_by_code("NLM").id
+    @ctrpId = SourceContext.find_by_code("CTRP").id
+    p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+    p @current_user
+    @write_access = User.org_write_access(@current_user)
+    p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+    p @write_access
+    p "&&&&&&&&&&&&&&&&&&&&&&&&&&"
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

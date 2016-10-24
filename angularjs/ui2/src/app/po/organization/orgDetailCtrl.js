@@ -313,7 +313,7 @@
 
         vm.disAssociateOrgs = function (){
             vm.confirmDisAssociatePopUp = false;
-            OrgService.getAssociatedOrgs({
+            OrgService.disAssociateOrgs({
                 id:             vm.ctrpOrg.id,
                 ctrp_id:        vm.ctrpOrg.ctrp_id,
                 remove_ids:     vm.selectedOrgs
