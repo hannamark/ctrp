@@ -41,14 +41,17 @@ And I search for a Trial which has been accepted and has a Participating site ad
 And I have selected the Update option
 Then I can view participating sites details
      
-     |CTRP Org ID|#(Group ID)
+     #CTRP Org ID = Group ID
+     |CTRP Org ID|
      |CTRP Organization Name|
-     |Principal Investigator|# (Last Name, First Name)
+     # Principal Investigator Format (Last Name, First Name)
+     |Principal Investigator|
      |Local Trial Identifier|
      |Program Code|
      |Current Site Recruitment Status|
      |Current Site Recruitment Status Date|
-     |Primary Contact|# (Last Name, First Name)
+     # Primary Contact format (Last Name, First Name)
+     |Primary Contact|
      |Email|
      |Phone Number-Extension|
      
@@ -78,15 +81,15 @@ And I can select Contact Type
 |General|
 
 Scenario: #4 I can update contact when contact type is Site investigator
-Given I am on the Contact Screen
+Given I am on the Update Participating Sites screen 
 When the contact type selected is Site Investigator 
-Then I can select the available site principal Investigator 
+Then the site principal Investigator gets populated 
 And the email address will be populated
 And Phone Number and Extention will be populated
 And the populated parameters can be edited
 
 Scenario: #5 I can Update contact when contact type is Person
-Given I am on the Contact Screen
+Given I am on the Update Participating Sites screen
 When the contact type selected is Person 
 Then I can select a person by conducting a Person Search 
 And Contact person name will be selected 
