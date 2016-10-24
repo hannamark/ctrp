@@ -306,12 +306,7 @@ class OrganizationsController < ApplicationController
     @ctepId = SourceContext.find_by_code("CTEP").id
     @nlmId = SourceContext.find_by_code("NLM").id
     @ctrpId = SourceContext.find_by_code("CTRP").id
-    p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    p @current_user
     @write_access = User.org_write_access(@current_user)
-    p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    p @write_access
-    p "&&&&&&&&&&&&&&&&&&&&&&&&&&"
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
