@@ -95,6 +95,15 @@
                 vm.alias = '';
             }
         };
+        
+        // Delete the associations
+        vm.toggleSelection = function (index, type) {
+            if (type == 'other_id') {
+                if (index < vm.addedNameAliases.length) {
+                    vm.addedNameAliases[index]._destroy = !vm.addedNameAliases[index]._destroy;
+                }
+            }
+        };// toggleSelection
 
         vm.ctrpSourceStatusArr = _.filter(vm.sourceStatusArr, function (item) {
             return _.isEqual(
