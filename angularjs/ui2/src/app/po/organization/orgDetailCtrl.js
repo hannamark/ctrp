@@ -14,7 +14,6 @@
     function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService, $filter, _,uiGridExporterConstants, uiGridExporterService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal, $timeout, GeoLocationService, serviceRequests) {
         var vm = this;
-        $scope.organization_form = {};
         vm.addedNameAliases = [];
         vm.states = [];
         vm.processingStatuses = OrgService.getProcessingStatuses();

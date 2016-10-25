@@ -553,7 +553,7 @@
 
 
                     //$scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
-                    if (newVal != oldVal) {
+                    if (newVal != oldVal && $scope.gridApi) {
                         $scope.gridApi.grid.refresh();
                     }
                 }, true);
