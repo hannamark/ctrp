@@ -11,12 +11,12 @@ Scenario:#1 CTEP Context of a new person record created
      And the Service Request will be set to "Create"
        
        
-      Scenario:#1a CTEP record details fields
+      Scenario:#2 CTEP record details fields
     Given I am on the person search results screen
      When I select a CTEP person record
      Then the CTEP selected person record will display the field type in a CTEP tab
-      
-      |Context Person ID|#(Primary Key)
+      # Context Person ID = Primary Key ID
+      |Context Person ID|
       |CTRP Person ID|
       |Prefix|
       |First Name|
@@ -31,10 +31,10 @@ Scenario:#1 CTEP Context of a new person record created
       |Source Status|
       |Person Registration Type|
       |Affiliated Organization CTEP ID|
-      |Service Request|#(Create)
-      |Processing Status|#(Incomplete)
+      |Service Request|
+      |Processing Status|
       
-        Scenario:#1aa Peron Registration Type Values 
+        Scenario:#3 Person Registration Type Values 
     Given I am on the CTEP Person record Tab
      And I can view Person Registration Type fields
      
@@ -44,7 +44,7 @@ Scenario:#1 CTEP Context of a new person record created
      |Associate|
      |Associate Basic|
 
-       Scenario:#1a' Person Source Status CTEP available list
+       Scenario:#4 Person Source Status CTEP available list
     Given I am logged into the PO application
      When I am on the CTEP Person Tab
      Then the person source status type will be available 
@@ -52,7 +52,7 @@ Scenario:#1 CTEP Context of a new person record created
      |Active|
      |Inactive|
     
-      Scenario:#1a" CTEP Person Context Mandatory Fields 
+      Scenario:#5 CTEP Person Context Mandatory Fields 
     Given I am logged into the CTRP 
      When CTEP Context of a person record is created
      Then the person record fields type are mandatory
@@ -67,7 +67,7 @@ Scenario:#1 CTEP Context of a new person record created
       |Processing Status|
       
       
-       Scenario:#1b As I Curator, I can use the Clone function available on the CTEP screen 
+       Scenario:#6 As I Curator, I can use the Clone function available on the CTEP screen 
     Given I am logged into the PO aplication 
     And I am on the CTEP view of a person
     When the CTEP persos is associated with a person in the CTRP context 
@@ -78,7 +78,7 @@ Scenario:#1 CTEP Context of a new person record created
  	Then the "Clone" button will be enabled
  
         
-	Scenario: #2 As a PO Curator, I can search a NEW person record to associate it with a person in the CTRP Context
+	Scenario: #7 As a PO Curator, I can search a NEW person record to associate it with a person in the CTRP Context
     Given Given I am logged into the CTRP 
     And I am on the Search Persons Screen
     When I select Processing status as"Incomplete"
@@ -90,40 +90,39 @@ Scenario:#1 CTEP Context of a new person record created
     When the CTEP Person does not match any existing CTRP Context person First name, Last Name, Affiliation state and country
     Then the CTRP Person will be created and associated to the CTEP Context 
    And both the CTRP and CTEP context will be linked
+   And the CTRP Context will have a "Complete" Processing status
+   And the CTRP Context will have an "Active" Source status
+   And the Curator will update the CTEP processing status from "Incomplete" to "Complete"
+   And the Curator will update the CTEP create requet to "Null"
     When the CTEP Person does match an existing CTRP Context "First Name", "Last Name", and Person Affiliation "State" and "Country"
-    Then a warning will be displayed: "Possible Matching CTRP Persons"
-    And A list of CTRP Context Person ID will be displayed to show matching person ID
+    #Then a warning will be displayed: "Possible Matching CTRP Persons"
+    #And A list of CTRP Context Person ID will be displayed to show matching person ID
     And the curator will search matching ID(s) provided in the CTRP context
     And the curator will review the displayed options and select a person to associate
     And the curator will click on the Associate Selection Button
     And both contexts will be associated 
-	Then the CTEP Processing Status will be changed from "Incomplete" to "Complete"
-    And the CTEP Service Request will be change from Create to Null
-    And the CTEP-CTRP association will be complete
+	Then the curator will update the CTEP Processing from "Incomplete" to "Complete"
+    And the curator will update the CTEP Service Request from "Create" to "Null"
     And both contexts will be displayed in different tabs on the same screen
     And the association record will be added to the person associations table on the CTRP Context screen
     
   
-    
-    Scenario: #4  CTRP Person information gets updated with the New information received from CTEP
+    Scenario: #8 CTRP Person information gets updated with the New information received from CTEP
     Given I am on the Search Person Screen
     When CTEP updated Person information is sent to CTRP via Restful service
     Then the CTEP Service Request will be set to "Update"
     And the CTEP "Processing Status" will be set to "Incomplete"
     Then CTEP Context will be updated automatically with the new information received from the Restful service
-    When CTEP updates are new organization address type
-    	
-        |Prefix|
-        |Suffix|
-        |Email|
-        |Phone|
-        
-    And the CTEP Person Status is Active
+    When CTEP updates are new organization address    
+    #And the CTEP Person Status is Active
+    #And the CTRP Person Status is "Active"?????
     Then The CTRP Context fields will be automatically Updated
-    And the CTRP Context Processing Status will be Complete
+    And the CTRP Context Processing Status will be "Complete"
+    And the curator will update the CTRP processing status from" incomplete" to "Complete"
     
     
-    Scenario: #4a  CTRP Person information gets updated with the New information received from CTEP
+    
+    Scenario: #9 CTRP Person information gets updated with the New information received from CTEP
     Given I am on the Search Person Screen
     When CTEP updated Person information is sent to CTRP via Restful service
     Then the CTEP Service Request will be set to "Update"
@@ -135,21 +134,20 @@ Scenario:#1 CTEP Context of a new person record created
     And the CTEP Organization is Active
     Then the CTRP Context field type is not automatically updated
     And the CTRP Processing Status will be "Incomplete"
-    And The CTRP Curator will be able to identify by searching CTEP Person with Service Request "Update"
     When CTRP Curator will determine the updates for the CTRP Context
     Then the CTRP Processing Status will be "Complete"
-    And the CTEP "Processing Status" will be set to "Complete"
-    And the CTEP "service request" will be set to "NULL" 
+    And the curator will set the CTEP "Processing Status" to "Complete"
+    And the curator will set the CTEP "service request" to "NULL" 
      
 
-     Scenario:#5 Curator can identify when two persons are to be merged 
+     Scenario:#10 Curator can identify when two persons are to be merged 
     Given I am logged into the CTRP 
      When CTEP Indicates via REST Service that two Persons are to be merged
-     And the CTEP Person <PersonName> will have CTEP Context Person ID <CTEPContextPersonID>, CTRP Org ID <CTRPPersonIDType>, Service request <CTEPServiceRequestType>, processing status <CTEPProcessingStatusType>, and Person status <CTEPStatusType>
+     And the CTEP Person <PersonName> will have CTEP Context Person ID <CTEPContextPersonID>, CTRP Org ID <CTRPPersonIDType>, Service request <CTEPServiceRequestType>, processing status <CTEPProcessingStatusType>, and Person status <CTEPStatusType>nd CTRP Person Status<CTRPPersonStatus>
      
-     |<PersonName>                         |<CTEPContextPersonID>     |<CTRPPersonIDType>    |<CTEPServiceRequestType> |<CTEPprocessingStatusType> |<CTEPStatusType>|
-     |Daniel Evan                          |AB123                     |2026171               |Merge ID AB123            |Incomplete                 |Active          |         
-     |Daniel Epner Evan                    |33303                     |28417522              |Merge ID 33303            |Incomplete                 |Inactive        |        
+     |<PersonName>                         |<CTEPContextPersonID>     |<CTRPPersonIDType>    |<CTEPServiceRequestType> |<CTEPprocessingStatusType> |<CTEPStatusType>|<CTRPStatusType>|
+     |Daniel Evan                          |AB123                     |2026171               |Merge ID AB123            |Incomplete                 |Active          |Active         |         
+     |Daniel Epner Evan                    |33303                     |28417522              |Merge ID 33303            |Incomplete                 |Inactive        |Active         |        
       
      Then the curator will search CTEP Context for Person where Service request is "Merge with CTEP ID"
      And the curator will search for matching persons in the CTRP Context
