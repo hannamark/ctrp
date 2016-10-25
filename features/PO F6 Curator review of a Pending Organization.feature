@@ -19,9 +19,36 @@ Feature: PO F6 Curator review of a Pending Organization
     Given I am logged in as a CTRP Curator
     And I am on the Search Organizations screen
     And I have searched for Pending organizations
-    When I have select a Pending organization by organization name
+    When I have select a Pending organization by organization nameScenario:#3 As a PO Curator, I can review all instances where a Person Record is referenced
+    Given I am logged in to the CTRP PO application
+    And I am on the CTRP PO Curator Review screen
+    When I select a Pending Person Record 
+    And I select the report usage option
+    Then all occurrences in CTRP where the Pending Person Record are Principal Investigator on a trial will be displayed
+    And all occurrences in CTRP where the Pending Person Record are Principal Investigator on a participating site will be displayed
+    And all occurrences in CTRP where the Pending Person Record are Responsible Party will be displayed
     Then I will be able to edit the organization status
     And change the organization status from Pending to Active
+    
+   Scenario:#3 As a PO Curator, I can review all instances where an Organization Record is referenced
+    Given I am logged in to the CTRP PO application
+    And I am on the CTRP PO Curator Review screen
+    When I select a Pending Organization Record 
+    And I select the report usage option
+    Then all occurrences in CTRP where the Pending Organization Record type on a trial will be displayed
+    
+    |Lead Organization|
+    |Sponsor Organization|
+    |board affiliation (IRB)|
+    |Investigator affiliation organization|
+    |CTRP User organization affiliation|
+    |Trial co-investigator’s organization|
+    |funding source|
+    |Participating Site|
+    |Person’s affiliated organization|
+    |Family organization|
+    |Collaborators|
+    
 
   Scenario: #4 As a PO Curator, I can Nullify an Organization and merge its relationships to an active organization
     Given I am logged in as a CTRP Curator
