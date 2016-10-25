@@ -801,8 +801,12 @@
                             </div>
                         </div>
 
+
                         <div class="form-group" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.ind_ide_dummy)}">
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 table-responsive">
+                                <span class="help-block" ng-show="trialDetailView.curTrial.ind_ide_question === 'No' && trialDetailView.addedIndIdes.length">
+                                    Note: Any Grants added/updated below, while 'No' has been selected in the choices above, will not be saved as part of the trial.<br>If you want to save your changes to the list below, please select 'Yes' from the choices above.
+                                </span>
                                 <table class="table table-striped table-condensed" ng-hide="['update'].indexOf(trialDetailView.curTrial.edit_type) > -1 || trialDetailView.curTrial.ind_ide_question !== 'Yes'" ctrp-hint>
                                     <thead>
                                         <th>IND/IDE Types</th>
