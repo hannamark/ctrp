@@ -10,6 +10,7 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     And the assigned Context Organization ID will be sent to CTEP
     And the Service Request will be set to "Create"
     And the Processing Status Will be set to "Incomplete"
+    
    
     
       Scenario: #1a CTEP Context Organization list of fields 
@@ -103,10 +104,10 @@ Scenario: #1b CTEP Context Mandatory Fields
     Then the CTRP system will search Active CTRP organizations with  matching "organization Name" and "Organization State and Country" 
     When the CTEP Organization does not match an existing CTRP Context Organization name and Organization State and Country
     Then a new CTRP Organization will be created  
-   #And the Created CTRP Context will be associated with the selected CTEP Organization
-   #And the CTRP Org will have an "Active" source status and a "Complete" Processing status
-   #And the curator can update the CTEP Processing status from "Incomplete" to "Complete"
-   #And the curator can update the CTEP Service Request from "Create" to "Null" 
+   And the Created CTRP Context will be associated with the selected CTEP Organization
+   And the CTRP Org will have an "Active" source status and a "Complete" Processing status
+   And the CTEP Processing status will be updated automatically from "Incomplete" to "Complete"
+   And the CTEP Service Request will be updated automatically from "Create" to "Null" 
     
     
    
@@ -122,36 +123,41 @@ Scenario: #1b CTEP Context Mandatory Fields
     When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Organizations with matching CTEP "organization Name" and CTEP "Organization State and Country" 
     When the CTEP Organization matches an existing CTRP Context Organization name and Organization State and Country
-   #Then a Warning:"Possible Matching CTRP Organization" -------no warning
-    #And a list of CTRP Context Organization ID(s) will be displayed-----a list of CTRP Orgs will be displayed
-    #And the curator will review the displayed options and Search the displayed CTRP organizations to associate with the CTEP organization
-    #And the CTRP Org will have an "Active" Source status and a processing status of "Complete"---------
-    
+   Then a Warning:"Possible Matching CTRP Organization" 
+    And a list of CTRP Context Organization ID(s) will be displayed
+    And the curator will search matching CTRP Organization to complete the association to CTEP
+   And the CTEP Processing status will be updated automatically from "Incomplete" to "Complete"
+   And the CTEP Service Request will be updated automatically from "Create" to "Null" 
+   And the CTRP Org will have an "Active" source status and a "Complete" Processing status 
     
     
     Scenario: #4  CTRP Organization information gets updated with the New Address information received from CTEP
     Given I am on the Search Organizations Screen
     When CTEP updated organization information is sent to CTRP via Restful service
+    And the CTRP processing status is "Complete"
     Then the CTEP Service Request will be set to "Update"
     And the CTEP "Processing Status" will be set to "Incomplete"
     Then CTEP Context will be updated automatically with the new information received from the Restful service
-    When CTEP updates the organization address fields type
-    	|Address|
-        |Address 2|
-        |City|
-        |State| 
-        |Postal Code|
-        |Country|
-        |Email|
-        |Phone|
-        
+    When CTEP updates the organization Information fields type
+    
+    |Source ID|
+    |Source Status|
+    |Address|
+    |Address2|
+    |Address3|
+    |City|
+    |State|
+    |Postal Code|
+    |Country|
+    |Email|
+    |Phone Number Extension |
+    
     And the CTEP Organization Status is Active
-    And The CTRP Context fields will be automatically Updated
+    Then The CTRP Context information fields will be automatically Updated with the information from the CTEP Context information fields
     And the CTRP Processing status will remain "Complete"
-    Then The curator will modify the CTRP processing Status TO "Complete"
-    And the curator will modify the CTEP Service Request To "Null"
-    #What about the Source status of CTRP AND CTEP---------can orgs with any status get updated, or only orgs with Active status-----
-
+    And the CTEP processing Status will be automatically changed from "Incomplete" to "Complete"
+    And  the CTEP Service Request will be automatically changed from "Update" To "Null"
+    
     
     
     
@@ -165,10 +171,10 @@ Scenario: #1b CTEP Context Mandatory Fields
     And the CTEP Organization is Active
     Then the CTRP Context Organization name field is not automatically updated
     And the CTRP Processing Status will be "Incomplete"
-    When the curator reviews Completes the changes to the CTRP context
-   When the CTRP Processing Status will be set to "Complete"
-   Then the curator will update the CTEP Processing Status to "Complete"
-   And the curator will update the CTEP Service Request to "Null"
+    When the curator saves their changes to the CTRP context
+    And the CTRP Processing Status will be set to "Complete"
+   Then the curator will update the CTEP Processing Status from "Incomplete" to "Complete"
+   And the curator will update the CTEP Service Request from "Update" to "Null"
    
  
    Scenario: #5 As a CTRP PO Curator I can approve or deny a CTRP request for creating a new organization in CTRP
@@ -228,9 +234,9 @@ Scenario: #1b CTEP Context Mandatory Fields
      When the imported Organization name matches an existing CTRP org
      Then the NLM organization can be associated with the selected CTRP organization 
     And the CTRP source status will be "Active"
-    And the CTRP processing status will be "Complete"
-    And the curator will update NLM processing status to "Complete"
-    And the curator will update the NLM service request to "NULL"
+    And the CTRP processing status will be changes from" Incomplete" to "Complete"
+    And the NLM processing status to "Complete"
+    And the NLM service request will be changed from "Create "to "NULL"
     
     Scenario:#9 Curator can identify when two organizations are to be merged 
     Given I am logged into the CTRP 
