@@ -164,7 +164,7 @@ Scenario: #4 CTEP Context Mandatory Fields
     |Email|
     |Phone Number Extension |
     
-    And the CTEP Organization Status is Active
+    When the CTRP Context is NOT "Nullified"
     Then The CTRP Context information fields will be automatically Updated with the information from the CTEP Context information fields
     And the CTRP Processing status will remain "Complete"
     And the CTEP processing Status will be automatically changed from "Incomplete" to "Complete"
@@ -180,7 +180,6 @@ Scenario: #4 CTEP Context Mandatory Fields
     And the CTEP "Processing Status" will be set to "Incomplete"
     Then CTEP Context will be updated automatically with the new information received from the Restful service
     When the CTEP context update IS a New Organization Name
-    And the CTEP Organization is Active
     Then the CTRP Context Organization name field is not automatically updated
     And the CTRP Processing Status will be "Incomplete"
     When the curator saves their changes to the CTRP context
