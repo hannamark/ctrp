@@ -46,6 +46,11 @@ module.exports = function () {
 
     var getDBConnection = '';
 
+    var grantFundingMechanismUpd = 'R01';
+    var grantInstituteCodeUpd = 'CA';
+    var grantSerialNumberUpd = '131080';
+    var grantNCIDivisionCodeUpd = 'CCR';
+
     var protocolDoc = 'testSampleDocFile.docx';
     var IRBDoc = 'testSampleXlsFile.xls';
     var protocolDocDocmFileUpd = 'testSampleDocmFile.docm';
@@ -55,6 +60,7 @@ module.exports = function () {
     var OtherXlsbFileUpd = 'testSampleXlsbFile.xlsb';
     //  var testSamplePDFFile = 'testSamplePDFFile.pdf';
     var DescriptionFirstDoc = 'Description for first doc Update';
+
 
     this.Given(/^I have selected the option to search my trials in CTRP$/, function () {
         return browser.sleep(25).then(function () {
@@ -98,7 +104,7 @@ module.exports = function () {
             //Other Trial ID//
             expect(addTrial.addTrialProtocolIDOrigin.isEnabled()).to.eventually.equal(true, 'Validating Other Trial Identifier Protocol ID Type field is Enabled');
             expect(addTrial.addTrialProtocolID.isEnabled()).to.eventually.equal(true, 'Validating Other Trial Identifier Protocol ID field is Enabled');
-            expect(addTrial.addTrialAddProtocolButton.isEnabled()).to.eventually.equal(true, 'Validating Other Trial Identifier Add Button is Enabled');
+           // expect(addTrial.addTrialAddProtocolButton.isEnabled()).to.eventually.equal(true, 'Validating Other Trial Identifier Add Button is Enabled');
 
             //Grant Information//
             expect(addTrial.addTrialFundedByNCIOption.get(0).isEnabled()).to.eventually.equal(true, 'Validating Grant Info with Option YES field is Enabled');
@@ -144,8 +150,7 @@ module.exports = function () {
             expect(addTrial.addTrialDateFields.get(3).isEnabled()).to.eventually.equal(true, 'Validating Trial Completion Date Calender is Enabled');
             expect(addTrial.addTrialCompletionDateOption.get(0).isEnabled()).to.eventually.equal(true, 'Validating Trial Completion Date with Option YES field is Enabled');
             expect(addTrial.addTrialCompletionDateOption.get(1).isEnabled()).to.eventually.equal(true, 'Validating Trial Completion Date with Option NO field is Enabled');
-            projectFunctionsRegistry.validateTrialFields();
-            // browser.sleep(25).then(callback);
+           // projectFunctionsRegistry.validateTrialFields();
         });
     });
 
@@ -158,41 +163,42 @@ module.exports = function () {
 
     this.Then(/^I will be able to Update Grant Information to allow both additional Grants as well as removing existing$/, function () {
         return browser.sleep(25).then(function () {
-            //addTrial.addTrialFundedByNCIOption.get(0).isSelected().then(function(state){
-            //    if(state){
-            //     addTrial.addTrialVerifyGrantTableExist.isPresent().then(function(present){
-            //         if(present){
-            //         addTrial.addTrialRemoveGrantValues.click();
-            //         }
-            //        addTrial.selectAddTrialFundedByNCIOption('no');
-            //        });
-            //    }
-            //    else{
-            //addTrial.addTrialFundedByNCIOption.get(1).isSelected().then(function(state){
-            //    if(state){
+            addTrial.selectAddTrialFundedByNCIOption('yes');
             addTrial.addTrialVerifyGrantTableExist.isPresent().then(function (present) {
                 if (present) {
                     addTrial.addTrialRemoveGrantValues.click();
                 }
-                addTrial.selectAddTrialFundedByNCIOption('yes');
-                addTrial.selectAddTrialFundingMechanism('R01');
-                addTrial.selectAddTrialInstituteCode('CA');
-                addTrial.setAddTrialSerialNumber('131080');
+                addTrial.selectAddTrialFundingMechanism(grantFundingMechanismUpd);
+                addTrial.selectAddTrialInstituteCode(grantInstituteCodeUpd);
+                addTrial.setAddTrialSerialNumber(grantSerialNumberUpd);
                 addTrial.addTrialSerialNumberSelect.click();
-                addTrial.selectAddTrialNCIDivisionProgramCode('CCR');
+                addTrial.selectAddTrialNCIDivisionProgramCode(grantNCIDivisionCodeUpd);
                 addTrial.clickAddTrialAddGrantInfoButton();
             });
-            // }
-            //});
-            //    }
-            //});
-            //  browser.sleep(25).then(callback);
         });
     });
 
     this.Then(/^I can delete existing and add new Trial Status and Trial Status Dates$/, function () {
         return browser.sleep(25).then(function () {
-            addTrial.addTrialRemoveTrialStatus.click();
+while(addTrial.addTrialAddStatusTableExist.isPresent()){
+    addTrial.addTrialRemoveTrialStatus.click();
+    addTrial.setAddTrialStatusDeleteReason('Delete Reason');
+    addTrial.clickAddTrialStatusDeleteCommitButton();
+}
+
+            projectFunctionsRegistry.clickDeleteTrialStatusInformation('In Review');
+
+
+            addTrial.addTrialStatusWhyDeletedReason.isPresent().then(function(presentState){
+                if(presentState){
+                    addTrial.addTrialStatusWhyDeletedReason.isDisplayed().then(function(displayedState){
+                        if(displayedState){
+                            addTrial.setAddTrialStatusDeleteReason('Delete Reason');
+                            addTrial.clickAddTrialStatusDeleteCommitButton();
+                        }
+                    });
+                }
+            });
             addTrial.clickAddTrialDateField(0);
             addTrial.clickAddTrialDateFieldPreviousMonth('14');
             addTrial.selectAddTrialStatus('In Review');
@@ -269,7 +275,7 @@ module.exports = function () {
 
     this.When(/^the trial has errors$/, function () {
         return browser.sleep(25).then(function () {
-            expect(addTrial.addTrialReviewButton.isPresent()).to.eventually.equal(true);
+            expect(addTrial.addTrialReviewButton.isPresent()).to.eventually.equal(true,'Verification of Submit button is present');
             //browser.sleep(25).then(callback);
         });
     });
@@ -303,9 +309,9 @@ module.exports = function () {
         return browser.sleep(25).then(function () {
             addTrial.clickAddTrialReviewButton();
             browser.wait(function () {
-                return element(by.linkText(protocolDoc)).isPresent().then(function (state) {
+                return element(by.linkText(protocolDocDocmFileUpd)).isPresent().then(function (state) {
                     if (state === true) {
-                        return element(by.linkText(protocolDoc)).isDisplayed().then(function (state2) {
+                        return element(by.linkText(protocolDocDocmFileUpd)).isDisplayed().then(function (state2) {
                             return state2 === true;
                         });
                     } else {
@@ -354,9 +360,17 @@ module.exports = function () {
         });
     });
 
-    this.Then(/^my trial will be updated in the CTRP application$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
+    this.Then(/^my trial will be updated in the CTRP application$/, function () {
+        return browser.sleep(25).then(function () {
+            addTrial.getViewTrialOtherIdentifier(['Other', otherIdentifierID]);
+            var grantFundingTble = grantFundingMechanismUpd + ' ' + grantInstituteCodeUpd + ' ' + grantSerialNumberUpd + ' ' + grantNCIDivisionCodeUpd;
+            addTrial.getViewTrialGrantTable(grantFundingTble.split());
+
+
+
+        });
+
+
     });
 
     this.Then(/^the Submission source is a Cancer Center$/, function (callback) {
@@ -375,4 +389,25 @@ module.exports = function () {
     });
 
 
-};
+    this.Then(/^shilpi I can delete existing and add new Trial Status and Trial Status Dates$/, function () {
+        return browser.sleep(25).then(function () {
+            trialMenuItem.clickTrials();
+            trialMenuItem.clickListSearchTrialLink();
+                searchTrial.setSearchTrialProtocolID('NCI-2016-00011');
+                searchTrial.clickMyTrials();
+                searchTrial.clickSearchTrialActionButton();
+                searchTrial.clickSearchTrialsUpdateButton();
+            browser.driver.wait(function () {
+                console.log('wait here');
+                return true;
+            }, 40).then(function () {
+                while (addTrial.addTrialAddStatusTableExist.isPresent()) {
+                    addTrial.addTrialRemoveTrialStatus.click();
+                    addTrial.setAddTrialStatusDeleteReason('Delete Reason');
+                    addTrial.clickAddTrialStatusDeleteCommitButton();
+                }
+            });
+        });
+    });
+
+        };

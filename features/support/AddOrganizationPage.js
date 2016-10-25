@@ -11,6 +11,8 @@ var expect = require('chai').expect;
 var menuItemList = require('../support/PoCommonBar');
 var selectList = require('../support/CommonSelectList');
 var moment = require('moment');
+var countries = require("i18n-iso-countries");
+var phoneFormat = require('phoneformat.js');
 
 AddOrganizationsPage = function(){
     this.addOrgName = element(by.model('orgDetailView.ctrpOrg.name'));//element(by.model('orgDetailView.curOrg.name'));
@@ -54,6 +56,7 @@ AddOrganizationsPage = function(){
     var addOrg = new helper();
     var selectItem =new selectList();
     var menuItem = new menuItemList();
+    var self = this;
 
     this.setAddOrgName = function(orgName){
         addOrg.setValue(this.addOrgName,orgName,"Organization by Name field");
@@ -94,7 +97,11 @@ AddOrganizationsPage = function(){
     };
 
     this.setAddPhone = function(phone){
-        addOrg.setValue(this.addPhone,phone,"Organization by Phone field");
+        this.addCountry.$('option:checked').getText().then(function(countryValue){
+            console.log("Alpha 2 code for selected country => " + countries.getAlpha2Code(countryValue, 'en'));
+            console.log('************Phone number format: ' + phoneFormat.formatLocal(countries.getAlpha2Code(countryValue, 'en'), phone));
+            addOrg.setValue(self.addPhone,phoneFormat.formatLocal(countries.getAlpha2Code(countryValue, 'en'), phone),"Organization by Phone field");
+        });
     };
 
     this.setAddFax = function(fax){
@@ -179,7 +186,11 @@ AddOrganizationsPage = function(){
     };
 
     this.getVerifyAddPhone = function(phone){
-        addOrg.getVerifyValue(this.addPhone,phone,"Get Organization by Phone field");
+        this.addCountry.$('option:checked').getText().then(function(countryValue){
+            console.log("Alpha 2 code for selected country => " + countries.getAlpha2Code(countryValue, 'en'));
+            console.log('************Phone number format: ' + phoneFormat.formatLocal(countries.getAlpha2Code(countryValue, 'en'), phone));
+            addOrg.getVerifyValue(self.addPhone,phoneFormat.formatLocal(countries.getAlpha2Code(countryValue, 'en'), phone),"Get Organization by Phone field");
+        });
     };
 
     this.getVerifyAddFax = function(fax){

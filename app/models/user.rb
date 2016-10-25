@@ -250,6 +250,10 @@ class  User < ActiveRecord::Base
     return ['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR'].include? current_user.role
   end
 
+  def self.org_read_all_access(current_user)
+    return ['ROLE_RO','ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR'].include? current_user.role
+  end
+
   def ldap_before_save
     Rails.logger.info "In ldap_before_save"
     self.email = Devise::LDAP::Adapter.get_ldap_param(self.username,"mail").first

@@ -36,7 +36,7 @@
 <div class="form-group">
     <label for="source_status" class="control-label col-xs-12 col-sm-3">Source Status:</label>
     <div class="col-xs-12 col-sm-6">
-        <div class="animated-item">
+        <div class="animated-item" ng-if="!orgDetailView.ctrpOrg.new">
             <select restriction-field
                     class="col-xs-12 col-sm-3 input-sm" id="source_status"
                     ng-model="orgDetailView.ctrpOrg.source_status_id"
@@ -44,10 +44,13 @@
             </select>
         </div>
     </div>
+    <div class="col-xs-12 col-sm-6 form-text" ng-if="orgDetailView.ctrpOrg.new">
+        Active
+    </div>
 </div>
 <div class="form-group">
     <label for="processing_status" class="control-label col-xs-12 col-sm-3">Processing Status:</label>
-    <div class="col-xs-12 col-sm-6">
+    <div class="col-xs-12 col-sm-6" ng-if="!orgDetailView.ctrpOrg.new">
         <div class="animated-item">
             <select restriction-field ng-init="orgDetailView.ctrpOrg.processing_status"
                     class="col-xs-12 col-sm-3 input-sm" id="processing_status"
@@ -55,6 +58,9 @@
                     ng-options="status.name as status.name for status in orgDetailView.processStatusArr">
             </select>
         </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 form-text" ng-if="orgDetailView.ctrpOrg.new">
+        {{orgDetailView.ctrpOrg.processing_status}}
     </div>
 </div>
 

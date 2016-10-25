@@ -95,6 +95,15 @@
             }
         };
 
+        // Delete the associations
+        vm.toggleSelection = function (index, type) {
+            if (type == 'other_id') {
+                if (index < vm.addedNameAliases.length) {
+                    vm.addedNameAliases[index]._destroy = !vm.addedNameAliases[index]._destroy;
+                }
+            }
+        };// toggleSelection
+
         vm.ctrpSourceStatusArr = _.filter(vm.sourceStatusArr, function (item) {
             return _.isEqual(
                 _.filter(vm.sourceContextArr, function (item) {
@@ -312,7 +321,7 @@
 
         vm.disAssociateOrgs = function (){
             vm.confirmDisAssociatePopUp = false;
-            OrgService.getAssociatedOrgs({
+            OrgService.disAssociateOrgs({
                 id:             vm.ctrpOrg.id,
                 ctrp_id:        vm.ctrpOrg.ctrp_id,
                 remove_ids:     vm.selectedOrgs
@@ -372,7 +381,8 @@
 
             } else if (newValue && newValue[0] && newValue[0].ctrp_id) {
                 var newAssociatedOrg = newValue[0];
-                if ( (!vm.ctepOrg || (newAssociatedOrg.id !== vm.ctepOrg.id)) || (vm.nlmOrg || (newAssociatedOrg.id !== vm.nlmOrg.id)) ) {
+                if ( (newValue[0].source_context === 'CTEP' && (!vm.ctepOrg || (vm.ctepOrg && newAssociatedOrg.id !== vm.ctepOrg.id))) ||
+                    (newValue[0].source_context === 'NLM' && (!vm.nlmOrg || (vm.nlmOrg && newAssociatedOrg.id !== vm.nlmOrg.id))) ) {
                     vm.confirmOverrideAssociatePopUp = true;
                 } else {
                     toastr.success('The chosen organization is already associated to this organization.', 'Operation Cancelled!');
