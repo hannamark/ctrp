@@ -77,6 +77,7 @@ var registerTrial = function(){
     this.addTrialWhyStudyStopped = element(by.model('trialDetailView.why_stopped'));
     this.addTrialAddStatusButton = element(by.css('button[ng-click="trialDetailView.addStatus()"]'));
     this.addTrialAddStatusTable = element.all(by.css('tr[ng-repeat="status in trialDetailView.addedStatuses track by $index"]'));
+    this.addTrialAddStatusTableExist = element(by.css('tr[ng-repeat="status in trialDetailView.addedStatuses track by $index"]'));
     this.addTrialStatusDateTableVerifyDateExist = element(by.binding('status.status_date'));
     this.addTrialStatusDateTable = element.all(by.binding('status.status_date'));
     this.addTrialStatusNameTable = element.all(by.binding('status.trial_status_name'));
@@ -819,7 +820,7 @@ var registerTrial = function(){
     };
 
     this.getViewTrialOtherIdentifier = function(trialLeadProtocolIdentifier){
-        helper.getVerifyValue(this.viewTrialOtherIdentifierNameValue,trialLeadProtocolIdentifier,"View Trial by Other Protocol Identifier field");
+        helper.getVerifyLabel(this.viewTrialOtherIdentifierNameValue,trialLeadProtocolIdentifier,"View Trial by Other Protocol Identifier field");
     };
 
 
