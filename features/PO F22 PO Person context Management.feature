@@ -51,7 +51,7 @@ Scenario:#1 CTEP Context of a new person record created
      
      |Active|
      |Inactive|
-    
+     
       Scenario:#5 CTEP Person Context Mandatory Fields 
     Given I am logged into the CTRP 
      When CTEP Context of a person record is created
