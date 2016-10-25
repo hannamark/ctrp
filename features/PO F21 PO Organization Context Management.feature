@@ -95,17 +95,18 @@ Scenario: #1b CTEP Context Mandatory Fields
     When I select"Incomplete" from Processing Status field
     And I select Source context as CTEP
     And I select "Create" from Service Request field
+     And the organization search results will display 
     Then I can view CTEP Organizations with Processing Status of "Incomplete" and a Service Request of "Create" 
-    And the organization search results will display 
      When I click on the selected CTEP Organization 
     Then the CTEP context will be displayed in the view Organization screen in a CTEP Tab
    When the curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP organizations with  matching "organization Name" and "Organization State and Country" 
     When the CTEP Organization does not match an existing CTRP Context Organization name and Organization State and Country
     Then a new CTRP Organization will be created  
-   And the Created CTRP Context will be associated with the selected CTEP Organization
-    And the CTEP Processing Status will be changed from "Incomplete" to "Complete"
-    And the CTEP Service Request will be change from "Create" to "Null" 
+   #And the Created CTRP Context will be associated with the selected CTEP Organization
+   #And the CTRP Org will have an "Active" source status and a "Complete" Processing status
+   #And the curator can update the CTEP Processing status from "Incomplete" to "Complete"
+   #And the curator can update the CTEP Service Request from "Create" to "Null" 
     
     
    
@@ -121,9 +122,10 @@ Scenario: #1b CTEP Context Mandatory Fields
     When the Curator clicks on the "Clone" button
     Then the CTRP system will search Active CTRP Organizations with matching CTEP "organization Name" and CTEP "Organization State and Country" 
     When the CTEP Organization matches an existing CTRP Context Organization name and Organization State and Country
-    Then a Warning:"Possible Matching CTRP Organization" 
-    And a list of CTRP Context Organization ID(s) will be displayed
-    And the curator will review the displayed options and Search the dispalyed CTRP organizations to associate with the CTEP organization
+   #Then a Warning:"Possible Matching CTRP Organization" -------no warning
+    #And a list of CTRP Context Organization ID(s) will be displayed-----a list of CTRP Orgs will be displayed
+    #And the curator will review the displayed options and Search the displayed CTRP organizations to associate with the CTEP organization
+    #And the CTRP Org will have an "Active" Source status and a processing status of "Complete"---------
     
     
     
@@ -144,10 +146,12 @@ Scenario: #1b CTEP Context Mandatory Fields
         |Phone|
         
     And the CTEP Organization Status is Active
-    Then The CTRP Context fields will be automatically Updated
-    And the CTEP processing Status will be "Complete"
-    And the CTEP Service Request will be "Null"
-    And the CTRP Context Processing Status will be Complete
+    And The CTRP Context fields will be automatically Updated
+    And the CTRP Processing status will remain "Complete"
+    Then The curator will modify the CTRP processing Status TO "Complete"
+    And the curator will modify the CTEP Service Request To "Null"
+    #What about the Source status of CTRP AND CTEP---------can orgs with any status get updated, or only orgs with Active status-----
+
     
     
     
@@ -159,11 +163,12 @@ Scenario: #1b CTEP Context Mandatory Fields
     Then CTEP Context will be updated automatically with the new information received from the Restful service
     When the CTEP context update IS a New Organization Name
     And the CTEP Organization is Active
-    Then the CTRP Context field type is not automatically updated
+    Then the CTRP Context Organization name field is not automatically updated
     And the CTRP Processing Status will be "Incomplete"
+    When the curator reviews Completes the changes to the CTRP context
    When the CTRP Processing Status will be set to "Complete"
-   Then the CTEP Processing Status will be set to "Complete"
-   And the CTEP Service Request will be set to "Null"
+   Then the curator will update the CTEP Processing Status to "Complete"
+   And the curator will update the CTEP Service Request to "Null"
    
  
    Scenario: #5 As a CTRP PO Curator I can approve or deny a CTRP request for creating a new organization in CTRP
@@ -179,9 +184,13 @@ Scenario: #1b CTEP Context Mandatory Fields
     Scenario:#6 CTRP links CTEP created organization record based on a new organization created in CTRP
     Given I am logged into the CTRP 
     When CTEP creates an organization based on a new organization created in CTRP
-    Then CTEP sends organization records to CTRP via Restful Services
-  Then a CTEP Context for the received organization is created and automatically linked to the CTRP Context
+    Then CTEP sends organization records to CTRP via Restful Services including the CTRP Organization ID 
+    And CTEP Context for the received organization is created and automatically linked to the CTRP Context
    And CTEP Context Organization ID  will be sent to CTEP
+   And the CTEP processing status will be "Complete"
+   And the CTEP service request will be set to "Null"
+   And the CTRP processing status will be set to "Complete"
+   And the CTRP source status will be "Active"
 
        Scenario: #7 NLM context created in CTRP
     Given I am logged into the CTEP
@@ -193,9 +202,9 @@ Scenario: #1b CTEP Context Mandatory Fields
        Scenario: #7a NLM Fields List
     Given I am on view organization NLM tab 
      Then I can view NLM fields details
-
+     #Name = Sponsor
 	 |Source Context: NLM|
-     |Name|# Sponsor
+     |Name|
      |NLM Context Organization ID|
      |Source Status|
      |Service Request|

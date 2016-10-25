@@ -30,7 +30,7 @@ Feature: PO F6 Curator review of a Pending Organization
     Then I will be able to edit the organization status
     And change the organization status from Pending to Active
     
-   Scenario:#3 As a PO Curator, I can review all instances where an Organization Record is referenced
+   Scenario:#3a As a PO Curator, I can review all instances where an Organization Record is referenced
     Given I am logged in to the CTRP PO application
     And I am on the CTRP PO Curator Review screen
     When I select a Pending Organization Record 
