@@ -78,7 +78,11 @@
                                 <div class="row">
                                     <div class="form-group col-xs-12 col-sm-6 has-feedback">
                                         <label class="control-label col-xs-6 col-sm-6">Phone Number:</label>
-                                        <div class="col-xs-12 col-sm-6 form-text" ng-bind="curOrg.phone" ng-model="curOrg.phone" mask-phone-number mask-country="{{curOrg.country}}"></div>
+                                        <div class="col-xs-12 col-sm-6 form-text">
+                                            <span ng-bind="curOrg.phone"></span>
+                                            <span ng-show="curOrg.extension && curOrg.phone" ng-bind="' | ' + curOrg.extension"></span>
+
+                                        </div>
                                         <!--<div class="col-xs-12 col-sm-6 form-text">{{curOrg.phone_with_ext}}</div>-->
                                     </div>
                                 </div>

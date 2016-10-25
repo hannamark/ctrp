@@ -70,7 +70,7 @@ Scenario:#3 Organization Source Status CTEP available list
      
      |CTEPS   |CTRPS    |
      |Active  |Active   |
-     |Inactive|Nullified|
+     |Inactive|Inactive|
      |Legacy  |Inactive |
 
     

@@ -1,6 +1,32 @@
-<div class="form-group" ng-show="personDetailView.curPerson.associated_persons.length > 0 && personDetailView.curPerson.is_ctrp_context">
-    <div class="col-xs-12" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN,ROLE_ABSTRACTOR,ROLE_RO" ignore-rw>
-        <!-- person association grid -->
+<div class="row top-offset-xs" ng-show="personDetailView.curPerson.associated_persons.length > 0 && personDetailView.curPerson.is_ctrp_context">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">Associated Persons</div>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <div class="row">
+                            <div ui-grid="personDetailView.associatedPersonsOptions" ui-grid-move-columns ui-grid-selection class="grid auto-height" ></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="btn-toolbar">
+                    <button type="button" class="btn btn-danger btn-spacer pull-right" id="delete"
+                        ctrp-confirm
+                        ctrp-click="personDetailView.confirmDisAssociate()"
+                        placement="left"
+                        confirm-msg="Click OK to remove the selected association. Click Cancel to abort."
+                        restriction-field
+                        ng-disabled="!personDetailView.associationForRemoval.length">
+                        <i class="glyphicon glyphicon-trash"></i> Remove Selected Associations
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-xs-12" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN,ROLE_ABSTRACTOR,ROLE_RO" ignore-rw>
         <div class="row top-offset-tiny table-responsive search-calendar-grid">
             <h4>Associated Person Contexts:</h4>
             <table class="table table-bordered table-striped table-condensed">
@@ -90,6 +116,6 @@
                 </tr>
                 </tbody>
             </table>
-        </div> <!-- row ends -->
-    </div>
+        </div>
+    </div> -->
 </div>
