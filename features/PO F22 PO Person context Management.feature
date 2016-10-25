@@ -95,14 +95,14 @@ Scenario:#1 CTEP Context of a new person record created
    And the Curator will update the CTEP processing status from "Incomplete" to "Complete"
    And the Curator will update the CTEP create requet to "Null"
     When the CTEP Person does match an existing CTRP Context "First Name", "Last Name", and Person Affiliation "State" and "Country"
-    #Then a warning will be displayed: "Possible Matching CTRP Persons"
-    #And A list of CTRP Context Person ID will be displayed to show matching person ID
+    Then a warning will be displayed: "Possible Matching CTRP Persons"
+    And A list of CTRP Context Person ID will be displayed to show matching person ID
     And the curator will search matching ID(s) provided in the CTRP context
     And the curator will review the displayed options and select a person to associate
     And the curator will click on the Associate Selection Button
     And both contexts will be associated 
-	Then the curator will update the CTEP Processing from "Incomplete" to "Complete"
-    And the curator will update the CTEP Service Request from "Create" to "Null"
+	Then the CTEP Processing status will be changed automatically from "Incomplete" to "Complete"
+    And  the CTEP Service Request will be changed automatically from "Create" to "Null"
     And both contexts will be displayed in different tabs on the same screen
     And the association record will be added to the person associations table on the CTRP Context screen
     
@@ -113,13 +113,23 @@ Scenario:#1 CTEP Context of a new person record created
     Then the CTEP Service Request will be set to "Update"
     And the CTEP "Processing Status" will be set to "Incomplete"
     Then CTEP Context will be updated automatically with the new information received from the Restful service
-    When CTEP updates are new organization address    
-    #And the CTEP Person Status is Active
-    #And the CTRP Person Status is "Active"?????
+    When CTEP updates are new organization Information
+    
+      |Prefix|
+      |Suffix|
+      |Phone Number|
+      |Phone Number Extension|
+      |Email|
+      |Source Status|
+     
+      
+   
+    And the CTEP Person Status is Active
+    And the CTRP Person Status is "Active"
     Then The CTRP Context fields will be automatically Updated
     And the CTRP Context Processing Status will be "Complete"
-    And the curator will update the CTRP processing status from" incomplete" to "Complete"
-    
+    And the CTEP processing status will be changed automatically  from" incomplete" to "Complete"
+    And  the CTEP Service Request will be changed automatically from "Create" to "Null"
     
     
     Scenario: #9 CTRP Person information gets updated with the New information received from CTEP
