@@ -260,9 +260,9 @@ Examples:
  Then an error message <TrialDesignErrorMessage> will be displayed
 Examples:
 
-  |TrialDesignField           |TrialDesignErrorMessage         |
+  |TrialDesignField           |TrialDesignErrorMessage       |
   |Study Model                |Study Model is Required       |
-  |Time Perspective           |Time Perspective           |
+  |Time Perspective           |Time Perspective is Required  |
 
 
 Scenario Outline:#9 Observational Trial Design Mandatory Fields rules for IMPORT Information Source
@@ -285,10 +285,10 @@ Given I am logged into the CTRP Protocol Abstraction application
   And I am on the Trial Design screen
   And Clinical Research Category is Intervention
  When I change Clinical Research Category to Expanded Access
-  And I can select a different value for Primary Purpose type:
-  And I can select a different value for Secondary Purpose Type:
+  And I can select a different value for the Primary Purpose type:
+  And I can select a different value for the Secondary Purpose Type:
   And I can select a different value for Trial Phase type:
-  And I can select a different value for the question"Is this a pilot" type
+  And I select a different value for the question"Is this a pilot" type
   And I can select a value for Intervention Model type
   And I can enter a value for Number of Arms
   And I can select a value for Masking

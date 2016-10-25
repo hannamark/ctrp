@@ -70,7 +70,7 @@ Scenario:#3 Organization Source Status CTEP available list
      
      |CTEPS   |CTRPS    |
      |Active  |Active   |
-     |Inactive|Nullified|
+     |Inactive|Inactive|
      |Legacy  |Inactive |
 
     
@@ -180,7 +180,7 @@ Scenario: #4 CTEP Context Mandatory Fields
     And the CTEP "Processing Status" will be set to "Incomplete"
     Then CTEP Context will be updated automatically with the new information received from the Restful service
     When the CTEP context update IS a New Organization Name
-    Then the CTRP Context Organization name field is not automatically updated
+    Then the CTRP Context Organization name field is NOT automatically updated
     And the CTRP Processing Status will be "Incomplete"
     When the curator saves their changes to the CTRP context
     And the CTRP Processing Status will be set to "Complete"
@@ -206,7 +206,7 @@ Scenario: #4 CTEP Context Mandatory Fields
    And CTEP Context Organization ID  will be sent to CTEP
    And the CTEP processing status will be "Complete"
    And the CTEP service request will be set to "Null"
-   And the CTRP processing status will be set to "Complete"
+   And the CTRP processing status will be"Complete"
    And the CTRP source status will be "Active"
 
        Scenario: #12 NLM context created in CTRP
@@ -252,19 +252,19 @@ Scenario: #4 CTEP Context Mandatory Fields
     Scenario:#15 Curator can identify when two organizations are to be merged 
     Given I am logged into the CTRP 
      When CTEP Indicates via REST Service that two Organizations are to be merged
-     And the CTEP Organizations <OrganizationnName> will have CTEP Context Org ID <CTEPContextOrgID>, CTRP Org ID <CTRPOrgIDType>, Service request <CTEPServiceRequestType>, processing status <CTEPProcessingStatusType>, and Organization status <CTEPStatusType>and CTRP Organization Status <CTRPOrgStatus>
-     
-     |<OrganizationName>                   |<CTEPContextOrgID>|<CTRPOrgIDType>    |<CTEPServiceRequestType> |<CTEPprocessingStatusType> |<CTEPStatusType>|<CTRPStatusType>|
-     |ACORN Research,LLC                   |65016645          |8352734            |Merge ID 76983647        |Incomplete                 |Active          |Active          |       
-     |Actelion Pharmaceuticals Switzerland |76983647          |8149074            |Merge ID 65016645        |Incomplete                 |Inactive        |Active          |       
+     And the CTEP Organizations <OrganizationnName> will have CTEP Context Org ID <CTEPContextOrgID>, CTRP Org ID <CTRPOrgID>, Service request <CTEPServiceRequest>, processing status <CTEPProcessingStatus>, and Organization status <CTEPStatus>and CTRP Organization Status <CTRPOrgStatus>
+    
+     |OrganizationName                     |CTEPContextOrgID  |CTRPOrgID          |CTEPServiceRequest       |CTEPprocessingStatus       |CTEPStatus      |CTRPStatusType  |
+     |ACORN Research,LLC                   |65016645          |8352734            |Merge ID                 |Incomplete                 |Active          |Active          |       
+     |Actelion Pharmaceuticals Switzerland |76983647          |8149074            |Merge ID                 |Incomplete                 |Inactive        |Active          |       
       
      Then the curator will search CTEP Context for organization where Service request is "Merge with CTEP ID"
      And the curator will search for matching organizations in the CTRP Context
      When Matching CTRP organizations found
      Then The CTRP organization matching CTEP organization with inactive status will be Nullified
-    And  the organizations <OrganizationName> will have PK ID <CTEPContextOrgIDType>, CTRP ID <CTRPOrgIDType>, Service request <CTEPServiceRequestType>, processing status <CTEPProcessingStatusType>, and CTEP Organization status <CTEPStatusType> and CTRP Organization Status <CTRPOrgStatus> 
+    And  the organizations <OrganizationName> will have PK ID <CTEPContextOrgID>, CTRP ID <CTRPOrgID>, Service request <CTEPServiceRequest>, processing status <CTEPProcessingStatus>, and CTEP Organization status <CTEPStatus> and CTRP Organization Status <CTRPOrgStatus> 
      
-     |<OrganizationName>                   |<CTEPContextOrgID>|<CTRPOrgIDType>    |<CTEPServiceRequestType> |<CTEPprocessingStatusType> |<CTEPStatusType>|<CTRPStatusType>|
+     |OrganizationName                     |CTEPContextOrgID  |CTRPOrgID          |CTEPServiceRequest       |CTEPprocessingStatus       |CTEPStatus      |CTRPStatus      |
      |ACORN Research,LLC                   |65016645          |8352734            |NULL                     |Complete                   |Active          |Active          |         
      |Actelion Pharmaceuticals Switzerland |76983647          |8149074            |NULL                     |complete                   |Inactive        |Nullified       |        
       

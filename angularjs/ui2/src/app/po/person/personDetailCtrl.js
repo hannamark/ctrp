@@ -213,6 +213,7 @@
             locateSourceStatus();
             createFormTitleLabel();
             watchOrgAffiliations();
+            _prepAssociationGrid(vm.curPerson.associated_persons);
         }
 
 
@@ -405,6 +406,7 @@
                             vm.curPerson.associated_persons.push(vm.curPerson);
                         }
                         vm.curPerson.associated_persons.push(res.person);
+                        _prepAssociationGrid(vm.curPerson.associated_persons);
                         showToastr('CTEP person context association was successful');
                     }
                 }
@@ -504,6 +506,146 @@
             }).catch(function(err) {
                 console.error('err in cloning person: ', err);
             });
+        }
+
+        function _prepAssociationGrid(personArray) {
+            if (!angular.isDefined(personArray) || personArray.length === 0) return;
+            vm.associatedPersonsOptions = {
+                enableColumnResizing: true,
+                totalItems: null,
+                rowHeight: 22,
+                useExternalSorting: false,
+                enableFiltering: false,
+                enableVerticalScrollbar: 2,
+                enableHorizontalScrollbar: 2,
+                columnDefs: [
+                    {
+                        name: 'ctrp_id',
+                        enableSorting: false,
+                        displayName: 'CTRP ID',
+                        width: '100'
+                    },
+                    {
+                        name: 'source_id',
+                        enableSorting: true,
+                        displayName: 'CTEP ID',
+                        minWidth: '100'
+                    },
+                    {
+                        name: 'prefix',
+                        enableSorting: false,
+                        displayName: 'Prefix',
+                        minWidth: '100'
+                    },
+                    {
+                        name: 'fname',
+                        enableSorting: false,
+                        displayName: 'First Name',
+                        minWidth: '100'
+                    },
+                    {
+                        name: 'mname',
+                        enableSorting: false,
+                        displayName: 'Middle Name',
+                        minWidth: '100'
+                    },
+                    {
+                        name: 'lname',
+                        enableSorting: false,
+                        displayName: 'Last Name',
+                        minWidth: '100'
+                    },
+                    {
+                        name: 'suffix',
+                        enableSorting: false,
+                        displayName: 'Suffix',
+                        minWidth: '100'
+                    },
+                    {
+                        name: 'source_status',
+                        enableSorting: true,
+                        displayName: 'Source Status',
+                        minWidth: '100'
+                    },
+                    {
+                        name: 'source_context',
+                        enableSorting: false,
+                        displayName: 'Source Context',
+                        minWidth: '100'
+                    },
+                    {
+                        name: 'source_id',
+                        enableSorting: true,
+                        displayName: 'Source ID',
+                        minWidth: '100'
+                    },
+                    {
+                        name: 'email',
+                        enableSorting: true,
+                        displayName: 'Email',
+                        minWidth: '100'
+                    },
+                    {
+                        name: 'phone',
+                        enableSorting: true,
+                        displayName: 'Phone',
+                        minWidth: '100'
+                    },
+                    // TODO: list orgs
+
+                    {
+                        name: 'context_person_id',
+                        displayName: 'Context Person ID',
+                        enableSorting: false,
+                        minWidth: '180'
+                    },
+                    {
+                        name: 'processing_status',
+                        displayName: 'Processing Status',
+                        enableSorting: false,
+                        width: '*',
+                        minWidth: '200'
+                    },
+                    {
+                        name: 'service_request',
+                        displayName: 'Service REqu',
+                        enableSorting: false,
+                        width: '*',
+                        minWidth: '200'
+                    },
+                    {
+                        name: 'updated_at',
+                        displayName: 'Last Updated Date',
+                        enableSorting: false,
+                        cellFilter: 'date:\'dd-MMM-yyyy\'',
+                        width: '*',
+                        minWidth: '200'
+                    },
+                    {
+                        name: 'updated_by',
+                        displayName: 'Last Updated By',
+                        enableSorting: false,
+                        width: '*',
+                        minWidth: '200'
+                    },
+                    {
+                        name: 'association_start_date',
+                        displayName: 'Association Start Date',
+                        cellFilter: 'date:\'dd-MMM-yyyy\'',
+                        enableSorting: false,
+                        width: '*',
+                        minWidth: '200'
+                    }
+                ],
+                enableSelectAll: true,
+                enableRowHeaderSelection : true,
+                enableGridMenu: false
+            };
+
+            vm.associatedPersonsOptions.onRegisterApi = function(gridApi) {
+                vm.gridApi = gridApi;
+            };
+            vm.associatedPersonsOptions.data = personArray;
         }
 
 

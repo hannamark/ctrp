@@ -281,9 +281,7 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- grid of associated persons below -->
-                        <div ng-include src="'app/po/person/_associatedPersonGrid.html'"></div>
-                        <!-- end of grid -->
+                        <!-- clone ctep person -->
                         <div class="form-group" ng-show="clusterPerson.context == 'CTEP' && !personDetailView.curPerson.ctrp_id"> <!--  && !personDetailView.hasCtrpContext -->
                             <div class="col-xs-12 col-sm-3"></div>
                             <div class="col-xs-12 col-sm-6 form-text pull-left">
@@ -291,6 +289,7 @@
                                     ng-click="personDetailView.cloneCtepPerson(personDetailView.curPerson.id)">Clone</button>
                             </div>
                         </div>
+                        <!-- end of clone person -->
                         <div ng-include src="'app/po/person/_matchedClonePersonGrid.html'"></div>
                         <div class="form-group no-bottom-margin" ng-show="personDetailView.curPersonEditable" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
                             <div class="col-xs-12 col-sm-3"></div>
@@ -311,6 +310,9 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- grid of associated persons below -->
+                        <div ng-include src="'app/po/person/_associatedPersonGrid.html'"></div>
+                        <!-- end of grid -->
                       </div> <!-- end of push-in-target -->
                     </md-tab-body>
                 </md-tab>
