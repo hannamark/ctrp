@@ -20,10 +20,7 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.sourceContextArr = sourceContextObj;
-        vm.sourceStatusArr = _.filter(
-            sourceStatusObj, function (item) {
-                return _.contains(["ACT","INACT","PEND"], item.code);
-            });
+        vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.alias = '';
         vm.curationReady = false;
@@ -111,14 +108,17 @@
             }
         };// toggleSelection
 
-        vm.ctrpSourceStatusArr = _.filter(vm.sourceStatusArr, function (item) {
-            return _.isEqual(
-                _.filter(vm.sourceContextArr, function (item) {
-                    return _.isEqual('CTRP', item.code);
-                })[0].id,
-                item.source_context_id);
-        });
-
+        vm.ctrpSourceStatusArr = _.filter(
+            _.filter(vm.sourceStatusArr, function (item) {
+                return _.isEqual(
+                    _.filter(vm.sourceContextArr, function (item) {
+                        return _.isEqual('CTRP', item.code);
+                    })[0].id,
+                    item.source_context_id);
+            }), function (item) {
+                return _.contains(["ACT","INACT","PEND"], item.code);
+            });
+        
         /****************** implementations below ***************/
         function activate() {
             initiateOrgs();
@@ -128,6 +128,10 @@
             if (vm.ctrpOrg && !vm.ctrpOrg.new) {
                 appendNameAliases();
             }
+
+            $timeout(function() {
+                $scope.organization_form.$setPristine();
+            }, 1000);
         }
         activate();
 
@@ -293,7 +297,7 @@
             vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
             vm.associatedOrgsOptions.data = _.filter(
                 vm.associatedOrgs, function (item) {
-                    return _.contains(['CTEP','NLM'], item.source_context_name);
+                    return !_.isEqual(associatedOrgsObj.active_id, item.id);
                 });
             vm.updateTime = Date.now();
         };
@@ -431,6 +435,7 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
+            multiSelect: false,
             useExternalSorting: false,
             enableFiltering: false,
             enableVerticalScrollbar: 2,
@@ -565,7 +570,6 @@
         vm.associatedOrgsOptions.data = _.filter(
             vm.associatedOrgs, function (item) {
                 return !_.isEqual(associatedOrgsObj.active_id, item.id);
-            });
-
+        });
     }
 }());
