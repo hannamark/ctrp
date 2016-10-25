@@ -147,12 +147,12 @@ class OrganizationsController < ApplicationController
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:id => active_org.id)
         @active_context = SourceContext.find(active_org.source_context_id).name unless @associated_orgs.blank?
       end
-      @ac_tp = User.org_write_access(@current_user)
+      @write_access = User.org_write_access(@current_user)
+      @read_all_access = User.org_read_all_access(@current_user)
   end
 
   def search
-    # Pagination/sorting params initialization
-    Rails.logger.info "In Organization Controller, search"
+    Rails.logger.info "In Organization Controller, search" # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
     if params[:allrows] != true
       params[:rows] = 20 if params[:rows].blank?
@@ -161,31 +161,27 @@ class OrganizationsController < ApplicationController
     end
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
-    # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
-    params[:alias] = true if !params.has_key?(:alias)
+    params[:alias] = true if !params.has_key?(:alias)  # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
     if parse_request_header
       wrapper_authenticate_user
     end
     @organizations = []
     org_keys = %w[ name source_context source_id source_status family_name address address2 city
                     ctrp_id state_province country postal_code email phone updated_by date_range_arr]
-    # Scope chaining, reuse the scope definition
     if (params.keys & org_keys).any?
-      # get complete resultset
-      @organizations = filterSearch Organization.all_orgs_data()
-      # order
+      @organizations = filterSearch Organization.all_orgs_data() # get complete resultset
       sortBy = params[:sort]
       if ['source_context', 'source_status'].include? sortBy
         sortBy  += "_name"
       end
       @organizations = @organizations.order("#{sortBy} #{params[:order]}")
-      # get total: faster here than in jbuilder (jbuilder counts array; here we use SQL COUNT(*) - faster)
-      @total = @organizations.distinct.size
-      # finally paginate
-      unless params[:rows].nil? || @organizations.blank?
+      @total = @organizations.distinct.size # get total: faster here than in jbuilder (jbuilder counts array; here we use SQL COUNT(*) - faster)
+      unless params[:rows].nil? || @organizations.blank? # finally paginate
         @organizations = Kaminari.paginate_array(@organizations).page(params[:start]).per(params[:rows])
       end
     end
+    @read_all_access = User.org_read_all_access(@current_user)
+    @write_access = User.org_write_access(@current_user)
   end
 
   def filterSearch resultOrgs
@@ -307,6 +303,7 @@ class OrganizationsController < ApplicationController
     @nlmId = SourceContext.find_by_code("NLM").id
     @ctrpId = SourceContext.find_by_code("CTRP").id
     @write_access = User.org_write_access(@current_user)
+    @read_all_access = User.org_read_all_access(@current_user)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

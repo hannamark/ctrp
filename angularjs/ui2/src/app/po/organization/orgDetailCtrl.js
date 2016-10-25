@@ -20,7 +20,10 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.sourceContextArr = sourceContextObj;
-        vm.sourceStatusArr = sourceStatusObj;
+        vm.sourceStatusArr = _.filter(
+            sourceStatusObj, function (item) {
+                return _.contains(["ACT","INACT","PEND"], item.code);
+            });
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.alias = '';
         vm.curationReady = false;
@@ -135,8 +138,9 @@
             //set orgs and default tab
             if (associatedOrgsObj) {
                 vm.associatedOrgs = associatedOrgsObj.associated_orgs;
-                vm.defaultTab = associatedOrgsObj.active_context;
-                vm.currentUserIsAdmin = associatedOrgsObj.ac_tp;
+                vm.defaultTab = associatedOrgsObj.active_context; 
+                vm.currentUserIsAdmin = associatedOrgsObj.ac_tp; 
+                vm.currentUserIsReadAll = associatedOrgsObj.rc_tp;
                 vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP')[0];
                 vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
                 vm.ctrpOrg =  filterOutCTRPOrg();
