@@ -32,12 +32,13 @@
         vm.formTitleLabel = 'Add Person'; //default form title
         vm.affiliatedOrgError = true; // flag for empty org affiliations
         vm.matchedCtrpPersons = []; // CTRP persons found from attempt to clone ctep person
+        vm.associationForRemoval = []; // object person objects
         var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
         var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
         vm.isAllowedToComment = _.contains(USER_ROLES_ALLOWED_COMMENT, UserService.getUserRole());
 
         // actions:
-        vm.removeAssociation = removePersonAssociation;
+        // vm.removeAssociation = removePersonAssociation;
         vm.cloneCtepPerson = cloneCtepPerson;
 
         //update person (vm.curPerson)
@@ -474,13 +475,15 @@
             } //prepareModal
         }; //confirmDelete
 
-        function removePersonAssociation(ctepPersonId, ctrp_source_id) {
+        function removePersonAssociation(ctepPersonId) {
             PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
                 if (res.is_removed) {
                     // filter out the deleted persons (both ctep and its associated ctrp person)
                     vm.curPerson.associated_persons = _.filter(vm.curPerson.associated_persons, function(p) {
-                        return p.ctrp_source_id !== ctrp_source_id;
+                        // return p.ctrp_source_id !== ctrp_source_id;
+                        return p.id !== ctepPersonId;
                     });
+                    vm.associationForRemoval = [];
                     // vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, _.findWhere(vm.curPerson.associated_persons, {ctrp_source_id: ctrp_source_id})); // remove both ctep and ctrp person contexts in the array
                     vm.curPerson.cluster = _.without(vm.curPerson.cluster, _.findWhere(vm.curPerson.cluster, {id: ctepPersonId})); // remove the tab
                     showToastr('The selected person context association was deleted');
@@ -509,7 +512,9 @@
         }
 
         function _prepAssociationGrid(personArray) {
-            if (!angular.isDefined(personArray) || personArray.length === 0) return;
+            if (!angular.isDefined(personArray) || personArray.length === 0) {
+                personArray = [];
+            }
             vm.associatedPersonsOptions = {
                 enableColumnResizing: true,
                 totalItems: null,
@@ -608,7 +613,7 @@
                     },
                     {
                         name: 'service_request',
-                        displayName: 'Service REqu',
+                        displayName: 'Service Request',
                         enableSorting: false,
                         width: '*',
                         minWidth: '200'
@@ -637,15 +642,37 @@
                         minWidth: '200'
                     }
                 ],
-                enableSelectAll: true,
+                enableSelectAll: false,
                 enableRowHeaderSelection : true,
                 enableGridMenu: false
             };
 
             vm.associatedPersonsOptions.onRegisterApi = function(gridApi) {
                 vm.gridApi = gridApi;
+                gridApi.selection.on.rowSelectionChanged($scope, gridRowSelectionCB);
             };
             vm.associatedPersonsOptions.data = personArray;
+            $timeout(function() {
+                if (!!vm.gridApi && !!vm.gridApi.grid) {
+                    vm.gridApi.grid.refresh();
+                }
+            }, 0);
+        }
+
+        function gridRowSelectionCB(row) {
+            // console.info('selecte row: ', row);
+            if (row.entity.is_ctrp_context) {
+                row.isSelected = false; // CTRP person is not selectable for deletion
+                return;
+            }
+            while (vm.associationForRemoval.length > 0) {
+                var del = vm.associationForRemoval.pop();
+                del.isSelected = false; // visually deselect the row
+            }
+            if (row.isSelected && !row.entity.is_ctrp_context) {
+                vm.associationForRemoval.push(row);
+                vm.confirmDisAssociate = _.partial(removePersonAssociation, row.entity.id);
+            }
         }
 
 
