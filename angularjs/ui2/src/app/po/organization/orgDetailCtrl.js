@@ -20,10 +20,7 @@
         vm.watchCountrySelection = OrgService.watchCountrySelection();
         vm.countriesArr = countryList;
         vm.sourceContextArr = sourceContextObj;
-        vm.sourceStatusArr = _.filter(
-            sourceStatusObj, function (item) {
-                return _.contains(["ACT","INACT","PEND"], item.code);
-            });
+        vm.sourceStatusArr = sourceStatusObj;
         vm.sourceStatusArr.sort(Common.a2zComparator());
         vm.alias = '';
         vm.curationReady = false;
@@ -128,6 +125,10 @@
             if (vm.ctrpOrg && !vm.ctrpOrg.new) {
                 appendNameAliases();
             }
+
+            $timeout(function() {
+                $scope.organization_form.$setPristine();
+            }, 1000);
         }
         activate();
 
@@ -138,9 +139,8 @@
             //set orgs and default tab
             if (associatedOrgsObj) {
                 vm.associatedOrgs = associatedOrgsObj.associated_orgs;
-                vm.defaultTab = associatedOrgsObj.active_context; 
-                vm.currentUserIsAdmin = associatedOrgsObj.ac_tp; 
-                vm.currentUserIsReadAll = associatedOrgsObj.rc_tp;
+                vm.defaultTab = associatedOrgsObj.active_context;
+                vm.currentUserIsAdmin = associatedOrgsObj.ac_tp;
                 vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP')[0];
                 vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
                 vm.ctrpOrg =  filterOutCTRPOrg();
@@ -565,7 +565,6 @@
         vm.associatedOrgsOptions.data = _.filter(
             vm.associatedOrgs, function (item) {
                 return !_.isEqual(associatedOrgsObj.active_id, item.id);
-            });
-
+        });
     }
 }());
