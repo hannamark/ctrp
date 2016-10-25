@@ -55,6 +55,10 @@
                     }
                     showToastr(vm.ctrpOrg.name);
                     vm.ctrpOrg.new = false;
+
+                    $timeout(function() {
+                        $scope.organization_form.$setPristine();
+                    }, 1000);
                 }
             }).catch(function (err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
