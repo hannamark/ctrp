@@ -195,20 +195,20 @@ class OrganizationsController < ApplicationController
     # direct matches from model
     matches_to_accept = 'ctrp_id,country,processing_status'
     matches_to_accept.split(",").each do |filter|
-      resultOrgs = resultOrgs.matches(filter, params[filter]) if params[filter].present?
+      resultOrgs = resultOrgs.matches(filter, params[filter].gsub(/\\/,'\&\&') ) if params[filter].present?
     end
     wc_matches_to_accept = 'address,address2,updated_by,city,state_province,postal_code,email,phone'
     wc_matches_to_accept.split(",").each do |filter|
-      resultOrgs = resultOrgs.matches_wc(filter, params[filter], params[:wc_search]) if params[filter].present? && params[filter] != '*'
+      resultOrgs = resultOrgs.matches_wc(filter, params[filter].gsub(/\\/,'\&\&'), params[:wc_search]) if params[filter].present? && params[filter] != '*'
     end
     # direct from joins
     resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if params[:no_family].present?
     resultOrgs = resultOrgs.where("service_requests.name" => params[:service_request_name]) if params[:service_request_name].present?
     # manipulated
-    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id], params[:wc_search]) if params[:source_id].present?
-    resultOrgs = resultOrgs.match_name_from_joins(params[:name], params[:alias], params[:wc_search]) if params[:name].present?
+    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:source_id].present?
+    resultOrgs = resultOrgs.match_name_from_joins(params[:name].gsub(/\\/,'\&\&'), params[:alias], params[:wc_search]) if params[:name].present?
     resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
-    resultOrgs = resultOrgs.with_family(params[:family_name], params[:wc_search]) if params[:family_name].present? && params[:family_name] != '*'
+    resultOrgs = resultOrgs.with_family(params[:family_name].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:family_name].present? && params[:family_name] != '*'
     return resultOrgs
   end
 
