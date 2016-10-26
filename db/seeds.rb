@@ -1212,7 +1212,8 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                         "id": "ROLE_RO",
                                         "name": "Read Only",
                                         "assign_access": "",
-                                        "org_source_status_search_access": "ACT"
+                                        "org_source_status_access": "ACT,PEND,INACT",
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,LEG"
                                      },
                                      {
                                         "id": "ROLE_ACCOUNT-APPROVER",
