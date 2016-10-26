@@ -52,7 +52,6 @@
           if (optionalField) {
             url = url.replace('.json', '/' + optionalField + '.json');
           }
-          $log.info('get comment list with url: ' + url);
           return PromiseTimeoutService.getData(url);
         }
         var deferred = $q.defer();
