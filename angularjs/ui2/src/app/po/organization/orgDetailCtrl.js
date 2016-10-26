@@ -14,7 +14,6 @@
     function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService, $filter, _,uiGridExporterConstants, uiGridExporterService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal, $timeout, GeoLocationService, serviceRequests) {
         var vm = this;
-        $scope.organization_form = {};
         vm.addedNameAliases = [];
         vm.states = [];
         vm.processingStatuses = OrgService.getProcessingStatuses();
@@ -56,6 +55,10 @@
                     }
                     showToastr(vm.ctrpOrg.name);
                     vm.ctrpOrg.new = false;
+
+                    $timeout(function() {
+                        $scope.organization_form.$setPristine();
+                    }, 1000);
                 }
             }).catch(function (err) {
                 console.log("error in updating organization " + JSON.stringify(vm.curOrg));
@@ -105,14 +108,18 @@
             }
         };// toggleSelection
 
-        vm.ctrpSourceStatusArr = _.filter(vm.sourceStatusArr, function (item) {
-            return _.isEqual(
-                _.filter(vm.sourceContextArr, function (item) {
-                    return _.isEqual('CTRP', item.code);
-                })[0].id,
-                item.source_context_id);
-        });
-
+        // first filtering for CTRP then choosing right active, inactive and pending statuses for ids
+        vm.ctrpSourceStatusArr = _.filter(
+            _.filter(vm.sourceStatusArr, function (item) {
+                return _.isEqual(
+                    _.filter(vm.sourceContextArr, function (item) {
+                        return _.isEqual('CTRP', item.code);
+                    })[0].id,
+                    item.source_context_id);
+            }), function (item) {
+                return _.contains(["ACT","INACT","PEND"], item.code);
+            });
+        
         /****************** implementations below ***************/
         function activate() {
             initiateOrgs();
@@ -122,6 +129,10 @@
             if (vm.ctrpOrg && !vm.ctrpOrg.new) {
                 appendNameAliases();
             }
+
+            $timeout(function() {
+                $scope.organization_form.$setPristine();
+            }, 1000);
         }
         activate();
 
@@ -286,7 +297,7 @@
             vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
             vm.associatedOrgsOptions.data = _.filter(
                 vm.associatedOrgs, function (item) {
-                    return _.contains(['CTEP','NLM'], item.source_context_name);
+                    return !_.isEqual(associatedOrgsObj.active_id, item.id);
                 });
             vm.updateTime = Date.now();
         };
@@ -313,13 +324,6 @@
             }
         };
 
-        vm.confirmDisAssociate = function (){
-            vm.selectedOrgs = vm.gridApi.selection.getSelectedRows();
-            if(vm.selectedOrgs.length) {
-                vm.confirmDisAssociatePopUp = true;
-            }
-        };
-
         vm.disAssociateOrgs = function (){
             vm.confirmDisAssociatePopUp = false;
             OrgService.disAssociateOrgs({
@@ -343,7 +347,6 @@
         };
 
         vm.ctepAssociateOrgs = function () {
-            vm.confirmOverrideAssociatePopUp = false;
             if (vm.selectedOrgsArray) {
                 angular.forEach(vm.selectedOrgsArray, function(value) {
                     var newAssociatedOrg = value;
@@ -424,6 +427,7 @@
             enableColumnResizing: true,
             totalItems: null,
             rowHeight: 22,
+            multiSelect: false,
             useExternalSorting: false,
             enableFiltering: false,
             enableVerticalScrollbar: 2,
@@ -558,7 +562,6 @@
         vm.associatedOrgsOptions.data = _.filter(
             vm.associatedOrgs, function (item) {
                 return !_.isEqual(associatedOrgsObj.active_id, item.id);
-            });
-
+        });
     }
 }());

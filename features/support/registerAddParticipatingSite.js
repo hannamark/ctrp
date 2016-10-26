@@ -7,6 +7,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = require('chai').expect;
 var assert = require('assert');
+var phoneFormat = require('phoneformat.js');
 
 var helperFunctions = require('../support/helper');
 
@@ -114,7 +115,7 @@ var importTrialPage = function() {
     };
 
     this.setAddPSContactPhone = function(PSContactPhone)  {
-        helper.setValue(this.addPSContactPhoneNumber,PSContactPhone,"Add Participating Site by Contact Phone field");
+        helper.setValue(this.addPSContactPhoneNumber,phoneFormat.formatLocal('US', PSContactPhone),"Add Participating Site by Contact Phone field");
     };
 
     this.setAddPSContactPhoneExtension = function(PSContactPhoneExtension)  {

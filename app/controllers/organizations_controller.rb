@@ -122,10 +122,10 @@ class OrganizationsController < ApplicationController
   def dis_associate
     @associated_orgs = []
     return if !@write_access
-    active_org = Organization.find(params[:id])
+    active_org = Organization.find_by_id(params[:id])
     if params[:remove_ids] && params[:ctrp_id]
       params[:remove_ids].each do |org|
-        contextOrg = Organization.find(org[:id])
+        contextOrg = Organization.find_by_id(org[:id])
         dissassociated_org = disAssociateTwoOrgs params[:ctrp_id], contextOrg
         dissassociated_org.save
       end
@@ -139,7 +139,7 @@ class OrganizationsController < ApplicationController
 
   def associated
       @associated_orgs = []
-      active_org = Organization.find(params[:id])
+      active_org = Organization.find_by_id(params[:id])
       if User.org_read_all_access(@current_user) && !active_org.blank? && !active_org.ctrp_id.blank?
         @active_context = SourceContext.find(active_org.source_context_id).name
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
@@ -147,12 +147,12 @@ class OrganizationsController < ApplicationController
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:id => active_org.id)
         @active_context = SourceContext.find(active_org.source_context_id).name unless @associated_orgs.blank?
       end
-      @ac_tp = User.org_write_access(@current_user)
+      @write_access = User.org_write_access(@current_user)
+      @read_all_access = User.org_read_all_access(@current_user)
   end
 
   def search
-    # Pagination/sorting params initialization
-    Rails.logger.info "In Organization Controller, search"
+    Rails.logger.info "In Organization Controller, search" # Pagination/sorting params initialization
     params[:start] = 1 if params[:start].blank?
     if params[:allrows] != true
       params[:rows] = 20 if params[:rows].blank?
@@ -161,31 +161,27 @@ class OrganizationsController < ApplicationController
     end
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
-    # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
-    params[:alias] = true if !params.has_key?(:alias)
+    params[:alias] = true if !params.has_key?(:alias)  # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
     if parse_request_header
       wrapper_authenticate_user
     end
     @organizations = []
     org_keys = %w[ name source_context source_id source_status family_name address address2 city
                     ctrp_id state_province country postal_code email phone updated_by date_range_arr]
-    # Scope chaining, reuse the scope definition
     if (params.keys & org_keys).any?
-      # get complete resultset
-      @organizations = filterSearch Organization.all_orgs_data()
-      # order
+      @organizations = filterSearch Organization.all_orgs_data() # get complete resultset
       sortBy = params[:sort]
       if ['source_context', 'source_status'].include? sortBy
         sortBy  += "_name"
       end
       @organizations = @organizations.order("#{sortBy} #{params[:order]}")
-      # get total: faster here than in jbuilder (jbuilder counts array; here we use SQL COUNT(*) - faster)
-      @total = @organizations.distinct.size
-      # finally paginate
-      unless params[:rows].nil? || @organizations.blank?
+      @total = @organizations.distinct.size # get total: faster here than in jbuilder (jbuilder counts array; here we use SQL COUNT(*) - faster)
+      unless params[:rows].nil? || @organizations.blank? # finally paginate
         @organizations = Kaminari.paginate_array(@organizations).page(params[:start]).per(params[:rows])
       end
     end
+    @read_all_access = User.org_read_all_access(@current_user)
+    @write_access = User.org_write_access(@current_user)
   end
 
   def filterSearch resultOrgs
@@ -199,30 +195,31 @@ class OrganizationsController < ApplicationController
     # direct matches from model
     matches_to_accept = 'ctrp_id,country,processing_status'
     matches_to_accept.split(",").each do |filter|
-      resultOrgs = resultOrgs.matches(filter, params[filter]) if params[filter].present?
+      resultOrgs = resultOrgs.matches(filter, params[filter].gsub(/\\/,'\&\&') ) if params[filter].present?
     end
     wc_matches_to_accept = 'address,address2,updated_by,city,state_province,postal_code,email,phone'
     wc_matches_to_accept.split(",").each do |filter|
-      resultOrgs = resultOrgs.matches_wc(filter, params[filter], params[:wc_search]) if params[filter].present? && params[filter] != '*'
+      resultOrgs = resultOrgs.matches_wc(filter, params[filter].gsub(/\\/,'\&\&'), params[:wc_search]) if params[filter].present? && params[filter] != '*'
     end
     # direct from joins
     resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if params[:no_family].present?
     resultOrgs = resultOrgs.where("service_requests.name" => params[:service_request_name]) if params[:service_request_name].present?
     # manipulated
-    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id]) if params[:source_id].present?
-    resultOrgs = resultOrgs.match_name_from_joins(params[:name], params[:alias], params[:wc_search]) if params[:name].present?
+    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:source_id].present?
+    resultOrgs = resultOrgs.match_name_from_joins(params[:name].gsub(/\\/,'\&\&'), params[:alias], params[:wc_search]) if params[:name].present?
     resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
-    resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? && params[:family_name] != '*'
+    resultOrgs = resultOrgs.with_family(params[:family_name].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:family_name].present? && params[:family_name] != '*'
     return resultOrgs
   end
 
   def clone
-    ctepOrg = Organization.find(params[:org_id])
+    ctepOrg = Organization.find_by_id(params[:org_id])
     ctepOrg.processing_status = 'Complete'
     ctepOrg.updated_by = @current_user.username unless @current_user.nil?
     ctepOrg.updated_at = Time.zone.now
     @organization = Organization.new(ctepOrg.attributes)
     @organization.id                = nil
+    @organization.processing_status = 'Complete'
     @organization.source_context_id = SourceContext.find_by_code("CTRP").id
     @organization.source_status_id = SourceStatus.where(:source_context_id => @organization.source_context_id, :code => 'ACT')[0].id
     @organization.created_by = ctepOrg.updated_by
@@ -299,7 +296,7 @@ class OrganizationsController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_organization
-    @organization = Organization.find(params[:id])
+    @organization = Organization.find_by_id(params[:id])
   end
 
   def set_glob_vars
@@ -307,6 +304,7 @@ class OrganizationsController < ApplicationController
     @nlmId = SourceContext.find_by_code("NLM").id
     @ctrpId = SourceContext.find_by_code("CTRP").id
     @write_access = User.org_write_access(@current_user)
+    @read_all_access = User.org_read_all_access(@current_user)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
