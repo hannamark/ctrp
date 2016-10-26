@@ -108,6 +108,7 @@
             }
         };// toggleSelection
 
+        // first filtering for CTRP then choosing right active, inactive and pending statuses for ids
         vm.ctrpSourceStatusArr = _.filter(
             _.filter(vm.sourceStatusArr, function (item) {
                 return _.isEqual(
@@ -323,13 +324,6 @@
             }
         };
 
-        vm.confirmDisAssociate = function (){
-            vm.selectedOrgs = vm.gridApi.selection.getSelectedRows();
-            if(vm.selectedOrgs.length) {
-                vm.confirmDisAssociatePopUp = true;
-            }
-        };
-
         vm.disAssociateOrgs = function (){
             vm.confirmDisAssociatePopUp = false;
             OrgService.disAssociateOrgs({
@@ -353,7 +347,6 @@
         };
 
         vm.ctepAssociateOrgs = function () {
-            vm.confirmOverrideAssociatePopUp = false;
             if (vm.selectedOrgsArray) {
                 angular.forEach(vm.selectedOrgsArray, function(value) {
                     var newAssociatedOrg = value;

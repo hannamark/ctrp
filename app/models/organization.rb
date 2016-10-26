@@ -281,7 +281,7 @@ class Organization < ActiveRecord::Base
 
   scope :matches, -> (column, value) { where("#{column} = ?", "#{value}") }
 
-  scope :matches_wc, -> (column, value,wc_search) {
+  scope :matches_wc, -> (column, value, wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
       where("#{column} ilike ?", "%#{value[1..str_len - 1]}")
@@ -321,9 +321,33 @@ class Organization < ActiveRecord::Base
     end
   }
 
-  scope :match_source_id_from_joins, -> (value) {
-      source_id_clause = "organizations.source_id ilike ? OR all_cteps_by_ctrp_id.ctep_id ilike ?", "%#{value}", "%#{value}"
-      where(source_id_clause)
+  scope :match_source_id_from_joins, -> (source_id_value, wc_search) {
+    str_len = source_id_value.length
+
+    # for '*text' or '*, text'
+    if source_id_value[0] == '*' && source_id_value[str_len - 1] != '*'
+      where("organizations.source_id ilike ? OR all_cteps_by_ctrp_id.ctep_id ilike ?", "%#{source_id_value[1..str_len - 1]}", "%#{source_id_value[1..str_len - 1]}")
+
+      # for 'text*' or ', text*'
+    elsif source_id_value[0] != '*' && source_id_value[str_len - 1] == '*'
+      where("organizations.source_id ilike ? OR all_cteps_by_ctrp_id.ctep_id ilike ?", "#{source_id_value[0..str_len - 2]}%", "#{source_id_value[0..str_len - 2]}%")
+
+      # for '*text*'
+    elsif source_id_value[0] == '*' && source_id_value[str_len - 1] == '*'
+      where("organizations.source_id ilike ? OR all_cteps_by_ctrp_id.ctep_id ilike ?", "%#{source_id_value[1..str_len - 2]}%", "%#{source_id_value[1..str_len - 2]}%")
+
+      # for 'text' or  '*, text,*' or  'text,*' or  '*, text'
+    else
+
+      if !wc_search
+        if !source_id_value.match(/\s/).nil?
+          source_id_value = (source_id_value.gsub! /\s+/, '%')
+        end
+        where("organizations.source_id ilike ? OR all_cteps_by_ctrp_id.ctep_id ilike ?", "%#{source_id_value}%", "%#{source_id_value}%")
+      else
+        where("organizations.source_id ilike ? OR all_cteps_by_ctrp_id.ctep_id ilike ?", "#{source_id_value}", "#{source_id_value}")
+      end
+    end
   }
   scope :match_name_from_joins, -> (name_value, alias_value, wc_search) {
     str_len = name_value.length
@@ -366,31 +390,6 @@ class Organization < ActiveRecord::Base
     end
   }
 
-  scope :with_source_id, -> (value, ctrp_ids) {
-    q = "organizations.source_id ilike ?"
-
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      conditions = ["%#{value[1..str_len - 1]}"]
-    elsif value[0] != '*' && value[str_len - 1] == '*'
-      conditions = ["#{value[0..str_len - 2]}%"]
-    elsif value[0] == '*' && value[str_len - 1] == '*'
-      conditions = ["%#{value[1..str_len - 2]}%"]
-    else
-      conditions = ["#{value}"]
-    end
-
-    ctrp_ids.each_with_index { |e, i|
-      if e != nil
-        q += " OR organizations.ctrp_id = ?"
-        conditions.push(e)
-      end
-    }
-    conditions.insert(0, q)
-
-    where(conditions)
-  }
-
   scope :with_source_context, -> (value) { joins(:source_context).where("source_contexts.name = ?", "#{value}") }
 
   scope :with_source_status, -> (value) { joins(:source_status).where("source_statuses.name = ?", "#{value}") }
@@ -398,7 +397,7 @@ class Organization < ActiveRecord::Base
   scope :with_service_request, -> (value) { joins(:service_request).where("service_requests.id = ?", "#{value}")}
 
   #this now only works after running Organization.all_orgs_data() for efficiency
-  scope :with_family, -> (value) {
+  scope :with_family, -> (value, wc_search) {
     str_len = value.length
 
     # for '*text' or '*, text'
@@ -415,7 +414,14 @@ class Organization < ActiveRecord::Base
 
     # for 'text' or  '*, text,*' or  'text,*' or  '*, text'
     else
-      where("family_name ilike ?", "#{value}")
+      if !wc_search
+        if !value.match(/\s/).nil?
+          value = (name_value.gsub! /\s+/, '%')
+        end
+        where("family_name ilike ?", "%#{value}%")
+      else
+        where("family_name ilike ?", "#{value}")
+      end
     end
   }
 

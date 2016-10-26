@@ -205,10 +205,10 @@ class OrganizationsController < ApplicationController
     resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if params[:no_family].present?
     resultOrgs = resultOrgs.where("service_requests.name" => params[:service_request_name]) if params[:service_request_name].present?
     # manipulated
-    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id]) if params[:source_id].present?
+    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id], params[:wc_search]) if params[:source_id].present?
     resultOrgs = resultOrgs.match_name_from_joins(params[:name], params[:alias], params[:wc_search]) if params[:name].present?
     resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
-    resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? && params[:family_name] != '*'
+    resultOrgs = resultOrgs.with_family(params[:family_name], params[:wc_search]) if params[:family_name].present? && params[:family_name] != '*'
     return resultOrgs
   end
 
