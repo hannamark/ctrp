@@ -122,10 +122,10 @@ class OrganizationsController < ApplicationController
   def dis_associate
     @associated_orgs = []
     return if !@write_access
-    active_org = Organization.find(params[:id])
+    active_org = Organization.find_by_id(params[:id])
     if params[:remove_ids] && params[:ctrp_id]
       params[:remove_ids].each do |org|
-        contextOrg = Organization.find(org[:id])
+        contextOrg = Organization.find_by_id(org[:id])
         dissassociated_org = disAssociateTwoOrgs params[:ctrp_id], contextOrg
         dissassociated_org.save
       end
@@ -139,7 +139,7 @@ class OrganizationsController < ApplicationController
 
   def associated
       @associated_orgs = []
-      active_org = Organization.find(params[:id])
+      active_org = Organization.find_by_id(params[:id])
       if User.org_read_all_access(@current_user) && !active_org.blank? && !active_org.ctrp_id.blank?
         @active_context = SourceContext.find(active_org.source_context_id).name
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
@@ -205,15 +205,15 @@ class OrganizationsController < ApplicationController
     resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if params[:no_family].present?
     resultOrgs = resultOrgs.where("service_requests.name" => params[:service_request_name]) if params[:service_request_name].present?
     # manipulated
-    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id], params[:wc_search]) if params[:source_id].present?
+    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id]) if params[:source_id].present?
     resultOrgs = resultOrgs.match_name_from_joins(params[:name], params[:alias], params[:wc_search]) if params[:name].present?
     resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
-    resultOrgs = resultOrgs.with_family(params[:family_name], params[:wc_search]) if params[:family_name].present? && params[:family_name] != '*'
+    resultOrgs = resultOrgs.with_family(params[:family_name]) if params[:family_name].present? && params[:family_name] != '*'
     return resultOrgs
   end
 
   def clone
-    ctepOrg = Organization.find(params[:org_id])
+    ctepOrg = Organization.find_by_id(params[:org_id])
     ctepOrg.processing_status = 'Complete'
     ctepOrg.updated_by = @current_user.username unless @current_user.nil?
     ctepOrg.updated_at = Time.zone.now
@@ -295,7 +295,7 @@ class OrganizationsController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_organization
-    @organization = Organization.find(params[:id])
+    @organization = Organization.find_by_id(params[:id])
   end
 
   def set_glob_vars
