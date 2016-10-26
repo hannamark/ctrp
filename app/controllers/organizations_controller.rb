@@ -219,6 +219,7 @@ class OrganizationsController < ApplicationController
     ctepOrg.updated_at = Time.zone.now
     @organization = Organization.new(ctepOrg.attributes)
     @organization.id                = nil
+    @organization.processing_status = 'Complete'
     @organization.source_context_id = SourceContext.find_by_code("CTRP").id
     @organization.source_status_id = SourceStatus.where(:source_context_id => @organization.source_context_id, :code => 'ACT')[0].id
     @organization.created_by = ctepOrg.updated_by
