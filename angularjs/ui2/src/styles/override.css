@@ -1430,10 +1430,10 @@ div.datepicker {
     padding-bottom: 10px;
 }
 .popover-confirm .popover-message {
-    margin-bottom:3px;
 }
 .popover-confirm .form-actions {
     text-align: right;
+    padding-right: 10px;
 }
 
 /* For validation within Angular ui-select elements */
@@ -1841,11 +1841,15 @@ body.assign-ownership #user_list_admin_priv, body.assign-ownership #user_list_st
     margin-right: 10px;
 }
 
+
 .edit-off .ui-grid-row:nth-child(odd):hover .ui-grid-cell.ui-grid-row-header-cell,
 .edit-off .ui-grid-row:nth-child(even):hover .ui-grid-cell.ui-grid-row-header-cell {
     background: #eee;
 }
 .edit-off .btn-danger {display: none;}
+
+body.people .ui-grid-selection-row-header-buttons.ui-grid-icon-ok,
+body.organizations .ui-grid-selection-row-header-buttons.ui-grid-icon-ok,
 .edit-off .ui-grid-selection-row-header-buttons.ui-grid-icon-ok {
     display: none;
 }
