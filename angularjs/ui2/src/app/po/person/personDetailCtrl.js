@@ -33,6 +33,7 @@
         vm.affiliatedOrgError = true; // flag for empty org affiliations
         vm.matchedCtrpPersons = []; // CTRP persons found from attempt to clone ctep person
         vm.associationForRemoval = []; // object person objects
+        vm.confirm = {}; // messages
         var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
         var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
         vm.isAllowedToComment = _.contains(USER_ROLES_ALLOWED_COMMENT, UserService.getUserRole());
@@ -184,6 +185,7 @@
                     PersonService.getPersonById(vm.curPerson.cluster[newValue].id).then(function (response) {
                         var status = response.status;
                         if (status >= 200 && status <= 210) {
+                            console.info('get person by id: ', response.data);
                             personContextCache[contextKey] = angular.copy(response.data);
                             vm.curPerson = personContextCache[contextKey];
                             switchSourceContext();
@@ -324,6 +326,9 @@
             if (!vm.curPerson.new) {
                 var curPersonSourceContextObj = _.findWhere(vm.sourceContextArr, {id: vm.curPerson.source_context_id});
                 vm.curSourceContextName = !!curPersonSourceContextObj ? curPersonSourceContextObj.name : '';
+                if (vm.curSourceContextName === 'CTRP') {
+                    _prepAssociationGrid(vm.curPerson.associated_persons);
+                }
             } else {
                 vm.curSourceContextName = 'CTRP'; //default CTRP
                 var ctrpSourceContextObj = _.findWhere(vm.sourceContextArr, {code: 'CTRP'});
@@ -380,7 +385,8 @@
                     var ctepPerson = newVal[0];
                     if (angular.isDefined(ctepPerson.ctrp_id) && ctepPerson.ctrp_id !== vm.curPerson.ctrp_id) {
                         vm.isConfirmOpen = true;
-                        vm.confirmAssociatePerson = _.partial(_associateCtepPerson, ctepPerson, vm.curPerson);
+                        vm.confirm.title = 'This CTEP person has already been associated. Click "Associate" to change the existing association, click "Cancel" to abort.';
+                        vm.confirmAssociatePerson = _.partial(_associateCtepPerson, ctepPerson, vm.curPerson, 'CTEP');
                     } else {
                         return _associateCtepPerson(ctepPerson, vm.curPerson, 'CTEP'); // vm.curPerson is CTRP person context
                     }
@@ -389,10 +395,17 @@
         }
 
         vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // used for associating ctep person to ctrp person, vm.curPerson is CTEP person id
-        function _associateCtepPerson(ctepPerson, ctrpPerson, sourceContext) {
+        function _associateCtepPerson(ctepPerson, ctrpPerson, sourceContext, forceFlag) {
             var ctrpId = ctrpPerson.ctrp_id;
+            console.info('ctrp person: ', ctrpPerson);
+            if (ctrpPerson.is_associated && !forceFlag) {
+                vm.isConfirmOpen = true;
+                vm.confirmAssociatePerson = _.partial(_associateCtepPerson, ctepPerson, ctrpPerson, sourceContext);
+                vm.confirm = {};
+                vm.confirm.title = 'This CTRP person has been associated to another CTEP person context. Click "Associate" to change the existing association, click "Cancel" to abort';
+                return;
+            }
             vm.isConfirmOpen = false;
-            console.info('ctrp person to be associated: ', ctrpPerson);
             PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
                 console.info('res with association person: ', res); // resp.person
                 if (res.server_response.status >= 200 && res.server_response.status < 226) {
@@ -497,12 +510,12 @@
         function cloneCtepPerson(ctepPersonId, forceClone) {
             PersonService.cloneCtepPerson(ctepPersonId, forceClone).then(function(res) {
                 console.info('res from clone: ', res);
-                if (res.is_cloned) {
+                if (res.is_cloned && angular.isArray(res.matched) && res.matched.length > 0) {
                     showToastr('The CTEP person context has been successfully cloned');
                     vm.matchedCtrpPersons = [];
                     // personContextCache['CTRP'] = res.matched; // CTRP person context
-                    vm.curPerson.cluster.push({context: 'CTRP', id: res.matched.id});
-                    vm.curPerson.associated_persons.push(res.matched);
+                    vm.curPerson.cluster.push({context: 'CTRP', id: res.matched[0].id});
+                    vm.curPerson.associated_persons.push(res.matched[0]);
                 } else {
                     vm.matchedCtrpPersons = res.matched;
                 }
@@ -525,73 +538,73 @@
                 enableHorizontalScrollbar: 2,
                 columnDefs: [
                     {
-                        name: 'ctrp_id',
+                        field: 'ctrp_id',
                         enableSorting: false,
                         displayName: 'CTRP ID',
                         width: '100'
                     },
                     {
-                        name: 'source_id',
+                        field: 'source_id',
                         enableSorting: true,
                         displayName: 'CTEP ID',
                         minWidth: '100'
                     },
                     {
-                        name: 'prefix',
+                        field: 'prefix',
                         enableSorting: false,
                         displayName: 'Prefix',
                         minWidth: '100'
                     },
                     {
-                        name: 'fname',
+                        field: 'fname',
                         enableSorting: false,
                         displayName: 'First Name',
                         minWidth: '100'
                     },
                     {
-                        name: 'mname',
+                        field: 'mname',
                         enableSorting: false,
                         displayName: 'Middle Name',
                         minWidth: '100'
                     },
                     {
-                        name: 'lname',
+                        field: 'lname',
                         enableSorting: false,
                         displayName: 'Last Name',
                         minWidth: '100'
                     },
                     {
-                        name: 'suffix',
+                        field: 'suffix',
                         enableSorting: false,
                         displayName: 'Suffix',
                         minWidth: '100'
                     },
                     {
-                        name: 'source_status',
+                        field: 'source_status',
                         enableSorting: true,
                         displayName: 'Source Status',
                         minWidth: '100'
                     },
                     {
-                        name: 'source_context',
+                        field: 'source_context',
                         enableSorting: false,
                         displayName: 'Source Context',
                         minWidth: '100'
                     },
                     {
-                        name: 'source_id',
+                        field: 'source_id',
                         enableSorting: true,
                         displayName: 'Source ID',
                         minWidth: '100'
                     },
                     {
-                        name: 'email',
+                        field: 'email',
                         enableSorting: true,
                         displayName: 'Email',
                         minWidth: '100'
                     },
                     {
-                        name: 'phone',
+                        field: 'phone',
                         enableSorting: true,
                         displayName: 'Phone',
                         minWidth: '100'
@@ -599,27 +612,27 @@
                     // TODO: list orgs
 
                     {
-                        name: 'context_person_id',
+                        field: 'context_person_id',
                         displayName: 'Context Person ID',
                         enableSorting: false,
                         minWidth: '180'
                     },
                     {
-                        name: 'processing_status',
+                        field: 'processing_status',
                         displayName: 'Processing Status',
                         enableSorting: false,
                         width: '*',
                         minWidth: '200'
                     },
                     {
-                        name: 'service_request',
+                        field: 'service_request',
                         displayName: 'Service Request',
                         enableSorting: false,
                         width: '*',
                         minWidth: '200'
                     },
                     {
-                        name: 'updated_at',
+                        field: 'updated_at',
                         displayName: 'Last Updated Date',
                         enableSorting: false,
                         cellFilter: 'date:\'dd-MMM-yyyy\'',
@@ -627,14 +640,14 @@
                         minWidth: '200'
                     },
                     {
-                        name: 'updated_by',
+                        field: 'updated_by',
                         displayName: 'Last Updated By',
                         enableSorting: false,
                         width: '*',
                         minWidth: '200'
                     },
                     {
-                        name: 'association_start_date',
+                        field: 'association_start_date',
                         displayName: 'Association Start Date',
                         cellFilter: 'date:\'dd-MMM-yyyy\'',
                         enableSorting: false,
