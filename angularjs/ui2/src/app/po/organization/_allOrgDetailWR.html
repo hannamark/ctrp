@@ -168,7 +168,7 @@
                    pattern="[a-zA-Z0-9_\.\+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+"
                    ng-model="orgDetailView.ctrpOrg.email" placeholder="Email" name="email">
             <span class="form-control-feedback" ng-show="organization_form.email.$viewValue.length" ng-class="!(organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
-            <span class="help-block" ng-show="organization_form.email.$dirty">{{30 - orgDetailView.ctrpOrg.email.length}} left</span>
+            <span class="help-block" ng-show="organization_form.email.$dirty">{{30 - organization_form.email.$viewValue.length}} left</span>
             <div class="has-error"
                  ng-if="!organization_form.email.$viewValue.length && organization_form.email.$error && ctrpbtn.organization_form.needsAttention(organization_form.email)">
                 <span class="help-block">Email is Required</span>
