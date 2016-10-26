@@ -108,9 +108,10 @@ Then the system will open the trial management screen to reassign the trials wit
 And the trials with an active submission wil be displayed for selected user
 And the new organization will be assigned to the user
 
-Scenario: #6 I can view a users Trials (See Admin F05 Registered User Details)
+Scenario: #7 I can view a users Trials (See Admin F05 Registered User Details)
 Given I am logged into CTRP
 And I select the User from the list
-Then And the Last Active Submission for all the trials the user is an owner of can be displayed (Protocol Trials)
+Then the user's profile can be be displayed (See feature Admin F03 Manage user Account)
+And the Last Active Submission for all the trials the user is an owner of can be displayed (Protocol Trials)
 And the Last Active Submission for all the trials the trials the user submitted can be displayed (Protocol and Imported Trials)
 And the Last Active Submission for all the trials the user is a participating site on can be displayed (Protocol and Imported Trials)
