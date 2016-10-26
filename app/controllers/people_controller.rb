@@ -189,19 +189,17 @@ class PeopleController < ApplicationController
     end
   end
 
-  def clone_ctep_person
+  def clone_ctep
 
     if params.has_key?(:ctep_person_id)
       # @matched = find_matches(params[:ctep_person_id])
       ctep_person = Person.find(params[:ctep_person_id])
       ctrp_source_context_id = SourceContext.find_by_code('CTRP').id
       @matched = Person.where(fname: ctep_person.fname, lname: ctep_person.lname, source_context_id: ctrp_source_context_id)
-      @matched = @matched.with_source_status_context('ACT', ctrp_source_context_id)
+      p "@matched.size1: #{@matched.size}"
+      # @matched = @matched.with_source_status_context('ACT', ctrp_source_context_id)
+      p "@matched.size2: #{@matched.size}"
       # TODO: match against the state and address in affiliated organization
-
-      @matched.each do |m|
-        m.is_associated = true #Person.where(ctrp_id: m.ctrp_id).size > 1
-      end
 
       @is_cloned = false
       if (@matched.size > 0 && params[:force_clone] == true) || @matched.size == 0
@@ -218,9 +216,9 @@ class PeopleController < ApplicationController
       end
     end
 
-    respond_to do |format|
-      format.json { render :json => {:matched => @matched, :is_cloned => @is_cloned} }
-    end
+     # respond_to do |format|
+     #   format.json { render :json => {:matched => @matched, :is_cloned => @is_cloned} }
+     # end
 
   end
 
