@@ -397,10 +397,11 @@
         vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // used for associating ctep person to ctrp person, vm.curPerson is CTEP person id
         function _associateCtepPerson(ctepPerson, ctrpPerson, sourceContext, forceFlag) {
             var ctrpId = ctrpPerson.ctrp_id;
-            console.info('ctrp person: ', ctrpPerson);
+            console.info('ctrp person and forceFlag: ', ctrpPerson, forceFlag);
             if (ctrpPerson.is_associated && !forceFlag) {
                 vm.isConfirmOpen = true;
-                vm.confirmAssociatePerson = _.partial(_associateCtepPerson, ctepPerson, ctrpPerson, sourceContext);
+                vm.confirmAssociatePerson = null;
+                vm.confirmAssociatePerson = _.partial(_associateCtepPerson, ctepPerson, ctrpPerson, 'CTRP');
                 vm.confirm = {};
                 vm.confirm.title = 'This CTRP person has been associated to another CTEP person context. Click "Associate" to change the existing association, click "Cancel" to abort';
                 return;
