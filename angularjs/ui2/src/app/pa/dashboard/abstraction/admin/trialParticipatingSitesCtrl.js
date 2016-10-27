@@ -177,8 +177,8 @@
             vm.siteRecruitmentGrid = [];
 
             vm.currentParticipatingSite.participating_site_investigators_attributes = [];
-            for (var i = 0; i < invGrid.length; i++) {
-                var invObj = invGrid[i];
+            for (var k = 0; k < invGrid.length; k++) {
+                var invObj = invGrid[k];
                 if(vm.currentParticipatingSite.contact_type !== 'PI'){
                     invObj.set_as_contact = false;
                 } else if(vm.currentParticipatingSite.person && (invObj.person.id === vm.currentParticipatingSite.person.id)){
@@ -190,7 +190,7 @@
                 }
                 if (invObj.edit || invObj.new || (invObj.id && invObj._destroy)) {
                     if (invObj.hasOwnProperty('uiDestroy') && invObj.uiDestroy) {
-                        vm.investigatorGrid.splice(i,1);
+                        vm.investigatorGrid.splice(k,1);
                     } else {
                         vm.currentParticipatingSite.participating_site_investigators_attributes.push(invObj);
                     }
@@ -250,9 +250,9 @@
                                 }
                                 vm.investigatorArray = [];
                                 if (vm.currentParticipatingSite.hasOwnProperty('participating_site_investigators')) {
-                                    for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
-                                        var id = vm.currentParticipatingSite.participating_site_investigators[i].id;
-                                        var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[i].person);
+                                    for (var j = 0; j < vm.currentParticipatingSite.participating_site_investigators.length; j++) {
+                                        var id = vm.currentParticipatingSite.participating_site_investigators[j].id;
+                                        var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[j].person);
 
                                         vm.investigatorArray.push({"id": id, "name": name});
                                     }
@@ -870,7 +870,7 @@
                     }
                 }
             });
-        };
+        }
 
         /**
          * Get trial detail object from parent scope
@@ -895,7 +895,7 @@
                 }
             });
             vm.selectedDeleteParticipatingSitesList = deleteList ;
-        };
+        }
 
         function deleteSelected(){
             vm.curTrial.participating_sites_attributes=[];
@@ -923,7 +923,7 @@
                     toastr.success('Record(s) deleted.', 'Operation Successful!');
                 }
             }).catch(function(err) {
-                console.log("error in deleting participating site=" + psId);
+                console.log("error in deleting participating site=" + err + psId);
             }).finally(function() {
                 vm.disableBtn = false;
             });
