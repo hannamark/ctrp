@@ -175,7 +175,7 @@ class UsersController < ApplicationController
     roles["ROLE_TRIAL-SUBMITTER"] = "Trial Submitter"
     roles["ROLE_SITE-SU"] = "Site Administrator"
     roles["ROLE_SERVICE-REST"] = "Service Rest"
-    mail_template = (@justRegistered && @user.domain == "NIHEXT") ? MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION') : ailTemplate.find_by_code('USER_REGISTRATION_ACTIVATION')
+    mail_template = (@justRegistered && @user.domain == "NIHEXT") ? MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION') : MailTemplate.find_by_code('USER_REGISTRATION_ACTIVATION')
     site_admins_array = (User.family_unexpired_matches_by_org(user_params[:organization_id]).matches('role', 'ROLE_SITE-SU')).pluck(:email)
     if @user.receive_email_notifications && site_admins_array.any?
       mail_template.to.gsub!('${user_email}',    "#{user_params[:email]},#{site_admins_array.join(',')}" )
