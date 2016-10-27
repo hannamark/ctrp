@@ -247,11 +247,11 @@ class  User < ActiveRecord::Base
 
 
   def self.org_write_access(current_user)
-    return ['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR'].include? current_user.role
+    return ['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER'].include? current_user.role
   end
 
   def self.org_read_all_access(current_user)
-    return ['ROLE_RO','ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR'].include? current_user.role
+    return ['ROLE_RO','ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ABSTRACTOR'].include? current_user.role
   end
 
   def ldap_before_save

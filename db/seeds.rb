@@ -36,8 +36,6 @@ end
 ServiceRequest.find_or_create_by(code: 'CREATE').update(name: 'Create', record_status:'Active')
 ServiceRequest.find_or_create_by(code: 'UPDATE').update(name: 'Update', record_status:'Active')
 ServiceRequest.find_or_create_by(code: 'MERGE_W_CTEP').update(name: 'Merge with CTEP ID', record_status:'Active')
-ServiceRequest.find_or_create_by(code: 'NULLIFY_W_CTEP').update(name: 'Nullify with CTEP ID', record_status:'Active')
-ServiceRequest.find_or_create_by(code: 'LINK_W_CTRP').update(name: 'Link with CTRP ID', record_status:'Active')
 ServiceRequest.find_or_create_by(code: 'NULL').update(name: 'NULL', record_status:'Active')
 
 SourceContext.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
@@ -1212,7 +1210,8 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                         "id": "ROLE_RO",
                                         "name": "Read Only",
                                         "assign_access": "",
-                                        "org_source_status_search_access": "ACT"
+                                        "org_source_status_access": "ACT,PEND,INACT",
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,LEG"
                                      },
                                      {
                                         "id": "ROLE_ACCOUNT-APPROVER",

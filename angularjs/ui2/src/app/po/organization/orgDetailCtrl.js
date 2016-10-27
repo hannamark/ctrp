@@ -347,6 +347,7 @@
         };
 
         vm.ctepAssociateOrgs = function () {
+            vm.confirmOverrideAssociatePopUp = false;
             if (vm.selectedOrgsArray) {
                 angular.forEach(vm.selectedOrgsArray, function(value) {
                     var newAssociatedOrg = value;
@@ -404,10 +405,11 @@
                     if (status === 200) {
                         $timeout(function () {
                             vm.associatedOrgs = response.associated_orgs;
-                            associateOrgsRefresh();
                             vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
+                            vm.ctrpOrg.processing_status = 'Complete';
                             vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
                             vm.ctrpUpdateTime = Date.now();
+                            associateOrgsRefresh();
                             toastr.success('Organization has been associated.', 'Operation Successful!');
                         }, 1);
                     }

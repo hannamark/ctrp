@@ -180,23 +180,12 @@ module.exports = function () {
 
     this.Then(/^I can delete existing and add new Trial Status and Trial Status Dates$/, function () {
         return browser.sleep(25).then(function () {
-while(addTrial.addTrialAddStatusTableExist.isPresent()){
-    addTrial.addTrialRemoveTrialStatus.click();
-    addTrial.setAddTrialStatusDeleteReason('Delete Reason');
-    addTrial.clickAddTrialStatusDeleteCommitButton();
-}
-
-            projectFunctionsRegistry.clickDeleteTrialStatusInformation('In Review');
-
-
-            addTrial.addTrialStatusWhyDeletedReason.isPresent().then(function(presentState){
-                if(presentState){
-                    addTrial.addTrialStatusWhyDeletedReason.isDisplayed().then(function(displayedState){
-                        if(displayedState){
-                            addTrial.setAddTrialStatusDeleteReason('Delete Reason');
-                            addTrial.clickAddTrialStatusDeleteCommitButton();
-                        }
-                    });
+             addTrial.addTrialRemoveTrialStatus.then(function(items) {
+                var i;
+                for (i=0; i<items.length; i++) {
+                    addTrial.addTrialRemoveTrialStatus.get(i).click();
+                    addTrial.setAddTrialStatusDeleteReason('Delete Reason');
+                    addTrial.clickAddTrialStatusDeleteCommitButton();
                 }
             });
             addTrial.clickAddTrialDateField(0);
@@ -225,14 +214,16 @@ while(addTrial.addTrialAddStatusTableExist.isPresent()){
 
     this.Then(/^I will be able to review all existing Trial Related Documents type$/, function () {
         return browser.sleep(25).then(function () {
-            existingDocs = addTrial.addTrialVerifyAddedDocs.getText().then(function (Docs) {
-                return Docs;
-            });
-            existingDocsOtherDesc = addTrial.addTrialVerifyAddedOtherDocsDescriptionOnly.isPresent().then(function (state) {
+            existingOtherDocs = addTrial.addTrialVerifyAddedOtherDocsDescriptionOnly.isPresent().then(function (state) {
                 if (state) {
                     return addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function (trialDocsOtherDesc) {
-                        console.log('Trial Other documents with Decription ----> ' + trialDocsOtherDesc);
-                        return trialDocsOtherDesc;
+                        var otherDocsExisting = trialDocsOtherDesc.map(function(x)
+                        {
+                            return x.replace(/\n.*/,'');
+                        });
+                        console.log('After Convert Trial Other Description without Description');
+                        console.log(otherDocsExisting);
+                        return otherDocsExisting;
                     });
                 }
                 else {
@@ -240,7 +231,30 @@ while(addTrial.addTrialAddStatusTableExist.isPresent()){
                     return Q.when([]);
                 }
             });
-            // browser.sleep(25).then(callback);
+                existingOtherDocsDesc = addTrial.addTrialVerifyAddedOtherDocsDescriptionOnly.isPresent().then(function (state) {
+                    if (state) {
+                        return addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function (trialDocsOtherDesc) {
+                            console.log('Trial Other documents with Decription ----> ');
+                            console.log(trialDocsOtherDesc);
+                            var itemsWithNewline = trialDocsOtherDesc.filter(function(y){
+                                return y.match(/\n/);
+                            });
+                                console.log('Items with newline');
+                                console.log(itemsWithNewline);
+                            var otherDocsDescExisting = itemsWithNewline.map(function(x)
+                            {
+                                return x.replace(/.*\n/,'');
+                            });
+                            console.log('After Convert Trial Other Description with Description');
+                            console.log(otherDocsDescExisting);
+                            return otherDocsDescExisting;
+                        });
+                    }
+                    else {
+                        console.log('Trial Other Documents does not exist in Page.');
+                        return Q.when([]);
+                    }
+                });
         });
     });
 
@@ -260,7 +274,7 @@ while(addTrial.addTrialAddStatusTableExist.isPresent()){
             // browser.sleep(25).then(callback);
         });
     });
-
+/*
     this.Then(/^the added documents should be added to the existing documents$/, function () {
         return browser.sleep(25).then(function () {
             existingDocs.then(function (value) {
@@ -271,7 +285,7 @@ while(addTrial.addTrialAddStatusTableExist.isPresent()){
             //  browser.sleep(25).then(callback);
         });
     });
-
+*/
 
     this.When(/^the trial has errors$/, function () {
         return browser.sleep(25).then(function () {
@@ -319,41 +333,30 @@ while(addTrial.addTrialAddStatusTableExist.isPresent()){
                     }
                 });
             }, 10000, "View Trial page  did not appear after Submit");
-            existingDocs.then(function (value) {
+            existingOtherDocs.then(function (value) {
                 var arr1 = value;
-                var newAddedDocuments = protocolDocDocmFileUpd + IRBEXCELFileUpd + PSPDFFileUpd + InformedConsentXlsmFileUpd + OtherXlsbFileUpd;
                 arr1.push(protocolDocDocmFileUpd, IRBEXCELFileUpd, PSPDFFileUpd, InformedConsentXlsmFileUpd, OtherXlsbFileUpd);
                 var newAddedDocumentArrSort = arr1.sort();
                 console.log('New array documents after sort:');
                 console.log(newAddedDocumentArrSort);
-                //    addTrial.addTrialVerifyAddedDocs.getText().then(function (newDocSet) {
-                //       console.log('New array documents in Screen :');
-                //       console.log(newDocSet.sort());
-                //     expect((addTrial.addTrialVerifyAddedDocs.getText()).sort()).to.eql(newAddedDocumentArrSort);
-                //   });
-                addTrial.addTrialVerifyAddedDocs.getText().then(function (newDocSet) {
+                addTrial.viewTrialVerifyviewedDocs.getText().then(function (newDocSet) {
                     console.log('New array documents in Screen :');
                     console.log(newDocSet.sort());
-                    expect(newDocSet.sort()).to.eql(newAddedDocumentArrSort);
+                    expect(newDocSet.sort()).to.eql(newAddedDocumentArrSort, 'Verification of Documents on View Trial Screen after Update');
                 });
             });
-            existingDocsOtherDesc.then(function (existingOtherDocs) {
+            existingOtherDocsDesc.then(function (existingOtherDocs) {
                 var existingDocsArr1 = existingOtherDocs;
                 console.log(existingDocsArr1);
-                var newOtherDocsStrings = OtherXlsbFileUpd + '\n' + DescriptionFirstDoc;
-                var newOtherDocsArr2 = newOtherDocsStrings.split();
+                var newOtherDocsArr2 = DescriptionFirstDoc.split();
                 var newCombineArr = existingDocsArr1.concat(newOtherDocsArr2);
                 console.log('new Combine array');
                 console.log(newCombineArr.sort());
-                //addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function (newOtherDocSet) {
-                //    console.log('New array Other documents in Screen :');
-                //    console.log(newOtherDocSet.sort());
-                //    expect((addTrial.addTrialVerifyAddedOtherDocsDescription.getText()).sort()).to.eql(newCombineArr.sort());
-                //  });
-                addTrial.addTrialVerifyAddedOtherDocsDescription.getText().then(function (newOtherDocSet) {
-                    console.log('New array Other documents in Screen :');
-                    console.log(newOtherDocSet.sort());
-                    expect(newOtherDocSet.sort()).to.eql(newCombineArr.sort());
+                addTrial.viewTrialVerifyviewedOtherDocsDescription.getText().then(function (newOtherDocSet) {
+                    console.log('New array Other documents description in Screen :');
+                    var otherDescOnly = newOtherDocSet.filter(Boolean);
+                    console.log(otherDescOnly.sort());
+                    expect(otherDescOnly.sort()).to.eql(newCombineArr.sort(), 'Verification of Documents Description on View Trial Screen after Update');
                 });
             });
             //  browser.sleep(25).then(callback);
@@ -389,25 +392,5 @@ while(addTrial.addTrialAddStatusTableExist.isPresent()){
     });
 
 
-    this.Then(/^shilpi I can delete existing and add new Trial Status and Trial Status Dates$/, function () {
-        return browser.sleep(25).then(function () {
-            trialMenuItem.clickTrials();
-            trialMenuItem.clickListSearchTrialLink();
-                searchTrial.setSearchTrialProtocolID('NCI-2016-00011');
-                searchTrial.clickMyTrials();
-                searchTrial.clickSearchTrialActionButton();
-                searchTrial.clickSearchTrialsUpdateButton();
-            browser.driver.wait(function () {
-                console.log('wait here');
-                return true;
-            }, 40).then(function () {
-                while (addTrial.addTrialAddStatusTableExist.isPresent()) {
-                    addTrial.addTrialRemoveTrialStatus.click();
-                    addTrial.setAddTrialStatusDeleteReason('Delete Reason');
-                    addTrial.clickAddTrialStatusDeleteCommitButton();
-                }
-            });
-        });
-    });
 
         };

@@ -60,6 +60,17 @@ Scenario:#1 CTEP Context of a new person record created
      |CTEPS      |CTRPS   |
      |Active     |Active  |
      |Inactive   |Inactive|
+     
+     Scenario:#4b CTEP Edit screen rules
+    Given I am on the PO application
+     When I am on the Edit Person screen for context type
+     
+     |CTEP|
+     
+     And I can view the "Reset" and "Save" button
+     Then I can only edit the information type
+     |Processing status|
+     |Service Request|
 
       Scenario:#5 CTEP Person Context Mandatory Fields 
     Given I am logged into the CTRP 
