@@ -227,7 +227,7 @@
         // Then the required Regulatory Information for the trial will be associated
         // And the Section 801 Indicator will be set to "No"
         vm.checkIndicatorValue = function(value) {
-            if(value == 'No' && (vm.addedAuthorities.length > 0)){
+            if(value === 'No' && (vm.addedAuthorities.length > 0)){
                 vm.curTrial.sec801_indicator = 'No';
             }
         }
@@ -255,7 +255,7 @@
                     vm.selectedIaArray = vm.selectedSponsorArray;
                 } else {
                     // else Sponsor
-                    if (vm.curTrial.responsible_party_id == vm.sponsor_id){
+                    if (vm.curTrial.responsible_party_id === vm.sponsor_id){
                         vm.showSponsor = true;
                     }
                     vm.showInvestigator = false;

@@ -99,10 +99,10 @@
                 if (!vm.showAddIndIdeError) {
                     // Check if there is a similar entry
                     for (var i = 0; i < vm.addedIndIdes.length; i++) {
-                       if((vm.addedIndIdes[i].ind_ide_type == vm.ind_ide_type) &&
-                           (vm.addedIndIdes[i].ind_ide_number == vm.ind_ide_number) &&
-                           (vm.addedIndIdes[i].grantor == vm.grantor) &&
-                           (vm.addedIndIdes[i].holder_type_id == vm.holder_type_id)) {
+                       if((vm.addedIndIdes[i].ind_ide_type === vm.ind_ide_type) &&
+                           (vm.addedIndIdes[i].ind_ide_number === vm.ind_ide_number) &&
+                           (vm.addedIndIdes[i].grantor === vm.grantor) &&
+                           (vm.addedIndIdes[i].holder_type_id === vm.holder_type_id)) {
                            return;
                        }
                     }
@@ -114,7 +114,7 @@
                     newIndIde.holder_type_id = vm.holder_type_id;
                     // For displaying name in the table
                     _.each(vm.holderTypeArr, function (holderType) {
-                        if (holderType.id == vm.holder_type_id) {
+                        if (holderType.id === vm.holder_type_id) {
                             newIndIde.holder_type_name = holderType.name;
                         }
                     });
@@ -138,7 +138,7 @@
 
         // Delete the associations
         vm.toggleSelection = function (index, type) {
-            if (type == 'ind_ide') {
+            if (type === 'ind_ide') {
                 if (index < vm.addedIndIdes.length) {
                     vm.addedIndIdes[index]._destroy = !vm.addedIndIdes[index]._destroy;
                     if (vm.addedIndIdes[index]._destroy) {
@@ -153,20 +153,20 @@
 
 
         vm.watchOption = function(type) {
-            if (type == 'ind_ide_type') {
+            if (type === 'ind_ide_type') {
                 vm.grantor = '';
-                if (vm.ind_ide_type == 'IND') {
+                if (vm.ind_ide_type === 'IND') {
                     vm.grantorArr = ['CDER', 'CBER'];
-                } else if (vm.ind_ide_type == 'IDE') {
+                } else if (vm.ind_ide_type === 'IDE') {
                     vm.grantorArr = ['CDRH', 'CBER'];
                 } else {
                     vm.grantorArr = [];
                 }
-            } else if (type == 'holder_type') {
+            } else if (type === 'holder_type') {
                 vm.nih_nci = '';
                 var nciOption = vm.holderTypeArr.filter(findNciOption);
                 var nihOption = vm.holderTypeArr.filter(findNihOption);
-                if (nciOption[0].id == vm.holder_type_id) {
+                if (nciOption[0].id === vm.holder_type_id) {
                     TrialService.getNci().then(function (response) {
                         var status = response.server_response.status;
 
@@ -174,9 +174,9 @@
                             vm.nihNciArr = response;
                         }
                     }).catch(function (err) {
-                        console.log("Error in retrieving NCI Division/Program code.");
+                        console.log("Error in retrieving NCI Division/Program code:" + err);
                     });
-                } else if (nihOption[0].id == vm.holder_type_id) {
+                } else if (nihOption[0].id === vm.holder_type_id) {
                     TrialService.getNih().then(function (response) {
                         var status = response.server_response.status;
 
@@ -184,7 +184,7 @@
                             vm.nihNciArr = response;
                         }
                     }).catch(function (err) {
-                        console.log("Error in retrieving NIH Institution code.");
+                        console.log("Error in retrieving NIH Institution code: " + err);
                     });
                 } else {
                     vm.nihNciArr = [];
@@ -220,7 +220,7 @@
 
 
         function findNciOption(option) {
-            if (option.code == 'NCI') {
+            if (option.code === 'NCI') {
                 return true;
             } else {
                 return false;
@@ -228,7 +228,7 @@
         }
 
         function findNihOption(option) {
-            if (option.code == 'NIH') {
+            if (option.code === 'NIH') {
                 return true;
             } else {
                 return false;
@@ -245,7 +245,7 @@
                 indIde.holder_type_id = vm.curTrial.ind_ides[i].holder_type_id;
                 // For displaying name in the table
                 _.each(vm.holderTypeArr, function (holderType) {
-                    if (holderType.id == vm.curTrial.ind_ides[i].holder_type_id) {
+                    if (holderType.id === vm.curTrial.ind_ides[i].holder_type_id) {
                         indIde.holder_type_name = holderType.name;
                     }
                 });
