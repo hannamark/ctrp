@@ -910,7 +910,7 @@
                     vm.curTrial.lock_version = response.lock_version || '';
                     $scope.$emit('updatedInChildScope', {});
                     for (var j = 0; j < vm.curTrial.participating_sites.length; j++) {
-                        if (vm.curTrial.participating_sites[j].id == psId){
+                        if (vm.curTrial.participating_sites[j].id === psId){
                             vm.curTrial.participating_sites.splice(j, 1);
                         }
                     }
