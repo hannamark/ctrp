@@ -44,7 +44,7 @@ class UsersController < ApplicationController
     end
     respond_to do |format|
       if userWriteAccess(@user) && @user.update_attributes(user_params) && !rejectUpdate
-        if (user_params[:role] == 'ROLE_SITE-SU' &&  @user.role != 'ROLE_SITE-SU') || @newUser || params[:send_activation_email] == true
+        if ((user_params[:role] == 'ROLE_SITE-SU' &&  @user.role != 'ROLE_SITE-SU') || @newUser)
           send_activation_email
         end
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
