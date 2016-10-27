@@ -533,4 +533,4 @@
         } //getTrialDetailCopy
 
     }
-})();
+}());

@@ -102,9 +102,7 @@
                it changes the viewValue of the phone number. The code
                below resets the forms on initialization.
             */
-            $timeout(function() {
-               resetDirtyForms();
-           }, 1000);
+            resetDirtyForms();
         }
 
         vm.checkAllSites = function () {
@@ -269,9 +267,7 @@
                                 }
 
                                 // To make sure setPristine() is executed after all $watch functions are complete
-                                $timeout(function() {
-                                   resetDirtyForms();
-                               }, 1);
+                                resetDirtyForms();
 
                                vm.isSaved = true;
                             }
@@ -1040,9 +1036,11 @@
 
 
         function resetDirtyForms() {
-            $scope.ps_sites_form.$setPristine();
-            $scope.ps_inv_form.$setPristine();
-            $scope.ps_contact_form.$setPristine();
+            $timeout(function() {
+                $scope.ps_sites_form.$setPristine();
+                $scope.ps_inv_form.$setPristine();
+                $scope.ps_contact_form.$setPristine();
+            }, 1);
         }
 
     } //trialParticipatingSitesCtrl
@@ -1061,4 +1059,4 @@
             $uibModalInstance.dismiss('canceled');
         };
     }
-})();
+}());

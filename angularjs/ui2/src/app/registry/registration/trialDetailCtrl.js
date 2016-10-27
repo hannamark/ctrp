@@ -384,6 +384,7 @@
                     }, 1);
                 }
             }).catch(function(err) {
+                console.log('error is: ', err);
                 vm.disableBtn = true; // re-enable button to allow more attempts without having to refresh page
                 console.log("error in updating trial " + JSON.stringify(outerTrial));
             }).finally(function() {
@@ -905,6 +906,7 @@
                             vm.nihNciArr = response;
                         }
                     }).catch(function (err) {
+                        console.log('error is: ', err);
                         console.log("Error in retrieving NCI Division/Program code.");
                     });
                 } else if (nihOption[0].id === vm.holder_type_id) {
@@ -915,6 +917,7 @@
                             vm.nihNciArr = response;
                         }
                     }).catch(function (err) {
+                        console.log('error is: ', err);
                         console.log("Error in retrieving NIH Institution code.");
                     });
                 } else {
@@ -1621,4 +1624,4 @@
 
         $scope.$on('refreshPsList')
     }
-})();
+}());
