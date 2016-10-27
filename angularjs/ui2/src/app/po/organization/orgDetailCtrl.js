@@ -329,7 +329,7 @@
             OrgService.disAssociateOrgs({
                 id:             vm.ctrpOrg.id,
                 ctrp_id:        vm.ctrpOrg.ctrp_id,
-                remove_ids:     vm.selectedOrgs
+                remove_ids:     vm.gridApi.selection.getSelectedRows()
             }).then(function (response) {
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
