@@ -175,15 +175,8 @@ class UsersController < ApplicationController
     roles["ROLE_TRIAL-SUBMITTER"] = "Trial Submitter"
     roles["ROLE_SITE-SU"] = "Site Administrator"
     roles["ROLE_SERVICE-REST"] = "Service Rest"
-
-    if @justRegistered && @user.domain == "NIHEXT"
-      mail_template = MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION')
-    else
-      mail_template = MailTemplate.find_by_code('USER_REGISTRATION_ACTIVATION')
-    end
-
+    mail_template = (@justRegistered && @user.domain == "NIHEXT") ? MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION') : ailTemplate.find_by_code('USER_REGISTRATION_ACTIVATION')
     site_admins_array = (User.family_unexpired_matches_by_org(user_params[:organization_id]).matches('role', 'ROLE_SITE-SU')).pluck(:email)
-
     if @user.receive_email_notifications && site_admins_array.any?
       mail_template.to.gsub!('${user_email}',    "#{user_params[:email]},#{site_admins_array.join(',')}" )
     elsif @user.receive_email_notifications?
@@ -191,7 +184,6 @@ class UsersController < ApplicationController
     elsif site_admins_array.any?
       mail_template.to.gsub!('${user_email}',    "#{site_admins_array.join(',')}" )
     end
-
     unless mail_template.to.blank?
       mail_template.body_html.gsub!('${user_name}',       "#{user_params[:first_name]} #{user_params[:last_name]}")
       mail_template.body_html.gsub!('${user_username}',   user_params[:username])
@@ -200,7 +192,6 @@ class UsersController < ApplicationController
       mail_template.body_html.gsub!('${user_phone}',      "#{(user_params[:phone] ? user_params[:phone] : '')} #{(user_params[:phone_ext] ? ' ext ' + user_params[:phone_ext] : '')}" )
       mail_template.body_html.gsub!('${user_org}',        (user_params[:organization_id] ? Organization.find(user_params[:organization_id]).name : '') )
       mail_template.body_html.gsub!('${date}',            (Time.now).strftime('%v') )
-
       CtrpMailerWrapper.send_email(mail_template, nil)
     end
   end
