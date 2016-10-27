@@ -28,4 +28,4 @@ exclude_paths:
 - "app/models/ability.rb"
 - "log/**/*"
 - "ETL/**/*"
-- "db/**/*"
+- "db/seeds/seeds.rb"
