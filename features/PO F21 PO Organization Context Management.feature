@@ -11,8 +11,6 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     And the Service Request will be set to "Create"
     And the Processing Status Will be set to "Incomplete"
     
-   
-    
       Scenario: #2 CTEP Context Organization list of fields 
     Given I am logged into the PO application
     And I can search CTEP Context organizations
@@ -70,11 +68,21 @@ Scenario:#3 Organization Source Status CTEP available list
      
      |CTEPS   |CTRPS    |
      |Active  |Active   |
-     |Inactive|Inactive|
+     |Inactive|Nullified|
      |Legacy  |Inactive |
 
-    
-Scenario: #4 CTEP Context Mandatory Fields
+  Scenario:#3b CTEP and NLM Edit screen rules
+    Given I am on the PO application
+     When I am on the Edit Organization screen for context type
+     
+     |CTEP|
+     |NLM|
+     And I can view the "Reset" and "Save" button
+     Then I can only edit the information type
+     |Processing status|
+     |Service Request|
+
+  Scenario: #4 CTEP Context Mandatory Fields
     Given I am logged into the CTRP 
      When A CTEP Context is created in CTRP
      Then the fields type are mandatory
