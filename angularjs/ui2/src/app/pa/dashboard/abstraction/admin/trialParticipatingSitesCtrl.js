@@ -99,6 +99,14 @@
             watchContactType();
             watchPersonSelection();
             watchInvestigatorSelection();
+
+            /* Phone number masking sets forms to dirty on load because
+               it changes the viewValue of the phone number. The code
+               below resets the forms on initialization.
+            */
+            $timeout(function() {
+               resetDirtyForms();
+           }, 1000);
         }
 
         vm.checkAllSites = function () {

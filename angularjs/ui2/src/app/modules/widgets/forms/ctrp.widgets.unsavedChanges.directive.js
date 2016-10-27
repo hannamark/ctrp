@@ -25,7 +25,7 @@
 
             function linkerFn(scope, element, attrs) {
                 var formName;
-                var formArray = element.controller() && element.controller.formArray ? element.controller().formArray : null; // Passed in when pages have multiple tabs
+                var formArray = element.controller() && element.controller().formArray ? element.controller().formArray : null; // Passed in when pages have multiple tabs
                 var currentTabIndex = element.controller() ? element.controller().tabIndex : 0;
                 var newTabIndex = 0;
                 var element = element;
