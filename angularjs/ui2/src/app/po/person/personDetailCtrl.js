@@ -394,7 +394,7 @@
             });
         }
 
-        vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // used for associating ctep person to ctrp person, vm.curPerson is CTEP person id
+        vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // used for associating ctep person to ctrp person, vm.curPerson is CTEP person
         function _associateCtepPerson(ctepPerson, ctrpPerson, sourceContext, forceFlag) {
             var ctrpId = ctrpPerson.ctrp_id;
             console.info('ctrp person and forceFlag: ', ctrpPerson, forceFlag);
