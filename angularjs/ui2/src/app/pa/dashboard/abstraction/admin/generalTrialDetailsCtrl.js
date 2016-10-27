@@ -78,6 +78,8 @@
           watchCentralContactType();
           watchCentralContact();
           watchSponsor();
+
+          resetFormStatus();
       }
 
       /**
@@ -128,9 +130,7 @@
                   getTrialDetailCopy();
 
                   // To make sure setPristine() is executed after all $watch functions are complete
-                  $timeout(function() {
-                     $scope.general_trial_details_form.$setPristine();
-                 }, 1);
+                  resetFormStatus();
 
               }
           }).catch(function(err) {
@@ -148,7 +148,7 @@
           vm.otherIdDestroyAll = false;
          // vm.centralContact = [];
 
-         $scope.general_trial_details_form.$setPristine();
+         resetFormStatus();
 
           $timeout(function() {
              getTrialDetailCopy();
@@ -483,6 +483,12 @@
               typeName = !!_centralContactType ? _centralContactType.name : typeName;
           }
           return typeName;
+      }
+
+      function resetFormStatus() {
+          $timeout(function() {
+             $scope.general_trial_details_form.$setPristine();
+         }, 1);
       }
 
     } //generalTrialDetailCtrl
