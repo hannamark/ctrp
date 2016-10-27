@@ -121,20 +121,6 @@
             });
         
         /****************** implementations below ***************/
-        function activate() {
-            initiateOrgs();
-            listenToStatesProvinces();
-            watchGlobalWriteModeChanges();
-            //prepare the modal window for existing organizations
-            if (vm.ctrpOrg && !vm.ctrpOrg.new) {
-                appendNameAliases();
-            }
-
-            $timeout(function() {
-                $scope.organization_form.$setPristine();
-            }, 1000);
-        }
-        activate();
 
         /**
          * get orgs by context
@@ -164,10 +150,10 @@
             }
         }
 
-        function filterOutCTRPOrg(org_id) {
-            var ctrpOrgsArr = getOrgByContext(vm.associatedOrgs, 'CTRP');
-            if (ctrpOrgsArr.length < 2) {
-                return ctrpOrgsArr[0];
+        function filterOutCTRPOrg() {
+            vm.ctrpOrgsArr = getOrgByContext(vm.associatedOrgs, 'CTRP');
+            if (vm.ctrpOrgsArr.length < 2) {
+                return vm.ctrpOrgsArr[0];
             } else {
                 return vm.ctrpOrg = _.filter(
                     getOrgByContext(vm.associatedOrgs, 'CTRP'), function (item) {
@@ -209,11 +195,9 @@
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                 vm.curOrgEditable = UserService.isCurationModeEnabled();
                 vm.updateTime = Date.now();
-
-                vm.associatedOrgsOptions.data = _.filter(
-                    vm.associatedOrgs, function (item) {
-                        return !_.isEqual(associatedOrgsObj.active_id, item.id);
-                    });
+                if (vm.ctrpOrg && !vm.ctrpOrg.new) {
+                    createAssociatedOrgsTable();
+                }
                 vm.associatedOrgsOptions.onRegisterApi = function (gridApi) {
                     vm.gridApi = gridApi;
                 };
@@ -295,10 +279,7 @@
         var associateOrgsRefresh = function (){
             vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP')[0];
             vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
-            vm.associatedOrgsOptions.data = _.filter(
-                vm.associatedOrgs, function (item) {
-                    return !_.isEqual(associatedOrgsObj.active_id, item.id);
-                });
+            createAssociatedOrgsTable();
             vm.updateTime = Date.now();
         };
 
@@ -329,7 +310,7 @@
             OrgService.disAssociateOrgs({
                 id:             vm.ctrpOrg.id,
                 ctrp_id:        vm.ctrpOrg.ctrp_id,
-                remove_ids:     vm.selectedOrgs
+                remove_ids:     vm.gridApi.selection.getSelectedRows()
             }).then(function (response) {
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
@@ -561,9 +542,27 @@
         vm.associatedOrgsOptions.onRegisterApi = function (gridApi) {
             vm.gridApi = gridApi;
         };
-        vm.associatedOrgsOptions.data = _.filter(
-            vm.associatedOrgs, function (item) {
-                return !_.isEqual(associatedOrgsObj.active_id, item.id);
-        });
+
+        function createAssociatedOrgsTable() {
+            vm.associatedOrgsOptions.data = _.filter(
+                vm.associatedOrgs, function (item) {
+                    return !_.isEqual(vm.ctrpOrgsArr[0].id, item.id);
+                });
+        }
+
+        function activate() {
+            initiateOrgs();
+            listenToStatesProvinces();
+            watchGlobalWriteModeChanges();
+            if (vm.ctrpOrg && !vm.ctrpOrg.new) {
+                appendNameAliases();
+                createAssociatedOrgsTable();
+            }
+
+            $timeout(function() {
+                $scope.organization_form.$setPristine();
+            }, 1000);
+        }
+        activate();
     }
 }());

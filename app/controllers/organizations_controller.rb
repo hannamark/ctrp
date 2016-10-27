@@ -193,7 +193,7 @@ class OrganizationsController < ApplicationController
       resultOrgs = resultOrgs.matches("source_statuses.name", "Active").matches("source_contexts.name", "CTRP")
     end
     # direct matches from model
-    matches_to_accept = 'ctrp_id,country,processing_status'
+    matches_to_accept = 'country,processing_status'
     matches_to_accept.split(",").each do |filter|
       resultOrgs = resultOrgs.matches(filter, params[filter].gsub(/\\/,'\&\&') ) if params[filter].present?
     end
@@ -205,6 +205,7 @@ class OrganizationsController < ApplicationController
     resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if params[:no_family].present?
     resultOrgs = resultOrgs.where("service_requests.name" => params[:service_request_name]) if params[:service_request_name].present?
     # manipulated
+    resultOrgs = resultOrgs.matches('ctrp_id', params[:ctrp_id]) if params[:ctrp_id].present?
     resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:source_id].present?
     resultOrgs = resultOrgs.match_name_from_joins(params[:name].gsub(/\\/,'\&\&'), params[:alias], params[:wc_search]) if params[:name].present?
     resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
