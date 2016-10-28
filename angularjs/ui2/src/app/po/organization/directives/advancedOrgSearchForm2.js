@@ -166,7 +166,8 @@
                                 /* eslint-disable */
                                 _.each($scope.selectedRows, function (curRow, idx) {
                                     var ctrpId = curRow.entity.id;
-                                    var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
+                                    // var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
+                                    var indexOfCurRowInGridData = _.findIndex($scope.gridOptions.data, {id: ctrpId});
                                     if (indexOfCurRowInGridData > -1) {
                                         $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
                                         $scope.gridOptions.totalItems--;
@@ -678,11 +679,12 @@
             }
 
 
-            function hideHyperLinkInModal() {  // eslint-disable-line no-use-before-define
+            function hideHyperLinkInModal() { 
                 $scope.$watch('usedInModal', function (newVal, oldVal) {
                     // $scope.resetSearch();
                     //find the organization name index in the column definitions
-                    var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
+                    // var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
+                    var orgNameIndex = _.findIndex($scope.gridOptions.columnDefs, {name: 'name'});
                     if (newVal) {
                         //unlink the name if used in modal
                         if (orgNameIndex > -1) {
