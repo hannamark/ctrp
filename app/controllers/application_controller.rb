@@ -201,12 +201,10 @@ class ApplicationController < ActionController::Base
           token: token,
           role: user.role,
           user_id: user.id,
-          privileges: user.get_write_mode,
+          privileges: (current_ctrp_user_role_details user.role),
           user_type: user.type,
           env: Rails.env
                     }
-
-      Rails.logger.info "In create_authorization_json auth_json = #{auth_json.inspect}"
       return auth_json
     rescue => e
       Rails.logger.info "In Application Controller, exception handling"
