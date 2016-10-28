@@ -64,7 +64,7 @@
             $scope.getDateRange = getDateRange;
 
             //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
-            $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
+            $scope.maxRowSelectable = $scope.maxRowSelectable === undefined ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
             //console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
@@ -427,7 +427,6 @@
             function sortChangedCallBack(grid, sortColumns) {
 
                 if (sortColumns.length === 0) {
-                    //console.log("removing sorting");
                     //remove sorting
                     $scope.searchParams.sort = '';
                     $scope.searchParams.order = '';
@@ -440,7 +439,7 @@
                         case uiGridConstants.DESC:
                             $scope.searchParams.order = 'DESC';
                             break;
-                        case 'undefined':
+                        case undefined:
                             break;
                     }
                 }
