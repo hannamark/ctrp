@@ -17,10 +17,7 @@
         vm.familyStatusArr = familyStatusObj.data;
         vm.familyTypeArr = familyTypeObj.data;
         vm.familyRelationshipArr = !familyRelationshipObj ? '' : familyRelationshipObj.data;
-        vm.orgsArrayReceiver = []; //receive selected organizations from the modal
-        vm.savedSelection = []; //save selected organizations
-        vm.selectedOrgFilter = "";
-        vm.disableBtn = false;
+        _setInitialState();
 
         vm.updateFamily = function() {
             vm.curFamily.family_memberships_attributes = prepareFamilyMembershipsArr(vm.savedSelection); //append an array of affiliated organizations
@@ -295,7 +292,7 @@
 
 
         //Function that checks if a Family name is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the families/unique Rails end point.
-        $scope.checkForNameUniqueness = function(){
+        $scope.checkForNameUniqueness = function() {
 
             var ID = 0;
             if(angular.isObject(familyDetailObj))
@@ -322,8 +319,15 @@
             });
         };
 
-
-
+        /**
+         * [_setInitialState description]
+         */
+        function _setInitialState() {
+            vm.orgsArrayReceiver = []; //receive selected organizations from the modal
+            vm.savedSelection = []; //save selected organizations
+            vm.selectedOrgFilter = "";
+            vm.disableBtn = false;
+        }
     }
 
 })();
