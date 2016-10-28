@@ -70,6 +70,7 @@
                     }
                 }
             }).catch(function(err) {
+                console.log('error is: ', err);
                 console.log('error in updating user ' + JSON.stringify(vm.userDetails));
             }).finally(function() {
                 vm.disableBtn = false;
@@ -581,6 +582,7 @@
                         vm.gridTrialsSubmittedOptions.totalItems = data.total;
                     }
                 }).catch(function (err) {
+                    console.log('error is: ', err);
                     console.log('Get User Submitted Trials failed');
                 });
             }
@@ -633,6 +635,7 @@
                     vm.gridTrialsParticipationOptions.totalItems = data.total;
                 }
             }).catch(function (err) {
+                console.log('error is: ', err);
                 console.log('Get User Participation Trials failed');
             });
         };
@@ -656,6 +659,7 @@
                         vm.gridTrialsOwnedOptions.totalItems = data.total;
                     }
                 }).catch(function (err) {
+                    console.log('error is: ', err);
                     console.log('Get User Owned Trials failed');
                 });
             }

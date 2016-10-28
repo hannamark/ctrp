@@ -2489,7 +2489,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
    user.user_status = UserStatus.find_by_code('ACT')
    user.receive_email_notifications = true
    user.status_date = Time.zone.now
-   user.phone = "111-111-1111"
+   user.phone = "1111111111"
    does_user_exists = User.find_by_username(user.username)
    user.save! if !does_user_exists
   end

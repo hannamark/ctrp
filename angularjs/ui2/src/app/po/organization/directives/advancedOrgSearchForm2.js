@@ -186,7 +186,7 @@
                         $scope.searching = false;
                     });
                 }
-            }; //searchOrgs
+            } //searchOrgs
 
             /* resetSearch */
             $scope.resetSearch = function () {
@@ -240,7 +240,7 @@
                     $scope.nullifiedId = rowEntity.id || '';
                     $scope.nullifiedOrgName = rowEntity.name;
                 }
-            }; //nullifyEntity
+            } //nullifyEntity
 
 
             /* commit nullification */
@@ -260,7 +260,7 @@
                 });
                 /* eslint-enable */
 
-            }; //commitNullification
+            } //commitNullification
 
             $scope.rowFormatter = function( row ) {
                 if (!$scope.usedInModal) {
@@ -319,7 +319,7 @@
                         $scope.searchParams.startDate = '';
                         $scope.searchParams.endDate = '';
                 }
-            };
+            }
 
             $scope.getSourceStatusArr = function() {
                 OrgService.getSourceStatuses({
