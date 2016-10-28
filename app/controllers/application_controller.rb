@@ -342,6 +342,27 @@ class ApplicationController < ActionController::Base
     return role_details
   end
 
+  def matches_wc results, column, value, wc_search
+    str_len = value.length
+    if value[0] == '*' && value[str_len - 1] != '*'
+      results = results.where("#{column} ilike ?", "%#{value[1..str_len - 1]}")
+    elsif value[0] != '*' && value[str_len - 1] == '*'
+      results = results.where("#{column} ilike ?", "#{value[0..str_len - 2]}%")
+    elsif value[0] == '*' && value[str_len - 1] == '*'
+      results = results.where("#{column} ilike ?", "%#{value[1..str_len - 2]}%")
+    else
+      if !wc_search
+        if !value.match(/\s/).nil?
+          value = value.gsub!(/\s+/, '%')
+        end
+        results = results.where("#{column} ilike ?", "%#{value}%")
+      else
+        results = results.where("#{column} ilike ?", "#{value}")
+      end
+    end
+    return results
+  end
+
   def global_request_logging
     http_request_header_keys = request.headers.env.keys.select{|header_name| header_name.match("^HTTP.*")}
     http_request_headers = request.headers.env.select{|header_name, header_value| http_request_header_keys.index(header_name)}

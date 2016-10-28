@@ -204,27 +204,6 @@ class Person < ActiveRecord::Base
 
   scope :with_service_request, -> (value) { joins(:service_request).where("service_requests.id = ?", "#{value}")}
 
-  scope :matches_wc, -> (column, value,wc_search) {
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      where("people.#{column} ilike ?", "%#{value[1..str_len - 1]}")
-    elsif value[0] != '*' && value[str_len - 1] == '*'
-      where("people.#{column} ilike ?", "#{value[0..str_len - 2]}%")
-    elsif value[0] == '*' && value[str_len - 1] == '*'
-      where("people.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
-    else
-      if !wc_search
-
-        if !value.match(/\s/).nil?
-        value=value.gsub! /\s+/, '%'
-        end
-        where("people.#{column} ilike ?", "%#{value}%")
-      else
-        where("people.#{column} ilike ?", "#{value}")
-      end
-    end
-  }
-
   scope :find_ctrp_matches, -> (params) {
 
     query_obj = joins(:po_affiliations)

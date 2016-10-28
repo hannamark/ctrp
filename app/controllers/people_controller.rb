@@ -123,14 +123,14 @@ class PeopleController < ApplicationController
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches('processing_status', params[:processing_status]) if params[:processing_status].present?
-      @people = @people.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present?
-      @people = @people.matches_wc('source_id',params[:source_id],params[:wc_search]) if params[:source_id].present?
-      @people = @people.matches_wc('fname', params[:fname],params[:wc_search]) if params[:fname].present?
-      @people = @people.matches_wc('lname', params[:lname],params[:wc_search]) if params[:lname].present?
-      @people = @people.matches_wc('prefix', params[:prefix],params[:wc_search]) if params[:prefix].present?
-      @people = @people.matches_wc('suffix', params[:suffix],params[:wc_search]) if params[:suffix].present?
-      @people = @people.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present?
-      @people = @people.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
+      @people = matches_wc(@people, 'updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present?
+      @people = matches_wc(@people, 'source_id',params[:source_id],params[:wc_search]) if params[:source_id].present?
+      @people = matches_wc(@people, 'fname', params[:fname],params[:wc_search]) if params[:fname].present?
+      @people = matches_wc(@people, 'lname', params[:lname],params[:wc_search]) if params[:lname].present?
+      @people = matches_wc(@people, 'prefix', params[:prefix],params[:wc_search]) if params[:prefix].present?
+      @people = matches_wc(@people, 'suffix', params[:suffix],params[:wc_search]) if params[:suffix].present?
+      @people = matches_wc(@people, 'email', params[:email],params[:wc_search]) if params[:email].present?
+      @people = matches_wc(@people, 'phone', params[:phone],params[:wc_search]) if params[:phone].present?
       @people = @people.with_service_request(params[:service_request]) if params[:service_request].present?
 
 

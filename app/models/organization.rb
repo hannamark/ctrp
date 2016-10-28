@@ -93,12 +93,12 @@ class Organization < ActiveRecord::Base
 
 
   def nullifiable
-    isNullifiable =true;
+    isNullifiable = true
     source_status_arr = []
     source_status_arr = Organization.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:"source_status_id") if self.ctrp_id.present?
-    source_status_arr.each_with_index { |e, i|
+    source_status_arr.each { |e|
       if SourceStatus.ctrp_context_source_statuses.find_by_id(e).code == "ACT"
-        isNullifiable = false;
+        isNullifiable = false
       end
     }
     return isNullifiable
@@ -111,65 +111,58 @@ class Organization < ActiveRecord::Base
   end
 
   def org_created_date
-   if self.created_at.present?
-#     return self.created_at.to_s(:app_time)
+    if self.created_at.present?
       return self.created_at.strftime("%d-%b-%Y %H:%M:%S %Z")
-#    else
-#      return Time.zone.now
     end
   end
 
   def org_updated_date
     if self.updated_at.present?
       return self.updated_at.strftime("%d-%b-%Y %H:%M:%S %Z")
-#      return self.updated_at.to_s(:app_time)
     else
       return Time.zone.now
     end
   end
 
-
- # Get an array of maps of the orgs with the same ctrp_id
-  def cluster
-    tmp_arr = []
-    if self.ctrp_id.present? && (self.source_status.nil? || self.source_status.code != 'NULLIFIED')
-      join_clause = "LEFT JOIN source_contexts ON source_contexts.id = organizations.source_context_id LEFT JOIN source_statuses ON source_statuses.id = organizations.source_status_id"
-      tmp_arr = Organization.joins(join_clause).where("ctrp_id = ? AND (source_statuses.code <> ? OR source_statuses IS NULL)", self.ctrp_id, "NULLIFIED").order(:id).pluck(:id, :"source_contexts.name")
-    else
-      tmp_arr.push([self.id, self.source_context ? self.source_context.name : ''])
-    end
-
-    cluster_arr = []
-    tmp_arr.each do |org|
-      cluster_arr.push({"id": org[0], "context": org[1]})
-    end
-
-    return cluster_arr
-  end
-
   private
 
-  # Method to check for the
-   def check_conditional_fields
-     #check for presence of phone or email. If both are empty, then return false
-    if (self.phone.nil? || self.phone.empty?) && (self.email.nil? || self.email.empty?)
-      return false
+  def nullify_references
+    #All references in CTRP to the nullified organization as Lead Organization will reference the retained organization as Lead Organization
+    @toBeNullifiedOrg.lo_trials.each do |trial|
+      trial.lead_org_id=@toBeRetainedOrg.id
+      trial.save!
     end
-    #If county is set to United states, then the postal_code should not be empty
-     if self.country == "United States" && (self.postal_code.nil? || self.postal_code.empty?)
-        return false
-     end
-   end
+    #All references in CTRP to the nullified organization as Sponsor will reference the retained organization as Sponsor
+    @toBeNullifiedOrg.sponsor_trials.each do |trial|
+      trial.sponsor_id=@toBeRetainedOrg.id
+      trial.save!
+    end
+  end
 
+  def move_aliases
+    #Name of the Nullified organization will be listed as an alias on the retained organization
+    NameAlias.create(organization_id:@toBeRetainedOrg.id,name:@toBeNullifiedOrg.name)
+    ## Aliases of nullified organizations will be moved to aliases of the retained organization
+    aliasesOfNullifiedOrganization = NameAlias.where(organization_id: @toBeNullifiedOrg.id)
+    aliasesOfRetainedOrganization = NameAlias.where(organization_id: @toBeRetainedOrg.id)
+    aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name.upcase}
+    aliasesOfNullifiedOrganization.each do |al|
+      if(!aliasesNamesOfRetainedOrganization.include?al.name.upcase)
+        al.organization_id=@toBeRetainedOrg.id
+        al.save!
+      else
+        al.destroy!
+      end
+    end
+  end
 
-    def save_id_to_ctrp_id
+  def save_id_to_ctrp_id
     if self.source_context && self.source_context.code == "CTRP"
       self.ctrp_id = self.id
       self.source_id =self.id
       self.save!
     end
   end
-
 
   def check_for_family
     unless family_memberships.size == 0
@@ -186,7 +179,6 @@ class Organization < ActiveRecord::Base
   end
 
   def self.nullify_duplicates(params)
-
     self.transaction do
       @toBeNullifiedOrg = Organization.find_by_id(params[:id_to_be_nullified]);
       @toBeRetainedOrg =  Organization.find_by_id(params[:id_to_be_retained]);
@@ -203,22 +195,7 @@ class Organization < ActiveRecord::Base
 
       #sleep(2.minutes);
 
-      #All references in CTRP to the nullified organization as Lead Organization will reference the retained organization as Lead Organization
-      ##
-       @toBeNullifiedOrg.lo_trials.each do |trial|
-        p "To be nullified org lo trials " +trial.official_title;
-        trial.lead_org_id=@toBeRetainedOrg.id;
-        trial.save!;
-       end
-
-
-      #All references in CTRP to the nullified organization as Sponsor will reference the retained organization as Sponsor
-      ##
-      @toBeNullifiedOrg.sponsor_trials.each do |trial|
-        p "To be nullified org sponsor trials " +trial.official_title;
-        trial.sponsor_id=@toBeRetainedOrg.id;
-        trial.save!;
-      end
+      nullify_references
 
       #All references in CTRP to the nullified organization as Participating Site will reference the retained organization as Participating Site
       ## Future Implementation
@@ -228,78 +205,35 @@ class Organization < ActiveRecord::Base
 
       #All persons affiliated with the nullified organization will be affiliated with the retained organization
       ##
-      poAffiliationsOfNullifiedOrganization = PoAffiliation.where(organization_id:@toBeNullifiedOrg.id);
+      poAffiliationsOfNullifiedOrganization = PoAffiliation.where(organization_id:@toBeNullifiedOrg.id)
 
-      poAffiliationsOfRetainedOrganization = PoAffiliation.where(organization_id:@toBeRetainedOrg.id);
+      poAffiliationsOfRetainedOrganization = PoAffiliation.where(organization_id:@toBeRetainedOrg.id)
 
       persons = poAffiliationsOfRetainedOrganization.collect{|x| x.person_id}
 
       poAffiliationsOfNullifiedOrganization.each do |po_affiliation|
         #new_po_aff=po_affiliation.clone;# Should be careful when choosing between dup and clone. See more details in Active Record dup and clone documentation.
         if(!persons.include?po_affiliation.person_id)
-          po_affiliation.organization_id=@toBeRetainedOrg.id;
+          po_affiliation.organization_id=@toBeRetainedOrg.id
           po_affiliation.save!
         else
           po_affiliation.destroy!
         end
-
       end
 
-      #Name of the Nullified organization will be listed as an alias on the retained organization
-      ##
-      NameAlias.create(organization_id:@toBeRetainedOrg.id,name:@toBeNullifiedOrg.name);
-
-      ## Aliases of nullified organizations will be moved to aliases of the retained organization
-      ##
-        aliasesOfNullifiedOrganization = NameAlias.where(organization_id: @toBeNullifiedOrg.id);
-        aliasesOfRetainedOrganization = NameAlias.where(organization_id: @toBeRetainedOrg.id);
-        aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name.upcase}
-
-        aliasesOfNullifiedOrganization.each do |al|
-        if(!aliasesNamesOfRetainedOrganization.include?al.name.upcase)
-          al.organization_id=@toBeRetainedOrg.id;
-          al.save!
-        else
-          al.destroy!
-        end
-
-      end
+      move_aliases
 
       #If both organizations had CTEP IDs only the retained organization CTEP ID will be associated with the retained organization
-
-
       #The status of the organization to be nullified will be "Nullified"
-      ##
       @toBeNullifiedOrg.source_status_id=SourceStatus.ctrp_context_source_statuses.find_by_code('NULLIFIED').id;
       @toBeNullifiedOrg.save!
     end
-
   end
 
   # Scope definitions for search
   scope :contains, -> (column, value) { where("#{column} ilike ?", "%#{value}%") }
 
   scope :matches, -> (column, value) { where("#{column} = ?", "#{value}") }
-
-  scope :matches_wc, -> (column, value, wc_search) {
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      where("#{column} ilike ?", "%#{value[1..str_len - 1]}")
-    elsif value[0] != '*' && value[str_len - 1] == '*'
-      where("#{column} ilike ?", "#{value[0..str_len - 2]}%")
-    elsif value[0] == '*' && value[str_len - 1] == '*'
-      where("#{column} ilike ?", "%#{value[1..str_len - 2]}%")
-    else
-      if !wc_search
-        if !value.match(/\s/).nil?
-          value = (value.gsub! /\s+/, '%')
-        end
-        where("#{column} ilike ?", "%#{value}%")
-      else
-        where("#{column} ilike ?", "#{value}")
-      end
-    end
-  }
 
   scope :matches_name_wc, -> (value,wc_search) {
     str_len = value.length
@@ -310,13 +244,13 @@ class Organization < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
     else
-        if !wc_search
-          if !value.match(/\s/).nil?
-            value = (value.gsub! /\s+/, '%')
-          end
-          joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value}%", "%#{value}%")
-        else
-          joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{value}", "#{value}")
+      if !wc_search
+        if !value.match(/\s/).nil?
+          value = value.gsub!(/\s+/, '%')
+        end
+        joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value}%", "%#{value}%")
+      else
+        joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{value}", "#{value}")
       end
     end
   }
@@ -341,7 +275,7 @@ class Organization < ActiveRecord::Base
 
       if !wc_search
         if !source_id_value.match(/\s/).nil?
-          source_id_value = (source_id_value.gsub! /\s+/, '%')
+          source_id_value = source_id_value.gsub!(/\s+/, '%')
         end
         where("organizations.source_id ilike ? OR all_cteps_by_ctrp_id.ctep_id ilike ?", "%#{source_id_value}%", "%#{source_id_value}%")
       else
@@ -361,7 +295,7 @@ class Organization < ActiveRecord::Base
       else
         if !wc_search
           if !name_value.match(/\s/).nil?
-            name_value = (name_value.gsub! /\s+/, '%')
+            name_value = name_value.gsub!(/\s+/, '%')
           end
           alias_name_where_clause = "organizations.name ilike ? OR name_aliases.name ilike ?", "%#{name_value}%", "%#{name_value}%"
         else
@@ -379,7 +313,7 @@ class Organization < ActiveRecord::Base
       else
         if !wc_search
           if !value.match(/\s/).nil?
-            name_value = (name_value.gsub! /\s+/, '%')
+            name_value = name_value.gsub!(/\s+/, '%')
           end
           name_where_clause = "organizations.name ilike ?", "%#{name_value}%"
         else
@@ -416,7 +350,7 @@ class Organization < ActiveRecord::Base
     else
       if !wc_search
         if !value.match(/\s/).nil?
-          value = (name_value.gsub! /\s+/, '%')
+          value = name_value.gsub!(/\s+/, '%')
         end
         where("family_name ilike ?", "%#{value}%")
       else
