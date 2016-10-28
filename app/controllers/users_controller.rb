@@ -173,16 +173,6 @@ class UsersController < ApplicationController
   end
 
   def send_activation_email
-    roles = {}
-    roles["ROLE_ACCOUNT-APPROVER"] = "Account Approver",
-    roles["ROLE_RO"] = "Read Only"
-    roles["ROLE_SUPER"] = "Super"
-    roles["ROLE_ADMIN"] = "Admin"
-    roles["ROLE_CURATOR"] = "Curator"
-    roles["ROLE_ABSTRACTOR"] = "Abstractor",
-    roles["ROLE_TRIAL-SUBMITTER"] = "Trial Submitter"
-    roles["ROLE_SITE-SU"] = "Site Administrator"
-    roles["ROLE_SERVICE-REST"] = "Service Rest"
     mail_template = (@justRegistered && @user.domain == "NIHEXT") ? MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION') : MailTemplate.find_by_code('USER_REGISTRATION_ACTIVATION')
     site_admins_array = (User.family_unexpired_matches_by_org(user_params[:organization_id]).matches('role', 'ROLE_SITE-SU')).pluck(:email)
     if @user.receive_email_notifications && site_admins_array.any?
@@ -195,7 +185,7 @@ class UsersController < ApplicationController
     unless mail_template.to.blank?
       mail_template.body_html.gsub!('${user_name}',       "#{user_params[:first_name]} #{user_params[:last_name]}")
       mail_template.body_html.gsub!('${user_username}',   user_params[:username])
-      mail_template.body_html.gsub!('${user_role}',       roles[user_params[:role]])
+      mail_template.body_html.gsub!('${user_role}',       (current_ctrp_user_role_details user_params[:role])['name'])
       mail_template.to.gsub!('${user_email}',             "#{user_params[:email]},#{(User.family_unexpired_matches_by_org(user_params[:organization_id]).matches('role', 'ROLE_SITE-SU')).pluck(:email).join(',')}" )
       mail_template.body_html.gsub!('${user_phone}',      "#{(user_params[:phone] ? user_params[:phone] : '')} #{(user_params[:phone_ext] ? ' ext ' + user_params[:phone_ext] : '')}" )
       mail_template.body_html.gsub!('${user_org}',        (user_params[:organization_id] ? Organization.find(user_params[:organization_id]).name : '') )
@@ -271,21 +261,15 @@ class UsersController < ApplicationController
   end
 
   def userWriteAccess userToUpdate
-    if current_site_user
-      user = current_site_user
-    end
-    user && userToUpdate ?
-        ( ( (abstractionAccess user) || (userToUpdate && user.id == userToUpdate.id) ||
-        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id)) ) &&
-            ( !(!(abstractionAccess user) && (abstractionAccess userToUpdate))) ) : false
+    current_site_user && userToUpdate ?
+        ( ( (abstractionAccess current_site_user) || (userToUpdate && current_site_user.id == userToUpdate.id) ||
+        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg current_site_user, userToUpdate.organization_id)) ) &&
+            ( !(!(abstractionAccess current_site_user) && (abstractionAccess userToUpdate))) ) : false
   end
 
   def searchAccess
-    if current_site_user
-      user = current_site_user
-    end
-    user ?
-        ( user.role == 'ROLE_RO' || (abstractionAccess user) || (isSiteAdminForOrg user, user.organization_id) ) : false
+    current_site_user ?
+        ( current_site_user.role == 'ROLE_RO' || (abstractionAccess current_site_user) || (isSiteAdminForOrg current_site_user, current_site_user.organization_id) ) : false
   end
 
   # Use callbacks to share common setup or constraints between actions.
