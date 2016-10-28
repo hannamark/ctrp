@@ -42,7 +42,7 @@ module TrialVersionsHelper
     if id.nil?
       return " "
     end
-    lookup_obj = lookup.find_by_id(id) if id
+    lookup_obj = lookup.find_by_id(id)
 
     val = lookup_obj.name if lookup_obj
     val = val + " (U) " if o.event == "update"
