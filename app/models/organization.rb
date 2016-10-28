@@ -111,11 +111,8 @@ class Organization < ActiveRecord::Base
   end
 
   def org_created_date
-   if self.created_at.present?
-#     return self.created_at.to_s(:app_time)
+    if self.created_at.present?
       return self.created_at.strftime("%d-%b-%Y %H:%M:%S %Z")
-#    else
-#      return Time.zone.now
     end
   end
 
@@ -267,13 +264,13 @@ class Organization < ActiveRecord::Base
     elsif value[0] == '*' && value[str_len - 1] == '*'
       joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value[1..str_len - 2]}%", "%#{value[1..str_len - 2]}%")
     else
-        if !wc_search
-          if !value.match(/\s/).nil?
+      if !wc_search
+        if !value.match(/\s/).nil?
             value = value.gsub!(/\s+/, '%')
-          end
-          joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value}%", "%#{value}%")
-        else
-          joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{value}", "#{value}")
+        end
+        joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value}%", "%#{value}%")
+      else
+        joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "#{value}", "#{value}")
       end
     end
   }
