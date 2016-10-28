@@ -248,10 +248,9 @@ class UsersController < ApplicationController
   end
 
   def userReadAccess userToUpdate
-    if current_site_user
-      user = current_site_user
-    end
-    user && userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || (userWriteAccess userToUpdate) ) : false
+    current_site_user && userToUpdate ?
+        (current_site_user.role == 'ROLE_RO' ||
+            (userToUpdate && current_site_user.id == userToUpdate.id) || (userWriteAccess userToUpdate) ) : false
   end
 
 
