@@ -235,26 +235,6 @@ class Organization < ActiveRecord::Base
 
   scope :matches, -> (column, value) { where("#{column} = ?", "#{value}") }
 
-  scope :matches_wc, -> (column, value, wc_search) {
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      where("#{column} ilike ?", "%#{value[1..str_len - 1]}")
-    elsif value[0] != '*' && value[str_len - 1] == '*'
-      where("#{column} ilike ?", "#{value[0..str_len - 2]}%")
-    elsif value[0] == '*' && value[str_len - 1] == '*'
-      where("#{column} ilike ?", "%#{value[1..str_len - 2]}%")
-    else
-      if !wc_search
-        if !value.match(/\s/).nil?
-          value = value.gsub!(/\s+/, '%')
-        end
-        where("#{column} ilike ?", "%#{value}%")
-      else
-        where("#{column} ilike ?", "#{value}")
-      end
-    end
-  }
-
   scope :matches_name_wc, -> (value,wc_search) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
