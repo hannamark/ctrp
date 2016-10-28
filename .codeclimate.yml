@@ -12,6 +12,8 @@ engines:
     enabled: true
   eslint:
     enabled: true
+    config:
+      "max-statements": [1,100]
   csslint:
     enabled: true
 ratings:

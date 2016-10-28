@@ -39,7 +39,7 @@
             // $compile(element.contents())(scope);
         } //linkFn
 
-        /*eslint max-statements: [1, 100, { "ignoreTopLevelFunctions": true }]*/
+        /*eslint max-statements: [1, 100]*/
         function ctrpAdvOrgSearchCtrl($scope) {
             var fromStateName = $state.fromState.name || '';
             var curStateName = $state.$current.name || '';
