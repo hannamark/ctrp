@@ -93,11 +93,7 @@ class UsersController < ApplicationController
       sortBy = params[:sort] && params[:sort] == 'user_org_name' ? 'user_org.name' : params[:sort]
       @users = (params[:trial_id].present? && !params[:trial_id].nil?) ? User.matches_join().users_own_trial(params[:trial_id]) : @users = User.matches_join()
       if (abstractionAccess current_user)
-        if params[:family_id].present?
-            @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
-        elsif params[:organization_id].present?
-            @users = @users.matches('organization_id', params[:organization_id]) unless @users.blank?
-        end
+        get_by_family
       end
       if ['ROLE_SITE-SU'].include? current_user.role
         any_membership = FamilyMembership.find_by_organization_id(current_user.organization_id)
@@ -116,30 +112,7 @@ class UsersController < ApplicationController
         @users = @users.matches_wc('user_statuses', [UserStatus.find_by_code('ACT').id, UserStatus.find_by_code('INR').id]) unless @users.blank?
       end
       @searchType = current_user.role
-      wc_matches_to_accept = 'username,first_name,last_name,email,site_admin,user_status_id,user_org_name,organization_family,organization_id'
-      wc_matches_to_accept.split(",").each do |filter|
-        @users = @users.matches_wc(filter, params[filter].gsub(/\\/,'\&\&')) if params[filter].present? && params[filter] != '*'
-      end
-      @users = @users.matches_wc('site_admin', params[:site_admin])  if !params[:site_admin].nil? unless @users.blank?
-      if sortBy != 'admin_role' && sortBy != 'organization_family'
-        @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
-      elsif sortBy == 'admin_role'
-        temp0 = []
-        temp1 = []
-        @users.each do |user|
-          if user.role == 'ROLE_SITE-SU'
-            temp0.push(user)
-          else
-            temp1.push(user)
-          end
-        end
-        if params[:order].upcase == 'DESC'
-          @users = (temp0 + temp1)
-        else
-          @users = (temp1 + temp0)
-        end
-      end
-      @users = remove_repeated(@users, sortBy, params[:order])
+      filter_by_params sortBy
       unless params[:rows].nil?
         @users = Kaminari.paginate_array(@users).page(params[:start]).per(params[:rows]) unless @users.blank?
       end
@@ -147,6 +120,41 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def get_by_family
+    if params[:family_id].present?
+      @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
+    elsif params[:organization_id].present?
+      @users = @users.matches('organization_id', params[:organization_id]) unless @users.blank?
+    end
+  end
+
+  def filter_by_params sortBy
+    wc_matches_to_accept = 'username,first_name,last_name,email,user_status_id,user_org_name,organization_family,organization_id'
+    wc_matches_to_accept.split(",").each do |filter|
+      @users = @users.matches_wc(filter, params[filter].gsub(/\\/,'\&\&')) if params[filter].present? && params[filter] != '*'
+    end
+    @users = @users.matches_wc('site_admin', params[:site_admin])  if !params[:site_admin].nil? unless @users.blank?
+    if sortBy != 'admin_role' && sortBy != 'organization_family'
+      @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
+    elsif sortBy == 'admin_role'
+      admin_role_sort
+    end
+    @users = remove_repeated(@users, sortBy, params[:order])
+  end
+
+  def admin_role_sort
+    temp0 = []
+    temp1 = []
+    @users.each do |user|
+      if user.role == 'ROLE_SITE-SU'
+        temp0.push(user)
+      else
+        temp1.push(user)
+      end
+    end
+    @users = params[:order].upcase == 'DESC' ? temp0 + temp1 : temp1 + temp0
+  end
 
   def setUserInOrgStatus
     @newUser = false
