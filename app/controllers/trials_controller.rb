@@ -363,33 +363,18 @@ class TrialsController < ApplicationController
       ###
       Rails.logger.info "Started querying multitable with Trials to avoid the access of db tables from View"
 
-      join_clause  = "LEFT OUTER JOIN phases ON trials.phase_id = phases.id LEFT OUTER JOIN primary_purposes ON trials.primary_purpose_id = primary_purposes.id "
-      join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
-      join_clause += "LEFT JOIN organizations as sponsor ON sponsor.id = trials.sponsor_id "
-      join_clause += "LEFT JOIN people as pi ON pi.id = trials.pi_id "
-      join_clause += "LEFT JOIN study_sources as study_source ON study_source.id = trials.study_source_id "
-
-      join_clause += "LEFT JOIN research_categories as research_category ON research_category.id = trials.research_category_id "
-      join_clause += "LEFT JOIN responsible_parties as responsible_party ON responsible_party.id = trials.responsible_party_id "
-      join_clause += "LEFT JOIN accrual_disease_terms as accrual_disease_term ON accrual_disease_term.id = trials.accrual_disease_term_id "
-
-      #join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
-      #join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
-      #join_clause += "LEFT JOIN organizations as trial_lead_org ON trial_lead_org.id = trials.lead_org_id "
-
-
-      @trials = @trials.joins(join_clause).select('trials.*, phases.name as phase_name,primary_purposes.name as purpose,
-                            trial_lead_org.name as lead_org_name,sponsor.name as sponsor_name,
-                            pi.fname  as pi_name, study_source.name as study_source_name ,
-                            research_category.name as research_category_name, responsible_party.name as responsible_party_name,
-                            accrual_disease_term.name as accrual_disease_term_name').group(:'trials.id',:'phases.name',
-                                                                                           :'primary_purposes.name',:'trial_lead_org.name',
-                                                                                           :'sponsor.name',:'pi.fname',
-                                                                                           :'study_source.name',:'research_category.name',
-                                                                                           :'responsible_party.name',:'accrual_disease_term.name')
-
-     # @trials = @trials.uniq
-
+      #@trials = @trials.uniq
+      @trials = @trials.my_available_actions
+      @trials = @trials.includes(:phase).references(:phase)
+      @trials = @trials.includes(:primary_purpose).references(:primary_purpose)
+      @trials = @trials.includes(:research_category).references(:research_category)
+      @trials = @trials.includes(:responsible_party).references(:responsible_party)
+      @trials = @trials.includes(:accrual_disease_term).references(:accrual_disease_term)
+      @trials = @trials.includes(:lead_org).references(:lead_org)
+      @trials = @trials.includes(:pi).references(:pi)
+      @trials = @trials.includes(:sponsor).references(:sponsor)
+      @trials = @trials.includes(:study_source).references(:study_source)
+      @trials = @trials.includes(:trial_status_wrappers).references(:trial_status_wrappers)
 
       @trials.each do |trial|
         trial.current_user = @current_user

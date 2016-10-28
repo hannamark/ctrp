@@ -1443,7 +1443,7 @@ ActiveRecord::Schema.define(version: 20161016031557) do
     t.string   "intervention_indicator",        limit: 255
     t.string   "sec801_indicator",              limit: 255
     t.string   "data_monitor_indicator",        limit: 255
-    t.json     "history"
+    t.jsonb    "history"
     t.integer  "study_source_id"
     t.integer  "phase_id"
     t.integer  "primary_purpose_id"

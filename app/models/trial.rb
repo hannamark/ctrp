@@ -128,6 +128,8 @@ class Trial < TrialBase
   include Filterable
   include TableLoggable
   include ActiveRecord::UnionScope
+  include ActiveModel::Serializers::JSON
+
 
   # Disabled optimistic locking
   self.locking_column = :dummy_column
@@ -290,28 +292,27 @@ class Trial < TrialBase
 
 
   # Array of actions can be taken on this Trial
-  def actions
+  scope :my_available_actions, lambda {eager_load(:users,:processing_status_wrappers,:ps_orgs)}
+
+  def actions(avr_id,vnr_id)
     actions = []
 
     if self.internal_source && self.internal_source.code == 'PRO'
-
       #When trial is Protocol
       if self.users.include? self.current_user
         if self.is_draft
           actions.append('complete')
         else
           actions.append('update')
-          processing_status_wrappers = self.processing_status_wrappers.pluck(:processing_status_id)
-          p processing_status_wrappers
-          if (processing_status_wrappers.include? ProcessingStatus.find_by_code("AVR").id) || (processing_status_wrappers.include? ProcessingStatus.find_by_code("VNR").id)
+            is_avr = self.processing_status_wrappers.detect { |p| p.processing_status_id == avr_id }
+            is_vnr = self.processing_status_wrappers.detect { |p| p.processing_status_id == vnr_id }
+            if (!is_avr.nil? || !is_vnr.nil?)
             actions.append('amend')
             actions.append('verify-data')
             actions.append('view-tsr')
           end
         end
       end
-
-
     elsif self.internal_source && self.internal_source.code == 'IMP'
       #When Trial is Imported
       if self.current_user && self.current_user.role == 'ROLE_SITE-SU'
@@ -1380,7 +1381,5 @@ class Trial < TrialBase
       order("LOWER(trials.#{column}) #{order}")
     end
   }
-
-
 
 end
