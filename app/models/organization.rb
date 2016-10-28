@@ -350,7 +350,7 @@ class Organization < ActiveRecord::Base
     else
       if !wc_search
         if !value.match(/\s/).nil?
-          value = name_value.gsub!(/\s+/, '%')
+          value = value.gsub!(/\s+/, '%')
         end
         where("family_name ilike ?", "%#{value}%")
       else
