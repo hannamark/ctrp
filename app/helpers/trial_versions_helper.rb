@@ -6,13 +6,11 @@ module TrialVersionsHelper
       return ""
     end
 
-    if o.event =="update"
-      if o.object_changes[field]
-        val = o.object_changes[field][1]
-        val = val + " (U)" if val
-      elsif o.object[field]
-        val = o.object[field]
-      end
+    if o.event =="update" && o.object_changes[field]
+      val = o.object_changes[field][1]
+      val = val + " (U)" if val
+    elsif o.event =="update" && o.object[field]
+      val = o.object[field]
     elsif o.event =="create" && o.object_changes[field]
       val = o.object_changes[field][1]
     elsif o.event == "destroy" && o.object[field]
@@ -25,7 +23,6 @@ module TrialVersionsHelper
   def decorate_lookup(o,field,lookup)
 
     Rails.logger.info("In decorate_lookup method for the field " + field)
-
 
     if o.event == "update" && o.object_changes[field]
       id = o.object_changes[field][1]
