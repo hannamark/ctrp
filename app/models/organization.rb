@@ -266,7 +266,7 @@ class Organization < ActiveRecord::Base
     else
       if !wc_search
         if !value.match(/\s/).nil?
-            value = value.gsub!(/\s+/, '%')
+          value = value.gsub!(/\s+/, '%')
         end
         joins("LEFT JOIN name_aliases ON name_aliases.organization_id = organizations.id").where("organizations.name ilike ? OR name_aliases.name ilike ?", "%#{value}%", "%#{value}%")
       else
