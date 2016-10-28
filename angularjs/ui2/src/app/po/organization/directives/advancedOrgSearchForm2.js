@@ -40,6 +40,7 @@
         } //linkFn
 
         //_, $anchorScroll,
+        /*eslint max-statements: ["error", 500, { "ignoreTopLevelFunctions": true }]*/
         function ctrpAdvOrgSearchCtrl($scope) {
             var fromStateName = $state.fromState.name || '';
             var curStateName = $state.$current.name || '';
