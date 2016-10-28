@@ -245,7 +245,7 @@
 
             /* commit nullification */
             function commitNullification() {
-                /* eslint-disable */
+                /*eslint-disable no-alert, no-console */
                 OrgService.curateOrg($scope.toBeCurated).then(function (res) {
                     var status = res.server_response.status;
 
@@ -258,7 +258,7 @@
                 }).catch(function (err) {
                     toastr.error('There was an error in curation', 'Curation error', { timeOut: 0});
                 });
-                /* eslint-enable */
+                /*eslint-enable no-alert */
 
             } //commitNullification
 
@@ -424,7 +424,7 @@
              * @param grid
              * @param sortColumns
              */
-            /* eslint-disable */
+            /*eslint-disable no-alert, no-console */
             function sortChangedCallBack(grid, sortColumns) {
 
                 if (sortColumns.length === 0) {
@@ -448,7 +448,7 @@
                 //do the search with the updated sorting
                 $scope.searchOrgs();
             } //sortChangedCallBack
-            /* eslint-enable */
+            /*eslint-enable no-alert */
 
 
             /**
@@ -678,8 +678,7 @@
                 return deselectedRow;
             }
 
-
-            function hideHyperLinkInModal() { 
+            function hideHyperLinkInModal() {
                 $scope.$watch('usedInModal', function (newVal, oldVal) {
                     // $scope.resetSearch();
                     //find the organization name index in the column definitions
