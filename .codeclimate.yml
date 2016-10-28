@@ -33,3 +33,4 @@ exclude_paths:
 - "db/seeds/seeds.rb"
 - "angularjs/ui2/gulp*.js"
 - "angularjs/ui2/karma.conf.js"
+- "db/schema.rb"
