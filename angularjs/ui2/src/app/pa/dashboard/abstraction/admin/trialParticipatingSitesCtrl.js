@@ -403,16 +403,12 @@
                 siteObj.edit = false;
                 siteObj.uiEdit = false;
                 siteObj.new = false;
-                // For displaying status name in the table
-                _.each(vm.siteRecruitmentStatusesArr, function(status) {
-                    if (status.id === siteObj.site_recruitment_status.id) {
-                        siteObj.sr_status_name = status.name;
-                        siteObj.sr_status_code = status.code;
-                    }
-                });
 
+                // For displaying status name in the table
+                _.each(vm.siteRecruitmentStatusesArr, setStatusNameCode);
                 vm.siteRecruitmentGrid.push(siteObj);
             }
+
             vm.Status();
         };
 
@@ -1058,5 +1054,13 @@
         vm.cancel = function() {
             $uibModalInstance.dismiss('canceled');
         };
+    }
+
+    /* Used in init site recruitment grid */
+    function setStatusNameCode(status) {
+        if (status.id === siteObj.site_recruitment_status.id) {
+            siteObj.sr_status_name = status.name;
+            siteObj.sr_status_code = status.code;
+        }
     }
 }());
