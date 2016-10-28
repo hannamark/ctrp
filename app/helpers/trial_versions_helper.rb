@@ -45,7 +45,7 @@ module TrialVersionsHelper
     lookup_obj = lookup.find_by_id(id) if id
     p lookup_obj
     val = lookup_obj.name if lookup_obj
-    val = val + " (U) " if o.event = "update"
+    val = val + " (U) " if o.event == "update"
     return val
   end
 
