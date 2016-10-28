@@ -129,27 +129,13 @@ class Organization < ActiveRecord::Base
 
   private
 
-  # Method to check for the
-   def check_conditional_fields
-     #check for presence of phone or email. If both are empty, then return false
-    if (self.phone.nil? || self.phone.empty?) && (self.email.nil? || self.email.empty?)
-      return false
-    end
-    #If county is set to United states, then the postal_code should not be empty
-     if self.country == "United States" && (self.postal_code.nil? || self.postal_code.empty?)
-        return false
-     end
-   end
-
-
-    def save_id_to_ctrp_id
+  def save_id_to_ctrp_id
     if self.source_context && self.source_context.code == "CTRP"
       self.ctrp_id = self.id
       self.source_id =self.id
       self.save!
     end
   end
-
 
   def check_for_family
     unless family_memberships.size == 0
