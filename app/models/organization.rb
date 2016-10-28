@@ -166,7 +166,6 @@ class Organization < ActiveRecord::Base
   end
 
   def self.nullify_duplicates(params)
-
     self.transaction do
       @toBeNullifiedOrg = Organization.find_by_id(params[:id_to_be_nullified]);
       @toBeRetainedOrg =  Organization.find_by_id(params[:id_to_be_retained]);
@@ -184,15 +183,11 @@ class Organization < ActiveRecord::Base
       #sleep(2.minutes);
 
       #All references in CTRP to the nullified organization as Lead Organization will reference the retained organization as Lead Organization
-      ##
-       @toBeNullifiedOrg.lo_trials.each do |trial|
+      @toBeNullifiedOrg.lo_trials.each do |trial|
         trial.lead_org_id=@toBeRetainedOrg.id
         trial.save!
-       end
-
-
+      end
       #All references in CTRP to the nullified organization as Sponsor will reference the retained organization as Sponsor
-      ##
       @toBeNullifiedOrg.sponsor_trials.each do |trial|
         trial.sponsor_id=@toBeRetainedOrg.id
         trial.save!
@@ -220,18 +215,14 @@ class Organization < ActiveRecord::Base
         else
           po_affiliation.destroy!
         end
-
       end
 
       #Name of the Nullified organization will be listed as an alias on the retained organization
-      ##
       NameAlias.create(organization_id:@toBeRetainedOrg.id,name:@toBeNullifiedOrg.name)
-
       ## Aliases of nullified organizations will be moved to aliases of the retained organization
       aliasesOfNullifiedOrganization = NameAlias.where(organization_id: @toBeNullifiedOrg.id)
       aliasesOfRetainedOrganization = NameAlias.where(organization_id: @toBeRetainedOrg.id)
       aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name.upcase}
-
       aliasesOfNullifiedOrganization.each do |al|
         if(!aliasesNamesOfRetainedOrganization.include?al.name.upcase)
           al.organization_id=@toBeRetainedOrg.id
@@ -240,16 +231,11 @@ class Organization < ActiveRecord::Base
           al.destroy!
         end
       end
-
       #If both organizations had CTEP IDs only the retained organization CTEP ID will be associated with the retained organization
-
-
       #The status of the organization to be nullified will be "Nullified"
-      ##
       @toBeNullifiedOrg.source_status_id=SourceStatus.ctrp_context_source_statuses.find_by_code('NULLIFIED').id;
       @toBeNullifiedOrg.save!
     end
-
   end
 
   # Scope definitions for search
