@@ -54,14 +54,16 @@ class Family < ActiveRecord::Base
   end
 
   #scopes for search API
-  scope :matches, -> (column, value) { where("families.#{column} = ?", "#{value}") }
+  scope :matches, -> (column, value) { where("#{column} = ?", "#{value}") }
 
   scope :with_family_status, -> (value) { joins(:family_status).where("family_statuses.name = ?", "#{value}") }
   scope :with_family_type, -> (value) { joins(:family_type).where("family_types.name = ?", "#{value}") }
 
   scope :sort_by_col, -> (column, order) {
-    if column == 'id'
-      order("#{column} #{order}")
+    if column == 'family_status'
+      order("family_statuses.name #{order}")
+    elsif column == 'family_type'
+      order("family_types.name #{order}")
     else
       order("LOWER(families.#{column}) #{order}")
     end
@@ -74,5 +76,16 @@ class Family < ActiveRecord::Base
         and (family_memberships.expiration_date > '#{DateTime.now}' or family_memberships.expiration_date is null)")
           .pluck(:family_id)
     where(id: familyFamilies)
+  }
+
+  scope :all_families_data, -> () {
+    join_clause = "LEFT JOIN family_statuses ON families.family_status_id = family_statuses.id "
+    join_clause += "LEFT JOIN family_types ON families.family_type_id = family_types.id "
+    select_clause = "
+      families.*,
+      family_statuses.name as family_status_name,
+      family_types.name as family_type_name
+    "
+    joins(join_clause).select(select_clause)
   }
 end
