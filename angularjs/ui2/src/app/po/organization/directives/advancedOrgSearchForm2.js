@@ -42,20 +42,7 @@
         function ctrpAdvOrgSearchCtrl($scope) {
             var fromStateName = $state.fromState.name || '';
             var curStateName = $state.$current.name || '';
-            $scope.searchParams = OrgService.getInitialOrgSearchParams();
-            $scope.selectedRows = [];
-            $scope.sourceContextArr = [];
-            $scope.sourceStatuses = [];
-            $scope.nullifiedId = '';
-            $scope.warningMessage = '';
-            $scope.curationShown = false;
-            $scope.curationModeEnabled = false;
-            $scope.searchWarningMessage = '';
-            $scope.processingStatuses = OrgService.getProcessingStatuses();
-            $scope.serviceRequests = [];
-            $scope.userRole = UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
-            $scope.dateFormat = DateService.getFormats()[1];
-            $scope.searching = false;
+            _initState();
 
             // actions
             $scope.searchOrgs = searchOrgs;
@@ -63,9 +50,7 @@
             $scope.commitNullification = commitNullification;
             $scope.getDateRange = getDateRange;
 
-            //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
-            //console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
             } else {
@@ -735,6 +720,23 @@
                         }, 100);
                     }, 100);
                 }
+            }
+
+            function _initState() {
+                $scope.searchParams = OrgService.getInitialOrgSearchParams();
+                $scope.selectedRows = [];
+                $scope.sourceContextArr = [];
+                $scope.sourceStatuses = [];
+                $scope.nullifiedId = '';
+                $scope.warningMessage = '';
+                $scope.curationShown = false;
+                $scope.curationModeEnabled = false;
+                $scope.searchWarningMessage = '';
+                $scope.processingStatuses = OrgService.getProcessingStatuses();
+                $scope.serviceRequests = [];
+                $scope.userRole = UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+                $scope.dateFormat = DateService.getFormats()[1];
+                $scope.searching = false;
             }
 
         } //ctrpAdvOrgSearchCtrl
