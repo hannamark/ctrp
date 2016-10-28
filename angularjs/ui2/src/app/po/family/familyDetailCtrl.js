@@ -7,17 +7,16 @@
     angular.module('ctrp.app.po')
         .controller('familyDetailCtrl', familyDetailCtrl);
     familyDetailCtrl.$inject = ['familyDetailObj', 'FamilyService', 'familyStatusObj','familyTypeObj','familyRelationshipObj','OrgService','DateService','toastr',
-        '$scope', '$state', 'Common', '$uibModal', '$timeout'];
+        '$scope', '$state', 'Common', '$uibModal', '$timeout', '_'];
     function familyDetailCtrl(familyDetailObj, FamilyService, familyStatusObj,familyTypeObj,familyRelationshipObj,
-                              OrgService, DateService, toastr, $scope, $state, Common, $uibModal, $timeout) {
+                              OrgService, DateService, toastr, $scope, $state, Common, $uibModal, $timeout, _) {
         var vm = this;
         vm.curFamily = familyDetailObj || {name: ""}; //familyDetailObj.data;
-        console.log('familyDetailObj: ' + JSON.stringify(familyDetailObj));
         vm.curFamily = vm.curFamily.data || vm.curFamily;
         vm.masterCopy= angular.copy(vm.curFamily);
         vm.familyStatusArr = familyStatusObj.data;
         vm.familyTypeArr = familyTypeObj.data;
-        vm.familyRelationshipArr = familyRelationshipObj == null ? '' : familyRelationshipObj.data;
+        vm.familyRelationshipArr = !familyRelationshipObj ? '' : familyRelationshipObj.data;
         vm.orgsArrayReceiver = []; //receive selected organizations from the modal
         vm.savedSelection = []; //save selected organizations
         vm.selectedOrgFilter = "";
@@ -72,10 +71,10 @@
 
 
         vm.batchSelect = function (intention, selectedOrgsArr) {
-            if (intention == "selectAll") {
+            if (intention === "selectAll") {
                 //iterate the organizations asynchronously
                 async.each(selectedOrgsArr, function (org, cb) {
-                    if (OrgService.indexOfOrganization(vm.savedSelection, org) == -1) {
+                    if (OrgService.indexOfOrganization(vm.savedSelection, org) === -1) {
                         vm.savedSelection.unshift(OrgService.initSelectedOrg(org));
                     }
                     cb();
@@ -101,7 +100,7 @@
             $event.preventDefault();
             $event.stopPropagation();
 
-            if (type == "effective") {
+            if (type === 'effective') {
                 vm.savedSelection[index].opened_effective = !vm.savedSelection[index].opened_effective;
             } else {
                 vm.savedSelection[index].opened_expiration = !vm.savedSelection[index].opened_expiration;
@@ -123,7 +122,7 @@
             $scope.family_form.$setPristine();
             var excludedKeys = ['new'];
             Object.keys(vm.curFamily).forEach(function (key) {
-                if (excludedKeys.indexOf(key) == -1) {
+                if (excludedKeys.indexOf(key) === -1) {
                     vm.curFamily[key] = angular.isArray(vm.curFamily[key]) ? [] : '';
                 }
             });
@@ -201,7 +200,8 @@
             $scope.$watchCollection(function() {return vm.orgsArrayReceiver;}, function(selectedOrgs, oldVal) {
                 _.each(selectedOrgs, function(anOrg, index) {
                     //prevent pushing duplicated org
-                    if (Common.indexOfObjectInJsonArray(vm.savedSelection, "id", anOrg.id) == -1) {
+                    if (_.findIndex(vm.savedSelection, {id: anOrg.id}) === -1) {
+                    // if (Common.indexOfObjectInJsonArray(vm.savedSelection, "id", anOrg.id) === -1) {
                         vm.savedSelection.unshift(OrgService.initSelectedOrg(anOrg));
                         $scope.family_form.$setDirty();
                     }
