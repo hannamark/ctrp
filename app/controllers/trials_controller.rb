@@ -364,17 +364,17 @@ class TrialsController < ApplicationController
       Rails.logger.info "Started querying multitable with Trials to avoid the access of db tables from View"
 
       #@trials = @trials.uniq
-      @trials = @trials.my_available_actions
-      @trials = @trials.includes(:phase).references(:phase)
-      @trials = @trials.includes(:primary_purpose).references(:primary_purpose)
-      @trials = @trials.includes(:research_category).references(:research_category)
-      @trials = @trials.includes(:responsible_party).references(:responsible_party)
-      @trials = @trials.includes(:accrual_disease_term).references(:accrual_disease_term)
-      @trials = @trials.includes(:lead_org).references(:lead_org)
-      @trials = @trials.includes(:pi).references(:pi)
-      @trials = @trials.includes(:sponsor).references(:sponsor)
-      @trials = @trials.includes(:study_source).references(:study_source)
-      @trials = @trials.includes(:trial_status_wrappers).references(:trial_status_wrappers)
+      #@trials = @trials.my_available_actions
+      #@trials = @trials.includes(:phase).references(:phase)
+      #@trials = @trials.includes(:primary_purpose).references(:primary_purpose)
+      #@trials = @trials.includes(:research_category).references(:research_category)
+      #@trials = @trials.includes(:responsible_party).references(:responsible_party)
+      #@trials = @trials.includes(:accrual_disease_term).references(:accrual_disease_term)
+      #@trials = @trials.includes(:lead_org).references(:lead_org)
+      #@trials = @trials.includes(:pi).references(:pi)
+      #@trials = @trials.includes(:sponsor).references(:sponsor)
+      #@trials = @trials.includes(:study_source).references(:study_source)
+      #@trials = @trials.includes(:trial_status_wrappers).references(:trial_status_wrappers)
 
       @trials.each do |trial|
         trial.current_user = @current_user
