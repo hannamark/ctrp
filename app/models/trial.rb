@@ -1013,21 +1013,6 @@ class Trial < TrialBase
   #scope :matches_grant, -> (column, value) {Tempgrant.where}
   scope :matches, -> (column, value) { where("trials.#{column} = ?", "#{value}") }
 
-  scope :matches_wc, -> (column, value) {
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      where("trials.#{column} ilike ?", "%#{value[1..str_len - 1]}")
-    elsif value[0] != '*' && value[str_len - 1] == '*'
-      where("trials.#{column} ilike ?", "#{value[0..str_len - 2]}%")
-    elsif value[0] == '*' && value[str_len - 1] == '*'
-      where("trials.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
-    else
-      where("trials.#{column} ilike ?", "#{value}")
-    end
-  }
-
-
-
   scope :in_family, -> (value, dateLimit) {
     familyOrganizations = FamilyMembership.where(
         family_id: value

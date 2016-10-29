@@ -39,24 +39,10 @@
             // $compile(element.contents())(scope);
         } //linkFn
 
-        //_, $anchorScroll,
         function ctrpAdvOrgSearchCtrl($scope) {
             var fromStateName = $state.fromState.name || '';
             var curStateName = $state.$current.name || '';
-            $scope.searchParams = OrgService.getInitialOrgSearchParams();
-            $scope.selectedRows = [];
-            $scope.sourceContextArr = [];
-            $scope.sourceStatuses = [];
-            $scope.nullifiedId = '';
-            $scope.warningMessage = '';
-            $scope.curationShown = false;
-            $scope.curationModeEnabled = false;
-            $scope.searchWarningMessage = '';
-            $scope.processingStatuses = OrgService.getProcessingStatuses();
-            $scope.serviceRequests = [];
-            $scope.userRole = UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
-            $scope.dateFormat = DateService.getFormats()[1];
-            $scope.searching = false;
+            _initState();
 
             // actions
             $scope.searchOrgs = searchOrgs;
@@ -64,9 +50,7 @@
             $scope.commitNullification = commitNullification;
             $scope.getDateRange = getDateRange;
 
-            //$scope.maxRowSelectable = $scope.maxRowSelectable == undefined ? 0 : $scope.maxRowSelectable; //default to 0
             $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable; //Number.MAX_SAFE_INTEGER; //default to MAX
-            //console.log('maxRowSelectable: ' + $scope.maxRowSelectable);
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
             } else {
@@ -167,7 +151,8 @@
                                 /* eslint-disable */
                                 _.each($scope.selectedRows, function (curRow, idx) {
                                     var ctrpId = curRow.entity.id;
-                                    var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
+                                    // var indexOfCurRowInGridData = Common.indexOfObjectInJsonArray($scope.gridOptions.data, 'id', ctrpId);
+                                    var indexOfCurRowInGridData = _.findIndex($scope.gridOptions.data, {id: ctrpId});
                                     if (indexOfCurRowInGridData > -1) {
                                         $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
                                         $scope.gridOptions.totalItems--;
@@ -245,7 +230,7 @@
 
             /* commit nullification */
             function commitNullification() {
-                /* eslint-disable */
+                /*eslint-disable no-alert, no-console */
                 OrgService.curateOrg($scope.toBeCurated).then(function (res) {
                     var status = res.server_response.status;
 
@@ -258,7 +243,7 @@
                 }).catch(function (err) {
                     toastr.error('There was an error in curation', 'Curation error', { timeOut: 0});
                 });
-                /* eslint-enable */
+                /*eslint-enable no-alert */
 
             } //commitNullification
 
@@ -424,11 +409,10 @@
              * @param grid
              * @param sortColumns
              */
-            /* eslint-disable */
+            /*eslint-disable no-alert, no-console */
             function sortChangedCallBack(grid, sortColumns) {
 
                 if (sortColumns.length === 0) {
-                    //console.log("removing sorting");
                     //remove sorting
                     $scope.searchParams.sort = '';
                     $scope.searchParams.order = '';
@@ -441,7 +425,7 @@
                         case uiGridConstants.DESC:
                             $scope.searchParams.order = 'DESC';
                             break;
-                        case 'undefined':
+                        case undefined:
                             break;
                     }
                 }
@@ -449,7 +433,7 @@
                 //do the search with the updated sorting
                 $scope.searchOrgs();
             } //sortChangedCallBack
-            /* eslint-enable */
+            /*eslint-enable no-alert */
 
 
             /**
@@ -679,12 +663,12 @@
                 return deselectedRow;
             }
 
-
-            function hideHyperLinkInModal() {  // eslint-disable-line no-use-before-define
+            function hideHyperLinkInModal() {
                 $scope.$watch('usedInModal', function (newVal, oldVal) {
                     // $scope.resetSearch();
                     //find the organization name index in the column definitions
-                    var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
+                    // var orgNameIndex = Common.indexOfObjectInJsonArray($scope.gridOptions.columnDefs, 'name', 'name');
+                    var orgNameIndex = _.findIndex($scope.gridOptions.columnDefs, {name: 'name'});
                     if (newVal) {
                         //unlink the name if used in modal
                         if (orgNameIndex > -1) {
@@ -736,6 +720,23 @@
                         }, 100);
                     }, 100);
                 }
+            }
+
+            function _initState() {
+                $scope.searchParams = OrgService.getInitialOrgSearchParams();
+                $scope.selectedRows = [];
+                $scope.sourceContextArr = [];
+                $scope.sourceStatuses = [];
+                $scope.nullifiedId = '';
+                $scope.warningMessage = '';
+                $scope.curationShown = false;
+                $scope.curationModeEnabled = false;
+                $scope.searchWarningMessage = '';
+                $scope.processingStatuses = OrgService.getProcessingStatuses();
+                $scope.serviceRequests = [];
+                $scope.userRole = UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+                $scope.dateFormat = DateService.getFormats()[1];
+                $scope.searching = false;
             }
 
         } //ctrpAdvOrgSearchCtrl

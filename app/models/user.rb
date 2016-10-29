@@ -216,36 +216,6 @@ class  User < ActiveRecord::Base
 
   end
 
-  def get_write_mode
-    privileges_json = []
-
-    case self.role
-      when "ROLE_RO"
-        privileges_json = [{po_write_mode: false}, {registry_write_mode: false}, {user_write_mode: true}, {pa_write_mode: false}]
-      when  "ROLE_SUPER"
-        privileges_json = [{po_write_mode: true}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: true}]
-      when  "ROLE_ADMIN"
-        privileges_json = [{po_write_mode: true}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: true}]
-      when  "ROLE_CURATOR"
-        privileges_json = [{po_write_mode: true}, {registry_write_mode: false}, {user_write_mode: true}, {pa_write_mode: false}]
-      when  "ROLE_TRIAL-SUBMITTER"
-        privileges_json = [{po_write_mode: false}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: false}]
-      when  "ROLE_ACCRUAL-SUBMITTER"
-        privileges_json = [{po_write_mode: false}, {registry_write_mode: false}, {user_write_mode: true}, {pa_write_mode: false}]
-      when  "ROLE_SITE-SU"
-        privileges_json = [{po_write_mode: false}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: false}]
-      when  "ROLE_ABSTRACTOR"
-        privileges_json = [{po_write_mode: false}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: true}]
-      when  "ROLE_ABSTRACTOR-SU"
-        privileges_json = [{po_write_mode: false}, {registry_write_mode: true}, {user_write_mode: true}, {pa_write_mode: true}]
-      when  "ROLE_ACCOUNT-APPROVER"
-        privileges_json = [{po_write_mode: false}, {registry_write_mode: false}, {user_write_mode: true}, {pa_write_mode: false}]
-    end
-
-    return privileges_json
-  end
-
-
   def self.org_write_access(current_user)
     return ['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER'].include? current_user.role
   end
@@ -300,12 +270,12 @@ class  User < ActiveRecord::Base
 
   def family_organizations
     organization = self.organization
-    _families = organization.families ##As an organization can have more than one family
+    families = organization.families ##As an organization can have more than one family
     family_status_id = FamilyStatus.find_by_code('ACTIVE').id
-    org_status_id = SourceStatus.find_by_code('ACT').id
+    #org_status_id = SourceStatus.find_by_code('ACT').id
     dateLimit = Date.today
-    if !_families.nil?
-        family_organizations = _families.where("family_status_id= ? and (family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null)",family_status_id ).pluck(:organization_id)
+    if !families.nil?
+        family_organizations = families.where("family_status_id= ? and (family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null)",family_status_id ).pluck(:organization_id)
     else
         ##if user's organization is an orphan
       family_organizations =Array.new().push(organization.id)

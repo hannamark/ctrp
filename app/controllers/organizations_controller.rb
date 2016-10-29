@@ -199,7 +199,7 @@ class OrganizationsController < ApplicationController
     end
     wc_matches_to_accept = 'address,address2,updated_by,city,state_province,postal_code,email,phone'
     wc_matches_to_accept.split(",").each do |filter|
-      resultOrgs = resultOrgs.matches_wc(filter, params[filter].gsub(/\\/,'\&\&'), params[:wc_search]) if params[filter].present? && params[filter] != '*'
+      resultOrgs = matches_wc(resultOrgs, filter, params[filter].gsub(/\\/,'\&\&'), params[:wc_search]) if params[filter].present? && params[filter] != '*'
     end
     # direct from joins
     resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if params[:no_family].present?

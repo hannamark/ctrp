@@ -93,11 +93,7 @@ class UsersController < ApplicationController
       sortBy = params[:sort] && params[:sort] == 'user_org_name' ? 'user_org.name' : params[:sort]
       @users = (params[:trial_id].present? && !params[:trial_id].nil?) ? User.matches_join().users_own_trial(params[:trial_id]) : @users = User.matches_join()
       if (abstractionAccess current_user)
-        if params[:family_id].present?
-            @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
-        elsif params[:organization_id].present?
-            @users = @users.matches('organization_id', params[:organization_id]) unless @users.blank?
-        end
+        get_by_family
       end
       if ['ROLE_SITE-SU'].include? current_user.role
         any_membership = FamilyMembership.find_by_organization_id(current_user.organization_id)
@@ -116,30 +112,7 @@ class UsersController < ApplicationController
         @users = @users.matches_wc('user_statuses', [UserStatus.find_by_code('ACT').id, UserStatus.find_by_code('INR').id]) unless @users.blank?
       end
       @searchType = current_user.role
-      wc_matches_to_accept = 'username,first_name,last_name,email,site_admin,user_status_id,user_org_name,organization_family,organization_id'
-      wc_matches_to_accept.split(",").each do |filter|
-        @users = @users.matches_wc(filter, params[filter].gsub(/\\/,'\&\&')) if params[filter].present? && params[filter] != '*'
-      end
-      @users = @users.matches_wc('site_admin', params[:site_admin])  if !params[:site_admin].nil? unless @users.blank?
-      if sortBy != 'admin_role' && sortBy != 'organization_family'
-        @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
-      elsif sortBy == 'admin_role'
-        temp0 = []
-        temp1 = []
-        @users.each do |user|
-          if user.role == 'ROLE_SITE-SU'
-            temp0.push(user)
-          else
-            temp1.push(user)
-          end
-        end
-        if params[:order].upcase == 'DESC'
-          @users = (temp0 + temp1)
-        else
-          @users = (temp1 + temp0)
-        end
-      end
-      @users = remove_repeated(@users, sortBy, params[:order])
+      filter_by_params sortBy
       unless params[:rows].nil?
         @users = Kaminari.paginate_array(@users).page(params[:start]).per(params[:rows]) unless @users.blank?
       end
@@ -147,6 +120,43 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def get_by_family
+    if params[:family_id].present?
+      @users = @users.family_unexpired_matches_by_family(params[:family_id]) unless @users.blank?
+    elsif params[:organization_id].present?
+      @users = @users.matches('organization_id', params[:organization_id]) unless @users.blank?
+    end
+  end
+
+  def filter_by_params sortBy
+    wc_matches_to_accept = 'username,first_name,last_name,email,user_org_name,organization_family'
+    wc_matches_to_accept.split(",").each do |filter|
+      @users = @users.matches_wc(filter, params[filter].gsub(/\\/,'\&\&')) if params[filter].present? && params[filter] != '*'
+    end
+    @users = @users.matches_wc('site_admin', params[:site_admin])  if !params[:site_admin].nil? unless @users.blank?
+    @users = @users.matches_wc('user_status_id', params[:user_status_id])  if !params[:user_status_id].nil? unless @users.blank?
+    @users = @users.matches_wc('organization_id', params[:organization_id])  if !params[:organization_id].nil? unless @users.blank?
+    if sortBy != 'admin_role' && sortBy != 'organization_family'
+      @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
+    elsif sortBy == 'admin_role'
+      admin_role_sort
+    end
+    @users = remove_repeated(@users, sortBy, params[:order])
+  end
+
+  def admin_role_sort
+    temp0 = []
+    temp1 = []
+    @users.each do |user|
+      if user.role == 'ROLE_SITE-SU'
+        temp0.push(user)
+      else
+        temp1.push(user)
+      end
+    end
+    @users = params[:order].upcase == 'DESC' ? temp0 + temp1 : temp1 + temp0
+  end
 
   def setUserInOrgStatus
     @newUser = false
@@ -165,16 +175,6 @@ class UsersController < ApplicationController
   end
 
   def send_activation_email
-    roles = {}
-    roles["ROLE_ACCOUNT-APPROVER"] = "Account Approver",
-    roles["ROLE_RO"] = "Read Only"
-    roles["ROLE_SUPER"] = "Super"
-    roles["ROLE_ADMIN"] = "Admin"
-    roles["ROLE_CURATOR"] = "Curator"
-    roles["ROLE_ABSTRACTOR"] = "Abstractor",
-    roles["ROLE_TRIAL-SUBMITTER"] = "Trial Submitter"
-    roles["ROLE_SITE-SU"] = "Site Administrator"
-    roles["ROLE_SERVICE-REST"] = "Service Rest"
     mail_template = (@justRegistered && @user.domain == "NIHEXT") ? MailTemplate.find_by_code('USER_ACCOUNT_ACTIVATION') : MailTemplate.find_by_code('USER_REGISTRATION_ACTIVATION')
     site_admins_array = (User.family_unexpired_matches_by_org(user_params[:organization_id]).matches('role', 'ROLE_SITE-SU')).pluck(:email)
     if @user.receive_email_notifications && site_admins_array.any?
@@ -187,7 +187,7 @@ class UsersController < ApplicationController
     unless mail_template.to.blank?
       mail_template.body_html.gsub!('${user_name}',       "#{user_params[:first_name]} #{user_params[:last_name]}")
       mail_template.body_html.gsub!('${user_username}',   user_params[:username])
-      mail_template.body_html.gsub!('${user_role}',       roles[user_params[:role]])
+      mail_template.body_html.gsub!('${user_role}',       (current_ctrp_user_role_details user_params[:role])['name'])
       mail_template.to.gsub!('${user_email}',             "#{user_params[:email]},#{(User.family_unexpired_matches_by_org(user_params[:organization_id]).matches('role', 'ROLE_SITE-SU')).pluck(:email).join(',')}" )
       mail_template.body_html.gsub!('${user_phone}',      "#{(user_params[:phone] ? user_params[:phone] : '')} #{(user_params[:phone_ext] ? ' ext ' + user_params[:phone_ext] : '')}" )
       mail_template.body_html.gsub!('${user_org}',        (user_params[:organization_id] ? Organization.find(user_params[:organization_id]).name : '') )
@@ -248,10 +248,9 @@ class UsersController < ApplicationController
   end
 
   def userReadAccess userToUpdate
-    if current_site_user
-      user = current_site_user
-    end
-    user && userToUpdate ? (user.role == 'ROLE_RO' || (userToUpdate && user.id == userToUpdate.id) || (userWriteAccess userToUpdate) ) : false
+    current_site_user && userToUpdate ?
+        (current_site_user.role == 'ROLE_RO' ||
+            (userToUpdate && current_site_user.id == userToUpdate.id) || (userWriteAccess userToUpdate) ) : false
   end
 
 
@@ -264,21 +263,15 @@ class UsersController < ApplicationController
   end
 
   def userWriteAccess userToUpdate
-    if current_site_user
-      user = current_site_user
-    end
-    user && userToUpdate ?
-        ( ( (abstractionAccess user) || (userToUpdate && user.id == userToUpdate.id) ||
-        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg user, userToUpdate.organization_id)) ) &&
-            ( !(!(abstractionAccess user) && (abstractionAccess userToUpdate))) ) : false
+    current_site_user && userToUpdate ?
+        ( ( (abstractionAccess current_site_user) || (userToUpdate && current_site_user.id == userToUpdate.id) ||
+        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg current_site_user, userToUpdate.organization_id)) ) &&
+            ( !(!(abstractionAccess current_site_user) && (abstractionAccess userToUpdate))) ) : false
   end
 
   def searchAccess
-    if current_site_user
-      user = current_site_user
-    end
-    user ?
-        ( user.role == 'ROLE_RO' || (abstractionAccess user) || (isSiteAdminForOrg user, user.organization_id) ) : false
+    current_site_user ?
+        ( current_site_user.role == 'ROLE_RO' || (abstractionAccess current_site_user) || (isSiteAdminForOrg current_site_user, current_site_user.organization_id) ) : false
   end
 
   # Use callbacks to share common setup or constraints between actions.
