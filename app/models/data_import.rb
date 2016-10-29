@@ -244,22 +244,6 @@ class DataImport
 
   end
 
-  def create_submission num
-    total_users = User.all.size
-    total_submission_types = SubmissionType.all.size
-    total_submission_methods = SubmissionMethod.all.size
-    total_submission_sources = SubmissionSource.all.size
-    current_submission = Submission.new
-    current_submission.submission_num = num
-    current_submission.amendment_num = rand(1..20)
-    current_submission.amendment_date = Time.now
-    current_submission.submission_type = SubmissionType.all[rand(0..total_submission_types-1)]
-    current_submission.submission_method = SubmissionMethod.all[rand(0..total_submission_methods-1)]
-    current_submission.submission_source = SubmissionSource.all[rand(0..total_submission_sources-1)]
-    current_submission.user = User.all[rand(0..total_users-1)]
-    return current_submission
-  end
-
   def self.import_milestones
     missed_milestones = []
     spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-milestones_for_20_sample_trials_in_prod.xls'))
@@ -270,10 +254,7 @@ class DataImport
         submission_num = spreadsheet.cell(row,'E')
         current_submission = Submission.find_by_trial_id_and_submission_num(trial.id, submission_num)
         if current_submission.blank?
-          current_submission = create_submission submission_num
-          trial.submissions << current_submission
-          trial.edit_type = 'seed'
-          trial.save!
+          current_submission = create_submission submission_num, trial
         end
         current_milestone = spreadsheet.cell(row,'B')
         unless current_milestone.nil?
@@ -282,13 +263,7 @@ class DataImport
             missed_milestones << current_milestone
             next
           end
-          cmw = MilestoneWrapper.new
-          cmw.trial = trial
-          cmw.milestone = milestone
-          cmw.submission = current_submission
-          trial.milestone_wrappers << cmw
-          trial.edit_type = 'seed'
-          trial.save!
+          create_milestone current_submission, trial
         end
       end
     end
@@ -379,6 +354,34 @@ class DataImport
     end
   end
 
+  def create_milestone current_submission, trial
+    cmw = MilestoneWrapper.new
+    cmw.trial = trial
+    cmw.milestone = milestone
+    cmw.submission = current_submission
+    trial.milestone_wrappers << cmw
+    trial.edit_type = 'seed'
+    trial.save!
+  end
+
+  def create_submission num, trial
+    total_users = User.all.size
+    total_submission_types = SubmissionType.all.size
+    total_submission_methods = SubmissionMethod.all.size
+    total_submission_sources = SubmissionSource.all.size
+    current_submission = Submission.new
+    current_submission.submission_num = num
+    current_submission.amendment_num = rand(1..20)
+    current_submission.amendment_date = Time.now
+    current_submission.submission_type = SubmissionType.all[rand(0..total_submission_types-1)]
+    current_submission.submission_method = SubmissionMethod.all[rand(0..total_submission_methods-1)]
+    current_submission.submission_source = SubmissionSource.all[rand(0..total_submission_sources-1)]
+    current_submission.user = User.all[rand(0..total_users-1)]
+    trial.submissions << current_submission
+    trial.edit_type = 'seed'
+    trial.save!
+    return current_submission
+  end
 
 end
 
