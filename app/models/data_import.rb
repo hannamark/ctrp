@@ -34,7 +34,7 @@ class DataImport
         trial.phase = Phase.find_by_name(trial_spreadsheet.cell(row,'BS'))
         primary_purpose = trial_spreadsheet.cell(row,'BY')
         unless primary_purpose.blank?
-          primary_purpose.gsub! "_", " "
+          primary_purpose.tr!("_", " ")
           trial.primary_purpose = PrimaryPurpose.where("lower(name) = ?", primary_purpose.downcase).first
         end
         secondary_purpose = trial_spreadsheet.cell(row,'BZ')
@@ -44,13 +44,13 @@ class DataImport
 =begin
         research_category = trial_spreadsheet.cell(row,'DO')
         unless research_category.blank?
-          research_category.gsub! "_", " "
+          research_category.tr!("_", " ")
           trial.research_category = ResearchCategory.where("lower(name) = ?", research_category.downcase).first
         end
 =end
         study_source = trial_spreadsheet.cell(row,'CZ')
         unless study_source.blank?
-          study_source.gsub! "_", " "
+          study_source.tr!("_", " ")
           study_source = "EXTERNALLY PEER-REVIEWED" if study_source == "EXTERNALLY PEER REVIEWED"
           trial.study_source = StudySource.where("lower(name) = ?", study_source.downcase).first
         end
@@ -65,7 +65,7 @@ class DataImport
           trial.trial_status_wrappers << tsw
         end
         processing_status = trial_spreadsheet.cell(row,'CC')
-        processing_status_date = trial_spreadsheet.cell(row,'CD')
+        #processing_status_date = trial_spreadsheet.cell(row,'CD')
         unless processing_status.blank?
           processing_status = ProcessingStatus.where("lower(name) = ?", processing_status.downcase).first
           #puts "processing_status = #{processing_status.inspect}"
@@ -308,7 +308,7 @@ class DataImport
       srs.participating_site = ps
       site_recruitment_status = spreadsheet.cell(row,'I')
       #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
-      site_recruitment_status.gsub! "_", " "
+      site_recruitment_status.tr!("_", " ")
       #puts "site_recruitment_status = #{site_recruitment_status.inspect}"
       x = SiteRecruitmentStatus.where("lower(name) = ?", site_recruitment_status.downcase).first
       #puts "x = #{x.inspect}"
@@ -348,13 +348,13 @@ class DataImport
        name = spreadsheet.cell(row,'B')
        sent_to_ctrp = spreadsheet.cell(row,'C')
 
-          org = CtepOrgType.new
-          org.code = code
-          org.name = name
-          org.sent_to_ctrp = sent_to_ctrp
-          org.record_status = "Active"
-          org.save!
-        end
+       org = CtepOrgType.new
+       org.code = code
+       org.name = name
+       org.sent_to_ctrp = sent_to_ctrp
+       org.record_status = "Active"
+       org.save!
+     end
   end
 
   def self.import_org_funding_mechanisms

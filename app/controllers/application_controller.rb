@@ -201,7 +201,7 @@ class ApplicationController < ActionController::Base
           token: token,
           role: user.role,
           user_id: user.id,
-          privileges: (current_ctrp_user_role_details user.role),
+          privileges: user.get_write_mode,
           user_type: user.type,
           env: Rails.env
                     }
