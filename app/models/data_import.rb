@@ -1,3 +1,7 @@
+#
+# rubocop:disable ClassLength
+#
+
 require 'rubygems'
 require 'roo'
 
@@ -240,29 +244,33 @@ class DataImport
 
   end
 
-  def self.import_milestones
-    missed_milestones = []
+  def create_submission num
+    total_users = User.all.size
     total_submission_types = SubmissionType.all.size
     total_submission_methods = SubmissionMethod.all.size
     total_submission_sources = SubmissionSource.all.size
-    total_users = User.all.size
+    current_submission = Submission.new
+    current_submission.submission_num = num
+    current_submission.amendment_num = rand(1..20)
+    current_submission.amendment_date = Time.now
+    current_submission.submission_type = SubmissionType.all[rand(0..total_submission_types-1)]
+    current_submission.submission_method = SubmissionMethod.all[rand(0..total_submission_methods-1)]
+    current_submission.submission_source = SubmissionSource.all[rand(0..total_submission_sources-1)]
+    current_submission.user = User.all[rand(0..total_users-1)]
+    return current_submission
+  end
+
+  def self.import_milestones
+    missed_milestones = []
     spreadsheet = Roo::Excel.new(Rails.root.join('db', 'ctrp-dw-milestones_for_20_sample_trials_in_prod.xls'))
     spreadsheet.default_sheet = spreadsheet.sheets.first
     ((spreadsheet.first_row+1)..spreadsheet.last_row).each do |row|
-      t = spreadsheet.cell(row,'A')
       trial = Trial.find_by_nci_id(t)
       unless trial.nil?
         submission_num = spreadsheet.cell(row,'E')
         current_submission = Submission.find_by_trial_id_and_submission_num(trial.id, submission_num)
         if current_submission.blank?
-          current_submission = Submission.new
-          current_submission.submission_num = submission_num
-          current_submission.amendment_num = rand(1..20)
-          current_submission.amendment_date = Time.now
-          current_submission.submission_type = SubmissionType.all[rand(0..total_submission_types-1)]
-          current_submission.submission_method = SubmissionMethod.all[rand(0..total_submission_methods-1)]
-          current_submission.submission_source = SubmissionSource.all[rand(0..total_submission_sources-1)]
-          current_submission.user = User.all[rand(0..total_users-1)]
+          current_submission = create_submission submission_num
           trial.submissions << current_submission
           trial.edit_type = 'seed'
           trial.save!
@@ -284,7 +292,6 @@ class DataImport
         end
       end
     end
-    puts "List of missed milestones = #{missed_milestones.uniq.inspect}" if missed_milestones.count() > 0
   end
 
   def self.import_participating_sites
