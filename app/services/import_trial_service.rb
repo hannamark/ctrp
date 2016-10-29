@@ -1,3 +1,6 @@
+#
+# rubocop:disable ClassLength
+
 class ImportTrialService
 
   def initialize()
@@ -92,24 +95,22 @@ class ImportTrialService
     orgs = Organization.all
     orgs = orgs.matches_name_wc(org_name, true)
     nlm_orgs = orgs.with_source_context("NLM")
-    orgs = orgs.with_source_status("Active")
-    orgs = orgs.with_source_context("CTRP")
 
     #M.D. Anderson Cancer Center NCT02217865
 
     if nlm_orgs.length == 1
-      _nlm_org_ctrp_id = nlm_orgs[0].ctrp_id
-      _ctrp_org = Organization.find_by_id_and_source_context_id(_nlm_org_ctrp_id,SourceContext.find_by_code('CTRP').id)
-      _ctrp_org_status = SourceStatus.find_by_id(_ctrp_org.source_status_id).code if !_ctrp_org.nil?
-      if  !_ctrp_org.nil? &&  _ctrp_org_status == 'ACT'
+      nlm_org_ctrp_id = nlm_orgs[0].ctrp_id
+      ctrp_org = Organization.find_by_id_and_source_context_id(nlm_org_ctrp_id,SourceContext.find_by_code('CTRP').id)
+      ctrp_org_status = SourceStatus.find_by_id(ctrp_org.source_status_id).code if !ctrp_org.nil?
+      if  !ctrp_org.nil? &&  ctrp_org_status == 'ACT'
         #take that CTRP org and make it the Lead org, sponsor, Data table 4 etc.
         import_params[:lead_org_id] = nlm_orgs[0].id
         import_params[:sponsor_id] = nlm_orgs[0].id
         import_params[:trial_funding_sources_attributes] = [{organization_id: nlm_orgs[0].id}]
-      elsif !_ctrp_org.nil? &&  _ctrp_org_status != 'ACT'
+      elsif !ctrp_org.nil? &&  ctrp_org_status != 'ACT'
         ## then throw an error back and stop the import process.
         ##BA'S ...??
-      elsif _ctrp_org.nil?
+      elsif ctrp_org.nil?
         ##then leave the lead org etc blank but continue with the import.
         ##BA'S ...??
       else
@@ -336,11 +337,11 @@ class ImportTrialService
     return change_code(import_primary_purposes,PrimaryPurpose,ct_primary_purpose)
   end
 
-  def change_code(records,model,_ct_gov_val)
-    _ctrp_record = records.find_by_from(_ct_gov_val)
-    !_ctrp_record.nil? ? _ctrp_val = _ctrp_record.to : _ctrp_val = nil
-    !_ctrp_val.nil? ?  _ctrp_code = model.where(name: _ctrp_val).pluck(:code) : _ctrp_code =''
-    return _ctrp_code
+  def change_code(records,model,ct_gov_val)
+    ctrp_record = records.find_by_from(ct_gov_val)
+    !ctrp_record.nil? ? ctrp_val = ctrp_record.to : ctrp_val = nil
+    !ctrp_val.nil? ?  ctrp_code = model.where(name: ctrp_val).pluck(:code) : _ctrp_code =''
+    return ctrp_code
   end
 
   def map_masking (ct_masking)
