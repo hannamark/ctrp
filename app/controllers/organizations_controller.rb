@@ -61,7 +61,7 @@ class OrganizationsController < ApplicationController
   def update
     return if !@write_access
     @organization.updated_by = @current_user.username unless @current_user.nil?
-    if organization_params[:ctrp_id] && @organization.ctrp_id != organization_params[:ctrp_id] && ( @organization.source_context_id == @ctepId || @organization.source_context_id == @nlmId ) then
+    if isAssociatedOrgUpdate
       respond_to do |format|
         saveAndRenderAssociatedOrgs format
       end
@@ -360,21 +360,19 @@ class OrganizationsController < ApplicationController
     @read_all_access = User.org_read_all_access(@current_user)
   end
 
+  def isAssociatedOrgUpdate
+    return organization_params[:ctrp_id] && @organization.ctrp_id != organization_params[:ctrp_id] && ( @organization.source_context_id == @ctepId || @organization.source_context_id == @nlmId )
+  end
+
   def processSortParams
+    params[:allrows] != true ? params[:rows] = 20 if params[:rows].blank? : params[:rows] = nil
     params[:start] = 1 if params[:start].blank?
-    if params[:allrows] != true
-      params[:rows] = 20 if params[:rows].blank?
-    else
-      params[:rows] = nil
-    end
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
     params[:alias] = true if !params.has_key?(:alias)  # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
 
-    sortBy = params[:sort]
-    if ['source_context', 'source_status'].include? sortBy
-      sortBy  += "_name"
-    end
+    sortBy = (['source_context', 'source_status'].include? sortBy) ? params[:sort]  += "_name" : params[:sort]
+
     return sortBy
   end
 
