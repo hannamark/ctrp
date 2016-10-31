@@ -1,7 +1,13 @@
 
 <!--CTRP content -->
+<div class="form-group"  ng-if="!orgDetailView.ctrpOrg.new">
+    <label class="control-label col-xs-12 col-sm-3">Context ID:</label>
+    <div class="col-xs-12 col-sm-6 form-text">
+        {{orgDetailView.ctrpOrg.id}}
+    </div>
+</div>
 <div ng-if="!orgDetailView.ctrpOrg.new" class="form-group">
-    <label class="control-label col-xs-12 col-sm-3">CTRP ID:</label>
+    <label class="control-label col-xs-12 col-sm-3">Group ID:</label>
     <div class="col-xs-12 col-sm-6 form-text">{{orgDetailView.ctrpOrg.ctrp_id}}</div>
 </div>
 <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.organization_form.needsAttention(organization_form.name)}">
