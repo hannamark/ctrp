@@ -273,7 +273,7 @@ class OrganizationsController < ApplicationController
   end
 
   def filterByName resultOrgs
-    resultOrgs = resultOrgs.match_name_from_joins(params[:name].gsub(/\\/,'\&\&'), params[:alias], params[:wc_search]) if params[:name].present?
+    resultOrgs = resultOrgs.match_name_from_joins(params[:name].gsub(/\\/,'\&\&'), (params[:alias] == true) , params[:wc_search]) if params[:name].present?
 
     return resultOrgs
   end
@@ -367,10 +367,13 @@ class OrganizationsController < ApplicationController
 
   def processSortParams
     params[:start] = 1 if params[:start].blank?
-    (params[:allrows] != true && params[:rows].blank?) ? params[:rows] = 20 : params[:rows] = nil
+    if params[:allrows] != true && params[:rows].blank?
+      params[:rows] = 20
+    else
+      params[:rows] = nil
+    end
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
-    params[:alias] = true if !params.has_key?(:alias)  # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
   end
 
   def getSortBy
