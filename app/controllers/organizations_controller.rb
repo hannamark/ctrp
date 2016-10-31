@@ -64,7 +64,7 @@ class OrganizationsController < ApplicationController
     if isAssociatedOrgUpdate
       saveAndRenderAssociatedOrgs
     elsif @organization.source_context_id == @ctrpId
-
+      saveAndRenderUpdatedOrg
     end
   end
 
@@ -82,7 +82,7 @@ class OrganizationsController < ApplicationController
       end
     end
   end
-  saveAndRenderUpdatedOrg
+
 
 
   def curate
