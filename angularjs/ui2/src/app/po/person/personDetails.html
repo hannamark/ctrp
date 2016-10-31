@@ -170,7 +170,7 @@
                                 <div class="col-xs-12 col-sm-3 form-text" ng-if="!personDetailView.curPersonEditable">{{personDetailView.curPerson.email}}</div>
                                 <label for="phone" class="control-label col-xs-12 col-sm-1">Phone:</label>
                                 <div class="col-xs-12 col-sm-2" ng-if="personDetailView.curPersonEditable">
-                                    <input type="text" restriction-field class="form-control input-sm" name="phone" id="phone" maxlength="30" ng-model="personDetailView.curPerson.phone" ng-required="!personDetailView.curPerson.email" placeholder="Phone">
+                                    <input type="text" restriction-field class="form-control input-sm" name="phone" id="phone" maxlength="30" ng-model="personDetailView.curPerson.phone" ng-required="!personDetailView.curPerson.email" placeholder="Phone" mask-phone-number>
                                     <span ng-show="personDetailView.curPerson.phone.length" class="form-control-feedback" ng-class="!ctrpbtn.person_form.needsAttention(person_form.phone) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
                                 </div>
                                 <div class="col-xs-12 col-sm-1" ng-if="personDetailView.curPersonEditable">
@@ -335,7 +335,7 @@
                 </button>
             </div>
         </div>
-    </modal>    
+    </modal>
     <div class="row top-offset-xs"></div>
     </div>
 </div>
