@@ -405,7 +405,7 @@
                 siteObj.new = false;
 
                 // For displaying status name in the table
-                _.each(vm.siteRecruitmentStatusesArr, setStatusNameCode);
+                _.each(vm.siteRecruitmentStatusesArr, setStatusNameCode, siteObj);
                 vm.siteRecruitmentGrid.push(siteObj);
             }
 
@@ -1058,9 +1058,9 @@
 
     /* Used in init site recruitment grid */
     function setStatusNameCode(status) {
-        if (status.id === siteObj.site_recruitment_status.id) {
-            siteObj.sr_status_name = status.name;
-            siteObj.sr_status_code = status.code;
+        if (status.id === this.site_recruitment_status.id) {
+            this.sr_status_name = status.name;
+            this.sr_status_code = status.code;
         }
     }
 }());
