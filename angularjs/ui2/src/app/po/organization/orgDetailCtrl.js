@@ -131,6 +131,7 @@
                 vm.associatedOrgs = associatedOrgsObj.associated_orgs;
                 vm.defaultTab = associatedOrgsObj.active_context;
                 vm.currentUserIsAdmin = associatedOrgsObj.ac_tp;
+                vm.currentUserIsReadAll = associatedOrgsObj.rc_tp;
                 vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP')[0];
                 vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
                 vm.ctrpOrg =  filterOutCTRPOrg();
