@@ -255,7 +255,7 @@
                     vm.selectedIaArray = vm.selectedSponsorArray;
                 } else {
                     // else Sponsor
-                    if (vm.curTrial.responsible_party_id === vm.sponsor_id){
+                    if (vm.curTrial.responsible_party_id == vm.sponsor_id){
                         vm.showSponsor = true;
                     }
                     vm.showInvestigator = false;
