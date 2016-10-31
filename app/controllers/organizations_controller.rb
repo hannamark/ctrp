@@ -366,8 +366,12 @@ class OrganizationsController < ApplicationController
   end
 
   def processSortParams
-    params[:allrows] != true ? (params[:rows] = 20 if params[:rows].blank?) : params[:rows] = nil
     params[:start] = 1 if params[:start].blank?
+    if params[:allrows] != true && params[:rows].blank?
+      params[:rows] = 20
+    else
+      params[:rows] = nil
+    end
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
     params[:alias] = true if !params.has_key?(:alias)  # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
