@@ -124,10 +124,10 @@ class OrganizationsController < ApplicationController
   def associated
       @associated_orgs = []
       active_org = Organization.all_orgs_data().where(:id => params[:id])[0]
-      if User.org_read_all_access(@current_user) && !active_org.blank? && !active_org.ctrp_id.blank?
+      if associatedOrgAccessByAdmin active_org
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
         @active_context = active_org.source_context_name
-      elsif params[:id] && params[:remove_ids].blank? && !active_org.blank?
+      elsif associatedOrgSingleAccess active_org
         @associated_orgs.push(active_org)
         @active_context = active_org.source_context_name unless @associated_orgs.blank?
       end
@@ -136,22 +136,12 @@ class OrganizationsController < ApplicationController
   end
 
   def search
-    params[:start] = 1 if params[:start].blank?
-    if params[:allrows] != true
-      params[:rows] = 20 if params[:rows].blank?
-    else
-      params[:rows] = nil
-    end
-    params[:sort] = 'name' if params[:sort].blank?
-    params[:order] = 'asc' if params[:order].blank?
-    params[:alias] = true if !params.has_key?(:alias)  # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
     if parse_request_header
       wrapper_authenticate_user
     end
-    sortBy = params[:sort]
-    if ['source_context', 'source_status'].include? sortBy
-      sortBy  += "_name"
-    end
+
+    sortBy = processSortParams
+
     @organizations = []
 
     org_keys = %w[ name source_context source_id source_status family_name address address2 city
@@ -259,11 +249,41 @@ class OrganizationsController < ApplicationController
 
   def manilpulatedFilterSearch resultOrgs
     # manipulated filter not direct from model
-    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:source_id].present?
-    resultOrgs = resultOrgs.match_name_from_joins(params[:name].gsub(/\\/,'\&\&'), params[:alias], params[:wc_search]) if params[:name].present?
-    resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
-    resultOrgs = resultOrgs.with_family(params[:family_name].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:family_name].present? && params[:family_name] != '*'
+    resultOrgs = filterBySourceId resultOrgs
+    resultOrgs = filterByName resultOrgs
+    resultOrgs = filterByDate resultOrgs
+    resultOrgs = filterByFamily resultOrgs
 
+    return resultOrgs
+  end
+
+  def associatedOrgAccessByAdmin org
+    return User.org_read_all_access(@current_user) && !org.blank? && !org.ctrp_id.blank?
+  end
+
+  def associatedOrgSingleAccess org
+    return params[:id] && params[:remove_ids].blank? && !org.blank?
+  end
+
+  def filterBySourceId resultOrgs
+    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:source_id].present?
+
+    return resultOrgs
+  end
+
+  def filterByName resultOrgs
+    resultOrgs = resultOrgs.match_name_from_joins(params[:name].gsub(/\\/,'\&\&'), params[:alias], params[:wc_search]) if params[:name].present?
+
+    return resultOrgs
+  end
+
+  def filterByDate resultOrgs
+    resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
+    return resultOrgs
+  end
+
+  def filterByFamily resultOrgs
+    resultOrgs = resultOrgs.with_family(params[:family_name].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:family_name].present? && params[:family_name] != '*'
     return resultOrgs
   end
 
@@ -338,6 +358,24 @@ class OrganizationsController < ApplicationController
     @ctrpId = SourceContext.find_by_code("CTRP").id
     @write_access = User.org_write_access(@current_user)
     @read_all_access = User.org_read_all_access(@current_user)
+  end
+
+  def processSortParams
+    params[:start] = 1 if params[:start].blank?
+    if params[:allrows] != true
+      params[:rows] = 20 if params[:rows].blank?
+    else
+      params[:rows] = nil
+    end
+    params[:sort] = 'name' if params[:sort].blank?
+    params[:order] = 'asc' if params[:order].blank?
+    params[:alias] = true if !params.has_key?(:alias)  # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
+
+    sortBy = params[:sort]
+    if ['source_context', 'source_status'].include? sortBy
+      sortBy  += "_name"
+    end
+    return sortBy
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
