@@ -62,13 +62,9 @@ class OrganizationsController < ApplicationController
     return if !@write_access
     @organization.updated_by = @current_user.username unless @current_user.nil?
     if isAssociatedOrgUpdate
-      respond_to do |format|
-        saveAndRenderAssociatedOrgs format
-      end
+      saveAndRenderAssociatedOrgs
     elsif @organization.source_context_id == @ctrpId
-      respond_to do |format|
-        saveAndRenderUpdatedOrg format
-      end
+
     end
   end
 
@@ -86,7 +82,7 @@ class OrganizationsController < ApplicationController
       end
     end
   end
-
+  saveAndRenderUpdatedOrg
 
 
   def curate
@@ -323,28 +319,32 @@ class OrganizationsController < ApplicationController
     return org
   end
 
-  def saveAndRenderAssociatedOrgs format
-    @organization = associateTwoOrgs organization_params[:ctrp_id], @organization
-    if @organization.source_context_id == @ctepId
-      old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @ctepId}).where('id <> ' + (@organization.id).to_s).where('source_context_id <> ' + (@nlmId).to_s)
-      old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
-    end
-    if @organization.save
-      @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
-      @active_context = 'CTRP'
-      format.json { render :associated }
-    else
-      format.json { render json: @organization.errors, status: :unprocessable_entity }
+  def saveAndRenderAssociatedOrgs
+    respond_to do |format|
+      @organization = associateTwoOrgs organization_params[:ctrp_id], @organization
+      if @organization.source_context_id == @ctepId
+        old_orgs = Organization.where({:ctrp_id => organization_params[:ctrp_id], :source_context_id => @ctepId}).where('id <> ' + (@organization.id).to_s).where('source_context_id <> ' + (@nlmId).to_s)
+        old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
+      end
+      if @organization.save
+        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
+        @active_context = 'CTRP'
+        format.json { render :associated }
+      else
+        format.json { render json: @organization.errors, status: :unprocessable_entity }
+      end
     end
   end
 
-  def saveAndRenderUpdatedOrg format
-    if @organization.update(organization_params.except(:ctrp_id))
-      @active_context = 'CTRP'
-      format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
-      format.json { render :show, status: :ok, location: @organization }
-    else
-      format.json { render json: @organization.errors, status: :unprocessable_entity }
+  def saveAndRenderUpdatedOrg
+    respond_to do |format|
+      if @organization.update(organization_params.except(:ctrp_id))
+        @active_context = 'CTRP'
+        format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
+        format.json { render :show, status: :ok, location: @organization }
+      else
+        format.json { render json: @organization.errors, status: :unprocessable_entity }
+      end
     end
   end
 
