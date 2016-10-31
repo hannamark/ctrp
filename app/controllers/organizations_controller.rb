@@ -129,13 +129,13 @@ class OrganizationsController < ApplicationController
 
   def associated
       @associated_orgs = []
-      if User.org_read_all_access(@current_user) && params[:id]
-        active_org = Organization.find_by_id(params[:id])
+      active_org = Organization.all_orgs_data().where(:id => params[:id])[0]
+      if User.org_read_all_access(@current_user) && !active_org.blank? && !active_org.ctrp_id.blank?
         @active_context = SourceContext.find(active_org.source_context_id).name
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
-      elsif params[:id] && params[:remove_ids].blank?
-        @associated_orgs = filterSearch Organization.all_orgs_data().where(:id => params[:id])
-        @active_context = 'CTRP' unless @associated_orgs.blank?
+      elsif params[:id] && params[:remove_ids].blank? && !active_org.blank?
+        @associated_orgs.push(active_org)
+        @active_context = active_org.source_context_name unless @associated_orgs.blank?
       end
       @write_access = User.org_write_access(@current_user)
       @read_all_access = User.org_read_all_access(@current_user)
