@@ -131,6 +131,7 @@
                 vm.associatedOrgs = associatedOrgsObj.associated_orgs;
                 vm.defaultTab = associatedOrgsObj.active_context;
                 vm.currentUserIsAdmin = associatedOrgsObj.ac_tp;
+                vm.currentUserIsReadAll = associatedOrgsObj.rc_tp;
                 vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP')[0];
                 vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
                 vm.ctrpOrg =  filterOutCTRPOrg();
@@ -249,7 +250,7 @@
         //Function that checks if an Organization - based on Name & source context is unique. If not, presents a warning to the user prior. Invokes an AJAX call to the organization/unique Rails end point.
         vm.checkUniqueOrganization = function() {
             vm.showUniqueWarning = false;
-            if (vm.ctrpOrg && vm.ctrpOrg.name && vm.ctrpOrg.name.length > 0 && vm.ctrpOrg.name !== vm.ctrpOrgCopy.name) {
+            if (vm.ctrpOrg && vm.ctrpOrg.name && vm.ctrpOrg.name.length > 0 && ((vm.ctrpOrgCopy && (vm.ctrpOrg.name !== vm.ctrpOrgCopy.name)) || !vm.ctrpOrgCopy ) ) {
                 var searchParams = {
                     "org_name": vm.ctrpOrg.name,
                     "source_context_id": vm.ctrpOrg.source_context_id,

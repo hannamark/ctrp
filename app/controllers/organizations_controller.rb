@@ -275,19 +275,16 @@ class OrganizationsController < ApplicationController
   def unique
     is_unique = true
     if params[:org_exists] == true && params[:org_name] && params[:org_id]
+
       #edit
-      @dbOrgs = Organization.where("id <> #{params[:org_id]} AND name = '#{params[:org_name]}'")
       #if on the Edit screen, then check for name changes and ignore if database & screen names are the same.
       #if params[:org_name] == @dbOrg.name, both are equal. Must not warn
       #However if on the edit screen and the user types in a name that is the same as another org, then complain, both are different. Must warn.
-      if !@dbOrgs.blank?
-        is_unique = false
-      end
+      is_unique = Organization.where("id <> #{params[:org_id]} AND name = '#{params[:org_name]}'").blank?
     elsif params[:org_exists] == true && params[:org_name]
-      #new
-      @dbOrgs = Organization.find_by_name(params[:org_name])
 
-      is_unique = true unless !@dbOrgs.blank?
+      #new
+      is_unique = Organization.find_by_name(params[:org_name]).blank?
     end
 
     respond_to do |format|
