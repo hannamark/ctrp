@@ -1039,6 +1039,14 @@
             }, 1);
         }
 
+        /* Used in init site recruitment grid */
+        function setStatusNameCode(status) {
+            if (status.id === this.site_recruitment_status.id) {
+                this.sr_status_name = status.name;
+                this.sr_status_code = status.code;
+            }
+        }
+
     } //trialParticipatingSitesCtrl
 
 
@@ -1054,13 +1062,5 @@
         vm.cancel = function() {
             $uibModalInstance.dismiss('canceled');
         };
-    }
-
-    /* Used in init site recruitment grid */
-    function setStatusNameCode(status) {
-        if (status.id === this.site_recruitment_status.id) {
-            this.sr_status_name = status.name;
-            this.sr_status_code = status.code;
-        }
     }
 }());
