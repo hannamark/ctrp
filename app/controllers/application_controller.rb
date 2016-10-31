@@ -205,8 +205,6 @@ class ApplicationController < ActionController::Base
           user_type: user.type,
           env: Rails.env
                     }
-
-      Rails.logger.info "In create_authorization_json auth_json = #{auth_json.inspect}"
       return auth_json
     rescue => e
       Rails.logger.info "In Application Controller, exception handling"

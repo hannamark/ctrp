@@ -130,11 +130,13 @@ class UsersController < ApplicationController
   end
 
   def filter_by_params sortBy
-    wc_matches_to_accept = 'username,first_name,last_name,email,user_status_id,user_org_name,organization_family,organization_id'
+    wc_matches_to_accept = 'username,first_name,last_name,email,user_org_name,organization_family'
     wc_matches_to_accept.split(",").each do |filter|
       @users = @users.matches_wc(filter, params[filter].gsub(/\\/,'\&\&')) if params[filter].present? && params[filter] != '*'
     end
     @users = @users.matches_wc('site_admin', params[:site_admin])  if !params[:site_admin].nil? unless @users.blank?
+    @users = @users.matches_wc('user_status_id', params[:user_status_id])  if !params[:user_status_id].nil? unless @users.blank?
+    @users = @users.matches_wc('organization_id', params[:organization_id])  if !params[:organization_id].nil? unless @users.blank?
     if sortBy != 'admin_role' && sortBy != 'organization_family'
       @users = @users.order(sortBy ? "#{sortBy} #{params[:order]}" : "last_name ASC, first_name ASC") unless @users.blank?
     elsif sortBy == 'admin_role'

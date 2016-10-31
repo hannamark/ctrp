@@ -328,7 +328,7 @@ class TrialsController < ApplicationController
     elsif params[:org].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.filter_rejected
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
-      @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
+      @trials = matches_wc(@trials, 'official_title', params[:official_title], true) if params[:official_title].present?
       @trials = @trials.with_phases(params[:phases]) if params[:phases].present?
       @trials = @trials.with_purposes(params[:purposes]) if params[:purposes].present?
       @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
@@ -364,17 +364,17 @@ class TrialsController < ApplicationController
       Rails.logger.info "Started querying multitable with Trials to avoid the access of db tables from View"
 
       #@trials = @trials.uniq
-      @trials = @trials.my_available_actions
-      @trials = @trials.includes(:phase).references(:phase)
-      @trials = @trials.includes(:primary_purpose).references(:primary_purpose)
-      @trials = @trials.includes(:research_category).references(:research_category)
-      @trials = @trials.includes(:responsible_party).references(:responsible_party)
-      @trials = @trials.includes(:accrual_disease_term).references(:accrual_disease_term)
-      @trials = @trials.includes(:lead_org).references(:lead_org)
-      @trials = @trials.includes(:pi).references(:pi)
-      @trials = @trials.includes(:sponsor).references(:sponsor)
-      @trials = @trials.includes(:study_source).references(:study_source)
-      @trials = @trials.includes(:trial_status_wrappers).references(:trial_status_wrappers)
+      #@trials = @trials.my_available_actions
+      #@trials = @trials.includes(:phase).references(:phase)
+      #@trials = @trials.includes(:primary_purpose).references(:primary_purpose)
+      #@trials = @trials.includes(:research_category).references(:research_category)
+      #@trials = @trials.includes(:responsible_party).references(:responsible_party)
+      #@trials = @trials.includes(:accrual_disease_term).references(:accrual_disease_term)
+      #@trials = @trials.includes(:lead_org).references(:lead_org)
+      #@trials = @trials.includes(:pi).references(:pi)
+      #@trials = @trials.includes(:sponsor).references(:sponsor)
+      #@trials = @trials.includes(:study_source).references(:study_source)
+      #@trials = @trials.includes(:trial_status_wrappers).references(:trial_status_wrappers)
 
       @trials.each do |trial|
         trial.current_user = @current_user
@@ -483,7 +483,7 @@ class TrialsController < ApplicationController
     if params[:checkout].present? || params[:scientific_checkout].present? || params[:admin_checkout].present? || params[:submission_type].present? ||  params[:submission_method].present? ||params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present? || params[:internal_sources].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
-      @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
+      @trials = matches_wc(@trials, 'official_title', params[:official_title], true) if params[:official_title].present?
       @trials = @trials.with_phases(params[:phases]) if params[:phases].present?
       @trials = @trials.with_purposes(params[:purposes]) if params[:purposes].present?
       @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?

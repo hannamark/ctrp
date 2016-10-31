@@ -300,12 +300,12 @@ class  User < ActiveRecord::Base
 
   def family_organizations
     organization = self.organization
-    _families = organization.families ##As an organization can have more than one family
+    families = organization.families ##As an organization can have more than one family
     family_status_id = FamilyStatus.find_by_code('ACTIVE').id
-    org_status_id = SourceStatus.find_by_code('ACT').id
+    #org_status_id = SourceStatus.find_by_code('ACT').id
     dateLimit = Date.today
-    if !_families.nil?
-        family_organizations = _families.where("family_status_id= ? and (family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null)",family_status_id ).pluck(:organization_id)
+    if !families.nil?
+        family_organizations = families.where("family_status_id= ? and (family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null)",family_status_id ).pluck(:organization_id)
     else
         ##if user's organization is an orphan
       family_organizations =Array.new().push(organization.id)

@@ -434,7 +434,7 @@
                                         'id': user.id,
                                         'col1': user.last_name + ', ' + user.first_name + ' (' + user.username + ')',
                                         'col2': user.email,
-                                        'col3': user.organization_name
+                                        'col3': user.user_org_name
                                     });
                                 }
                             });
