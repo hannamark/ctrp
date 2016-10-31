@@ -13,7 +13,7 @@ class OrganizationsController < ApplicationController
   # GET /organizations
   # GET /organizations.json
   def index
-    @organizations = Organization.all_orgs_data()
+    @organizations = filter_by_role Organization.all_orgs_data()
   end
 
   # GET /organizations/1
@@ -119,7 +119,7 @@ class OrganizationsController < ApplicationController
 
   def associated
       @associated_orgs = []
-      active_org = Organization.all_orgs_data().where(:id => params[:id])[0]
+      active_org = (filter_by_role Organization.all_orgs_data().where(:id => params[:id]))[0]
       if associatedOrgAccessByAdmin active_org
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
         @active_context = active_org.source_context_name
@@ -137,14 +137,13 @@ class OrganizationsController < ApplicationController
     end
 
     processSortParams
-    sortBy = getSortBy
 
     @organizations = []
 
     org_keys = %w[ name source_context source_id source_status family_name address address2 city
                     ctrp_id state_province country postal_code email phone updated_by date_range_arr]
     if (params.keys & org_keys).any?
-      getSearchResults sortBy
+      getSearchResults getSortBy
     end
     @read_all_access = User.org_read_all_access(@current_user)
     @write_access = User.org_write_access(@current_user)
