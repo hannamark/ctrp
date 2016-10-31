@@ -67,13 +67,7 @@ class OrganizationsController < ApplicationController
       end
     elsif @organization.source_context_id == @ctrpId
       respond_to do |format|
-        if @organization.update(organization_params.except(:ctrp_id))
-          @active_context = 'CTRP'
-          format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
-          format.json { render :show, status: :ok, location: @organization }
-        else
-          format.json { render json: @organization.errors, status: :unprocessable_entity }
-        end
+        saveAndRenderUpdatedOrg format
       end
     end
   end
@@ -131,8 +125,8 @@ class OrganizationsController < ApplicationController
       @associated_orgs = []
       active_org = Organization.all_orgs_data().where(:id => params[:id])[0]
       if User.org_read_all_access(@current_user) && !active_org.blank? && !active_org.ctrp_id.blank?
-        @active_context = SourceContext.find(active_org.source_context_id).name
         @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
+        @active_context = active_org.source_context_name
       elsif params[:id] && params[:remove_ids].blank? && !active_org.blank?
         @associated_orgs.push(active_org)
         @active_context = active_org.source_context_name unless @associated_orgs.blank?
@@ -255,22 +249,34 @@ class OrganizationsController < ApplicationController
     return resultOrgs
   end
 
-  def filterSearch resultOrgs
-    # diecrt from model
+  def modelFilterSearch resultOrgs
+    # direct from model
     resultOrgs = filter_by_role resultOrgs
     resultOrgs = get_match resultOrgs
     resultOrgs = get_match_wc resultOrgs
+    return resultOrgs
+  end
 
-    # direct from joins
-    resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if params[:no_family].present?
-    resultOrgs = resultOrgs.where("service_requests.name" => params[:service_request_name]) if params[:service_request_name].present?
-
-    # manipulated
+  def manilpulatedFilterSearch resultOrgs
+    # manipulated filter not direct from model
     resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:source_id].present?
     resultOrgs = resultOrgs.match_name_from_joins(params[:name].gsub(/\\/,'\&\&'), params[:alias], params[:wc_search]) if params[:name].present?
     resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
     resultOrgs = resultOrgs.with_family(params[:family_name].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:family_name].present? && params[:family_name] != '*'
 
+    return resultOrgs
+  end
+
+  def filterSearch resultOrgs
+    # direct from model
+    resultOrgs = modelFilterSearch resultOrgs
+
+    # direct from joins
+    resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if params[:no_family].present?
+    resultOrgs = resultOrgs.where("service_requests.name" => params[:service_request_name]) if params[:service_request_name].present?
+
+    # manipulated filter not direct from model
+    resultOrgs = manilpulatedFilterSearch resultOrgs
     return resultOrgs
   end
 
@@ -306,6 +312,16 @@ class OrganizationsController < ApplicationController
       @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
       @active_context = 'CTRP'
       format.json { render :associated }
+    else
+      format.json { render json: @organization.errors, status: :unprocessable_entity }
+    end
+  end
+
+  def saveAndRenderUpdatedOrg format
+    if @organization.update(organization_params.except(:ctrp_id))
+      @active_context = 'CTRP'
+      format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
+      format.json { render :show, status: :ok, location: @organization }
     else
       format.json { render json: @organization.errors, status: :unprocessable_entity }
     end
