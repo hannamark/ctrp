@@ -403,16 +403,12 @@
                 siteObj.edit = false;
                 siteObj.uiEdit = false;
                 siteObj.new = false;
-                // For displaying status name in the table
-                _.each(vm.siteRecruitmentStatusesArr, function(status) {
-                    if (status.id === siteObj.site_recruitment_status.id) {
-                        siteObj.sr_status_name = status.name;
-                        siteObj.sr_status_code = status.code;
-                    }
-                });
 
+                // For displaying status name in the table
+                _.each(vm.siteRecruitmentStatusesArr, setStatusNameCode);
                 vm.siteRecruitmentGrid.push(siteObj);
             }
+
             vm.Status();
         };
 
@@ -910,7 +906,7 @@
                     vm.curTrial.lock_version = response.lock_version || '';
                     $scope.$emit('updatedInChildScope', {});
                     for (var j = 0; j < vm.curTrial.participating_sites.length; j++) {
-                        if (vm.curTrial.participating_sites[j].id === psId){
+                        if (vm.curTrial.participating_sites[j].id == psId){
                             vm.curTrial.participating_sites.splice(j, 1);
                         }
                     }
@@ -1058,5 +1054,13 @@
         vm.cancel = function() {
             $uibModalInstance.dismiss('canceled');
         };
+    }
+
+    /* Used in init site recruitment grid */
+    function setStatusNameCode(status) {
+        if (status.id === siteObj.site_recruitment_status.id) {
+            siteObj.sr_status_name = status.name;
+            siteObj.sr_status_code = status.code;
+        }
     }
 }());

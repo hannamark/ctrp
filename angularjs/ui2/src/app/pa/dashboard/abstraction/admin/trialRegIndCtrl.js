@@ -99,10 +99,10 @@
                 if (!vm.showAddIndIdeError) {
                     // Check if there is a similar entry
                     for (var i = 0; i < vm.addedIndIdes.length; i++) {
-                       if((vm.addedIndIdes[i].ind_ide_type === vm.ind_ide_type) &&
-                           (vm.addedIndIdes[i].ind_ide_number === vm.ind_ide_number) &&
-                           (vm.addedIndIdes[i].grantor === vm.grantor) &&
-                           (vm.addedIndIdes[i].holder_type_id === vm.holder_type_id)) {
+                       if((vm.addedIndIdes[i].ind_ide_type == vm.ind_ide_type) &&
+                           (vm.addedIndIdes[i].ind_ide_number == vm.ind_ide_number) &&
+                           (vm.addedIndIdes[i].grantor == vm.grantor) &&
+                           (vm.addedIndIdes[i].holder_type_id == vm.holder_type_id)) {
                            return;
                        }
                     }
@@ -114,7 +114,7 @@
                     newIndIde.holder_type_id = vm.holder_type_id;
                     // For displaying name in the table
                     _.each(vm.holderTypeArr, function (holderType) {
-                        if (holderType.id === vm.holder_type_id) {
+                        if (holderType.id == vm.holder_type_id) {
                             newIndIde.holder_type_name = holderType.name;
                         }
                     });
@@ -166,7 +166,7 @@
                 vm.nih_nci = '';
                 var nciOption = vm.holderTypeArr.filter(findNciOption);
                 var nihOption = vm.holderTypeArr.filter(findNihOption);
-                if (nciOption[0].id === vm.holder_type_id) {
+                if (nciOption[0].id == vm.holder_type_id) {
                     TrialService.getNci().then(function (response) {
                         var status = response.server_response.status;
 
@@ -176,7 +176,7 @@
                     }).catch(function (err) {
                         console.log("Error in retrieving NCI Division/Program code:" + err);
                     });
-                } else if (nihOption[0].id === vm.holder_type_id) {
+                } else if (nihOption[0].id == vm.holder_type_id) {
                     TrialService.getNih().then(function (response) {
                         var status = response.server_response.status;
 
@@ -245,7 +245,7 @@
                 indIde.holder_type_id = vm.curTrial.ind_ides[i].holder_type_id;
                 // For displaying name in the table
                 _.each(vm.holderTypeArr, function (holderType) {
-                    if (holderType.id === vm.curTrial.ind_ides[i].holder_type_id) {
+                    if (holderType.id == vm.curTrial.ind_ides[i].holder_type_id) {
                         indIde.holder_type_name = holderType.name;
                     }
                 });
