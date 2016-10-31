@@ -778,31 +778,43 @@ class TrialsController < ApplicationController
   end
 
   def import_clinical_trials_gov
-    url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
-    url = url.sub('NCT********', params[:nct_id])
-    xml = Nokogiri::XML(open(url))
+    begin
+        url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
+        url = url.sub('NCT********', params[:nct_id])
+        xml = Nokogiri::XML(open(url))
 
-    import_trial_service = ImportTrialService.new()
-    @trial = Trial.new(import_trial_service.import_params(xml, @current_user))
-    @trial.current_user = @current_user
-    import_log_service = ImportTrialLogService.new
-    request_record = import_log_service.request_logging(xml,"Create","request",@current_user,ImportTrialLogDatum)
+        import_trial_service = ImportTrialService.new()
+        @trial = Trial.new(import_trial_service.import_params(xml, @current_user))
+        @trial.current_user = @current_user
+        import_log_service = ImportTrialLogService.new
+        request_record = import_log_service.request_logging(xml,"Create","request",@current_user,ImportTrialLogDatum)
+    rescue =>e
+      @error= e.message
+      Rails.logger.error "Exception caught when trying to import an error #{@error}"
+    end
     respond_to do |format|
       if @trial.save
-        format.html { redirect_to @trial, notice: 'Trial was successfully imported.' }
-        format.json { render :show, status: :created, location: @trial }
-        import_log_service.response_logging(@trial,"sucess", "Created Sucessfully",ImportTrialLogDatum,request_record)
-        FileUtils.mkdir_p('../../storage/tmp')
-        file_name = "import_#{params[:nct_id]}_#{Date.today.strftime('%d-%b-%Y')}"
-        File.open("../../storage/tmp/#{file_name}.xml", 'wb') do |file|
-          file << open(url).read
+        begin
+          format.html { redirect_to @trial, notice: 'Trial was successfully imported.' }
+          format.json { render :show, status: :created, location: @trial }
+          import_log_service.response_logging(@trial,"sucess", "Created Sucessfully",ImportTrialLogDatum,request_record)
+          FileUtils.mkdir_p('../../storage/tmp')
+          file_name = "import_#{params[:nct_id]}_#{Date.today.strftime('%d-%b-%Y')}"
+          File.open("../../storage/tmp/#{file_name}.xml", 'wb') do |file|
+            file << open(url).read
+          end
+          TrialDocument.create(document_type: 'Other Document', document_subtype: 'Import XML', trial_id: @trial.id, file: File.open("../../storage/tmp/#{file_name}.xml"))
+          Rails.logger.info "Imported a trial successfully and rendered"
+
+        rescue =>e
+          @error= e.message
+          Rails.logger.error "Exception caught when trying to render an import trial #{@error}"
         end
-        TrialDocument.create(document_type: 'Other Document', document_subtype: 'Import XML', trial_id: @trial.id, file: File.open("../../storage/tmp/#{file_name}.xml"))
-      else
+
+        else
         format.html { render :new }
         format.json { render json: @trial.errors, status: :unprocessable_entity }
         import_log_service.response_logging(@trial,"failure", @trial.errors.to_xml,ImportTrialLogDatum,request_record)
-
       end
     end
   end
