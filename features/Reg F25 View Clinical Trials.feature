@@ -89,12 +89,12 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
      And the table displays the columns type
      
       #All fields should be displayed even when no value exists
-     |CTRP Org ID|
-     # CTRP Org ID=Source ID when Source CTRP org
+     |CTRP ID|
+     # CTRP ID=Source ID when Source CTRP org
      |CTRP Organization Name|
      |Principal Investigator|
      # Principal Investigator Format (Last Name, First Name)
-     |Local Trial Identifier|
+     |Local Trial Id|
      |Program Code|
      |Current Site Recruitment Status|
      |Current Site Recruitment Status Date|

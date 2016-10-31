@@ -79,7 +79,7 @@ And I can view TSR document
       |Status/Dates    |Current Trial Status                         |Required        |                                                        |Display "No data available"    |
       |                |Trial Start Date-Actual/Anticipated          |Required        |                                                        |Display "No data available"    |
       |                |Primary Completion Date-Actual/Anticipated/NA|Required        |                                                        |Display "No data available"    |                 
-      |                |Trial Completion Date-Actual/Anticipated     |Not Required    |                                                        |Field not Displayed            |
+      |                |Trial Completion Date-Actual/Anticipated     |Not Required    |                                                        |Display "No data available"    |
       
      
       Scenario:#5 HIN Grants Section Display Rules 
@@ -92,10 +92,10 @@ And I can view TSR document
      |                |NIH Institution Code     |Required        |When the answer to the questions "Is this trial funded by an NCI grant?" is "yes"|Display "No data available"    |
      |                |Serial Number            |Required        |When the answer to the questions "Is this trial funded by an NCI grant?" is "yes"|Display "No data available"    |
      |                |NCI Division/Progarm Code|Required        |When the answer to the questions "Is this trial funded by an NCI grant?" is "yes"|Display "No data available"    |     
-     |NIH Grants      |Funding Mechanism        |Not Required    |When the answer to the questions "Is this trial funded by an NCI grant?" is "No" |Field not Displayed            |  
-     |                |NIH Institution Code     |Not Required    |When the answer to the questions "Is this trial funded by an NCI grant?" is "No" |Field not Displayed            |
-     |                |Serial Number            |Not Required    |When the answer to the questions "Is this trial funded by an NCI grant?" is "No" |Field not Displayed            |
-     |                |NCI Division/Progarm Code|Not Required    |When the answer to the questions "Is this trial funded by an NCI grant?" is "No" |Field not Displayed            |     
+     |NIH Grants      |Funding Mechanism        |Not Required    |When the answer to the questions "Is this trial funded by an NCI grant?" is "No" |Display Field only when Data exist|  
+     |                |NIH Institution Code     |Not Required    |When the answer to the questions "Is this trial funded by an NCI grant?" is "No" |Display Field only when Data exist|
+     |                |Serial Number            |Not Required    |When the answer to the questions "Is this trial funded by an NCI grant?" is "No" |Display Field only when Data exist|
+     |                |NCI Division/Progarm Code|Not Required    |When the answer to the questions "Is this trial funded by an NCI grant?" is "No" |Display Field only when Data exist|     
 
 
      Scenario:#6 Summary 4 Information Section Display Rules 
