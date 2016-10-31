@@ -140,7 +140,8 @@ class OrganizationsController < ApplicationController
       wrapper_authenticate_user
     end
 
-    sortBy = processSortParams
+    processSortParams
+    sortBy = getSortBy
 
     @organizations = []
 
@@ -370,9 +371,10 @@ class OrganizationsController < ApplicationController
     params[:sort] = 'name' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
     params[:alias] = true if !params.has_key?(:alias)  # Param alias is boolean, use has_key? instead of blank? to avoid false positive when the value of alias is false
+  end
 
+  def getSortBy
     sortBy = (['source_context', 'source_status'].include? sortBy) ? params[:sort]  += "_name" : params[:sort]
-
     return sortBy
   end
 
