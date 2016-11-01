@@ -44,12 +44,12 @@
                             <div ng-include src="'app/po/organization/_associatedOrgs.html?_rload='+personDetailView.updateTime"></div>
                         </md-content> -->
                         <md-tab-body>
-                            <div ng-include src="'app/po/person/_ctrpPersonDetail.html'"></div>
+                            <div ng-include src="'app/po/person/sub_partials/_ctrpPersonDetail.html'"></div>
                         </md-tab-body>
                     </md-tab>
                     <md-tab label="CTEP" md-active="personDetailView.defaultTab === 'CTEP' || personDetailView.tabOpen === 'CTEP'" ng-if="personDetailView.ctepPerson" md-on-select="personDetailView.selectContext('CTEP')">
                         <md-tab-body>
-                            <div ng-include src="'app/po/person/_ctepPersonDetail.html'"></div>
+                            <div ng-include src="'app/po/person/sub_partials/_ctepPersonDetail.html'"></div>
                         </md-tab-body>
                     </md-tab>
 

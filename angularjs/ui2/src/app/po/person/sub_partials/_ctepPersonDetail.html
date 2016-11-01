@@ -84,20 +84,8 @@
             <div class="col-xs-12 col-sm-2 form-text" ng-if="!personDetailView.curPersonEditable">{{personDetailView.curPerson.phone}} {{personDetailView.curPerson.extension}}</div>
         </div>
     </div>
-    <!-- common -->
-    <div class="form-group" ng-hide="personDetailView.curPerson.new || !personDetailView.curPerson.created_by">
-        <label class="control-label col-xs-12 col-sm-3">Created By:</label>
-        <div class="col-xs-12 col-sm-6 form-text">
-            {{personDetailView.curPerson.created_by}} ({{personDetailView.curPerson.person_created_date}})
-        </div>
-    </div>
-    <div class="form-group" ng-hide="personDetailView.curPerson.new || !personDetailView.curPerson.updated_by">
-        <label class="control-label col-xs-12 col-sm-3">Updated By:</label>
-        <div class="col-xs-12 col-sm-6 form-text">
-            <!--<input type="text" class="form-control input-sm" id="fax"  ng-model="personDetailView.curPerson.fax" type="text" placeholder="Fax">-->
-            {{personDetailView.curPerson.updated_by}} ({{personDetailView.curPerson.person_updated_date}})
-        </div>
-    </div>
+    <!-- common fields between CTRP and CTEP -->
+    <div ng-include src="'app/po/person/sub_partials/_common_fields.html'"></div>
     <!-- common ends -->
     <!-- clone ctep person -->
     <div class="form-group">
@@ -108,7 +96,7 @@
         </div>
     </div>
     <!-- TODO: present the matched person in modal -->
-    <div ng-include src="'app/po/person/_matchedClonePersonGrid.html'"></div>
+    <div ng-include src="'app/po/person/sub_partials/_matchedClonePersonGrid.html'"></div>
     <!-- end of clone person -->
 
 
