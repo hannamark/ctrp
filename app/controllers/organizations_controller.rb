@@ -376,7 +376,7 @@ class OrganizationsController < ApplicationController
   end
 
   def getSortBy
-    sortBy = (['source_context', 'source_status'].include? sortBy) ? params[:sort]  += "_name" : params[:sort]
+    sortBy = (['source_context', 'source_status'].include? params[:sort]) ? params[:sort]  += "_name" : params[:sort]
     return sortBy
   end
 
