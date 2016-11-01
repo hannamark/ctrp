@@ -17,7 +17,7 @@ Scenario:#1 CTEP Context of a new person record created
      Then the CTEP selected person record will display the field type in a CTEP tab
       # Context Person ID = Primary Key ID
       |Context Person ID|
-      |CTRP Person ID|
+      |Group ID|
       |Prefix|
       |First Name|
       |Middle Name|
@@ -172,9 +172,9 @@ Scenario:#1 CTEP Context of a new person record created
      Scenario:#10 Curator can identify when two persons are to be merged 
     Given I am logged into the CTRP 
      When CTEP Indicates via REST Service that two Persons are to be merged
-     And the CTEP Person <PersonName> will have CTEP Context Person ID <CTEPContextPersonID>, CTRP Org ID <CTRPPersonID>, Service request <CTEPServiceRequest>, processing status <CTEPProcessingStatus>, and Person status <CTEPStatus>nd CTRP Person Status<CTRPPersonStatus>
+     And the CTEP Person <PersonName> will have CTEP Context Person ID <CTEPContextPersonID>, Group ID <GroupID>, Service request <CTEPServiceRequest>, processing status <CTEPProcessingStatus>, and Person status <CTEPStatus>nd CTRP Person Status<CTRPPersonStatus>
      
-     |PersonName                           |CTEPContextPersonID       |CTRPPersonID          |CTEPServiceRequest   |CTEPprocessingStatus       |CTEPStatus      |CTRPStatus|
+     |PersonName                           |CTEPContextPersonID       |GroupID          |CTEPServiceRequest   |CTEPprocessingStatus       |CTEPStatus      |CTRPStatus|
      |Daniel Evan                          |AB123                     |2026171               |Merge ID             |Incomplete                 |Active          |Active         |         
      |Daniel Epner Evan                    |33303                     |28417522              |Merge ID             |Incomplete                 |Inactive        |Active         |        
       
@@ -182,9 +182,9 @@ Scenario:#1 CTEP Context of a new person record created
      And the curator will search for matching persons in the CTRP Context
      When Matching CTRP perons found
      Then The CTRP persons matching CTEP persons with inactive status will be Nullified
-    And the CTEP Person <PersonName> will have CTEP Context Person ID <CTEPContextPersonID>, CTRP Org ID <CTRPPersonID>, Service request <CTEPServiceRequest>, processing status <CTEPProcessingStatus>, and Person status <CTEPStatus> and CTRP Person Status<CTRPPersonStatus>  
+    And the CTEP Person <PersonName> will have CTEP Context Person ID <CTEPContextPersonID>, Group ID <GroupID>, Service request <CTEPServiceRequest>, processing status <CTEPProcessingStatus>, and Person status <CTEPStatus> and CTRP Person Status<CTRPPersonStatus>  
      
-     |PersonName                           |CTEPContextPersonID       |CTRPPersonID          |CTEPServiceRequest       |CTEPprocessingStatus        |CTEPStatus      |CTRPStatus|
+     |PersonName                           |CTEPContextPersonID       |GroupID          |CTEPServiceRequest       |CTEPprocessingStatus        |CTEPStatus      |CTRPStatus|
      |Daniel Evan                          |AB123                     |2026171               |NULL                     |complete                    |Active          | Active|        
      |Daniel Epner Evan                    |33303                     |28417522              |NULL                     |complete                    |Inactive        | Nullified|       
       
