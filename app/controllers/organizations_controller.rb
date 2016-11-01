@@ -136,7 +136,7 @@ class OrganizationsController < ApplicationController
       wrapper_authenticate_user
     end
 
-    processSortParams
+    processParams
 
     @organizations = []
 
@@ -299,7 +299,7 @@ class OrganizationsController < ApplicationController
   def associateTwoOrgs ctrpOrgId, org
     org.processing_status = 'Complete'
     org.updated_by = @current_user.username unless @current_user.nil?
-    org.updated_at = Time.zone.now
+    org.updated_at = DateTime.now
     org.ctrp_id            = ctrpOrgId
     org.service_request_id = ServiceRequest.find_by_code('NULL').id
     org.association_date = DateTime.now
@@ -364,7 +364,7 @@ class OrganizationsController < ApplicationController
     return organization_params[:ctrp_id] && @organization.ctrp_id != organization_params[:ctrp_id] && ( @organization.source_context_id == @ctepId || @organization.source_context_id == @nlmId )
   end
 
-  def processSortParams
+  def processParams
     params[:start] = 1 if params[:start].blank?
     if params[:allrows] != true && params[:rows].blank?
       params[:rows] = 20
@@ -376,7 +376,7 @@ class OrganizationsController < ApplicationController
   end
 
   def getSortBy
-    sortBy = (['source_context', 'source_status'].include? sortBy) ? params[:sort]  += "_name" : params[:sort]
+    sortBy = (['source_context', 'source_status'].include? params[:sort]) ? params[:sort]  += "_name" : params[:sort]
     return sortBy
   end
 

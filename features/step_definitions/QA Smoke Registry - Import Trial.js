@@ -170,7 +170,7 @@ module.exports = function () {
                         participatingSite.setAddPSContactPhoneExtension('01');
                         participatingSite.clickAddPSSaveButton();
                         var formattedPhone = phoneFormat.formatLocal('US', '687-657-8976');
-                        viewPS = psOrgName + ' ' + 'SinghTrialImp, ' + sitePIValue + ' ' + PSLclTrId  + ' ' + PSPgmCode + ' ' + PSStatus + ' ' + PSStatusDate + ' ' + 'SinghTrialImp, ' + sitePIValue + ' ' + 'singh@contact.com' + ' ' +  formattedPhone + ' ext. 01';
+                        viewPS = psOrgName + ' ' + 'SinghTrialImp, ' + sitePIValue + ' ' + PSLclTrId  + ' ' + PSPgmCode + ' ' + PSStatus + ' ' + PSStatusDate + ' ' + 'SinghTrialImp, ' + sitePIValue + ' ' + 'singh@contact.com' + ' ' +  formattedPhone + ' x01';
                      //   viewPS = psOrgName + ' '  + sitePIValue + ' SinghTrialImp' + ' ' + PSLclTrId  + ' ' + PSPgmCode + ' ' + PSStatus + ' ' + PSStatusDate + ' ' + sitePIValue + ' SinghTrialImp' + ' ' + 'singh@contact.com' + ' ' +  '687-657-8976 ext. 01';
                         console.log('View PS tbl in View page');
                         console.log(viewPS);
