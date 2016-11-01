@@ -2,10 +2,10 @@
 <div class="form form-horizontal">
     <div class="row md-sidenav-push-in-target">
         <div ng-include src="'app/po/organization/_allOrgDetailRO.html?_rload='+orgDetailView.updateTime" onload="[curOrg = orgDetailView.ctepOrg]" ng-model="ctepOrg"></div>
-        <div class="row"  ng-if="orgDetailView.curOrgEditable">
-            <div class="form-group col-xs-12 col-sm-6 has-feedback">
-                <div class="control-label col-xs-6 col-sm-6"></div>
-                <div class="form-group col-xs-6 col-sm-6 form-text" ng-hide="orgDetailView.disableCloneFresh === true">
+        <div ng-if="orgDetailView.curOrgEditable">
+            <div class="form-group col-sm-6 has-feedback">
+                <div class="control-label col-sm-6"></div>
+                <div class="form-group col-sm-6 form-text" ng-hide="orgDetailView.disableCloneFresh === true">
                     <ctrp-org-adv-search-modal-button
                             ng-click="orgDetailView.cloningCTEP = true;"
                             pre-search = '{
@@ -21,7 +21,7 @@
                                             }'
                             class="pull-left"
                             max-row-selectable="1" use-built-in-template="false" allow-overwrite="true"
-                            button-label = 'Clone'
+                            button-label = "Clone"
                             filtered-contexts = "CTRP"
                             selected-orgs-array="orgDetailView.selectedOrgsArray">
                     </ctrp-org-adv-search-modal-button>
