@@ -51,6 +51,9 @@ Rails.application.routes.draw do
     resources :organizations do
       collection do
         get 'search'
+        get '/associated/:id', to: 'organizations#associated'
+        post 'associated', to: 'organizations#associated', defaults: {format: 'json'}
+        post 'dis_associate', to: 'organizations#dis_associate', defaults: {format: 'json'}
         post 'search'
         post 'select'
         post 'curate'
@@ -141,6 +144,8 @@ Rails.application.routes.draw do
         post 'curate'
         post 'unique', defaults: {format: 'json'}
         get '/associate_context/:ctep_person_id/:ctrp_id', to: 'people#associate_person'
+        get '/association/remove/:ctep_person_id', to: 'people#remove_association'
+        post 'clone_ctep' #, to: 'people#clone_ctep'
       end
     end
 

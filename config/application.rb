@@ -55,6 +55,9 @@ module Ctrp
 
     config.paths["log"] = "../../logs/#{Rails.env}.log"
 
+    config.autoload_paths += %W(#{config.root}/lib)
+
+
     #config.active_job.queue_adapter = :inline
 
   end

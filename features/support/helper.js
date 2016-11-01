@@ -252,6 +252,12 @@ var helper = function() {
         console.log(errorMessage + " - field value");
     };
 
+    this.getVerifyLabelArray= function (fieldName, fieldValue, errorMessage) {
+       // this.wait(fieldName, errorMessage);
+        expect(fieldName.getText()).to.eventually.eql(fieldValue,errorMessage );
+        console.log(errorMessage + " - field value");
+    };
+
     this.getVerifyLabelUP= function (fieldName, fieldValue, errorMessage) {
         this.wait(fieldName, errorMessage);
         fieldName.getText().then(function(value){

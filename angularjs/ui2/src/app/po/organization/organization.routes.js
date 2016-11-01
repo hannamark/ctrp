@@ -31,7 +31,7 @@
                       return OrgService.getSourceContexts();
                   },
                   sourceStatusObj: function(OrgService) {
-                      return OrgService.getSourceStatuses();
+                      return OrgService.getSourceStatuses({"view_type": "all"});
                   },
                   serviceRequests: function(OrgService) {
                     return OrgService.getServiceRequests();
@@ -40,9 +40,8 @@
                   countryList : function(GeoLocationService) {
                       return GeoLocationService.getCountryList();
                   },
-                  orgDetailObj : function($stateParams, OrgService) {
-                      console.log("getting org by id: " + $stateParams.orgId);
-                      return OrgService.getOrgById($stateParams.orgId);
+                  associatedOrgsObj : function($stateParams, OrgService) {
+                      return OrgService.getAssociatedOrgs({id: $stateParams.orgId});
                   }
               }, //resolve the promise and pass it to controller
               ncyBreadcrumb: {
@@ -62,12 +61,12 @@
                       return OrgService.getSourceContexts();
                   },
                   sourceStatusObj : function(OrgService) {
-                      return OrgService.getSourceStatuses();
+                      return OrgService.getSourceStatuses({"view_type": "all"});
                   },
                   serviceRequests: function(OrgService) {
                     return OrgService.getServiceRequests();
                   },
-                  orgDetailObj: function($q) {
+                  associatedOrgsObj : function($q) {
                       var deferred = $q.defer();
                       deferred.resolve(null);
                       return deferred.promise;

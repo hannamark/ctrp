@@ -28,6 +28,7 @@ var participatingSitePage = require('../support/registerAddParticipatingSite');
 var searchOrgPage = require('../support/ListOfOrganizationsPage');
 var searchPeoplePage = require('../support/ListOfPeoplePage');
 var registryMessagePage = require('../support/RegistryMessage');
+var phoneFormat = require('phoneformat.js');
 
 
 
@@ -56,6 +57,21 @@ module.exports = function () {
         return browser.sleep(25).then(function () {
             NCTIDCurrent = NCTID;
             projectFunctionsRegistry.parseXMLFromCtGov(NCTID);
+
+            //ctGovElement.then(function (value) {
+            //    projectFunctionsRegistry.createOrgForImportedTrial(value.clinical_study.sponsors.lead_sponsor.agency, 'ctrptrialsubmitter');
+            //});
+            ctGovElement.then(function (value) {
+               // console.log('value of ct.gov entire');
+               // console.log(value);
+                console.log('value of ct.gov prim comp date');
+                console.log(value.clinical_study.primary_completion_date);
+                console.log(value.clinical_study.primary_completion_date.type);
+                console.log('value of ct.gov comp date');
+                console.log(value.clinical_study.completion_date);
+                console.log(value.clinical_study.completion_date.type);
+
+            });
             projectFunctionsRegistry.selectTrials('Industrial/Other');
             importTrial.setAddImportClinicalTrialID(NCTID);
             importTrial.clickAddImportSearchStudiesButton();
@@ -147,8 +163,15 @@ module.exports = function () {
                         participatingSite.selectAddPSTrialStatus(PSStatus);
                         participatingSite.setAddPSTrialComment(PSComment);
                         participatingSite.clickAddPSAddStatusButton();
+                        participatingSite.selectAddPSContactType('site investigator');
+                      //  participatingSite.setAddPSContactName('PS Singh Cuke');
+                        participatingSite.setAddPSContactEmailAddress('singh@contact.com');
+                        participatingSite.setAddPSContactPhone('687-657-8976');
+                        participatingSite.setAddPSContactPhoneExtension('01');
                         participatingSite.clickAddPSSaveButton();
-                        viewPS = psOrgName + ' ' + PSLclTrId + ' ' + 'SinghTrialImp, ' + sitePIValue + ' ' + PSPgmCode + ' ' + PSStatus;
+                        var formattedPhone = phoneFormat.formatLocal('US', '687-657-8976');
+                        viewPS = psOrgName + ' ' + 'SinghTrialImp, ' + sitePIValue + ' ' + PSLclTrId  + ' ' + PSPgmCode + ' ' + PSStatus + ' ' + PSStatusDate + ' ' + 'SinghTrialImp, ' + sitePIValue + ' ' + 'singh@contact.com' + ' ' +  formattedPhone + ' x01';
+                     //   viewPS = psOrgName + ' '  + sitePIValue + ' SinghTrialImp' + ' ' + PSLclTrId  + ' ' + PSPgmCode + ' ' + PSStatus + ' ' + PSStatusDate + ' ' + sitePIValue + ' SinghTrialImp' + ' ' + 'singh@contact.com' + ' ' +  '687-657-8976 ext. 01';
                         console.log('View PS tbl in View page');
                         console.log(viewPS);
                     });
@@ -161,7 +184,7 @@ module.exports = function () {
 
     this.Then(/^I should be able to see the added Participating site$/, function () {
         return browser.sleep(25).then(function () {
-            addTrial.getViewTrialParticipatingSites(viewPS.split());
+            dbConnect.dbConnectionPSViewTable('ctrptrialsubmitter', viewPS, getDBConnection);
             //  browser.sleep(25).then(callback);
         });
     });
@@ -194,12 +217,10 @@ module.exports = function () {
             viewUpdatedPS = viewPS.replace(PSLclTrIdOrgi, PSLclTrIdUpd);
             console.log('Updated PArticipating site:');
             console.log(viewUpdatedPS);
-            addTrial.getViewTrialParticipatingSites(viewUpdatedPS.split());
+            dbConnect.dbConnectionPSViewTable('ctrptrialsubmitter', viewUpdatedPS, getDBConnection);
+            login.clickWriteMode('On');
+           // addTrial.getViewTrialParticipatingSites(viewUpdatedPS.split());
             //    browser.sleep(25).then(callback);
         });
     });
-
-
-
-
 };

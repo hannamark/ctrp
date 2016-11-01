@@ -1,3 +1,5 @@
+#
+# rubocop:disable ClassLength
 
 class CreateTrialSummaryReportService
 

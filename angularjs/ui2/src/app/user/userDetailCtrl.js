@@ -8,13 +8,14 @@
     angular.module('ctrp.app.user')
         .controller('userDetailCtrl', userDetailCtrl);
 
-    userDetailCtrl.$inject = ['UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$rootScope', '$state', '$timeout', '$scope', 'AppSettingsService', 'URL_CONFIGS'];
+    userDetailCtrl.$inject = ['FORMATS', 'UserService', 'PromiseTimeoutService', 'uiGridConstants','toastr','OrgService','userDetailObj','MESSAGES', '$rootScope', '$state', '$timeout', '$scope', 'AppSettingsService', 'URL_CONFIGS'];
 
-    function userDetailCtrl(UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $rootScope, $state, $timeout, $scope, AppSettingsService, URL_CONFIGS) {
+    function userDetailCtrl(FORMATS, UserService, PromiseTimeoutService, uiGridConstants, toastr, OrgService, userDetailObj, MESSAGES, $rootScope, $state, $timeout, $scope, AppSettingsService, URL_CONFIGS) {
         var vm = this;
         vm.disableBtn = false;
 
         vm.userDetailsOrig = angular.copy(userDetailObj);
+
         if (vm.userDetailsOrig.username) {
             if (vm.userDetailsOrig.username.indexOf('nihusernothaveanaccount') > - 1) {
                 vm.userDetailsOrig.username = '';
@@ -31,6 +32,8 @@
         vm.states = [];
         vm.userRole = UserService.getUserRole();
         vm.isCurrentUser = UserService.getCurrentUserId() === vm.userDetailsOrig.id;
+        vm.phoneNumberFormat = FORMATS.NUMERIC;
+
         $rootScope.$broadcast('isWriteModeSupported', vm.userDetailsOrig.write_access);
 
         vm.updateUser = function (redirect) {
@@ -67,6 +70,7 @@
                     }
                 }
             }).catch(function(err) {
+                console.log('error is: ', err);
                 console.log('error in updating user ' + JSON.stringify(vm.userDetails));
             }).finally(function() {
                 vm.disableBtn = false;
@@ -111,11 +115,11 @@
         vm.validateSave = function() {
             var newOrg = vm.selectedOrgsArray[0];
 
+            vm.disableBtn = true;
+
             // if inactivating user or changing org of user, check to transfer trials if trials exist
             // otherwise if it is current user changing org, give warning popup up and safe after po up OK
             if (vm.inactivatingUser || (vm.userDetailsOrig.organization_id !== vm.selectedOrgsArray[0].id && !_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) ) {
-                vm.disableBtn = true;
-
                 UserService.getUserTrialsOwnership(vm.searchOwnedParams).then(function (data) {
                     var status = data.server_response.status;
 
@@ -578,6 +582,7 @@
                         vm.gridTrialsSubmittedOptions.totalItems = data.total;
                     }
                 }).catch(function (err) {
+                    console.log('error is: ', err);
                     console.log('Get User Submitted Trials failed');
                 });
             }
@@ -630,6 +635,7 @@
                     vm.gridTrialsParticipationOptions.totalItems = data.total;
                 }
             }).catch(function (err) {
+                console.log('error is: ', err);
                 console.log('Get User Participation Trials failed');
             });
         };
@@ -653,6 +659,7 @@
                         vm.gridTrialsOwnedOptions.totalItems = data.total;
                     }
                 }).catch(function (err) {
+                    console.log('error is: ', err);
                     console.log('Get User Owned Trials failed');
                 });
             }

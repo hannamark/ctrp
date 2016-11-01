@@ -36,8 +36,6 @@ end
 ServiceRequest.find_or_create_by(code: 'CREATE').update(name: 'Create', record_status:'Active')
 ServiceRequest.find_or_create_by(code: 'UPDATE').update(name: 'Update', record_status:'Active')
 ServiceRequest.find_or_create_by(code: 'MERGE_W_CTEP').update(name: 'Merge with CTEP ID', record_status:'Active')
-ServiceRequest.find_or_create_by(code: 'NULLIFY_W_CTEP').update(name: 'Nullify with CTEP ID', record_status:'Active')
-ServiceRequest.find_or_create_by(code: 'LINK_W_CTRP').update(name: 'Link with CTRP ID', record_status:'Active')
 ServiceRequest.find_or_create_by(code: 'NULL').update(name: 'NULL', record_status:'Active')
 
 SourceContext.find_or_create_by(code: 'CTEP').update(name: 'CTEP')
@@ -488,6 +486,12 @@ OnholdReason.find_or_create_by(code: 'PPC').update(name: 'Pending Person Curatio
 OnholdReason.find_or_create_by(code: 'POC').update(name: 'Pending Organization Curation')
 OnholdReason.find_or_create_by(code: 'PIC').update(name: 'Pending Intervention Curation')
 OnholdReason.find_or_create_by(code: 'POT').update(name: 'Pending Other (CTRO)')
+
+RegistrationType.find_or_create_by(code: 'INV').update(name: 'Investigator')
+RegistrationType.find_or_create_by(code:'NONPIV').update(name: 'Non Physician Investigator')
+RegistrationType.find_or_create_by(code:'ASP').update(name: 'Associate Plus')
+RegistrationType.find_or_create_by(code:'ASSO').update(name: 'Associate')
+RegistrationType.find_or_create_by(code:'ASB').update(name: 'Associate Basic')
 
 ########### SEEDING STATIC DATA ENDS #######################
 
@@ -1206,7 +1210,8 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                         "id": "ROLE_RO",
                                         "name": "Read Only",
                                         "assign_access": "",
-                                        "org_source_status_search_access": "ACT"
+                                        "org_source_status_access": "ACT,PEND,INACT",
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,LEG"
                                      },
                                      {
                                         "id": "ROLE_ACCOUNT-APPROVER",
@@ -1219,28 +1224,28 @@ AppSetting.find_or_create_by(code: 'USER_ROLES', description: 'Double pipe delim
                                         "name": "Curator",
                                         "assign_access": "",
                                         "org_source_status_access": "ACT,PEND,INACT",
-                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,LEG"
                                      },
                                      {
                                         "id": "ROLE_ABSTRACTOR",
                                         "name": "Abstractor",
                                         "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU",
                                         "org_source_status_access": "ACT,PEND,INACT",
-                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,LEG"
                                      },
                                      {
                                         "id": "ROLE_SUPER",
                                         "name": "Super",
                                         "assign_access": "ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU",
                                         "org_source_status_access": "ACT,PEND,INACT",
-                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,LEG"
                                      },
                                      {
                                         "id": "ROLE_ADMIN",
                                         "name": "Admin",
                                         "assign_access": "ROLE_ACCOUNT-APPROVER,ROLE_RO,ROLE_SUPER,ROLE_ADMIN,ROLE_CURATOR,ROLE_ABSTRACTOR,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU,ROLE_SERVICE-REST",
                                         "org_source_status_access": "ACT,PEND,INACT",
-                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,PEND,LEG"
+                                        "org_source_status_search_access": "ACT,PEND,INACT,NULLIFIED,LEG"
                                      },
                                      {
                                         "id": "ROLE_TRIAL-SUBMITTER",
@@ -1272,25 +1277,25 @@ AppSetting.find_or_create_by(code: 'Federated_USER_FUNCTIONS').update(descriptio
 
 ########## SEEDING CTGOV IMPORT EXPORT STARTS ##########
 
-CtGovImportExport.find_or_create_by(from:'N/A', to:'N/A',import_or_export:'import' ,model:'Allocation')
-CtGovImportExport.find_or_create_by(from:'Randomized', to:'Randomized Controlled Trial',import_or_export:'import' ,model:'Allocation')
-CtGovImportExport.find_or_create_by(from:'Nonrandomized', to:'Non-Randomized Trial',import_or_export:'import' ,model:'Allocation')
+CtGovImportExport.find_or_create_by(from:'N/A', from:'N/A',import_or_export:'import' ,model:'Allocation')
+CtGovImportExport.find_or_create_by(from:'Randomized', from:'Randomized',import_or_export:'import' ,model:'Allocation')
+CtGovImportExport.find_or_create_by(to:'Non-Randomized', from:'Non-Randomized',import_or_export:'import' ,model:'Allocation')
 
 
 CtGovImportExport.find_or_create_by(from:'N/A', to:'N/A',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Safety Study', to:'Safety',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Efficacy Study', to:'Efficacy',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Safety/Efficacy Study', to:'Safety/Efficacy',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Bio-availability Stud', to:'Bioavailability',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Bio-equivalence Study', to:'Bioequivalence',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Pharmacodynamics Study', to:'Pharmacodynamics',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Pharmacokinetics Study', to:'Pharmacokinetics',import_or_export:'import' ,model:'StudyClassification')
-CtGovImportExport.find_or_create_by(from:'Pharmacokinetics/dynamics Study', to:'Pharmacokinetics/Pharmacodynamics',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Safety Study', to:'Safety Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Efficacy Study', to:'Efficacy Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Safety/Efficacy Study', to:'Safety/Efficacy Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Bio-availability StudY', to:'Bioavailability Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Bio-equivalence Study', to:'Bioequivalence Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacodynamics Study', to:'Pharmacodynamics Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacokinetics Study', to:'Pharmacokinetics Study',import_or_export:'import' ,model:'StudyClassification')
+CtGovImportExport.find_or_create_by(from:'Pharmacokinetics/dynamics Study', to:'Pharmacokinetics/Pharmacodynamics Study',import_or_export:'import' ,model:'StudyClassification')
 
-CtGovImportExport.find_or_create_by(from:'Single Group Assignment', to:'Single Group',import_or_export:'import' ,model:'InterventionModel')
-CtGovImportExport.find_or_create_by(from:'Parallel Assignment', to:'Parallel',import_or_export:'import' ,model:'InterventionModel')
-CtGovImportExport.find_or_create_by(from:'Cross-over Assignment', to:'Cross-Over',import_or_export:'import' ,model:'InterventionModel')
-CtGovImportExport.find_or_create_by(from:'Factorial Assignment', to:'Factorial',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Single Group Assignment', to:'Single Group Assignment',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Parallel Assignment', to:'Parallel Assignment',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Crossover Assignment', to:'Crossover Assignment',import_or_export:'import' ,model:'InterventionModel')
+CtGovImportExport.find_or_create_by(from:'Factorial Assignment', to:'Factorial Assignment',import_or_export:'import' ,model:'InterventionModel')
 
 CtGovImportExport.find_or_create_by(from:'Treatment', to:'Treatment',import_or_export:'import' ,model:'PrimaryPurpose')
 CtGovImportExport.find_or_create_by(from:'Prevention', to:'Prevention',import_or_export:'import' ,model:'PrimaryPurpose')
@@ -1320,7 +1325,7 @@ CtGovImportExport.find_or_create_by(from:'Enrolling by Invitation', to:'Enrollin
 CtGovImportExport.find_or_create_by(from:'Suspended', to:'Temporarily Closed to Accrual',import_or_export:'import' ,model:'Trial Status')
 CtGovImportExport.find_or_create_by(from:'Active, not recruiting', to:'Closed to Accrual',import_or_export:'import' ,model:'Trial Status')
 CtGovImportExport.find_or_create_by(from:'Terminated', to:'Administratively Complete',import_or_export:'import' ,model:'Trial Status')
-CtGovImportExport.find_or_create_by(from:'Completed', to:'Completed',import_or_export:'import' ,model:'Trial Status')
+CtGovImportExport.find_or_create_by(from:'Completed', to:'Complete',import_or_export:'import' ,model:'Trial Status')
 
 
 CtGovImportExport.find_or_create_by(to:'Not yet recruiting', from:'In Review',import_or_export:'export' ,model:'Trial Status')
@@ -1420,6 +1425,11 @@ CtGovImportExport.find_or_create_by(from:'Prospective', to:'Prospective',import_
 CtGovImportExport.find_or_create_by(from:'Retrospective', to:'Retrospective',import_or_export:'export' ,model:'TimePerspectives')
 CtGovImportExport.find_or_create_by(from:'Cross sectional', to:'Cross sectional',import_or_export:'export' ,model:'TimePerspectives')
 CtGovImportExport.find_or_create_by(from:'Other', to:'Other',import_or_export:'export' ,model:'TimePerspectives')
+
+CtGovImportExport.find_or_create_by(from:'No', to:'No',import_or_export:'import' ,model:'AcceptVol')
+CtGovImportExport.find_or_create_by(from:'Accepts Healthy Volunteers', to:'Yes',import_or_export:'import' ,model:'AcceptVol')
+CtGovImportExport.find_or_create_by(from:'No', to:'No',import_or_export:'export' ,model:'AcceptVol')
+CtGovImportExport.find_or_create_by(from:'Yes', to:'Accepts Healthy Volunteers',import_or_export:'export' ,model:'AcceptVol')
 
 
 
@@ -1897,6 +1907,52 @@ family0.organizations << org0
 family0.organizations << org1
 family0.organizations << org2
 
+ctep_org1 = Organization.find_or_create_by( id: 999000009,
+                                       source_id: '9999995',
+                                       name: 'CTEP ORG For Testing 1',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', SourceContext.find_by_code('CTEP').id),
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       ctep_org_type_id: 7,
+                                       address: '9605 Medical Center Dr',
+                                       city: 'Rockville',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+ctep_org2 = Organization.find_or_create_by( id: 99000008,
+                                       source_id: '9999995',
+                                       name: 'CTEP ORG For Testing 3',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', SourceContext.find_by_code('CTEP').id),
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       ctep_org_type_id: 2,
+                                       address: '9606 Medical Center Dr',
+                                       city: 'Germantown',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+ctep_org3 = Organization.find_or_create_by( id: 9990007,
+                                       source_id: '9999995',
+                                       name: 'CTEP ORG For Testing 3',
+                                       phone:'240-276-0000',
+                                       source_status: SourceStatus.find_by_code_and_source_context_id('ACT', SourceContext.find_by_code('CTEP').id),
+                                       source_context: SourceContext.find_by_code('CTEP'),
+                                       ctep_org_type_id: 1,
+                                       address: '9607 Medical Center Dr',
+                                       city: 'Frederick',
+                                       state_province: 'Maryland',
+                                       country: 'United States',
+                                       postal_code: '20850',
+                                       email: "ncictrpdev@mail.nih.gov"
+)
+
+
 org3 = Organization.find_or_create_by( id: 9999995,
                                        source_id: '9999995',
                                        name: 'AAA test org for test accounts',
@@ -2133,11 +2189,11 @@ CadsrMarkerSynonym.find_or_create_by(id: 7724).update(alternate_name:  'Transcri
 # ValidationRule.find_or_create_by(code: 'PAAE001', section: 'PAA', model: 'trial', category: 'error', item: 'trial_general_details', rule: 'Trial official title cannot be null', description: 'Trial official title is required', remark: 'Follow the menus to Trial General Details screen to do the correction')
 # ValidationRule.find_or_create_by(code: 'PASE001', section: 'PAS', model: 'trial', category: 'error', item: 'trial_design', rule: 'Research category cannot be null', description: 'Research category is required', remark: 'Follow the menus to do the correction')
 
-ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA2', item: 'paa_general_trial_details', rule: 'NCT Number cannot be more than 30 characters', description: 'NCT Number >30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
-ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA3', item: 'paa_general_trial_details', rule: 'CTEP Number cannot be more than 30 characters', description: 'CTEP Number>30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
-ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA6', item: 'paa_general_trial_details', rule: 'DCP Number cannot be more than 30 characters', description: 'DCP Number  >  30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
-ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA7', item: 'paa_general_trial_details', rule: 'Lead Organization Trial Identifier  cannot be more than 30 characters', description: 'Lead Organization Trial Identifier > 30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
-ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA8', item: 'paa_general_trial_details', rule: 'Keywords cannot be more than  160 characters', description: 'Keywords > 160 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
+ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA2', item: 'paa_general_trial_details', rule: 'NCT Number cannot be more than 30 characters', description: 'NCT Number cannot be more than 30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
+ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA3', item: 'paa_general_trial_details', rule: 'CTEP Number cannot be more than 30 characters', description: 'CTEP Number cannot be more than 30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
+ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA6', item: 'paa_general_trial_details', rule: 'DCP Number cannot be more than 30 characters', description: 'DCP Number cannot be more than 30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
+ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA7', item: 'paa_general_trial_details', rule: 'Lead Organization Trial Identifier  cannot be more than 30 characters', description: 'Lead Organization Trial Identifier  cannot be more than 30 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
+ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA8', item: 'paa_general_trial_details', rule: 'Keywords cannot be more than  160 characters', description: 'Keywords cannot be more than  160 characters', remark: '[Select General Trial Details] from Administrative Data menu.')
 ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA9', item: 'paa_status', rule: 'Duplicate IN REVIEW status is not allowed', description: 'Duplicate ‘In Review status’', remark: '[Select Trial Status] from Administrative Data menu to view Trial Status.')
 ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA10', item: 'paa_status', rule: 'Invalid status transition from APPROVED to  IN REVIEW', description: 'study status has [IN REVIEW] after [APPROVED]', remark: '[Select Trial Status] from Administrative Data menu to view Trial Status.')
 ValidationRule.find_or_create_by(category: 'error', model: 'trial', section: 'PAA', code: 'PAA11', item: 'paa_status', rule: 'Duplicate APPROVED status is not allowed', description: 'Duplicate ‘Approved’ status', remark: '[Select Trial Status] from Administrative Data menu to view Trial Status.')
@@ -2433,7 +2489,7 @@ ValidationRule.find_or_create_by(category: 'warning', model: 'trial', section: '
    user.user_status = UserStatus.find_by_code('ACT')
    user.receive_email_notifications = true
    user.status_date = Time.zone.now
-   user.phone = "111-111-1111"
+   user.phone = "1111111111"
    does_user_exists = User.find_by_username(user.username)
    user.save! if !does_user_exists
   end

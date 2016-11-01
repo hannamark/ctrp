@@ -160,7 +160,7 @@
                 </div>
                 <div class="col-sm-3">
                     <!-- <button class="btn btn-primary">Look Up Organization</button> -->
-                    <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="generalTrialDetailView.leadOrg.array"></ctrp-org-adv-search-modal-button>
+                    <ctrp-org-adv-search-modal-button pre-search = '{"source_contextfilter": ["CTRP"]}' max-row-selectable="1" use-built-in-template="false" selected-orgs-array="generalTrialDetailView.leadOrg.array"></ctrp-org-adv-search-modal-button>
                 </div>
             </div>
 
@@ -175,7 +175,10 @@
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <!-- <button class="btn btn-primary">Look Up Person</button> -->
-                    <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.principalInvestigator.array"></ctrp-person-adv-search-modal-button>
+                    <!-- <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.principalInvestigator.array"></ctrp-person-adv-search-modal-button> -->
+                    <button type="button" class="btn btn-primary" id="person_search_modal" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="generalTrialDetailView.principalInvestigator.array" restriction-field>
+                        <i class="glyphicon glyphicon-search"></i> Search Persons
+                    </button>
                 </div>
             </div>
           </fieldset>
@@ -193,7 +196,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <!-- <button class="btn btn-primary">Look Up Sponsor</button> -->
-                    <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="generalTrialDetailView.sponsor.array"></ctrp-org-adv-search-modal-button>
+                    <ctrp-org-adv-search-modal-button max-row-selectable="1" pre-search = '{"source_contextfilter": ["CTRP"]}' use-built-in-template="false" selected-orgs-array="generalTrialDetailView.sponsor.array"></ctrp-org-adv-search-modal-button>
                 </div>
             </div>
           </fieldset>
@@ -223,7 +226,10 @@
                             </span>
                         </div>
                         <div class="col-xs-12 col-sm-3" ng-show="generalTrialDetailView.centralContactType == 'Person'">
-                            <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button>
+                            <!-- <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="generalTrialDetailView.generalTrialDetailsObj.central_contacts"></ctrp-person-adv-search-modal-button> -->
+                            <button type="button" class="btn btn-primary" id="person_search_modal" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts" restriction-field>
+                                <i class="glyphicon glyphicon-search"></i> Search Persons
+                            </button>
                         </div>
                     </div>
 
@@ -242,9 +248,8 @@
                     <div class="form-group">
                         <label for="phone" class="control-label col-xs-12 col-sm-3">Phone Number:</label>
                         <div class="col-xs-12 col-sm-4">
-                            <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].phone"
-                            class="form-control input-sm" placeholder="Phone" ng-change="generalTrialDetailView.isValidPhoneNumber()">
-                            <span ng-show="general_trial_details_form.phone.$viewValue.length > 0" class="form-control-feedback" ng-class="!generalTrialDetailView.isPhoneValid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+                            <input type="text" id="phone" name="phone" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].phone" class="form-control input-sm" placeholder="Phone" mask-phone-number>
+                            <span ng-show="general_trial_details_form.phone.$viewValue.length > 0" class="form-control-feedback" ng-class="!general_trial_details_form.phone.$valid ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
                         </div>
                         <div class="col-xs-12 col-sm-2">
                             <input type="text" class="form-control input-sm" id="phone_extension" ng-model="generalTrialDetailView.generalTrialDetailsObj.central_contacts[0].extension" placeholder="Extension">

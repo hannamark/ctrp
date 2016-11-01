@@ -13,11 +13,14 @@
             'SEARCH_ORG': '/ctrp/organizations/search.json',
             'CURATE_ORG': '/ctrp/organizations/curate',
             'UNIQUE_ORG': '/ctrp/organizations/unique',
+            'ASSOCIATED_ORGS': '/ctrp/organizations/associated/',
+            'DISASSOCIATE_ORGS': '/ctrp/organizations/dis_associate/',
             'CLONE_CTEP_ORG': '/ctrp/organizations/clone.json',
             'COUNTRY_LIST': '/ctrp/countries.json',
             'STATES_IN_COUNTRY': '/ctrp/states.json?country=',
             'SOURCE_CONTEXTS': '/ctrp/source_contexts.json',
             'SOURCE_STATUSES': '/ctrp/source_statuses/search.json',
+            'SOURCE_STATUSES2': '/ctrp/source_statuses.json',
             'A_USER': '/ctrp/users/',
             'A_USER_SIGNUP': '/ctrp/sign_up.json',
             'A_USER_CHANGEPASSWORD': '/ctrp/change_password',
@@ -38,6 +41,8 @@
             'SEARCH_PERSON': '/ctrp/people/search.json',
             'UNIQUE_PERSON': '/ctrp/people/unique.json',
             'ASSOCIATE_PERSON': '/ctrp/people/associate_context/{:ctep_person_id}/{:ctrp_id}.json',
+            'REMOVE_PERSON_ASSOCIATION': '/ctrp/people/association/remove/{:ctep_person_id}',
+            'CLONE_CTEP_PERSON': '/ctrp/people/clone_ctep.json',  // POST
             'A_FAMILY': '/ctrp/families/',
             'FAMILY_LIST': '/ctrp/families.json',
             'SEARCH_FAMILY': '/ctrp/families/search.json',
@@ -168,6 +173,9 @@
             //key mirrors value
             'READONLY': 'READONLY',
             'CURATOR': 'CURATOR'
+        })
+        .constant('FORMATS', {
+            'NUMERIC': /^\d+$/
         });
 
 })();

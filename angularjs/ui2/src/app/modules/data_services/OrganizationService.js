@@ -20,22 +20,21 @@
             name : '',
             alias: true,
             wc_search: true,
-            // po_id : '',
-            ctrp_id : '',
-            source_context : '',
-            source_id : '',
-            source_status : '',
-            family_name : '',
-            address : '',
-            address2 : '',
-            city : '',
+            ctrp_id: '',
+            source_context: '',
+            source_id: '',
+            source_status: '',
+            family_name: '',
+            address: '',
+            address2: '',
+            city: '',
             state_province : '',
-            country : '', //default country ? United States ?
-            email : '',
-            postal_code : '',
+            country: '', //default country ? United States ?
+            email: '',
+            postal_code: '',
             phone: '',
             processing_status: '',
-            service_request: '',
+            service_request_name: '',
 
             //for pagination and sorting
             sort: '',
@@ -88,7 +87,7 @@
                     minWidth: '100',
                     width: '*'},
 
-                {name: 'ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '100', width: '*'},
+                {name: 'multiview_ctep_id', displayName: 'CTEP ID', enableSorting: true, minWidth: '100', width: '*'},
 
                 {
                     name: 'name', enableSorting: true, minWidth: '300', width: '*', sort: { direction: 'asc', priority: 1},
@@ -100,31 +99,41 @@
 
                 },
                 {name: 'source_status', displayName: 'Source Status',
-                    enableSorting: true, minWidth: '175', width: '*'},
+                    enableSorting: true, width: '150'},
                 {name: 'source_context', displayName: 'Source Context',
-                    enableSorting: true, minWidth: '175', width: '*'},
+                    enableSorting: true, width: '150'},
                 {name: 'source_id', displayName: 'Source ID',
-                    enableSorting: true, minWidth: '175', width: '*'},
+                    enableSorting: true, width: '150'},
 
-                {name: 'aff_families_names', displayName: 'Families',
-                    enableSorting: true, minWidth: '100', width: '*',height: '50%',
+                {name: 'aff_families_names', displayName: 'Family Name',
+                    enableSorting: true, minWidth: '150', width: '*',height: '50%',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" ng-repeat="fam in row.entity.aff_families_names track by $index"' +
                     ' title="{{COL_FIELD}}">{{COL_FIELD}}</div>'
                 },
-                {name: 'phone', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'email', enableSorting: true, minWidth: '150', width: '*',
+                {name: 'phone_with_ext', displayName: 'Phone', enableSorting: true, minWidth: '170', width: '*'},
+                {name: 'email', enableSorting: true, minWidth: '200', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '{{COL_FIELD CUSTOM_FILTERS}}</div>'
                 },
+                {name: 'city', displayName: 'City',
+                    enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'state_province', displayName: 'State',
+                    enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'country', displayName: 'Country',
+                    enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'postal_code', displayName: 'Postal Code',
+                    enableSorting: true, minWidth: '150', width: '*'},
+                {name: 'id', displayName: 'Context Org ID',
+                    enableSorting: true, minWidth: '150', width: '150'},
+                {name: 'processing_status', displayName: 'Processing Status',
+                    enableSorting: true, minWidth: '150', width: '150'},
+                {name: 'service_request_name', displayName: 'Service Request',
+                    enableSorting: true, minWidth: '150', width: '150'},
                 {name: 'updated_by', displayName: 'Last Updated By',
                     enableSorting: true, minWidth: '150', width: '*'},
                 {name: 'updated_at', displayName: 'Last Updated Date',
                     type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"',
-                    enableSorting: true, minWidth: '160', width: '*'},
-                {name: 'city', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'state_province', displayName: 'State', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'country', displayName: 'Country', enableSorting: true, minWidth: '100', width:'*'},
-                {name: 'postal_code', displayName: 'Postal Code', enableSorting: true, minWidth: '120', width:'*'}
+                    enableSorting: true, minWidth: '160', width: '*'}
 
 
             ]
@@ -134,6 +143,8 @@
             getAllOrgs: getAllOrgs,
             getOrgById: getOrgById,
             upsertOrg: upsertOrg,
+            getAssociatedOrgs: getAssociatedOrgs,
+            disAssociateOrgs: disAssociateOrgs,
             searchOrgs: searchOrgs,
             getInitialOrgSearchParams: getInitialOrgSearchParams,
             getGridOptions: getGridOptions,
@@ -153,6 +164,7 @@
             getServiceRequests: getServiceRequests,
             getProcessingStatuses: getProcessingStatuses,
             cloneCtepOrg: cloneCtepOrg,
+            getSourceStatuses2: getSourceStatuses2
         };
 
         return services;
@@ -178,8 +190,6 @@
          * @returns {*}
          */
         function upsertOrg(orgObj) {
-            orgObj.organization.source_context = undefined;
-            orgObj.organization.source_status = undefined;
             if (orgObj.new) {
                 return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ORG_LIST, orgObj);
             }
@@ -189,8 +199,26 @@
             return PromiseTimeoutService.updateObj(URL_CONFIGS.AN_ORG + orgObj.id + '.json', orgObj, configObj);
         } //upsertOrg
 
+        /**
+         * Get associated organizations
+         *
+         * @param getAssociatedOrgs
+         * @returns {*}
+         */
+        function getAssociatedOrgs(orgObj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ASSOCIATED_ORGS, orgObj);
+        } //getAssociatedOrgs
 
 
+        /**
+         * dis associate organizations
+         *
+         * @param disAssociateOrgs
+         * @returns {*}
+         */
+        function disAssociateOrgs(orgObj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.DISASSOCIATE_ORGS, orgObj);
+        } //disAssociateOrgs
 
         /**
          *
@@ -225,11 +253,13 @@
 
 
         function getGridOptions(usedInModal) {
-            var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
+            var allowedROLES= ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_ABSTRACTOR', 'ROLE_CURATOR'];
+            var user_role = UserService.getUserRole() ? UserService.getUserRole().toUpperCase() : '';
+
             var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
             var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
-            var curator_role = 'curator';
-            if(user_role.toUpperCase() !== curator_role.toUpperCase()) {
+
+            if(!_.contains(allowedROLES, user_role)) {
                 if (updated_at_index >= 0 )
                     gridOptions.columnDefs.splice(updated_at_index,1);
                 if (updated_by_index >= 0)
@@ -374,6 +404,11 @@
         function getSourceStatuses(searchParams) {
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.SOURCE_STATUSES, searchParams);
         } //getSourceStatuses
+
+        // retrieve ALL source statuses using GET
+        function getSourceStatuses2() {
+            return PromiseTimeoutService.getData(URL_CONFIGS.SOURCE_STATUSES2);
+        }
 
 
         /**

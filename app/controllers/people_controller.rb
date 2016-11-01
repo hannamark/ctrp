@@ -4,7 +4,7 @@ class PeopleController < ApplicationController
   load_and_authorize_resource unless Rails.env.test?
   before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy]
 
-  # skip_authorize_resource :only => [:search]
+  skip_authorize_resource :only => [:search]
   #http_basic_authenticate_with name: "ctrpadmin", password: "Welcome02", except: :index
 
   # GET /people
@@ -115,46 +115,47 @@ class PeopleController < ApplicationController
         params[:fname].present? || params[:lname].present? || params[:prefix].present? ||
         params[:suffix].present? || params[:email].present? || params[:phone].present? ||
         params[:source_context].present? || params[:source_status].present? || params[:date_range_arr].present? ||
-        params[:updated_by].present? || params[:affiliated_org_name].present?
+        params[:updated_by].present? || params[:affiliated_org_name].present? || params[:processing_status].present? ||
+        params[:service_request].present?
 
       @people = Person.all
       @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
-      @people = @people.matches_wc('updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present?
-      @people = @people.matches_wc('source_id',params[:source_id],params[:wc_search]) if params[:source_id].present?
-      @people = @people.matches_wc('fname', params[:fname],params[:wc_search]) if params[:fname].present?
-      @people = @people.matches_wc('lname', params[:lname],params[:wc_search]) if params[:lname].present?
-      @people = @people.matches_wc('prefix', params[:prefix],params[:wc_search]) if params[:prefix].present?
-      @people = @people.matches_wc('suffix', params[:suffix],params[:wc_search]) if params[:suffix].present?
-      @people = @people.matches_wc('email', params[:email],params[:wc_search]) if params[:email].present?
-      @people = @people.matches_wc('phone', params[:phone],params[:wc_search]) if params[:phone].present?
+      @people = @people.matches('processing_status', params[:processing_status]) if params[:processing_status].present?
+      @people = matches_wc(@people, 'updated_by', params[:updated_by],params[:wc_search]) if params[:updated_by].present?
+      @people = matches_wc(@people, 'source_id',params[:source_id],params[:wc_search]) if params[:source_id].present?
+      @people = matches_wc(@people, 'fname', params[:fname],params[:wc_search]) if params[:fname].present?
+      @people = matches_wc(@people, 'lname', params[:lname],params[:wc_search]) if params[:lname].present?
+      @people = matches_wc(@people, 'prefix', params[:prefix],params[:wc_search]) if params[:prefix].present?
+      @people = matches_wc(@people, 'suffix', params[:suffix],params[:wc_search]) if params[:suffix].present?
+      @people = matches_wc(@people, 'email', params[:email],params[:wc_search]) if params[:email].present?
+      @people = matches_wc(@people, 'phone', params[:phone],params[:wc_search]) if params[:phone].present?
+      @people = @people.with_service_request(params[:service_request]) if params[:service_request].present?
 
 
       if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
           @current_user.role == "ROLE_ADMIN")
-        source_context_id = SourceContext.where(code: params[:source_context]) if params[:source_context].present?
+        # SourceContext.where(code: params[:source_context]).pluck(:id)
+        source_context_id = SourceContext.find_by_code(params[:source_context]).id if params[:source_context].present?
         @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
-        # @people = @people.with_source_status(params[:source_status], source_context_id) if params[:source_status].present?
+        @people = @people.with_source_status_context(params[:source_status], source_context_id) if params[:source_status].present? && params[:source_context].present?
+        @people = @people.with_source_status_only(params[:source_status]) if params[:source_status].present? && !params[:source_context].present?
+
       else
         # TODO need constant for CTRP
         @people = @people.with_source_context("CTRP")
+        ctrp_source_context_id = SourceContext.find_by_code("CTRP").id
         # TODO need constant for Active
-        # @people = @people.with_source_status("Active")
+        @people = @people.with_source_status_context('ACT', ctrp_source_context_id)
       end
-
-      # if @current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER"
-      #   @people = @people.with_source_status(params[:source_status][:name]) if params[:source_status].present?
-      # else
-      #   # TODO need constant for Active
-      #   @people = @people.with_source_status("Active")
-      # end
 
       @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
     else
       @people = []
     end
   end
+
 
   # associate a CTEP person to a ctrp_id (CTRP person)
   def associate_person
@@ -165,7 +166,7 @@ class PeopleController < ApplicationController
       associated_ctep_person = Person.find(params[:ctep_person_id])
       if !associated_ctep_person.nil?
         associated_ctep_person.ctrp_id = params[:ctrp_id]
-        associated_ctep_person.update_attributes('ctrp_id': params[:ctrp_id], 'association_start_date': Time.now)
+        associated_ctep_person.update_attributes('ctrp_id': params[:ctrp_id], 'association_start_date': Time.now, 'processing_status': 'Complete')
       end
 
     end
@@ -173,6 +174,54 @@ class PeopleController < ApplicationController
       format.json { render :json => {:person => associated_ctep_person} }
     end
   end
+
+  def remove_association
+    success = false
+    if params.has_key?(:ctep_person_id)
+      associated_ctep_person = Person.find(params[:ctep_person_id])
+      if !associated_ctep_person.nil? && associated_ctep_person.source_context_id == SourceContext.find_by_code('CTEP').id
+        success = associated_ctep_person.update_attributes('ctrp_id': nil, 'association_start_date': nil, 'processing_status': 'Incomplete')
+      end
+    end
+
+    respond_to do |format|
+      format.json { render :json => {:is_removed => success, :removed_person => associated_ctep_person } }
+    end
+  end
+
+  def clone_ctep
+
+    if params.has_key?(:ctep_person_id)
+      # @matched = find_matches(params[:ctep_person_id])
+      ctep_person = Person.find(params[:ctep_person_id])
+      ctrp_source_context_id = SourceContext.find_by_code('CTRP').id
+      @matched = Person.where(fname: ctep_person.fname, lname: ctep_person.lname, source_context_id: ctrp_source_context_id)
+      p "@matched.size1: #{@matched.size}"
+      # @matched = @matched.with_source_status_context('ACT', ctrp_source_context_id)
+      p "@matched.size2: #{@matched.size}"
+      # TODO: match against the state and address in affiliated organization
+
+      @is_cloned = false
+      if (@matched.size > 0 && params[:force_clone] == true) || @matched.size == 0
+        clone = ctep_person.dup   # TODO: reserve associations here for the clone
+        clone.source_context_id = ctrp_source_context_id
+        clone.association_start_date = nil
+        @matched = [clone]
+        # @matched.processing_status = nil
+        # @matched.registration_type = nil
+        # @matched.service_request_id = nil
+        @is_cloned = clone.save()
+        # link the CTEP to the new CTRP person clone
+        ctep_person.update_attributes('ctrp_id': clone.ctrp_id, 'association_start_date': Time.now, 'processing_status': 'Complete')
+      end
+    end
+
+     # respond_to do |format|
+     #   format.json { render :json => {:matched => @matched, :is_cloned => @is_cloned} }
+     # end
+
+  end
+
 
   #Method to check for Uniqueness while creating persons - check on First & Last name. These are to be presented as warnings and not errors, hence cannot be part of before-save callback.
   def unique
@@ -218,9 +267,6 @@ class PeopleController < ApplicationController
         is_unique = false
       end
 
-    p " is unique? "
-    p is_unique
-
     respond_to do |format|
 #        format.json {render :json => {:name_unique => !exists}}
       format.json {render :json => {:name_unique => is_unique}}
@@ -238,6 +284,7 @@ class PeopleController < ApplicationController
     def person_params
       params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :extension,
                                      :source_status_id, :source_context_id, :lock_version, :processing_status,
+                                     :registration_type, :service_request, :force_clone,
                                      po_affiliations_attributes: [:id, :organization_id, :effective_date,
                                                                   :expiration_date, :po_affiliation_status_id,
                                                                   :lock_version, :_destroy])

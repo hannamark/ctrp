@@ -41,7 +41,10 @@
                             </span>
                         </div>
                         <div class="col-xs-12 col-sm-3" ng-show="trialDetailView.showInvSearchBtn">
-                            <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="trialDetailView.selectedInvArray"></ctrp-person-adv-search-modal-button>
+                            <!-- <ctrp-person-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-persons-array="trialDetailView.selectedInvArray"></ctrp-person-adv-search-modal-button> -->
+                            <button type="button" class="btn btn-primary" id="person_search_modal" person-search-modal-button2 max-row-selectable="1" source-context-only="'CTRP'" ng-model="trialDetailView.selectedInvArray" restriction-field>
+                                <i class="glyphicon glyphicon-search"></i> Search Persons
+                            </button>
                         </div>
                     </div>
                     <div ng-show="trialDetailView.showInvestigator" class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn.trial_form.needsAttention(trial_form.investigator_title)}">
@@ -67,7 +70,7 @@
                             </span>
                         </div>
                         <div class="col-xs-12 col-sm-3" ng-if="paTrialOverview.trialDetailObj.pa_editable" ng-show="!trialDetailView.showInvSearchBtn && ['update'].indexOf(trialDetailView.curTrial.edit_type) < 0">
-                            <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" selected-orgs-array="trialDetailView.selectedIaArray"></ctrp-org-adv-search-modal-button>
+                            <ctrp-org-adv-search-modal-button max-row-selectable="1" use-built-in-template="false" pre-search = '{"source_contextfilter": ["CTRP"]}' selected-orgs-array="trialDetailView.selectedIaArray"></ctrp-org-adv-search-modal-button>
                         </div>
                     </div>
                     <div ng-show="trialDetailView.showSponsor">
@@ -107,7 +110,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div ng-if="paTrialOverview.trialDetailObj.pa_editable">
+                                        <div ng-show="paTrialOverview.trialDetailObj.pa_editable">
                                             <button type="button" restriction-field class="btn btn-primary btn-add" ng-click="trialDetailView.addAuthority()" ng-disabled="!trialDetailView.authority_org || !trialDetailView.authority_country">
                                                 <i class="glyphicon glyphicon-plus"></i> Add
                                             </button>

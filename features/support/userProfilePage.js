@@ -11,6 +11,8 @@ var helperFunctions = require('../support/helper');
 
 var userProfile = function() {
 
+    this.userProfileFirstName = element(by.model('userDetailView.userDetails.first_name'));
+    this.userProfileLastName = element(by.model('userDetailView.userDetails.last_name'));
     this.userProfileEmail = element(by.model('userDetailView.userDetails.email'));
     this.userProfilePhone = element(by.model('userDetailView.userDetails.phone'));
     this.userProfileEmailNotifications = element.all(by.model('userDetailView.userDetails.receive_email_notifications'));

@@ -16,6 +16,7 @@
                 section: 'registry',
                 resolve: {
                     TrialService: 'TrialService',
+                    OrgService: 'OrgService',
                     studySourceObj: function(TrialService) {
                         return TrialService.getStudySources();
                     },

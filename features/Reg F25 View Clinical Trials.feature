@@ -11,7 +11,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       And I select a trial from the Clinical Trial Search Results
      Then I will be able to view the Trial Details type
   
-     
+      #All fields should be displayed even when no value exists
       |Trials Identifiers  |
       |Trial Details  |
       |Lead Organization/Principal Investigator  |
@@ -34,6 +34,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       And I select a trial from the Clinical Trial Search Results
      Then I will be able to view the Trial Details Type
      
+      #All fields should be displayed even when no value exists
       |Trials Identifiers  |
       |Trial Details  |
       |Lead Organization/Principal Investigator  |
@@ -46,8 +47,10 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
   Scenario: #3 Rules for Clinical Trial Record view after Amendment submission 
     Given I am on the Clinical Trial Search Results screen for trials where I am listed as a trial owner
     When I select a trial from the Clinical Trial Search Results
-     Then I will be able to view the Trial Details type
+    Then the latest Active Trial information will be displayed
+     And I will be able to view the Trial Details type
       
+       #All fields should be displayed even when no value exists
       |Trials Identifiers  |
       |Amendments Details  |
       |Trial Details  |
@@ -65,8 +68,10 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
      Scenario: #4 Rules for Clinical Trial Record view after Amendment submission 
     Given I am on the Clinical Trial Search Results screen for all trials where I am not listed as a trial owner
     When I select a trial from the Clinical Trial Search Results
-     Then I will be able to view the Trial Details type
+    Then the latest Active Trial information will be displayed
+     And  I will be able to view the Trial Details type
      
+       #All fields should be displayed even when no value exists
       |Trials Identifiers  |
       |Amendment Details  |
       |Trial Details  |
@@ -77,17 +82,19 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Participating Sites|
       
       
+      
         Scenario:#4a Participating Sites Table Columns description for all trials (Protocol and Imported)
     Given I am on the View Trial Screen
      And I can view Participating Site Table for all trials
      And the table displays the columns type
      
-     |CTRP Org ID|
-     # CTRP Org ID=Group ID
+      #All fields should be displayed even when no value exists
+     |CTRP ID|
+     # CTRP ID=Source ID when Source CTRP org
      |CTRP Organization Name|
      |Principal Investigator|
      # Principal Investigator Format (Last Name, First Name)
-     |Local Trial Identifier|
+     |Local Trial Id|
      |Program Code|
      |Current Site Recruitment Status|
      |Current Site Recruitment Status Date|
@@ -103,7 +110,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
     Given I am on the Trial Details screen
      And I will view the Trial Identifiers type 
      
-       
+       #All fields should be displayed even when no value exists 
       |Lead Organization Trial Identifier  |
       |NCI Trial Identifier  |
       |Other Trial Identifier  |
@@ -113,7 +120,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
     Given I am on the Trial Details screen
      And I will view the Amendment Details type 
         
-         
+       #All fields should be displayed even when no value exists   
       |Amendment Number  |
       |Amendment Date  |
       
@@ -122,7 +129,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
     Given I am on the Trial Details screen
      And I will view the Trial Details type
      
-       
+       #All fields should be displayed even when no value exists 
       |Title  |
       |Phase  |
       |Trial Type  |
@@ -135,7 +142,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
     Given I am on the Trial Details Screen
      And I will view the Lead Organization/ Principal Investigator type
 
-       
+       #All fields should be displayed even when no value exists 
       |Lead Organization  |
       |Principal Investigator  |
 
@@ -144,6 +151,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
   Given I am on the Trial Details Screen
    And I will view Data Table 4 Information type
    
+       #All fields should be displayed even when no value exists
       |Data Table 4 Funding Sponsor Type  |
       |Data Table 4 Funding Sponsor/Source |
       |Program Code  |
@@ -152,7 +160,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
     Given I am on the Trial Details Screen
     And I will view Status/Dates type
     
-    
+     #All fields should be displayed even when no value exists
       |Current Trial Status  |
       |Why the Study Stopped  |
       |Current Trial Status Date  |
@@ -161,7 +169,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
     Given I am on the Trial Details Screen
     And I will view Status/Dates type
       
-      
+       #All fields should be displayed even when no value exists
       |Trial Start Date: Actual, Anticipated |
       |Primary Completion Date: Actual, Anticipated  |
       |Completion Date: Actual, Anticipated  |
@@ -170,6 +178,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
     Given I am on the trial Details screen
      And I will view the FDA IND/IDE Information for applicable trials type
      
+      #All fields should be displayed even when no value exists
       |IND/IDE Type  |
       |IND/IDE Number  |
       |IND Grantor  |
@@ -184,6 +193,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
     Given I am on the trial Details screen
      And I will view the NIH Grant Information (for NIH funded Trials) type
      
+       #All fields should be displayed even when no value exists
       |Funding Mechanism  |
       |NIH Institute Code  |
       |Serial Number  |
@@ -193,7 +203,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
     Given I am on the trial Details screen
     And I will view the Regulatory Information type
     
-    
+     #All fields should be displayed even when no value exists
       |Trial Oversight Authority Country  |
       |Trial Oversight Authority Organization Name  |
       |FDA Regulated Intervention Indicator  |
@@ -206,15 +216,17 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       Scenario: #14 Trial Related Documents viewed
     Given I am on the trial Details screen
      And I will view Trial Related Documents type
-     
+      
+      #All fields should be displayed even when no value exists
       |Protocol Document  |
       |IRB Approval Document  |
       |Change Memo Document  |
       |Protocol Highlighted Document|
       |TSR  |
-      |Other|
+      |All Other|
 
 
+      
 
 
  

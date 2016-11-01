@@ -86,6 +86,11 @@ class MilestoneWrapper < TrialBase
         if self.submission.present? && stm.present?
           ProcessingStatusWrapper.create(status_date: Date.today, processing_status: stm, submission: self.submission, trial: self.trial)
         end
+      elsif self.milestone.code == 'SAC'
+        acc = ProcessingStatus.find_by_code('ACC')
+        if self.submission.present? && acc.present?
+          ProcessingStatusWrapper.create(status_date: Date.today, processing_status: acc, submission: self.submission, trial: self.trial)
+        end
       elsif self.milestone.code == 'SRE'
         sre = ProcessingStatus.find_by_code('SRE')
         if self.submission.present? && sre.present?
@@ -143,6 +148,10 @@ class MilestoneWrapper < TrialBase
       elsif self.milestone.code == 'IAV'
         self.trial.verification_date = self.created_at
         self.trial.save
+        avr = ProcessingStatus.find_by_code('AVR')
+        if self.submission.present? && avr.present?
+          ProcessingStatusWrapper.create(status_date: Date.today, processing_status: avr, submission: self.submission, trial: self.trial)
+        end
       elsif self.milestone.code == 'ONG'
         avr = ProcessingStatus.find_by_code('AVR')
         sts = Milestone.find_by_code('STS')

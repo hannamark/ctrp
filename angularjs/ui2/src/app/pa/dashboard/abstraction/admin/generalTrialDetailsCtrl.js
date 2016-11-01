@@ -7,10 +7,10 @@
     angular.module('ctrp.app.pa.dashboard')
     .controller('generalTrialDetailsCtrl', generalTrialDetailsCtrl);
 
-    generalTrialDetailsCtrl.$inject = ['$scope', 'TrialService', 'PATrialService', 'toastr',
+    generalTrialDetailsCtrl.$inject = ['$scope', 'FORMATS', 'TrialService', 'PATrialService', 'toastr',
             'MESSAGES', 'protocolIdOriginObj', '_', '$timeout', 'centralContactTypes', 'PersonService', '$state'];
 
-    function generalTrialDetailsCtrl($scope, TrialService, PATrialService, toastr,
+    function generalTrialDetailsCtrl($scope, FORMATS, TrialService, PATrialService, toastr,
         MESSAGES, protocolIdOriginObj, _, $timeout, centralContactTypes, PersonService, $state) {
       var vm = this;
       var _defaultCountry = 'United States'; // for phone number validation
@@ -37,6 +37,7 @@
       vm.leadProtocolId = '';
       vm.leadProtocolIdEdit = false;
       vm.disableBtn = false;
+      vm.phoneNumberFormat = FORMATS.NUMERIC;
 
       var otherIdsClone = [];
       var regex = new RegExp('-', 'g');
@@ -77,6 +78,8 @@
           watchCentralContactType();
           watchCentralContact();
           watchSponsor();
+
+          resetFormStatus();
       }
 
       /**
@@ -127,9 +130,7 @@
                   getTrialDetailCopy();
 
                   // To make sure setPristine() is executed after all $watch functions are complete
-                  $timeout(function() {
-                     $scope.general_trial_details_form.$setPristine();
-                 }, 1);
+                  resetFormStatus();
 
               }
           }).catch(function(err) {
@@ -147,7 +148,7 @@
           vm.otherIdDestroyAll = false;
          // vm.centralContact = [];
 
-         $scope.general_trial_details_form.$setPristine();
+         resetFormStatus();
 
           $timeout(function() {
              getTrialDetailCopy();
@@ -484,6 +485,12 @@
           return typeName;
       }
 
+      function resetFormStatus() {
+          $timeout(function() {
+             $scope.general_trial_details_form.$setPristine();
+         }, 1);
+      }
+
     } //generalTrialDetailCtrl
 
-})();
+}());

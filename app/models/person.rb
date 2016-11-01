@@ -35,6 +35,7 @@ class Person < ActiveRecord::Base
   has_many :organizations, through: :po_affiliations
   belongs_to :source_status
   belongs_to :source_context
+  belongs_to :service_request
   #belongs_to :source_cluster
   has_many :trial_co_pis
   has_many :copi_trials, through: :trial_co_pis, source: :trial
@@ -42,6 +43,8 @@ class Person < ActiveRecord::Base
   has_many :investigator_trials, foreign_key: :investigator_id, class_name: "Trial"
   has_many :participating_site_investigators, -> { order 'participating_site_investigators.id' }
   has_many :participating_sites, through: :participating_site_investigators
+
+  attr_accessor :is_associated
 
   accepts_nested_attributes_for :po_affiliations, allow_destroy: true
 
@@ -194,27 +197,59 @@ class Person < ActiveRecord::Base
 
   scope :with_source_context, -> (value) { joins(:source_context).where("source_contexts.name = ?", "#{value}") }
 
-  scope :with_source_status, -> (value, source_context_id) { joins(:source_status).where("source_statuses.name = ? AND source_statuses.source_context_id = ?", "#{value}", "#{source_context_id}") }
+  # search against source_status for the given source_context_id
+  scope :with_source_status_context, -> (value, source_context_id) { joins(:source_status).where("source_statuses.code = ? AND source_statuses.source_context_id = ?", "#{value}", "#{source_context_id}") }
 
-  scope :matches_wc, -> (column, value,wc_search) {
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      where("people.#{column} ilike ?", "%#{value[1..str_len - 1]}")
-    elsif value[0] != '*' && value[str_len - 1] == '*'
-      where("people.#{column} ilike ?", "#{value[0..str_len - 2]}%")
-    elsif value[0] == '*' && value[str_len - 1] == '*'
-      where("people.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
-    else
-      if !wc_search
+  scope :with_source_status_only, -> (value) { joins(:source_status).where("source_statuses.code = ?", "#{value}")} # with searching against all source_context
 
-        if !value.match(/\s/).nil?
-        value=value.gsub! /\s+/, '%'
-        end
-        where("people.#{column} ilike ?", "%#{value}%")
-      else
-        where("people.#{column} ilike ?", "#{value}")
+  scope :with_service_request, -> (value) { joins(:service_request).where("service_requests.id = ?", "#{value}")}
+
+  scope :find_ctrp_matches, -> (params) {
+
+    query_obj = joins(:po_affiliations)
+    # query_obj = query_obj.where('po_affiliations.person_id = people.id')
+    query_obj = query_obj.where('people.fname = ?', params[:fname]) unless params[:fname].nil?
+    query_obj = query_obj.where('people.lname = ?', params[:lname]) unless params[:lname].nil?
+    query_obj
+
+    # joins("LEFT OUTER JOIN po_affiliations on people.id = po_affiliations.person_id").where("people.fname = ? OR people.lname = ?", params[:fname], params[:lname])
+    #.where("people.lname = ?", params[:lname])
+  }
+
+  scope :all_persons_data, -> (params) {
+    join_clause = "
+    INNER JOIN source_contexts ON people.source_context_id = source_context.id
+    INNER JOIN source_statuses ON people.source_status_id = source_statuses.id
+"
+
+
+    where_clause = ""
+    select_clause = "
+      people.*,
+      source_statuses.name as source_status_name,
+      source_contexts.name as source_context_name
+    "
+
+    if params && params[:ctrp_id]
+      where_clause = " people.id = #{params[:ctrp_id]}"
+    end
+    results = nil
+    if params[:fname].present?
+      # results = nil
+      fname = params[:fname]
+      str_len = fname.length
+      wc_search = params[:wc_search]
+      if fname[0] == '*' && fname[str_len-1] != '*'
+        results = joins(join_clause).where(where_clause).where("people.name ilike ?", "%#{fname[1..str_len-1]}%").select(select_clause)
       end
     end
+    sortBy = params[:sort]
+    if ['source_context', 'source_status'].include?(sortBy)
+      sortBy += "_name"
+    end
+    results
+    # results.order("#{sortBy} #{params[:order]}")
+
   }
 
   scope :sort_by_col, -> (column, order) {

@@ -246,9 +246,13 @@ class  User < ActiveRecord::Base
   end
 
 
-  scope :org_write_access, -> (current_user) {
-    ['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ADMIN','ROLE_ABSTRACTOR'].include? current_user.role
-  }
+  def self.org_write_access(current_user)
+    return ['ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER'].include? current_user.role
+  end
+
+  def self.org_read_all_access(current_user)
+    return ['ROLE_RO','ROLE_CURATOR','ROLE_ADMIN','ROLE_SUPER','ROLE_ABSTRACTOR'].include? current_user.role
+  end
 
   def ldap_before_save
     Rails.logger.info "In ldap_before_save"
@@ -276,6 +280,7 @@ class  User < ActiveRecord::Base
   end
 
   # Array of all organizations in the families of user's organization
+  ##Following method is going to be retired as this wll replace that following
   def family_orgs
     family_orgs = []
 
@@ -290,6 +295,22 @@ class  User < ActiveRecord::Base
     end
 
     return family_orgs.uniq
+  end
+
+
+  def family_organizations
+    organization = self.organization
+    families = organization.families ##As an organization can have more than one family
+    family_status_id = FamilyStatus.find_by_code('ACTIVE').id
+    #org_status_id = SourceStatus.find_by_code('ACT').id
+    dateLimit = Date.today
+    if !families.nil?
+        family_organizations = families.where("family_status_id= ? and (family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null)",family_status_id ).pluck(:organization_id)
+    else
+        ##if user's organization is an orphan
+      family_organizations =Array.new().push(organization.id)
+    end
+    return family_organizations
   end
 
   private

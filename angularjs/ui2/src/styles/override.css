@@ -1835,7 +1835,10 @@ body.assign-ownership #user_list_admin_priv, body.assign-ownership #user_list_st
 .edit-off .ui-grid-row:nth-child(even):hover .ui-grid-cell.ui-grid-row-header-cell {
     background: #eee;
 }
+.edit-off .btn-danger {display: none;}
 
+body.people .ui-grid-selection-row-header-buttons.ui-grid-icon-ok,
+body.organizations .ui-grid-selection-row-header-buttons.ui-grid-icon-ok,
 .edit-off .ui-grid-selection-row-header-buttons.ui-grid-icon-ok {
     display: none;
 }
@@ -1911,4 +1914,10 @@ body.trial-abstraction-search .form-horizontal label.control-label.checkbox3 {
 .pagination-text {
     margin-left: 5px;
     color: #444;
+}
+
+
+/* min-height ~ grid height for cases where grid is too small for actions menu to be visible */
+.ui-grid-canvas {
+    min-height: 465px;
 }

@@ -306,9 +306,8 @@ class TrialsController < ApplicationController
       #"My Trials" or "All Trials"
       params[:sort] = 'nci_id' if params[:sort].blank?
       params[:order] = 'desc' if params[:order].blank?
+      #@organizations = @organizations.order("#{sortBy} #{params[:order]}")
     end
-
-
 
     if params[:trial_ownership].present?
 
@@ -326,13 +325,14 @@ class TrialsController < ApplicationController
           @trials = Trial.matches('lead_org_id', current_user.organization_id).where(nih_nci_prog: nil).filter_rejected.active_submissions
         end
       end
-    elsif params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
+    elsif params[:org].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.filter_rejected
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
-      @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
+      @trials = matches_wc(@trials, 'official_title', params[:official_title], true) if params[:official_title].present?
       @trials = @trials.with_phases(params[:phases]) if params[:phases].present?
       @trials = @trials.with_purposes(params[:purposes]) if params[:purposes].present?
       @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
+      @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       if params[:pi].present?
         splits = params[:pi].split(',').map(&:strip)
         @trials = @trials.with_pi_lname(splits[0])
@@ -342,16 +342,44 @@ class TrialsController < ApplicationController
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
-      @trials = @trials.with_owner(@current_user.username) if params[:searchType] == 'My Trials'
+
+      if params[:searchType] == 'My Trials'
+        if ['ROLE_SITE-SU'].include? current_user.role
+          @trials = @trials.with_owner_and_with_current_user_in_family_as_ps(@current_user)
+        else
+          @trials = @trials.with_owner_and_with_current_user_org_as_ps(@current_user)
+        end
+
+      end
       @trials = @trials.is_not_draft if params[:searchType] == 'All Trials'
       @trials = @trials.is_draft(@current_user.username) if params[:searchType] == 'Saved Drafts'
-      @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
+      #@trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
+      @trials = @trials.order("#{params[:sort]} #{params[:order]}").page(params[:start]).per(params[:rows])
 
        #@trials = @trials.filter(@trials, {:phases => params[:phases], :purposes => params[:purposes]})
+
+
+      #### Write here a join query to avoid the access of db tables from View.
+      ###
+      Rails.logger.info "Started querying multitable with Trials to avoid the access of db tables from View"
+
+      #@trials = @trials.uniq
+      #@trials = @trials.my_available_actions
+      #@trials = @trials.includes(:phase).references(:phase)
+      #@trials = @trials.includes(:primary_purpose).references(:primary_purpose)
+      #@trials = @trials.includes(:research_category).references(:research_category)
+      #@trials = @trials.includes(:responsible_party).references(:responsible_party)
+      #@trials = @trials.includes(:accrual_disease_term).references(:accrual_disease_term)
+      #@trials = @trials.includes(:lead_org).references(:lead_org)
+      #@trials = @trials.includes(:pi).references(:pi)
+      #@trials = @trials.includes(:sponsor).references(:sponsor)
+      #@trials = @trials.includes(:study_source).references(:study_source)
+      #@trials = @trials.includes(:trial_status_wrappers).references(:trial_status_wrappers)
 
       @trials.each do |trial|
         trial.current_user = @current_user
       end
+
     else
       @trials = []
     end
@@ -455,7 +483,7 @@ class TrialsController < ApplicationController
     if params[:checkout].present? || params[:scientific_checkout].present? || params[:admin_checkout].present? || params[:submission_type].present? ||  params[:submission_method].present? ||params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present? || params[:internal_sources].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
-      @trials = @trials.matches_wc('official_title', params[:official_title]) if params[:official_title].present?
+      @trials = matches_wc(@trials, 'official_title', params[:official_title], true) if params[:official_title].present?
       @trials = @trials.with_phases(params[:phases]) if params[:phases].present?
       @trials = @trials.with_purposes(params[:purposes]) if params[:purposes].present?
       @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
@@ -750,31 +778,43 @@ class TrialsController < ApplicationController
   end
 
   def import_clinical_trials_gov
-    url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
-    url = url.sub('NCT********', params[:nct_id])
-    xml = Nokogiri::XML(open(url))
+    begin
+        url = AppSetting.find_by_code('CLINICAL_TRIALS_IMPORT_URL').value
+        url = url.sub('NCT********', params[:nct_id])
+        xml = Nokogiri::XML(open(url))
 
-    trial_service = TrialService.new({trial: nil})
-    @trial = Trial.new(trial_service.import_params(xml, @current_user))
-    @trial.current_user = @current_user
-    import_log_service = ImportTrialLogService.new
-    request_record = import_log_service.request_logging(xml,"Create","request",@current_user,ImportTrialLogDatum)
+        import_trial_service = ImportTrialService.new()
+        @trial = Trial.new(import_trial_service.import_params(xml, @current_user))
+        @trial.current_user = @current_user
+        import_log_service = ImportTrialLogService.new
+        request_record = import_log_service.request_logging(xml,"Create","request",@current_user,ImportTrialLogDatum)
+    rescue =>e
+      @error= e.message
+      Rails.logger.error "Exception caught when trying to import an error #{@error}"
+    end
     respond_to do |format|
       if @trial.save
-        format.html { redirect_to @trial, notice: 'Trial was successfully imported.' }
-        format.json { render :show, status: :created, location: @trial }
-        import_log_service.response_logging(@trial,"sucess", "Created Sucessfully",ImportTrialLogDatum,request_record)
-        FileUtils.mkdir_p('../../storage/tmp')
-        file_name = "import_#{params[:nct_id]}_#{Date.today.strftime('%d-%b-%Y')}"
-        File.open("../../storage/tmp/#{file_name}.xml", 'wb') do |file|
-          file << open(url).read
+        begin
+          format.html { redirect_to @trial, notice: 'Trial was successfully imported.' }
+          format.json { render :show, status: :created, location: @trial }
+          import_log_service.response_logging(@trial,"sucess", "Created Sucessfully",ImportTrialLogDatum,request_record)
+          FileUtils.mkdir_p('../../storage/tmp')
+          file_name = "import_#{params[:nct_id]}_#{Date.today.strftime('%d-%b-%Y')}"
+          File.open("../../storage/tmp/#{file_name}.xml", 'wb') do |file|
+            file << open(url).read
+          end
+          TrialDocument.create(document_type: 'Other Document', document_subtype: 'Import XML', trial_id: @trial.id, file: File.open("../../storage/tmp/#{file_name}.xml"))
+          Rails.logger.info "Imported a trial successfully and rendered"
+
+        rescue =>e
+          @error= e.message
+          Rails.logger.error "Exception caught when trying to render an import trial #{@error}"
         end
-        TrialDocument.create(document_type: 'Other Document', document_subtype: 'Import XML', trial_id: @trial.id, file: File.open("../../storage/tmp/#{file_name}.xml"))
-      else
+
+        else
         format.html { render :new }
         format.json { render json: @trial.errors, status: :unprocessable_entity }
         import_log_service.response_logging(@trial,"failure", @trial.errors.to_xml,ImportTrialLogDatum,request_record)
-
       end
     end
   end

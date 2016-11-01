@@ -40,7 +40,6 @@
 
                     element.bind('submit', function(event) {
                         var formAction = $parse(attrs.ctrpSubmit);
-
                         submitController.attempted = formController.$submitted;
                         //$log.info('form is submitted: ' + formController.$submitted);
 
@@ -49,7 +48,7 @@
                         }
 
                         if (formController.$invalid) { //|| formController.$pristine
-                            //$log.error('form submission invalid or untouched!');
+                            $log.error('form submission invalid or untouched!');
                             return false;
                         } else if (!hasSecondaryTask) {
                             /* Execute the form action normally if valid/and no secondary tasks */
@@ -78,6 +77,7 @@
                     this.needsAttention = function(fieldModelController, isFieldInvalid) {
                         if (angular.isDefined(isFieldInvalid) && isFieldInvalid === true) {
                             formController.$invalid = true;
+
                             return formController.$submitted && isFieldInvalid;
                         }
 

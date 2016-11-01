@@ -72,11 +72,14 @@
             $scope.searchParams = PersonService.getInitialPersonSearchParams();
             $scope.sourceContextArr = []; //sourceContextObj;
             $scope.sourceStatusArr = []; //sourceStatusObj;
+            $scope.curSourceStatuses = []; // subset of source statuses for the selected source context
             $scope.nullifiedId = '';
             $scope.warningMessage = '';
             $scope.selectedRows = [];
             $scope.curationShown = false;
             $scope.curationModeEnabled = false;
+            $scope.processingStatuses = OrgService.getProcessingStatuses();
+            $scope.serviceRequests = [];
             $scope.dateFormat = DateService.getFormats()[1];
             // console.log('dateFormat: ' + $scope.dateFormat);
             $scope.dateOptions = DateService.getDateOptions();
@@ -425,23 +428,40 @@
 
 
             function getPromisedData() {
-
                 OrgService.getSourceContexts().then(function(data) {
                     var status = data.server_response.status;
 
                     if (status >= 200 && status <= 210) {
                         $scope.sourceContextArr = data.sort(Common.a2zComparator());
-                        console.info('sourceContextArr: ', $scope.sourceContextArr);
+                        if ($scope.usedInModal && !!$scope.sourceContextOnly) {
+                            $scope.sourceContextArr = $scope.sourceContextArr.filter(function(c) {
+                                return c.code === $scope.sourceContextOnly; // show only the source context assigned
+                            });
+                        }
                     }
                 });
 
-                OrgService.getSourceStatuses().then(function(data) {
+                OrgService.getSourceStatuses2().then(function(data) {
                     var status = data.server_response.status;
 
                     if (status >= 200 && status <= 210) {
                         $scope.sourceStatusArr = data.sort(Common.a2zComparator());
-                        console.info('sourceStatusArr: ', $scope.sourceStatusArr);
+                        if ($scope.usedInModal) {
+                            $scope.sourceStatusArr = $scope.sourceStatusArr.filter(function(s) {
+                                return s.code === 'ACT';
+                            });
+                        }
+                        watchSourceContext(); // trigger the watch for source context selection
                     }
+                });
+
+                OrgService.getServiceRequests().then(function (requests) {
+                    var status = requests.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        $scope.serviceRequests = requests;
+                    }
+                    delete requests.server_response;
                 });
             } //getPromisedData
 
@@ -533,7 +553,7 @@
 
 
                     //$scope.$parent.selectedPersonsArray = []; //$scope.selectedRows;
-                    if (newVal != oldVal) {
+                    if (newVal != oldVal && $scope.gridApi) {
                         $scope.gridApi.grid.refresh();
                     }
                 }, true);
@@ -609,7 +629,6 @@
                 return deselectedRow;
             }
 
-
             function watchCurationMode() {
                 $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                    watchCurationModeSubRoutine();
@@ -618,6 +637,26 @@
 
             function watchCurationModeSubRoutine() {
                 $scope.curationShown = UserService.isCurationModeEnabled() || false;
+            }
+
+            // dynamically select the list of source statuses for the selected source context
+            function watchSourceContext() {
+                $scope.$watch('searchParams.source_context', function(newVal, oldVal) {
+
+                    if (!newVal) {
+                        // for All source contexts
+                        $scope.curSourceStatuses = _.uniq($scope.sourceStatusArr, function(status, key, code) {
+                            return status.code;
+                        });
+                    } else {
+                        var context = _.findWhere($scope.sourceContextArr, {code: newVal});
+                        var contextId = !!context ? context.id : 2;
+                        $scope.curSourceStatuses = $scope.sourceStatusArr.filter(function(status) {
+                            return status.source_context_id === contextId;
+                        });
+                    }
+
+                });
             }
 
         } //advPersonSearchDirectiveController

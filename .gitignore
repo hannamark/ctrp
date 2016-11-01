@@ -114,4 +114,4 @@ bin/tilt
 bin/xlsopcodes
 .rbenv-gemsets
 .ruby-version
-.dump-rdb
+dump-rdb

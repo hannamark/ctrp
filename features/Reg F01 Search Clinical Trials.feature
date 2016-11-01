@@ -15,7 +15,9 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |Lead Org Trial Identifier|
 |Principal Investigator|
 |ClinicalTrials.gov Identifier|
-|Other Identifiers (Other ID Source and Other ID i.e.DCP:  12345, CTEP:  12345)|
+#(Other ID Source and Other ID i.e.DCP:  12345, CTEP:  12345)
+# Clinical Trial Identifier should not be included in other identifiers
+|Other Identifiers |
 |Current Trial Status|
 |Current Processing Status|
 |Available Actions|
@@ -46,6 +48,7 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
   
   Scenario: #1b As a Site Admin I can search for Imported Clinical Trials in CTRP 
   Given I am logged into the CTRP Registration application
+  And my role is a Site Admin
   And I am on the Search Clinical Trials Screen
    And I know the search Parameters of trial
    When I select the option to search Trials "My Trials" 
@@ -59,6 +62,7 @@ And I know the search Parameters of trial
 When I select the option to search "All Trials"
 Then CTRP will display all trials with a last active submission that match the trial search criteria
 And the Clinical Trials Search Results will display the following sorted by NCI Trial Identifier:
+
 |NCI Trial Identifier|
 |Official Title|
 |Current Trial Status|
@@ -66,7 +70,9 @@ And the Clinical Trials Search Results will display the following sorted by NCI 
 |Lead Org Trial Identifier|
 |Principal Investigator|
 |ClinicalTrials.gov Identifier|
-|Other Identifiers (Other ID Source and Other ID i.e.DCP:  12345, CTEP:  12345)|
+#(Other ID Source and Other ID i.e.DCP:  12345, CTEP:  12345)
+# Clinical Trial Identifier should not be included in other identifiers
+|Other Identifiers |
 |Available Actions|
 
 

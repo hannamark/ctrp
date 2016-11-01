@@ -127,6 +127,9 @@
 class Trial < TrialBase
   include Filterable
   include TableLoggable
+  include ActiveRecord::UnionScope
+  include ActiveModel::Serializers::JSON
+
 
   # Disabled optimistic locking
   self.locking_column = :dummy_column
@@ -287,8 +290,11 @@ class Trial < TrialBase
   # The set_defaults will only work if the object is new
   after_initialize :set_defaults, unless: :persisted?
 
+
   # Array of actions can be taken on this Trial
-  def actions
+  scope :my_available_actions, lambda {eager_load(:users,:processing_status_wrappers,:ps_orgs)}
+
+  def actions(avr_id,vnr_id)
     actions = []
 
     if self.internal_source && self.internal_source.code == 'PRO'
@@ -298,25 +304,23 @@ class Trial < TrialBase
           actions.append('complete')
         else
           actions.append('update')
-          processing_status_wrappers = self.processing_status_wrappers.pluck(:processing_status_id)
-          if (processing_status_wrappers.include? ProcessingStatus.find_by_code("AVR")) || (processing_status_wrappers.include? ProcessingStatus.find_by_code("VNR"))
+            is_avr = self.processing_status_wrappers.detect { |p| p.processing_status_id == avr_id }
+            is_vnr = self.processing_status_wrappers.detect { |p| p.processing_status_id == vnr_id }
+            if (!is_avr.nil? || !is_vnr.nil?)
             actions.append('amend')
             actions.append('verify-data')
             actions.append('view-tsr')
           end
         end
       end
-
     elsif self.internal_source && self.internal_source.code == 'IMP'
       #When Trial is Imported
       if self.current_user && self.current_user.role == 'ROLE_SITE-SU'
         #Have Site Admin Privileges
         #
-        if !self.current_user.organization.families.nil?
           flag=0;
-          self.current_user.organization.families.each do |my_family|
-            my_family_organizations = my_family.organizations
-            if self.ps_orgs.include?(my_family_organizations)
+          self.current_user.family_organizations.each do |org|
+            if self.ps_orgs.include?(org)
                 flag =1;
                 break;
             end
@@ -326,9 +330,8 @@ class Trial < TrialBase
           else
             actions.append('manage-sites') #
           end
-        else
-          #Place logic here if user organization does not belong to any family.
-        end
+
+
       else
         #Do not have site Admin Privileges
         #
@@ -854,6 +857,16 @@ class Trial < TrialBase
 
   end
 
+  ##Returns sites with onlly active orgs.
+  def participating_sites_with_active_orgs
+    participating_sites_with_active_orgs = []
+      self.participating_sites.each do |e|
+        if SourceStatus.find_by_id(Organization.find_by_id(e.organization_id).source_status_id).code == 'ACT'
+          participating_sites_with_active_orgs.push(e)
+        end
+      end
+    return participating_sites_with_active_orgs
+  end
 
   private
 
@@ -1000,25 +1013,54 @@ class Trial < TrialBase
   #scope :matches_grant, -> (column, value) {Tempgrant.where}
   scope :matches, -> (column, value) { where("trials.#{column} = ?", "#{value}") }
 
-  scope :matches_wc, -> (column, value) {
-    str_len = value.length
-    if value[0] == '*' && value[str_len - 1] != '*'
-      where("trials.#{column} ilike ?", "%#{value[1..str_len - 1]}")
-    elsif value[0] != '*' && value[str_len - 1] == '*'
-      where("trials.#{column} ilike ?", "#{value[0..str_len - 2]}%")
-    elsif value[0] == '*' && value[str_len - 1] == '*'
-      where("trials.#{column} ilike ?", "%#{value[1..str_len - 2]}%")
-    else
-      where("trials.#{column} ilike ?", "#{value}")
-    end
-  }
-
   scope :in_family, -> (value, dateLimit) {
     familyOrganizations = FamilyMembership.where(
         family_id: value
     ).where("family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null")
     .pluck(:organization_id)
     where(lead_org_id: familyOrganizations)
+  }
+
+  scope :with_current_user_in_family_as_ps, -> (value) {
+    current_user = value
+    organization = current_user.organization
+    family_organizations = current_user.family_organizations
+    param = []
+    family_organizations.each do |o|
+      param.push(o)
+    end
+
+    family_organizations = family_organizations.join(',')
+    join_clause = "LEFT JOIN participating_sites _ps1 ON _ps1.trial_id = trials.id LEFT JOIN internal_sources _is on _is.id = trials.internal_source_id "
+    where_clause = " _ps1.organization_id in ("+param.join(',')+") "
+    where_clause += " AND _is.code = ? "
+    joins(join_clause).where(where_clause,"IMP")
+  }
+
+
+  scope :with_current_user_org_as_ps, -> (value) {
+    current_user = value
+    organization = current_user.organization
+    join_clause = "LEFT JOIN participating_sites _ps ON _ps.trial_id = trials.id LEFT JOIN internal_sources _is on _is.id = trials.internal_source_id  "
+    where_clause = " _ps.organization_id =? "
+    where_clause += " AND _is.code =? "
+    joins(join_clause).where(where_clause, organization, "IMP")
+  }
+
+  scope :in_family, -> (value, dateLimit) {
+    familyOrganizations = FamilyMembership.where(
+        family_id: value
+    ).where("family_memberships.expiration_date > '#{dateLimit}' or family_memberships.expiration_date is null")
+                              .pluck(:organization_id)
+    where(lead_org_id: familyOrganizations)
+  }
+
+  scope :with_owner_and_with_current_user_org_as_ps, ->(value) {
+    union_scope(with_owner(value.username),with_current_user_org_as_ps(value))
+  }
+
+  scope :with_owner_and_with_current_user_in_family_as_ps, ->(value) {
+    union_scope(with_owner(value.username),with_current_user_in_family_as_ps(value))
   }
 
   scope :with_protocol_id, -> (value) {
@@ -1202,7 +1244,7 @@ class Trial < TrialBase
 
     #join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN trial_funding_sources ON trial_funding_sources.trial_id = trials.id LEFT JOIN organizations funding_sources ON funding_sources.id = trial_funding_sources.organization_id"
     #where_clause = "lead_orgs.name ilike ? OR sponsors.name ilike ? OR funding_sources.name ilike ?"
-    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN participating_sites ON participating_sites.trial_id = trials.id LEFT JOIN organizations sites ON sites.id = participating_sites.organization_id"
+    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN participating_sites ps ON ps.trial_id = trials.id LEFT JOIN organizations sites ON sites.id = ps.organization_id"
     where_clause = ""
     conditions = []
 
@@ -1324,7 +1366,5 @@ class Trial < TrialBase
       order("LOWER(trials.#{column}) #{order}")
     end
   }
-
-
 
 end

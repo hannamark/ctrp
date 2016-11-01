@@ -92,6 +92,7 @@
         };
 
         var upsertUserSignup = function (userObj) {
+            $scope.processing = true;
             PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.A_USER_SIGNUP, userObj).then(function (data) {
                 var status = data.server_response.status || data.status;
 
@@ -117,6 +118,8 @@
             }).catch(function (err) {
                 $log.error('error in log in: ' + JSON.stringify(err));
                 $state.go('main.signup');
+            }).finally(function() {
+                $scope.processing = false;
             });
         };
     }
