@@ -55,6 +55,7 @@
                     }
                     showToastr(vm.ctrpOrg.name);
                     vm.ctrpOrg.new = false;
+                    vm.ctrpOrg.org_updated_date = response.org_updated_date;
 
                     $timeout(function() {
                         $scope.organization_form.$setPristine();

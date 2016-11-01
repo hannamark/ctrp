@@ -29,8 +29,8 @@ json.associated_orgs do
                   :ctep_id,
                   :ctep_org_type_name,
                   :aff_families_names
-                  json.org_created_date Date.parse(organization.org_created_date)
-                  json.org_updated_date Date.parse(organization.org_updated_date)
+                  json.org_created_date @read_all_access ? organization.org_created_date : nil
+                  json.org_updated_date @read_all_access ? organization.org_updated_date : nil
                   json.org_assoc_date @read_all_access ? organization.org_assoc_date : nil
                   json.service_request_name @read_all_access ? organization.service_request_name : nil
                   json.processing_status @read_all_access ? organization.processing_status : nil
