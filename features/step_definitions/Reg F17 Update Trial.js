@@ -511,6 +511,23 @@ module.exports = function () {
                      expect(participatingSite.addPSTrialStatusTable.last().getText()).to.eventually.equal(status);
                  });
 
+             } else if(PSFieldTypeTable[i].toString() === 'Contact Type'){
+                     participatingSite.getVerifyPSContactType('General');
+             } else if(PSFieldTypeTable[i].toString() === 'Contact Name'){
+                 storePSContactName.then(function (contactName) {
+                     participatingSite.getVerifyPSContactName(contactName);
+                 });
+             } else if(PSFieldTypeTable[i].toString() === 'Contact Email Address'){
+                 storePSContactEmail.then(function (emailAddress) {
+                     participatingSite.getVerifyPSContactEmailAddress(emailAddress);
+                 });
+             } else if(PSFieldTypeTable[i].toString() === 'Contact Phone Number-Extension'){
+                 storePSContactPhone.then(function (contactPhone) {
+                     participatingSite.getVerifyPSContactPhone(contactPhone.replace(/'x'.*/,''));
+                 });
+                 storePSContactPhone.then(function (phoneExtension) {
+                     participatingSite.getVerifyPSContactPhoneExtension(phoneExtension.replace(/.*'x'/,''));
+                 });
              } else{
                  assert.fail(0,1,'No Step defined for given PS field --> ' + PSFieldTypeTable[i].toString() + ' <-- Please add a step for it.');
              }
