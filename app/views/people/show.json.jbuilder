@@ -12,8 +12,9 @@ ctep_active_source_status_id = ctep_active_source_status.present? ? ctep_active_
 json.set! :is_ctrp_context, ctrp_context_id == @person.source_context_id # flag if this person is ctrp context
 json.set! :service_request, ServiceRequest.find(@person.service_request_id).name if @person.service_request_id.present?
 json.set! :source_status, SourceStatus.find(@person.source_status_id).name if @person.source_status_id.present?
+json.set! :source_context, SourceContext.find(@person.source_context_id).name if @person.source_context_id.present?
 
-@associated_persons = Person.where(ctrp_id: @person.ctrp_id) if @person.ctrp_id.present? #&& @person.source_context_id == ctrp_context_id
+@associated_persons = Person.where(ctrp_id: @person.ctrp_id) #if @person.ctrp_id.present? && @person.source_context_id == ctrp_context_id
 @associated_persons = @associated_persons.reject { |p| p.id == @person.id } # remove self
 
 json.associated_persons do
@@ -21,6 +22,7 @@ json.associated_persons do
     json.merge! p.attributes # get all the attributes in person
     json.set! :ctrp_source_id, p.source_id if p.source_context_id == ctrp_context_id
     json.set! :is_ctrp_context, ctrp_context_id == p.source_context_id
+    json.set! :has_association, p.source_context_id == ctrp_context_id && Person.where(ctrp_id: p.ctrp_id).size > 1 # if ctrp context, does it have associated CTEPs ?
     json.set! :context_person_id, @person.id # use the CTRP person id as the context person id
     # json.set! :source_id, nil if p.source_context_id == ctrp_context_id # this seems identifical to CTEP ID in the grid
     json.set! :source_context, SourceContext.find(p.source_context_id).name if p.source_context_id.present?
