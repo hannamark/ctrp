@@ -13,7 +13,7 @@ json.set! :is_ctrp_context, ctrp_context_id == @person.source_context_id # flag 
 json.set! :service_request, ServiceRequest.find(@person.service_request_id).name if @person.service_request_id.present?
 json.set! :source_status, SourceStatus.find(@person.source_status_id).name if @person.source_status_id.present?
 
-@associated_persons = Person.where(ctrp_id: @person.ctrp_id) #if @person.ctrp_id.present? && @person.source_context_id == ctrp_context_id
+@associated_persons = Person.where(ctrp_id: @person.ctrp_id) if @person.ctrp_id.present? #&& @person.source_context_id == ctrp_context_id
 @associated_persons = @associated_persons.reject { |p| p.id == @person.id } # remove self
 
 json.associated_persons do

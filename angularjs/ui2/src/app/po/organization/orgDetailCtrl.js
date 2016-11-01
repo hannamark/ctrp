@@ -14,6 +14,7 @@
     function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService, $filter, _,uiGridExporterConstants, uiGridExporterService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal, $timeout, GeoLocationService, serviceRequests) {
         var vm = this;
+        console.info('associatedOrgsObj: ', associatedOrgsObj);
         vm.addedNameAliases = [];
         vm.states = [];
         vm.processingStatuses = OrgService.getProcessingStatuses();
@@ -101,7 +102,7 @@
 
         // Delete the associations
         vm.toggleSelection = function (index, type) {
-            if (type == 'other_id') {
+            if (type === 'other_id') {
                 if (index < vm.addedNameAliases.length) {
                     vm.addedNameAliases[index]._destroy = !vm.addedNameAliases[index]._destroy;
                 }
@@ -119,7 +120,7 @@
             }), function (item) {
                 return _.contains(["ACT","INACT","PEND"], item.code);
             });
-        
+
         /****************** implementations below ***************/
 
         /**
