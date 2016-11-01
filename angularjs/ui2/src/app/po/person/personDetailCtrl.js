@@ -367,7 +367,7 @@
                 }
                 vm.sourceStatusArrSelected = vm.sourceStatusArr.filter(function(s) {
                     // do not show nullified source status!
-                    return s.source_context_id === newVal && s.name.indexOf('Null') == -1;
+                    return s.source_context_id === newVal && s.name.indexOf('Null') === -1;
                 });
             }, true);
         }

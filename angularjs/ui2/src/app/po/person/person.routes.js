@@ -32,7 +32,7 @@
                             return OrgService.getSourceContexts();
                         },
                         sourceStatusObj: function(OrgService) {
-                            return OrgService.getSourceStatuses();
+                            return OrgService.getSourceStatuses2();
                         },
                         personDetailObj: function($stateParams, PersonService) {
                             return PersonService.getPersonById($stateParams.personId);

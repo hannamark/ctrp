@@ -14,9 +14,14 @@
                               $scope, Common, sourceStatusObj,sourceContextObj, $state, $uibModal, OrgService, poAffStatuses, _, $timeout) {
 
         var vm = this;
-        vm.person = personDetailObj || {lname: "", source_status_id: "", source_context: "CTRP"}; //personDetailObj.data;
+        vm.person = personDetailObj || {lname: "",
+                                        source_status_id: "",
+                                        source_context: "CTRP",
+                                        new: true,
+                                        processing_status: "Complete"}; //personDetailObj.data;
         vm.person = vm.person.data || vm.person;
         _setupState();
+        console.info('vm.person: ', vm.person);
 
         // actions
         vm.selectContext = selectTab;
@@ -36,7 +41,21 @@
             if (!!contextName) {
                 vm.tabOpen = contextName;
                 vm.curPerson = (contextName === 'CTEP') ? vm.ctepPerson : vm.ctrpPerson;
+                vm.sourceStatusArrSelected = _sourceStatusesForContext(vm.curPerson.source_context_id);
             } // if context name is defined
+        }
+
+        // retrieve the source statuses for the given sourceContextId in curPerson
+        function _sourceStatusesForContext(sourceContextId) {
+
+            var selectedStatusArr = [];
+            if (!angular.isDefined(sourceContextId)) return selectedStatusArr;
+
+            selectedStatusArr = vm.sourceStatusArr.filter(function(status) {
+                return status.source_context_id === sourceContextId &&
+                        status.name.indexOf('Null') === -1;
+            });
+            return selectedStatusArr;
         }
 
         function _setupState() {
@@ -50,6 +69,8 @@
             vm.masterCopy= angular.copy(vm.person);
             vm.sourceStatusArr = sourceStatusObj;
             vm.sourceStatusArr.sort(Common.a2zComparator());
+            console.info('sourceStatusArr: ', vm.sourceStatusArr);
+            vm.sourceStatusArrSelected = [];
             vm.sourceContextArr = sourceContextObj;
             vm.savedSelection = [];
             vm.associatedPersonContexts = [];
