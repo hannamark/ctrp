@@ -259,13 +259,15 @@
             if(!_.contains(allowedROLES, user_role)) {
                 gridOptions.columnDefs = _.filter(
                     gridOptions.columnDefs, function (item) {
-                    return !_.contains(['updated_at', 'updated_by', 'processing_status', 'id', 'service_request_name'], item.name);
+                    return !_.contains(['ctep_id', 'updated_at', 'updated_by', 'processing_status', 'id', 'service_request_name'], item.name);
                 });
             }
-            if(usedInModal){
-                var nullify_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'Nullify');
-                if (nullify_index >= 0)
-                   gridOptions.columnDefs.splice(nullify_index,1);
+
+            if(usedInModal || !_.contains(allowedROLES, user_role)){
+                gridOptions.columnDefs = _.filter(
+                    gridOptions.columnDefs, function (item) {
+                        return !_.contains(['Nullify'], item.name);
+                    });
             }
             return gridOptions;
         }
