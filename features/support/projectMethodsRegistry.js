@@ -523,6 +523,7 @@ var projectMethodsRegistry = function () {
                         addPeople.setAddPersonSuffix('suffix');
                         addPeople.setAddPersonEmail('email@eml.com');
                         addPeople.setAddPersonPhone('222-444-5555');
+                        addPeople.setAddPersonPhoneExtension('001');
                         searchOrg.clickOrgSearchModel();
                         cukeOrganization.then(function (value) {
                             console.log('Add org Name' + value);
@@ -2596,6 +2597,76 @@ var projectMethodsRegistry = function () {
         });
     };
 
+
+    /*****************************************************************
+     * Method: Edit Participating Site Update Screen
+     * @param itemFromRow
+     * @param colmNum
+     *****************************************************************/
+    this.editParticipatingSiteFromGrid = function (itemFromRow,colmNum) {
+        return addTrial.addTrialPsticipatingSitesTable.getText().filter(function (row) {
+            // Get the second column's text.
+            return row.$$('td').get(colmNum).getText().then(function (rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name: ' + rowName + 's');
+                console.log('Item from row: '+ itemFromRow + 's');
+                return rowName.toString() === itemFromRow.toString();
+            });
+        }).then(function (rows) {
+                console.log('value of row' + rows);
+                storePSCTRPID = addTrial.addTrialPsticipatingSitesTableCTRPID.getText();
+                storePSOrgName = addTrial.addTrialPsticipatingSitesTableOrgName.getText();
+               // storePSPIName = addTrial.addTrialPsticipatingSitesTablePIName.getText();
+                storePSLocalID = addTrial.addTrialPsticipatingSitesTableLocalID.getText();
+                storePSPC = addTrial.addTrialPsticipatingSitesTablePC.getText();
+                storePSStatus = addTrial.addTrialPsticipatingSitesTableStatus.getText();
+                storePSStatusDate = addTrial.addTrialPsticipatingSitesTableStatusDate.getText();
+                storePSContactName = addTrial.addTrialPsticipatingSitesTableContactName.getText();
+                storePSContactEmail = addTrial.addTrialPsticipatingSitesTableContactEmail.getText();
+                storePSContactPhone = addTrial.addTrialPsticipatingSitesTableContactPhone.getText();
+            browser.driver.wait(function () {
+                console.log('wait here');
+                return true;
+            }, 40).then(function () {
+               rows[0].element(by.css('.glyphicon.glyphicon-edit')).click();
+            });
+            },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
+
+    /*****************************************************************
+     * Method: Verify a Single Participating Site Update Screen
+     *****************************************************************/
+    this.verifySingleParticipatingSiteFromGrid = function (itemFromRow,colmNum, CTRPOrgID, CTRPOrgName, principalInvestigator, localTrialID, programCode, siteStatus, siteStatusDate, primaryContact, email, phoneExt) {
+        return addTrial.addTrialPsticipatingSitesTable.getText().filter(function (row) {
+            // Get the second column's text.
+            return row.$$('td').get(colmNum).getText().then(function (rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name: ' + rowName + 's');
+                console.log('Item from row: '+ itemFromRow + 's');
+                return rowName.toString() === itemFromRow.toString();
+            });
+        }).then(function (rows) {
+                console.log('value of row' + rows);
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableCTRPIDElement)).getText()).to.eventually.equal(CTRPOrgID.toString(), 'Verification of CTRP org ID in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableOrgNameElement)).getText()).to.eventually.equal(CTRPOrgName, 'Verification of CTRP org Name in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTablePINameElement)).getText()).to.eventually.equal(principalInvestigator, 'Verification of principal Investigator in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableLocalIDElement)).getText()).to.eventually.equal(localTrialID, 'Verification of localTrialID in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTablePCElement)).getText()).to.eventually.equal(programCode, 'Verification of programCode in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableStatusElement)).getText()).to.eventually.equal(siteStatus, 'Verification of siteStatus in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableStatusDateElement)).getText()).to.eventually.equal(siteStatusDate, 'Verification of siteStatusDatein PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableContactNameElement)).getText()).to.eventually.equal(primaryContact, 'Verification of primaryContact in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableContactEmailElement)).getText()).to.eventually.equal(email, 'Verification of email in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableContactPhoneElement)).getText()).to.eventually.equal(phoneExt, 'Verification of phoneExt in PS table');
+            },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
 
 };
 module.exports = projectMethodsRegistry;
