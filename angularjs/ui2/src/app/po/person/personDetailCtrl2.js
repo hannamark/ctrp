@@ -42,6 +42,13 @@
                 vm.tabOpen = contextName;
                 vm.curPerson = (contextName === 'CTEP') ? vm.ctepPerson : vm.ctrpPerson;
                 vm.sourceStatusArrSelected = _sourceStatusesForContext(vm.curPerson.source_context_id);
+
+                // TODO: if new person, assign the ctrp source context id to it
+                if (vm.curPerson.new) {
+                    var ctrpContext = _.findWhere(vm.sourceContextArr, {name: 'CTRP'});
+                    vm.curPerson.source_context_id = !!ctrpContext ? ctrpContext.id : null;
+                }
+
             } // if context name is defined
         }
 
