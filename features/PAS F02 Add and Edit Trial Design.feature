@@ -56,7 +56,7 @@ Scenario:#1c Fields displayed when Clinical Research Category is set to "Observa
   |Final Enrollment for CT.gov|
   |Accruals|
 
-@runthis
+
 Scenario: #2 I can add and edit trial design for an Interventional Clinical Research Category trial
 Given I am logged into the CTRP Protocol Abstraction application
   And I am at the Trial Design screen
@@ -200,7 +200,7 @@ Given I am logged into the CTRP Protocol Abstraction application
   |Time Perspective |
   |Retrospective    |
   |Prospective      |
-  |Cross\sectional  |
+  |Cross sectional  |
   |Other            |
   And I can select a value for Bio-specimen Retention:
   |Biospecimen Retention |
@@ -250,7 +250,7 @@ Examples:
   |Trial Phase           |Trial Phase is Required           |
   |Number of Arms/Groups |Number of Arms/Groups is Required |
   |Target Enrollment     |Target Enrollment is Required        |
-  
+
   Scenario Outline:#8a Observational Trial Design Mandatory Fields rules for PROTOCOL Information Source NEW Sep 2016
   Given I am on the Trial Design Screen
   And the Clinical research Category is Observational
@@ -339,16 +339,16 @@ Given I am logged into the CTRP Protocol Abstraction application
  And "x characters left" will be displayed as characters are added
  When 1000 characters have been entered
  Then no additional text can be entered
-  
- 
+
+
 Scenario:  #15 I can Reset Trial Description screen for a Trial
 Given I am logged into the CTRP Protocol Abstraction application
   And I have selected a trial
   And I am on the Trial Design screen
- When I have selected Reset
+ When I have selected Reset at the Trial Design screen
  Then the information entered or edited on the Trial Design screen will not be saved to the trial record
   And the screen will be refreshed with the data since the last save.
-
+@runthis
 Scenario:  #16 Character display for Study Model of Other
  Given I am on the Trial Design screen
    And Clinical Research Category is Observational or Ancillary Correlative

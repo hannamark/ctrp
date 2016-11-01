@@ -162,6 +162,26 @@ var helper = function() {
         }
     };
 
+    this.selectCheckBox = function(fieldCheckBox, checkORuncheck){
+        fieldCheckBox.isSelected().then (function(value) {
+            console.log('Check Box current Selection Value is: ' + value);
+            console.log('Check Box expected Selection Value is: ' + value);
+            if (value === false && checkORuncheck === 'check') {
+                self.clickButton(fieldCheckBox,"Check the check box button");
+            } else if (value  === true && checkORuncheck === 'uncheck') {
+                self.clickButton(fieldCheckBox,"Uncheck the check box button");
+            }
+        });
+    };
+
+    this.verifyCheckBoxSelection = function(fieldCheckBox, checkORuncheck, errorMessage){
+        if (checkORuncheck === 'check'){
+            expect(fieldCheckBox.isSelected()).to.eventually.equal(true, errorMessage);
+        } else if (checkORuncheck === 'uncheck'){
+            expect(fieldCheckBox.isSelected()).to.eventually.equal(false, errorMessage);
+        }
+    };
+
     this.setUploadedFile = function (fieldName, fieldValue, getFileNm, errorMessage) {
         this.wait(fieldName, errorMessage);
         //fieldName.clear();
