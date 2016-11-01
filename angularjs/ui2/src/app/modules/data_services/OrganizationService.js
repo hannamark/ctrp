@@ -256,14 +256,11 @@
             var allowedROLES= ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_ABSTRACTOR', 'ROLE_CURATOR'];
             var user_role = UserService.getUserRole() ? UserService.getUserRole().toUpperCase() : '';
 
-            var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
-            var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
-
             if(!_.contains(allowedROLES, user_role)) {
-                if (updated_at_index >= 0 )
-                    gridOptions.columnDefs.splice(updated_at_index,1);
-                if (updated_by_index >= 0)
-                    gridOptions.columnDefs.splice(updated_by_index,1);
+                gridOptions.columnDefs = _.filter(
+                    gridOptions.columnDefs, function (item) {
+                    return !_.contains(['updated_at', 'updated_by', 'processing_status', 'id', 'service_request_name'], item.name);
+                });
             }
             if(usedInModal){
                 var nullify_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'Nullify');
