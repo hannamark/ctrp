@@ -21,7 +21,7 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
    #Phone Number “|” Extension (#Single Field)
     #Context Organization ID is the Organization Primary Key
     
-    |CTRP Organization ID|
+    |Group ID|
     |Source Context: CTEP|
     |Source ID|
     |CTEP Organization Type|
@@ -228,7 +228,8 @@ Scenario:#3 Organization Source Status CTEP available list
     Given I am on view organization NLM tab 
      Then I can view NLM fields details
      #Name = Sponsor
-	 |Source Context: NLM|
+	 |Group ID|
+     |Source Context: NLM|
      |Name|
      |NLM Context Organization ID|
      |Source Status|
@@ -260,9 +261,9 @@ Scenario:#3 Organization Source Status CTEP available list
     Scenario:#15 Curator can identify when two organizations are to be merged 
     Given I am logged into the CTRP 
      When CTEP Indicates via REST Service that two Organizations are to be merged
-     And the CTEP Organizations <OrganizationnName> will have CTEP Context Org ID <CTEPContextOrgID>, CTRP Org ID <CTRPOrgID>, Service request <CTEPServiceRequest>, processing status <CTEPProcessingStatus>, and Organization status <CTEPStatus>and CTRP Organization Status <CTRPOrgStatus>
+     And the CTEP Organizations <OrganizationnName> will have CTEP Context Org ID <CTEPContextOrgID>, Group ID <GroupID>, Service request <CTEPServiceRequest>, processing status <CTEPProcessingStatus>, and Organization status <CTEPStatus>and CTRP Organization Status <CTRPOrgStatus>
     
-     |OrganizationName                     |CTEPContextOrgID  |CTRPOrgID          |CTEPServiceRequest       |CTEPprocessingStatus       |CTEPStatus      |CTRPStatusType  |
+     |OrganizationName                     |CTEPContextOrgID  |GroupID          |CTEPServiceRequest       |CTEPprocessingStatus       |CTEPStatus      |CTRPStatusType  |
      |ACORN Research,LLC                   |65016645          |8352734            |Merge ID                 |Incomplete                 |Active          |Active          |       
      |Actelion Pharmaceuticals Switzerland |76983647          |8149074            |Merge ID                 |Incomplete                 |Inactive        |Active          |       
       
@@ -270,9 +271,9 @@ Scenario:#3 Organization Source Status CTEP available list
      And the curator will search for matching organizations in the CTRP Context
      When Matching CTRP organizations found
      Then The CTRP organization matching CTEP organization with inactive status will be Nullified
-    And  the organizations <OrganizationName> will have PK ID <CTEPContextOrgID>, CTRP ID <CTRPOrgID>, Service request <CTEPServiceRequest>, processing status <CTEPProcessingStatus>, and CTEP Organization status <CTEPStatus> and CTRP Organization Status <CTRPOrgStatus> 
+    And  the organizations <OrganizationName> will have PK ID <CTEPContextOrgID>, Group ID <GroupID>, Service request <CTEPServiceRequest>, processing status <CTEPProcessingStatus>, and CTEP Organization status <CTEPStatus> and CTRP Organization Status <CTRPOrgStatus> 
      
-     |OrganizationName                     |CTEPContextOrgID  |CTRPOrgID          |CTEPServiceRequest       |CTEPprocessingStatus       |CTEPStatus      |CTRPStatus      |
+     |OrganizationName                     |CTEPContextOrgID  |GroupID          |CTEPServiceRequest       |CTEPprocessingStatus       |CTEPStatus      |CTRPStatus      |
      |ACORN Research,LLC                   |65016645          |8352734            |NULL                     |Complete                   |Active          |Active          |         
      |Actelion Pharmaceuticals Switzerland |76983647          |8149074            |NULL                     |complete                   |Inactive        |Nullified       |        
       
