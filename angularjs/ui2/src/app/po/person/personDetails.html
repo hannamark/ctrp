@@ -272,15 +272,6 @@
                                 <!--</div>-->
                             </div>
                         </div>
-                        <div class="form-group"
-                            ng-if="personDetailView.curSourceContextName === 'CTRP' && !personDetailView.curPerson.new" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
-                            <label for="person_context" class="control-label col-sm-3 col-xs-12">Associate Person Context:</label>
-                            <div class="col-sm-5 col-xs-12">
-                                <button type="button" class="btn btn-primary" id="person_search_modal" person-search-modal-button2 source-context-only="'CTEP'" ng-model="personDetailView.associatedPersonContexts" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN" ng-disabled="personDetailView.curPerson.associated_persons.length > 0">
-                                    <i class="glyphicon glyphicon-search"></i> Search Persons
-                                </button>
-                            </div>
-                        </div>
                         <!-- clone ctep person -->
                         <div class="form-group" ng-show="clusterPerson.context == 'CTEP' && !personDetailView.curPerson.ctrp_id"> <!--  && !personDetailView.hasCtrpContext -->
                             <div class="col-xs-12 col-sm-3"></div>
@@ -292,22 +283,26 @@
                         <!-- end of clone person -->
                         <div ng-include src="'app/po/person/_matchedClonePersonGrid.html'"></div>
                         <div class="form-group no-bottom-margin" ng-show="personDetailView.curPersonEditable" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
-                            <div class="col-xs-12 col-sm-3"></div>
-                            <div class="btn-toolbar col-xs-12 col-sm-8">
-                                <div class="btn-toolbar">
-                                    <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
-                                        <i class="glyphicon glyphicon-ok"></i> Save
-                                    </button>
-                                    <button type="button" restriction-field  ng-hide="!personDetailView.curPerson.new" class="btn btn-warning pull-right" id="reset_btn" ng-click="personDetailView.clearForm()">
-                                        <i class="glyphicon glyphicon-remove"></i> Reset
-                                    </button>
-                                    <button type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="personDetailView.resetForm()">
-                                        <i class="glyphicon glyphicon-remove"></i> Reset
-                                    </button>
-                                    <!-- <button  type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
-                                        <i class="glyphicon glyphicon-trash"></i> Delete This Person
-                                    </button> -->
-                                </div>
+                            <div class="col-sm-3"></div>
+                            <div class="btn-toolbar col-sm-6">
+                                <button type="button" class="btn btn-primary btn-no-left-margin pull-left" id="person_search_modal" person-search-modal-button2 source-context-only="'CTEP'"
+                                    ng-model="personDetailView.associatedPersonContexts"
+                                    ng-disabled="personDetailView.curPerson.associated_persons.length > 0"
+                                    ng-if="personDetailView.curSourceContextName === 'CTRP' && !personDetailView.curPerson.new" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
+                                    <i class="glyphicon glyphicon-search"></i> Associate Person Context
+                                </button>
+                                <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn">
+                                    <i class="glyphicon glyphicon-ok"></i> Save
+                                </button>
+                                <button type="button" restriction-field  ng-hide="!personDetailView.curPerson.new" class="btn btn-warning pull-right" id="reset_btn" ng-click="personDetailView.clearForm()">
+                                    <i class="glyphicon glyphicon-remove"></i> Reset
+                                </button>
+                                <button type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="personDetailView.resetForm()">
+                                    <i class="glyphicon glyphicon-remove"></i> Reset
+                                </button>
+                                <!-- <button  type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
+                                    <i class="glyphicon glyphicon-trash"></i> Delete This Person
+                                </button> -->
                             </div>
                         </div>
                         <!-- grid of associated persons below -->
