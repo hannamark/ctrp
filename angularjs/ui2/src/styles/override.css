@@ -142,9 +142,25 @@
     height: 550px;
 }
 
-.grid-small {
-    width: 100%;
+.grid-md {
+    height: 350px;
+}
+
+.grid-sm {
     height: 200px;
+}
+
+/* min-height ~ grid height for cases where grid is too small for actions menu to be visible */
+.grid .ui-grid-canvas {
+    min-height: 465px;
+}
+
+.grid-md .ui-grid-canvas {
+    min-height: 310px;
+}
+
+.grid-sm .ui-grid-canvas {
+    min-height: 160px;
 }
 
 .ui-grid-header-cell .ui-grid-cell-contents {
@@ -1057,7 +1073,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     transform: translate(-55px);
 }
 
-.form-group.required .control-label:after, .required .control-label:after{
+.form-group.required .control-label:after, .required .control-label:after {
     color: #a94442;
     content: "*";
     position: absolute;
@@ -1914,10 +1930,4 @@ body.trial-abstraction-search .form-horizontal label.control-label.checkbox3 {
 .pagination-text {
     margin-left: 5px;
     color: #444;
-}
-
-
-/* min-height ~ grid height for cases where grid is too small for actions menu to be visible */
-.ui-grid-canvas {
-    min-height: 465px;
 }
