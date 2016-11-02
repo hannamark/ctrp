@@ -29,14 +29,10 @@
         vm.clearForm = clearForm;
         vm.toggleSelection = toggleSelection;
         vm.openCalendar = openCalendar;
+        vm.updatePerson = updatePerson;
 
 
         activate();
-
-
-
-
-
         function activate() {
             _watchOrgAffiliation();
             _watchGlobalWriteMode();
@@ -53,17 +49,81 @@
                 if (vm.curPerson.new) {
                     var ctrpContext = _.findWhere(vm.sourceContextArr, {name: 'CTRP'});
                     vm.curPerson.source_context_id = !!ctrpContext ? ctrpContext.id : null;
+                    var actStatus = _.findWhere(vm.sourceStatusArr, {code: 'ACT'});
+                    vm.curPerson.source_status_id = !!actStatus ? actStatus.id : null;
                 }
                 if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                     _populatePOAff();
                 }
-                _createFormTitleLabel();
+                _updateFormTitleLabel();
             } // if context name is defined
+        }
+
+        function updatePerson() {
+            console.info('updating person!, length: ', vm.savedSelection.length);
+            if (!angular.isDefined(vm.curPerson)) {
+                console.error('vm.curPerson is undefined');
+                return;
+            }
+
+            if (vm.validOrgsCount === 0 && vm.curPerson.source_context === 'CTRP') {
+                vm.affiliatedOrgError = true;
+                console.error('affiliated org error, return!');
+                return;
+            }
+            vm.affiliatedOrgError = false;
+            if (vm.curPerson.new) {
+                vm.savedSelection = vm.savedSelection.filter(function(org) {return !org._destroy;}); // keep the active ones
+            }
+            vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection);
+            _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
+                //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
+                aff['effective_date'] = aff.effective_date ? aff['effective_date'] : ''; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
+                aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : ''; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
+                var affStatusIndex = -1; //PoAffiliationStatus index
+                if (aff.effective_date && !aff.expiration_date) {
+                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
+                } else if (aff.expiration_date) {
+                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
+                }
+                aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
+                vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
+            });
+
+            //create a nested Person object
+            var newPerson = {};
+            newPerson.new = vm.curPerson.new || '';
+            newPerson.id = vm.curPerson.id || '';
+            newPerson.person = vm.curPerson;
+
+            PersonService.upsertPerson(newPerson).then(function (response) {
+                var status = response.status || response.server_response.status;
+                if (newPerson.new && status === 201) {
+                    // created
+                    // 'Person ' + personName + ' has been recorded'
+                    _showToastr('Person ' + vm.curPerson.lname + ' has been recorded');
+                    vm.curPerson.new = false;
+                    $state.go('main.personDetail', {personId: response.data.id});
+                } else if (status === 200) {
+                    // updated
+                    console.info('response with update: ', response);
+                    vm.curPerson = response.data;
+                    _showToastr('Person ' + vm.curPerson.lname + ' has been recorded');
+                    vm.curPerson.new = false;
+
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function() {
+                       $scope.person_form.$setPristine();
+                    }, 1);
+                }
+            }).catch(function (err) {
+                console.log("error in updating person " + JSON.stringify(newPerson));
+            });
+
         }
 
         // retrieve the source statuses for the given sourceContextId in curPerson
         function _sourceStatusesForContext(sourceContextId) {
-
             var selectedStatusArr = [];
             if (!angular.isDefined(sourceContextId)) return selectedStatusArr;
 
@@ -91,12 +151,13 @@
                 }
             }, true);
 
-            $scope.$watchCollection(function() {return vm.savedSelection;},
+            $scope.$watch(function() {return vm.savedSelection;},
             function(newVal, oldVal) {
                 if (!!newVal && angular.isArray(newVal) && newVal.length !== oldVal.length) {
                     vm.affiliatedOrgError = newVal.length === 0;
+                    vm.validOrgsCount = newVal.length;
                 }
-            });
+            }, true);
         } // watchOrgAffiliations
 
 
@@ -106,11 +167,11 @@
          */
         function _watchGlobalWriteMode() {
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
-                _createFormTitleLabel();
+                _updateFormTitleLabel();
             });
         }
 
-        function _createFormTitleLabel() {
+        function _updateFormTitleLabel() {
             var writeModeEnabled = UserService.isCurationModeEnabled() || false;
             // vm.formTitleLabel = 'View Person';
             if (vm.curPerson.new) {
@@ -120,7 +181,7 @@
             } else if (!writeModeEnabled) {
                 vm.formTitleLabel = 'View Person';
             }
-        }
+        } // _updateFormTitleLabel
 
         /**
          * Set up the initial state upload loading
@@ -137,6 +198,7 @@
             vm.masterCopy= angular.copy(vm.person);
             vm.sourceStatusArr = sourceStatusObj;
             vm.sourceStatusArr.sort(Common.a2zComparator());
+            vm.validOrgsCount = 0; // orgs for affiliation
             console.info('sourceStatusArr: ', vm.sourceStatusArr);
             vm.sourceStatusArrSelected = [];
             vm.sourceContextArr = sourceContextObj;
@@ -173,7 +235,6 @@
             var findOrgName = function(poAff, cb) {
                 OrgService.getOrgById(poAff.organization_id).then(function(organization) {
                     var status = organization.server_response.status;
-
                     if (status >= 200 && status <= 210) {
                         var curOrg = {"id" : poAff.organization_id, "name": organization.name};
                         curOrg.effective_date = moment(poAff.effective_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.effective_date);
@@ -182,7 +243,10 @@
                         curOrg.po_affiliation_id = poAff.id; //po affiliation id
                         curOrg.lock_version = poAff.lock_version;
                         curOrg._destroy = poAff._destroy || false;
-                        vm.savedSelection.push(curOrg);
+                        // vm.savedSelection.push(curOrg);
+                        if (_.findIndex(vm.savedSelection, {id: curOrg.id}) === -1) {
+                            vm.savedSelection.push(curOrg);
+                        }
                     }
                 }).catch(function(err) {
                     console.error("error in retrieving organization name with id: " + poAff.organization_id);
@@ -197,7 +261,7 @@
             async.eachSeries(vm.curPerson.po_affiliations, findOrgName, retOrgs);
         } // _populatePOAff
 
-        function showToastr(message) {
+        function _showToastr(message) {
             toastr.clear();
             toastr.success(message, 'Operation Successful!');
         }
@@ -211,7 +275,7 @@
 
         function clearForm() {
             $scope.person_form.$setPristine();
-            var excludedKeys = ['new', 'po_affiliations', 'source_status_id'];
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'source_context_id'];
             Object.keys(vm.curPerson).forEach(function(key) {
                 if (excludedKeys.indexOf(key) == -1) {
                     vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
@@ -226,7 +290,16 @@
         /* handle PO affiliations below */
         function toggleSelection(index) {
             if (index < vm.savedSelection.length) {
-                vm.savedSelection[index]._destroy = !vm.savedSelection[index]._destroy;
+                var isDestroyed = vm.savedSelection[index]._destroy;
+                vm.savedSelection[index]._destroy = !isDestroyed;
+                if (!isDestroyed) {
+                    vm.validOrgsCount--;
+                    if (vm.validOrgsCount <= 0) vm.validOrgsCount = 0;
+                } else {
+                    vm.validOrgsCount++;
+                    vm.affiliatedOrgError = false;
+                }
+                console.info('vm.validOrgsCount: ', vm.validOrgsCount);
             }
         }
 

@@ -15,7 +15,7 @@
         <label for="source_context" class="control-label col-xs-12 col-sm-3">Source Context:</label>
         <div class="col-xs-12 col-sm-6 form-text">CTRP</div>
     </div>
-    <div class="form-group" ng-hide="personDetailView.curPerson.new">
+    <div class="form-group" ng-show="!personDetailView.curPerson.new">
         <label class="control-label col-xs-12 col-sm-3">Source ID:</label>
         <div class="col-xs-12 col-sm-6 form-text">
             {{personDetailView.curPerson.source_id}}
@@ -121,7 +121,7 @@
     <div ng-include src="'app/po/person/sub_partials/_common_fields.html'"></div>
     <!-- common ends -->
     <div class="form-group has-feedback required"
-        ng-class="{'has-error': personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.savedselection.length == 0)}"
+        ng-class="{'has-error': personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.validOrgsCount <= 0)}"
         restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
         <label class="control-label col-xs-12 col-sm-3">Add Affiliated Organization:</label>
         <div class="col-xs-12 col-sm-9">
