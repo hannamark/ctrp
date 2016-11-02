@@ -182,7 +182,7 @@
                     if (angular.isDefined(ctepPerson.ctrp_id) && ctepPerson.ctrp_id !== vm.curPerson.ctrp_id) {
                         vm.isConfirmOpen = true;
                         vm.confirm.title = 'This CTEP person has already been associated. Click "Associate" to change the existing association, click "Cancel" to abort.';
-                        vm.confirmAssociateCtepPerson = _.partial(_associateCtepPerson, ctepPerson, vm.curPerson, 'CTEP');
+                        vm.confirmAssociatePerson = _.partial(_associateCtepPerson, ctepPerson, vm.curPerson, 'CTEP');
                     } else {
                         return _associateCtepPerson(ctepPerson, vm.curPerson, 'CTEP'); // vm.curPerson is CTRP person context
                     }
@@ -193,6 +193,50 @@
         function _associateCtepPerson(ctepPerson, ctrpPerson, sourceContext, forceFlag) {
             // TODO:
             console.info('associating persons: ', ctepPerson, ctrpPerson);
+            var ctrpId = ctrpPerson.ctrp_id;
+            /*// TODO: opposite association
+            if (ctrpPerson.is_associated && !forceFlag) {
+                vm.isConfirmOpen = true;
+                vm.confirmAssociatePerson = null;
+                vm.confirmAssociatePerson = _.partial(_associateCtepPerson, ctepPerson, ctrpPerson, 'CTRP');
+                vm.confirm = {};
+                vm.confirm.title = 'This CTRP person has been associated to another CTEP person context. Click "Associate" to change the existing association, click "Cancel" to abort';
+                return;
+            }
+            */
+            vm.isConfirmOpen = false;
+            PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
+                console.info('res with association person: ', res); // resp.person
+                if (res.server_response.status >= 200 && res.server_response.status < 226) {
+                    vm.associatedPersonContexts = []; // clean up container for accepting ctep persons
+                    vm.matchedCtrpPersons = []; // TODO: what is this?
+                    if (sourceContext === 'CTEP') {
+                        res.person.source_context = ctepPerson.source_context;
+                        res.person.source_status = ctepPerson.source_status;
+                        vm.ctepPerson = res.person;
+                        // current person is CTRP
+                        vm.curPerson.associated_persons = [res.person].concat(vm.curPerson.associated_persons || []);
+                    } else if (sourceContext === 'CTRP') {
+                        vm.ctrpPerson = res.person;
+                    }
+                    selectTab(sourceContext); // switch to the new tab
+                    if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: sourceContext}) === -1) {
+                        // vm.curPerson.cluster.push({context: sourceContext, id: res.person.id});
+                        // res.person.source_context = ctepPerson.source_context;
+                        // res.person.source_status = ctepPerson.source_status;
+                        // if (!vm.curPerson.associated_persons || !angular.isArray(vm.curPerson.associated_persons)) {
+                        //     vm.curPerson.associated_persons = [];
+                        //     vm.curPerson.associated_persons.push(vm.curPerson);
+                        // }
+                        // vm.curPerson.associated_persons.push(res.person);
+                        // _prepAssociationGrid(vm.curPerson.associated_persons);
+                        _showToastr('CTEP person context association was successful');
+                    }
+                }
+
+            }).catch(function(err) {
+                console.error('err: ', err);
+            });
         }
 
         function _updateFormTitleLabel() {
