@@ -24,8 +24,8 @@ Feature: PO F7 Search Organization Family Name
      |FamilyName|
       |FamilyStatus|
       |FamilyType|
-      |OrganizationFamilyMembers|
-      |OrganizationFamilyMemberRelationship|
+      |Membership Size|
+      
 
 Scenario: #1a I can export Family Parameters into an Excel spreadsheet
 Given I am logged into the CTRP PO application
@@ -38,8 +38,8 @@ And the result should be sorted by family name
       |FamilyName|
       |FamilyStatus|
       |FamilyType|
-      |OrganizationFamilyMembers|
-      |OrganizationFamilyMemberRelationship|
+      |Organization|
+      |Relationship|
      
 
 

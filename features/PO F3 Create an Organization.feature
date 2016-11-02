@@ -43,7 +43,7 @@ Feature: PO F3 Create an Organization
     When I select an organization name in the search results
     Then the CTRP Organization Context will be displayed
       
-    
+      |Group ID|
       |Context Organization ID|
       |Name|
       |Source Context|

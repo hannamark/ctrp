@@ -55,6 +55,7 @@
                     }
                     showToastr(vm.ctrpOrg.name);
                     vm.ctrpOrg.new = false;
+                    vm.ctrpOrg.org_updated_date = response.org_updated_date;
 
                     $timeout(function() {
                         $scope.organization_form.$setPristine();
@@ -142,7 +143,7 @@
             } else {
                 vm.ctrpOrg = {};
                 vm.ctrpOrg.new = true;
-                vm.ctrpOrg.processing_status = 'Incomplete';
+                vm.ctrpOrg.processing_status = 'Complete';
                 vm.ctrpOrg.source_status_id =  _.filter(
                     vm.ctrpSourceStatusArr, function (item) {
                         return _.isEqual('ACT', item.code);

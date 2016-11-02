@@ -1057,7 +1057,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     transform: translate(-55px);
 }
 
-.form-group.required .control-label:after{
+.form-group.required .control-label:after, .required .control-label:after{
     color: #a94442;
     content: "*";
     position: absolute;
