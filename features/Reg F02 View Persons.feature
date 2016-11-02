@@ -18,7 +18,8 @@ Scenario: #1 I am able to view existing person in CTRP as a Registry user
   When I have cliked on the name of the person I want to view
   Then the View Person screen opens with the page title as "View Person"
   And I will view person details type
-      |CTRP Person ID|12345|
+      
+      
       |Prefix  | Ms|
       |First Name  | shiFNameTrRegF02 vw|
       |Middle Name  | shiMNameTrial     |
