@@ -142,9 +142,25 @@
     height: 550px;
 }
 
-.grid-small {
-    width: 100%;
+.grid-md {
+    height: 350px;
+}
+
+.grid-sm {
     height: 200px;
+}
+
+/* min-height ~ grid height for cases where grid is too small for actions menu to be visible */
+.grid .ui-grid-canvas {
+    min-height: 465px;
+}
+
+.grid-md .ui-grid-canvas {
+    min-height: 310px;
+}
+
+.grid-sm .ui-grid-canvas {
+    min-height: 160px;
 }
 
 .ui-grid-header-cell .ui-grid-cell-contents {
@@ -973,6 +989,13 @@ td > .form-text {
     width: 100%;
 }
 
+/* This will work for all .btn-toolbar (buttons) within .popover classes.
+   No need for more specific CSS
+*/
+.popover .btn-toolbar {
+    padding-right: 5px;
+}
+
 .comment-modal {
   z-index: 1;
   position: relative;
@@ -1057,7 +1080,7 @@ md-backdrop.md-opaque.ng-leave.md-opaque.ng-leave-active {
     transform: translate(-55px);
 }
 
-.form-group.required .control-label:after, .required .control-label:after{
+.form-group.required .control-label:after, .required .control-label:after {
     color: #a94442;
     content: "*";
     position: absolute;
@@ -1419,10 +1442,6 @@ div.datepicker {
     padding-bottom: 10px;
 }
 .popover-confirm .popover-message {
-    margin-bottom:3px;
-}
-.popover-confirm .form-actions {
-    text-align: right;
 }
 
 /* For validation within Angular ui-select elements */
@@ -1914,10 +1933,4 @@ body.trial-abstraction-search .form-horizontal label.control-label.checkbox3 {
 .pagination-text {
     margin-left: 5px;
     color: #444;
-}
-
-
-/* min-height ~ grid height for cases where grid is too small for actions menu to be visible */
-.ui-grid-canvas {
-    min-height: 465px;
 }

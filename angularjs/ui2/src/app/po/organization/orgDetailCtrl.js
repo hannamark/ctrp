@@ -502,7 +502,7 @@
                 },
                 {
                     name: 'id',
-                    displayName: 'Context Org ID',
+                    displayName: 'Context ID',
                     enableSorting: false,
                     minWidth: '180'
                 },
