@@ -52,10 +52,26 @@
                             <div ng-include src="'app/po/person/sub_partials/_ctepPersonDetail.html'"></div>
                         </md-tab-body>
                     </md-tab>
-
                 </md-tabs>
             </form>
         </div>
+        <modal visible="personDetailView.isConfirmOpen" title="Please confirm" id="confirm_association_person">
+            <div class="modal-body">
+                {{personDetailView.confirm.title}}
+            </div>
+            <div class="modal-footer">
+                <div class="btn-toolbar">
+                    <button type="button" class="btn btn-primary pull-right"  id="confirmChangeOverrideContext"
+                            ng-click="personDetailView.confirmAssociatePerson('true')"><i class="glyphicon glyphicon-ok"></i>
+                        Associate
+                    </button>
+                    <button type="button" class="btn btn-warning pull-right" id="cancelChangeOverrideContext"
+                            ng-click="personDetailView.isConfirmOpen = false"><i class="glyphicon glyphicon-remove"></i>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </modal>
     </div>
     <!-- end of person detail section -->
 

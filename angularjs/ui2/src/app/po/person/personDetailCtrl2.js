@@ -36,6 +36,7 @@
         function activate() {
             _watchOrgAffiliation();
             _watchGlobalWriteMode();
+            _watchContextAssociation();
         }
 
         function selectTab(contextName) {
@@ -154,8 +155,7 @@
             $scope.$watch(function() {return vm.savedSelection;},
             function(newVal, oldVal) {
                 if (!!newVal && angular.isArray(newVal) && newVal.length !== oldVal.length) {
-                    vm.affiliatedOrgError = newVal.length === 0;
-                    vm.validOrgsCount = newVal.length;
+                    vm.validOrgsCount += newVal.length - (oldVal.length || 0);
                 }
             }, true);
         } // watchOrgAffiliations
@@ -169,6 +169,30 @@
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                 _updateFormTitleLabel();
             });
+        }
+
+        function _watchContextAssociation() {
+            vm.isConfirmOpen = false;
+            $scope.$watchCollection(function() {
+                return vm.associatedPersonContexts;
+            }, function(newVal, oldVal) {
+                if (!!newVal && angular.isArray(newVal) && newVal.length > 0) {
+                    var ctepPerson = newVal[0];
+                    console.info('ctepPerson selected: ', ctepPerson);
+                    if (angular.isDefined(ctepPerson.ctrp_id) && ctepPerson.ctrp_id !== vm.curPerson.ctrp_id) {
+                        vm.isConfirmOpen = true;
+                        vm.confirm.title = 'This CTEP person has already been associated. Click "Associate" to change the existing association, click "Cancel" to abort.';
+                        vm.confirmAssociateCtepPerson = _.partial(_associateCtepPerson, ctepPerson, vm.curPerson, 'CTEP');
+                    } else {
+                        return _associateCtepPerson(ctepPerson, vm.curPerson, 'CTEP'); // vm.curPerson is CTRP person context
+                    }
+                }
+            });
+        }
+
+        function _associateCtepPerson(ctepPerson, ctrpPerson, sourceContext, forceFlag) {
+            // TODO:
+            console.info('associating persons: ', ctepPerson, ctrpPerson);
         }
 
         function _updateFormTitleLabel() {
@@ -299,7 +323,6 @@
                     vm.validOrgsCount++;
                     vm.affiliatedOrgError = false;
                 }
-                console.info('vm.validOrgsCount: ', vm.validOrgsCount);
             }
         }
 
