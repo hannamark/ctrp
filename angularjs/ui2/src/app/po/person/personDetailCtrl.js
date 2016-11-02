@@ -347,7 +347,7 @@
             $scope.$watchCollection(function() {return vm.orgsArrayReceiver;}, function(selectedOrgs, oldVal) {
                 _.each(selectedOrgs, function(anOrg, index) {
                     //prevent pushing duplicated org
-                    if (Common.indexOfObjectInJsonArray(vm.savedSelection, "id", anOrg.id) == -1) {
+                    if (Common.indexOfObjectInJsonArray(vm.savedSelection, "id", anOrg.id) === -1) {
                         vm.savedSelection.unshift(OrgService.initSelectedOrg(anOrg));
                         $scope.person_form.$setDirty();
                     }

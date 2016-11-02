@@ -49,8 +49,8 @@
 
                 .state('main.addPerson', {
                     url: '/new_person',
-                    templateUrl: 'app/po/person/personDetails.html',
-                    controller: 'personDetailCtrl as personDetailView',
+                    templateUrl: 'app/po/person/personDetails2.html',
+                    controller: 'personDetailCtrl2 as personDetailView',
                     section: 'po',
                     resolve: {
                         OrgService: 'OrgService',
