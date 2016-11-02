@@ -265,7 +265,8 @@ class UsersController < ApplicationController
   def userWriteAccess userToUpdate
     current_site_user && userToUpdate ?
         ( ( (abstractionAccess current_site_user) || (userToUpdate && current_site_user.id == userToUpdate.id) ||
-        (userToUpdate && userToUpdate.organization_id && (isSiteAdminForOrg current_site_user, userToUpdate.organization_id)) ) &&
+        (userToUpdate && userToUpdate.organization_id && (userToUpdate.user_status_id == UserStatus.find_by_code('ACT').id || userToUpdate.user_status_id == UserStatus.find_by_code('INR').id) &&
+            (isSiteAdminForOrg current_site_user, userToUpdate.organization_id)) ) &&
             ( !(!(abstractionAccess current_site_user) && (abstractionAccess userToUpdate))) ) : false
   end
 
