@@ -40,6 +40,13 @@ var abstractionRegulatoryHuman = require('../support/abstractionRegulatoryHuman'
 var abstractionTrialRelatedDocument = require('../support/abstractionTrialDoc');
 //Left Navigation
 var abstractionLeftNavigationMenus = require('../support/abstractionLeftNav');
+//Common Message
+var abstractionCommomMsg = require('../support/abstractionCommonMessage');
+//Scientific Outcome Measures
+var scientificOutcome = require('../support/scientificOutcomeMeasures');
+//Scientific Trial Design
+var scientificTrialDesign = require('../support/scientificTrialDesign');
+
 //Scientific trial description
 var scientificTrialDesc = require('../support/scientificTrialDesc');
 var projectFunctionsPage = require('../support/projectMethods');
@@ -54,10 +61,13 @@ module.exports = function () {
     var login = new loginPage();
     var helper = new helperMethods();
     var commonFunctions = new abstractionCommonMethods();
+    var commonMsg = new abstractionCommomMsg();
     var pageMenu = new abstractionPageMenu();
     var pageSearchTrail = new abstractionTrialSearchPage();
+    var outcome = new scientificOutcome();
     var leftNav = new abstractionLeftNavigationMenus();
     var trialDesc = new scientificTrialDesc();
+    var trialDesign = new scientificTrialDesign();
     var registryMessage = new registryMessagePage();
     var trialMenuItem = new trialMenuItemList();
     var addTrial = new addTrialPage();
@@ -77,6 +87,7 @@ module.exports = function () {
     var noCharLft = '0 characters left';
     var errorMSGBT = 'Brief Title is Required';
     var errorMSGBS = 'Summary is Required';
+    var curtnElementStatus = '';
 
     /*
      Scenario: #1 I can add and edit Trial Description for a trial
@@ -312,10 +323,64 @@ module.exports = function () {
 
     this.When(/^(\d+) characters have been entered$/, function (arg1) {
         return browser.sleep(25).then(function () {
-            var charLftInt = '' + arg1 + ' characters left';
-            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, charLftInt, '0', 'Verifying Brief Title Character left initial message');
-            var charLftText = '' + briefTitle + '' + briefTitle + '';
-            trialDesc.setBriefTitleTxt(charLftText);
+            login.loginUser.getText().then(function (loggedInUserName) {
+                if (loggedInUserName === 'ctrpabstractor') {
+                    //Trial Description
+                    trialDesc.briefTitleTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.briefTitleTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    var charLftInt = '' + arg1 + ' characters left';
+                                    commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, charLftInt, '0', 'Verifying Brief Title Character left initial message');
+                                    var charLftText = '' + briefTitle + '' + briefTitle + '';
+                                    trialDesc.setBriefTitleTxt(charLftText);
+                                }
+                            });
+                        }
+                    });
+                    //Primary Purpose - Trial Design
+                    trialDesign.descriptionOfOtherPrimaryPurposeTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.descriptionOfOtherPrimaryPurposeTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    trialDesign.descriptionOfOtherPrimaryPurposeTxt.getAttribute('value').then(function (txtValue) {
+                                        if (txtValue !== '') {
+                                            commonCharacterTxt = ''+ commonMsg.twoHundredCharTxt +'';
+                                            trialDesign.setPrimaryOtherDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(outcome.characterLeftLbl, commonMsg.zeroCharLeftMsg, '0', 'Verifying Description of Other Primary Purpose field Character left message');
+                                        } else {
+                                            commonCharacterTxt = ''+ commonMsg.twoHundredCharTxt +'';
+                                            trialDesign.setPrimaryOtherDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(outcome.characterLeftLbl, commonMsg.zeroCharLeftMsg, '0', 'Verifying Description of Other Primary Purpose field Character left message');
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    //Secondary Purpose - Trial Design
+                    trialDesign.descriptionOfOtherSecondaryPurposeTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.descriptionOfOtherSecondaryPurposeTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    trialDesign.descriptionOfOtherSecondaryPurposeTxt.getAttribute('value').then(function (txtValue) {
+                                        if (txtValue !== '') {
+                                            commonCharacterTxt = ''+ commonMsg.oneThousanCharTxt +'';
+                                            trialDesign.setSecondaryOtherDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(outcome.characterLeftLbl, commonMsg.zeroCharLeftMsg, '1', 'Verifying Description of Other Secondary Purpose field Character left message');
+                                        } else {
+                                            commonCharacterTxt = ''+ commonMsg.oneThousanCharTxt +'';
+                                            trialDesign.setSecondaryOtherDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(outcome.characterLeftLbl, commonMsg.zeroCharLeftMsg, '1', 'Verifying Description of Other Secondary Purpose field Character left message');
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
         });
     });
 
@@ -413,9 +478,87 @@ module.exports = function () {
 
                 }
                 if (loggedInUserName === 'ctrpabstractor') {
-                    commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '0', 'Verifying Brief Title field Character left message');
-                    //login.logout();
-                    //commonFunctions.alertMsgOK();
+                    trialDesign.descriptionOfOtherPrimaryPurposeTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.descriptionOfOtherPrimaryPurposeTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    console.log('flagZero');
+                                    var pasFalgValue = 'flagZero';
+                                    function retFalgValue(){
+                                        return pasFalgValue;
+                                    }
+                                    curtnElementStatus = retFalgValue();
+                                    console.log('Setting up the curtnElementStatus as: '+ curtnElementStatus);
+                                }
+                            });
+                        }
+                    });
+                    trialDesign.descriptionOfOtherSecondaryPurposeTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.descriptionOfOtherSecondaryPurposeTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    console.log('flagOne');
+                                    var pasFalgValue = 'flagOne';
+                                    function retFalgValue(){
+                                        return pasFalgValue;
+                                    }
+                                    curtnElementStatus = retFalgValue();
+                                    console.log('Setting up the curtnElementStatus as: '+ curtnElementStatus);
+                                }
+                            });
+                        }
+                    });
+                    trialDesign.descriptionOfOtherStudyModelTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.descriptionOfOtherStudyModelTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    console.log('flagTwo');
+                                    var pasFalgValue = 'flagTwo';
+                                    function retFalgValue(){
+                                        return pasFalgValue;
+                                    }
+                                    curtnElementStatus = retFalgValue();
+                                    console.log('Setting up the curtnElementStatus as: '+ curtnElementStatus);
+                                }
+                            });
+                        }
+                    });
+                    trialDesign.descriptionOfOtherTimePerspectiveTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.descriptionOfOtherTimePerspectiveTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    console.log('flagThree');
+                                    var pasFalgValue = 'flagThree';
+                                    function retFalgValue(){
+                                        return pasFalgValue;
+                                    }
+                                    curtnElementStatus = retFalgValue();
+                                    console.log('Setting up the curtnElementStatus as: '+ curtnElementStatus);
+                                }
+                            });
+                        }
+                    });
+                    browser.driver.wait(function () {
+                        console.log('wait here');
+                        return true;
+                    }, 40).then(function () {
+                        if (curtnElementStatus === 'flagZero') {
+                            console.log('curtnElementStatus: ' + curtnElementStatus);
+                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '0', 'Verifying 0 character left message');
+                        } else if (curtnElementStatus === 'flagOne') {
+                            console.log('curtnElementStatus: ' + curtnElementStatus);
+                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '1', 'Verifying 0 character left message');
+                        } else if (curtnElementStatus === 'flagTwo') {
+                            console.log('curtnElementStatus: ' + curtnElementStatus);
+                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '2', 'Verifying 0 character left message');
+                        } else if (curtnElementStatus === 'flagThree') {
+                            console.log('curtnElementStatus: ' + curtnElementStatus);
+                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '3', 'Verifying 0 character left message');
+                        } else {
+                            console.log('curtnElementStatus: ' + curtnElementStatus);
+                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '0', 'Verifying 0 character left message');
+                        }
+                    });
                 }
             });
         });

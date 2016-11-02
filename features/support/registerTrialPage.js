@@ -1014,10 +1014,10 @@ var registerTrial = function(){
 
     this.getViewTrialParticipatingSites = function(participatingSites){
         this.viewTrialPsticipatingSites.getText().then(function(value){
-            //console.log('-----------PS from App');
-            //console.log(value);
-            //console.log('------------PS from table');
-            //console.log(participatingSites);
+            console.log('-----------PS from App');
+            console.log(value);
+            console.log('------------PS from table');
+            console.log(participatingSites);
               expect(value).to.eql(participatingSites, 'Verification of Grid values for Participating Site');
         });
        // expect(this.viewTrialPsticipatingSites.getText()).to.eventually.eql(participatingSites);

@@ -122,6 +122,20 @@ var importTrialPage = function() {
         }
     };
 
+    this.getVerifyPSContactType = function(psContactTypeOption)  {
+        if(psContactTypeOption.toUpperCase().replace(/ /g, '') === 'SITEINVESTIGATOR'){
+            expect(this.addPSContactType.get(0).isSelected()).to.eventually.equal(true, "Verify Add Participating Site by Contact Type option (Site Investigator) field");
+        } else if(psContactTypeOption.toUpperCase() === 'PERSON'){
+            expect(this.addPSContactType.get(1).isSelected()).to.eventually.equal(true, "Verify Add Participating Site by Contact Type option(Person) field");
+        } else if(psContactTypeOption.toUpperCase() === 'GENERAL') {
+            expect(this.addPSContactType.get(2).isSelected()).to.eventually.equal(true, "Verify Add Participating Site by Contact Type option(General) field");
+        } else if(psContactTypeOption === 0 || psContactTypeOption === 1 || psContactTypeOption === 2) {
+            expect(this.addPSContactType.get(psContactTypeOption).isSelected()).to.eventually.equal(true, "Verify Add Participating Site by Contact Type option field");
+        } else {
+            assert.fail(0,1,'Given Contact Type Option: '+ psContactTypeOption + 'is not correct. Please choose a correct type OR add new condition for the given Option.');
+        }
+    };
+
     this.setAddPSContactName = function(PSContactName)  {
         helper.setValue(this.addPSContactName,PSContactName,"Add Participating Site by Contact Name field");
     };

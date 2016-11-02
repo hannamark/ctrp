@@ -43,7 +43,6 @@ As a Trial Submitter or a Site Admin, I am able to View Organizations
    Then I will be able to view Organization details type 
     
     
-      |CTRPID  |999999  |
       |Name  |SopNameCancer  RegF03vw|
       |SourceContext  |CTRP  |
       |SourceID  |999999  |
@@ -62,7 +61,6 @@ As a Trial Submitter or a Site Admin, I am able to View Organizations
     And I can view organization details type once on the CTEP tab
     
     |Source Context: CTEP|
-    |CTRP Organization ID|
     |Source ID|
     |CTEP Organization Type|
     |CTEP Organization Status|
@@ -80,8 +78,7 @@ As a Trial Submitter or a Site Admin, I am able to View Organizations
     
     And I can view organization details type once on the NLM tab
     
-     |Source Context: NLM|
-    |CTRP Organization ID|
+    |Source Context: NLM|
     |Name: Sponsor Name|
     |Source Status: Active|
    

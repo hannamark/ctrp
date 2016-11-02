@@ -325,7 +325,7 @@
 
             function activate() {
                 getPromisedData();
-                prepareGidOptions();
+                prepareGridOptions();
 
                 if (fromStateName !== 'main.orgDetail' || $scope.searchParams.nosave) {
                     $scope.resetSearch();
@@ -521,7 +521,7 @@
 
 
             /* prepare grid layout and data options */
-            function prepareGidOptions() {
+            function prepareGridOptions() {
                 $scope.gridOptions = OrgService.getGridOptions($scope.usedInModal);
                 $scope.gridOptions.isRowSelectable = function (row) {
                     var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
