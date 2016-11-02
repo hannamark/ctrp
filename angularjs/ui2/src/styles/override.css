@@ -1435,10 +1435,10 @@ div.datepicker {
     padding-bottom: 10px;
 }
 .popover-confirm .popover-message {
-    margin-bottom:3px;
 }
 .popover-confirm .form-actions {
     text-align: right;
+    padding-right: 10px;
 }
 
 /* For validation within Angular ui-select elements */
