@@ -27,6 +27,8 @@
         vm.selectContext = selectTab;
         vm.resetForm = resetForm;
         vm.clearForm = clearForm;
+        vm.toggleSelection = toggleSelection;
+        vm.openCalendar = openCalendar;
 
 
         activate();
@@ -37,6 +39,7 @@
 
         function activate() {
             _watchOrgAffiliation();
+            _watchGlobalWriteMode();
         }
 
         function selectTab(contextName) {
@@ -54,7 +57,7 @@
                 if (vm.curPerson.po_affiliations && vm.curPerson.po_affiliations.length > 0) {
                     _populatePOAff();
                 }
-
+                _createFormTitleLabel();
             } // if context name is defined
         }
 
@@ -87,7 +90,37 @@
                     });
                 }
             }, true);
+
+            $scope.$watchCollection(function() {return vm.savedSelection;},
+            function(newVal, oldVal) {
+                if (!!newVal && angular.isArray(newVal) && newVal.length !== oldVal.length) {
+                    vm.affiliatedOrgError = newVal.length === 0;
+                }
+            });
         } // watchOrgAffiliations
+
+
+        /**
+         * Watch for the global write mode changes in the header
+         * @return {[type]}
+         */
+        function _watchGlobalWriteMode() {
+            $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                _createFormTitleLabel();
+            });
+        }
+
+        function _createFormTitleLabel() {
+            var writeModeEnabled = UserService.isCurationModeEnabled() || false;
+            // vm.formTitleLabel = 'View Person';
+            if (vm.curPerson.new) {
+                vm.formTitleLabel = 'Add Person';
+            } else if (writeModeEnabled && !vm.curPerson.new) {
+                vm.formTitleLabel = 'Edit Person';
+            } else if (!writeModeEnabled) {
+                vm.formTitleLabel = 'View Person';
+            }
+        }
 
         /**
          * Set up the initial state upload loading
@@ -112,7 +145,6 @@
             vm.orgsArrayReceiver = []; //receive selected organizations from the modal
             vm.selectedOrgFilter = '';
             vm.hasCtrpContext = _.findIndex(vm.person.cluster || [], {context: 'CTRP'}) > -1;
-            var globalWriteModeEnabled = UserService.isCurationModeEnabled() || false;
             vm.processStatusArr = OrgService.getProcessingStatuses();
             vm.formTitleLabel = 'Add Person'; //TODO: dynamic title ;default form title
             vm.affiliatedOrgError = true; // flag for empty org affiliations
@@ -162,7 +194,6 @@
             var retOrgs = function() {
                 return vm.savedSelection;
             };
-
             async.eachSeries(vm.curPerson.po_affiliations, findOrgName, retOrgs);
         } // _populatePOAff
 
@@ -191,6 +222,26 @@
             vm.savedSelection = [];
             _populatePOAff();
         };
+
+        /* handle PO affiliations below */
+        function toggleSelection(index) {
+            if (index < vm.savedSelection.length) {
+                vm.savedSelection[index]._destroy = !vm.savedSelection[index]._destroy;
+            }
+        }
+
+        vm.dateFormat = DateService.getFormats()[1];
+        vm.dateOptions = DateService.getDateOptions();
+        vm.today = DateService.today();
+        function openCalendar($event, index, type) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            if (type == "effective") {
+                vm.savedSelection[index].opened_effective = !vm.savedSelection[index].opened_effective;
+            } else {
+                vm.savedSelection[index].opened_expiration = !vm.savedSelection[index].opened_expiration;
+            }
+        }
 
     } // personDetailCtrl2
 })();
