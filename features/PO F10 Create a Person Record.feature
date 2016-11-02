@@ -46,7 +46,8 @@ Feature: PO F10 Create a Person Record
      Then the edit person screen displays 
      And I can view CTRP person record type
     
-    |Context Person ID (Primary Key)|
+    |Group ID|
+    |Context Person ID|
     |Prefix|
     |First Name|
     |Middle Name|
