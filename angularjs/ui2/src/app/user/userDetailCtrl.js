@@ -251,7 +251,8 @@
                     });
                 } else if (vm.userRole === 'ROLE_ACCOUNT-APPROVER') {
                     vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item) {
-                        var allowedStatus = ['ACT', 'INR'];
+                        var allowedStatus = ['ACT', 'INR', 'INA'];
+                        console.log("pooo")
                         return _.contains(allowedStatus, item.code);
                     });
                 } else {
