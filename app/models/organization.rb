@@ -106,19 +106,19 @@ class Organization < ActiveRecord::Base
 
   def org_assoc_date
     if self.association_date.present?
-      return self.association_date.strftime("%d-%b-%Y %H:%M:%S %Z")
+      return self.association_date
     end
   end
 
   def org_created_date
     if self.created_at.present?
-      return self.created_at.strftime("%d-%b-%Y %H:%M:%S %Z")
+      return self.created_at
     end
   end
 
   def org_updated_date
     if self.updated_at.present?
-      return self.updated_at.strftime("%d-%b-%Y %H:%M:%S %Z")
+      return self.updated_at
     else
       return Time.zone.now
     end
