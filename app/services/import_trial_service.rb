@@ -164,13 +164,23 @@ class ImportTrialService
     ctgov_research_category = xml.xpath('//study_type').text
     if ctgov_research_category == "Observational [Patient Registry]"
       ctgov_research_category = "Observational"
+      biospecimen = xml.xpath('//biospec_retention').text if xml.xpath('//biospec_retention').present?
+      ctrp_biospecimen_retention_code = map_biospecimen_retention(biospecimen)
+      ctrp_biospecimen_retention = BiospecimenRetention.find_by_code(ctrp_biospecimen_retention_code)
+      import_params[:biospecimen_retention_id] = ctrp_biospecimen_retention.id if ctrp_biospecimen_retention.present?
+      biospecimen_descr = xml.xpath('//biospec_descr/textblock').text if xml.xpath('//biospec_descr/textblock').present?
+      import_params[:biospecimen_desc] = biospecimen_descr
     end
     ctrp_research_category = ResearchCategory.find_by_name(ctgov_research_category)
     import_params[:research_category_id] = ctrp_research_category.id if ctrp_research_category.present?
+    #<study_design>Observational Model: Case-Only, Time Perspective: Prospective</study_design>
 
     xml.xpath('//study_design').text.split(',').each do |study_design|
       splits = study_design.split(':')
+
+
       case splits[0].strip
+        ###Interventional Trial
         when 'Allocation'
           ctrp_allocation_code = map_allocation(splits[1].strip)
           ctrp_allocation = Allocation.find_by_code(ctrp_allocation_code)
@@ -191,6 +201,17 @@ class ImportTrialService
           ctrp_primary_purpose_code = map_primary_purpose(splits[1].strip)
           ctrp_primary_purpose = PrimaryPurpose.find_by_code(ctrp_primary_purpose_code)
           import_params[:primary_purpose_id] = ctrp_primary_purpose.id if ctrp_primary_purpose.present?
+
+        ####Observational Trial
+        when 'Observational Model'
+          #ctrp_study_model_code = map_study_model(splits[1].strip)
+          ctrp_study_model_code = StudyModel.find_by_name(splits[1].strip)
+          #ctrp_study_model = StudyModel.find_by_code(ctrp_study_model_code)
+          import_params[:study_model_id] = ctrp_study_model_code.id if ctrp_study_model_code.present?
+        when 'Time Perspective'
+          ctrp_time_perspective_code = map_time_perspective(splits[1].strip)
+          ctrp_time_perspective = TimePerspective.find_by_code(ctrp_time_perspective_code)
+          import_params[:time_perspective_id] = ctrp_time_perspective.id if ctrp_time_perspective.present?
       end
     end
 
@@ -272,7 +293,7 @@ class ImportTrialService
     import_params[:verification_date] = convert_date(xml.xpath('//verification_date').text) if xml.xpath('//verification_date').present?
 
     submission_params = {}
-    submission_params[:updated_at] = xml.xpath('//lastchanged_date').text
+    submission_params[:updated_at] = Date.today #xml.xpath('//lastchanged_date').text
     submission_params[:created_at] = xml.xpath('//firstreceived_date').text
     submission_params[:submission_num] = 1
     submission_params[:submission_date] = Date.today
@@ -303,13 +324,20 @@ class ImportTrialService
 
   # Maps the ClinicalTrials.gov status to CTRP status code
 
-  def map_status (ct_status)
-    p "$$$$$$$$$$"
-    p ct_status
-    import_trial_statuses = CtGovImportExport.import_trial_statuses
-    p change_code(import_trial_statuses,TrialStatus,ct_status)
-    return change_code(import_trial_statuses,TrialStatus,ct_status)
+  def map_time_perspective(ct_time_perspective)
+    import_time_perspectives = CtGovImportExport.import_time_perspectives
+    return change_code(import_time_perspectives,TimePerspective,ct_time_perspective)
+  end
 
+  def map_biospecimen_retention(ct_biospecimen_retention)
+    import_biospecimen_retentions = CtGovImportExport.import_biospecimen_retentions
+    return change_code(import_biospecimen_retentions,BiospecimenRetention,ct_biospecimen_retention)
+  end
+
+
+  def map_status (ct_status)
+    import_trial_statuses = CtGovImportExport.import_trial_statuses
+    return change_code(import_trial_statuses,TrialStatus,ct_status)
   end
 
   def map_phase (ct_phase)
