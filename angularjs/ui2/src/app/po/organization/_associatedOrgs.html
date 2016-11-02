@@ -9,10 +9,10 @@
     </div>
     <div class="form-group">
         <div class="col-sm-9 btn-toolbar">
-            <button type="button" class="btn btn-danger btn-spacer pull-right" id="delete"
+            <button type="button" class="btn btn-danger pull-right" id="delete"
                     ctrp-confirm
                     ctrp-click="orgDetailView.disAssociateOrgs()"
-                    placement="left"
+                    placement="top"
                     confirm-msg="Click OK to remove the selected association. Click Cancel to abort."
                     ng-disabled="!orgDetailView.gridApi.selection.getSelectedRows().length">
                 <i class="glyphicon glyphicon-trash"></i> Remove Selected Associations

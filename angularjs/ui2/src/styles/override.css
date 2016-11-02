@@ -989,6 +989,13 @@ td > .form-text {
     width: 100%;
 }
 
+/* This will work for all .btn-toolbar (buttons) within .popover classes.
+   No need for more specific CSS
+*/
+.popover .btn-toolbar {
+    padding-right: 5px;
+}
+
 .comment-modal {
   z-index: 1;
   position: relative;
@@ -1436,9 +1443,6 @@ div.datepicker {
 }
 .popover-confirm .popover-message {
     margin-bottom:3px;
-}
-.popover-confirm .form-actions {
-    text-align: right;
 }
 
 /* For validation within Angular ui-select elements */
