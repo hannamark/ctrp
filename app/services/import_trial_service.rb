@@ -97,7 +97,7 @@ class ImportTrialService
     nlm_orgs = orgs.with_source_context("NLM")
 
     #M.D. Anderson Cancer Center NCT02217865
-
+    #Log Entry for New Import
     if nlm_orgs.length == 1
       nlm_org_ctrp_id = nlm_orgs[0].ctrp_id
       ctrp_org = Organization.find_by_id_and_source_context_id(nlm_org_ctrp_id,SourceContext.find_by_code('CTRP').id)
@@ -108,25 +108,28 @@ class ImportTrialService
         import_params[:sponsor_id] = nlm_orgs[0].id
         import_params[:trial_funding_sources_attributes] = [{organization_id: nlm_orgs[0].id}]
       elsif !ctrp_org.nil? &&  ctrp_org_status != 'ACT'
-        ## then throw an error back and stop the import process.
-        ##BA'S ...??
+        #Import the trial leave the Lead org, sponsor, Data table 4 funding sponsor null
       elsif ctrp_org.nil?
-        ##then leave the lead org etc blank but continue with the import.
-        ##BA'S ...??
+        #Import the trial leave the Lead org, sponsor, Data table 4 funding sponsor null
       else
 
       end
-
     elsif nlm_orgs.length > 1
-    #Throw an error
-    ##BA'S ...??
+      #Import the trial leave the Lead org, sponsor, Data table 4 funding sponsor null
+      #
     else nlm_orgs.length == 0
     #When a trial has been imported with a "Sponsor Name" that does not exist in the NLM Context in the CTRP
     #And that "Sponsor Name" does not match an organization name "Agency" name in CTRP
     #Then an NLM Context with an NLM Context Status of "Active" will be automatically created in CTRP
     #And the processing status is "Incomplete"
     #And the service Request is "Create"
-     #org = Organization.create(source_status_id:SourceStatus.find_by_c('ACTIVE'))
+    nlm_context = SourceContext.find_by_code('NLM')
+    #processing_status  = ProcessingStatus.find_by_code('InComplete')
+    org = Organization.create(name:org_name,city:"city", address:"address",source_status_id:SourceStatus.find_by_code_and_source_context_id('ACTIVE',nlm_context.id),source_context_id:nlm_context.id)
+    org.save!
+
+    #raise "safety_care group missing!"
+    #import_params[]
 
     end
 
