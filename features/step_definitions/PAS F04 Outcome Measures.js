@@ -71,6 +71,7 @@ module.exports = function () {
     var addTrial = new addTrialPage();
     var registryMessage = new registryMessagePage();
     var trialDesign = new scientificTrialDesign();
+    var trialDesc = new scientificTrialDesc();
     var leadProtocolID = 'CTRP_01_1789';
     var leadProtocolIDA = 'CTRP_01_1777';
     var optionA = '';
@@ -838,6 +839,54 @@ module.exports = function () {
                                             commonCharacterTxt = ''+ commonMsg.fiveHundredCharTxt +'';
                                             trialDesign.setSecondaryOtherDescription(commonCharacterTxt);
                                             commonFunctions.verifyTxtByIndex(outcome.characterLeftLbl, commonMsg.fiveHundredCharLeftMsg, '1', 'Verifying Description of Other Secondary Purpose field Character left message');
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    //Study Model - Trial Design
+                    trialDesign.descriptionOfOtherStudyModelTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.descriptionOfOtherStudyModelTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    trialDesign.descriptionOfOtherStudyModelTxt.getAttribute('value').then(function (txtValue) {
+                                        if (txtValue !== '') {
+                                            commonCharacterTxt = ''+ commonMsg.oneHundredCharTxt +'';
+                                            trialDesign.setStudyModelOtherDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, commonMsg.oneHundredCharLeftMsg, '4', 'Verifying Description of Other Secondary Purpose field Character left message');
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    //Time Perspective - Trial Design
+                    trialDesign.descriptionOfOtherTimePerspectiveTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.descriptionOfOtherTimePerspectiveTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    trialDesign.descriptionOfOtherTimePerspectiveTxt.getAttribute('value').then(function (txtValue) {
+                                        if (txtValue !== '') {
+                                            commonCharacterTxt = ''+ commonMsg.oneHundredCharTxt +'';
+                                            trialDesign.setTimePerspectiveOtherDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, commonMsg.oneHundredCharLeftMsg, '5', 'Verifying Description of Other Secondary Purpose field Character left message');
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    //Bio-specimen Description
+                    trialDesign.bioSpecimenDescriptionTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.bioSpecimenDescriptionTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    trialDesign.bioSpecimenDescriptionTxt.getAttribute('value').then(function (txtValue) {
+                                        if (txtValue !== '') {
+                                            commonCharacterTxt = ''+ commonMsg.fiveHundredCharTxt +'';
+                                            trialDesign.setBioSpecimenDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblBio, commonMsg.fiveHundredCharLeftMsg, '6', 'Verifying Description of Other Bio-specimen Description field Character left message');
                                         }
                                     });
                                 }
