@@ -14,19 +14,24 @@
     function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $timeout) {
         var vm = this;
-        vm.addedNameAliases = [];
-        vm.states = [];
-        vm.processingStatuses = OrgService.getProcessingStatuses();
-        vm.watchCountrySelection = OrgService.watchCountrySelection();
-        vm.countriesArr = countryList;
-        vm.sourceContextArr = sourceContextObj;
-        vm.sourceStatusArr = sourceStatusObj;
-        vm.sourceStatusArr.sort(Common.a2zComparator());
-        vm.alias = '';
-        vm.curationReady = false;
-        vm.showPhoneWarning = false;
-        vm.disableBtn = false;
-        vm.processStatusArr = OrgService.getProcessingStatuses();
+        $scope.setInitialState = function() {
+            vm.addedNameAliases = [];
+            vm.states = [];
+            vm.processingStatuses = OrgService.getProcessingStatuses();
+            vm.watchCountrySelection = OrgService.watchCountrySelection();
+            vm.countriesArr = countryList;
+            vm.sourceContextArr = sourceContextObj;
+            vm.sourceStatusArr = sourceStatusObj;
+            vm.sourceStatusArr.sort(Common.a2zComparator());
+            vm.alias = '';
+            vm.curationReady = false;
+            vm.showPhoneWarning = false;
+            vm.disableBtn = false;
+            vm.processStatusArr = OrgService.getProcessingStatuses();
+            vm.cloningCTEP = false;
+            vm.nilclose = true;
+        };
+        $scope.setInitialState();
 
         vm.updateOrg = function () {
             vm.disableBtn = true;
@@ -180,11 +185,11 @@
         // Append associations for existing Trial
         function appendNameAliases() {
             for (var i = 0; i < vm.ctrpOrg.name_aliases.length; i++) {
-                var name_alias = {};
-                name_alias.id = vm.ctrpOrg.name_aliases[i].id;
-                name_alias.name = vm.ctrpOrg.name_aliases[i].name;
-                name_alias._destroy = false;
-                vm.addedNameAliases.push(name_alias);
+                vm.addedNameAliases.push({
+                    id:         vm.ctrpOrg.name_aliases[i].id,
+                    name:       vm.ctrpOrg.name_aliases[i].name,
+                    _destroy:   false
+                });
             }
         }
 
@@ -212,8 +217,6 @@
             vm.nilclose = true;
         };
 
-        vm.cloningCTEP = false;
-        vm.nilclose = true;
         $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
             if (vm.cloningCTEP) {
                 // To make sure setPristine() is executed after all $watch functions are complete
