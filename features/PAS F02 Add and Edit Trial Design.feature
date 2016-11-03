@@ -372,7 +372,7 @@ Scenario:  #17 Character display for Time Perspective of Other
  Then no additional text can be entered
  
  
-  @runthis
+
   Scenario: #18 Bio-specimen Description character count
 Given I am on the Trial Design screen
 When I am typing into the Bio-specimen Description  Field
