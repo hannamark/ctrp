@@ -73,7 +73,6 @@
         }
 
         function updatePerson() {
-            console.info('updating person!, length: ', vm.savedSelection.length);
             if (!angular.isDefined(vm.curPerson)) {
                 console.error('vm.curPerson is undefined');
                 return;
@@ -190,7 +189,6 @@
             }, function(newVal, oldVal) {
                 if (!!newVal && angular.isArray(newVal) && newVal.length > 0) {
                     var ctepPerson = newVal[0];
-                    console.info('ctepPerson selected: ', ctepPerson);
                     if (angular.isDefined(ctepPerson.ctrp_id) && ctepPerson.ctrp_id !== vm.curPerson.ctrp_id) {
                         vm.isConfirmOpen = true;
                         vm.confirm.title = 'This CTEP person has already been associated. Click "Associate" to change the existing association, click "Cancel" to abort.';
@@ -231,6 +229,7 @@
                     } else if (sourceContext === 'CTRP') {
                         vm.ctrpPerson = res.person;
                     }
+                    _showToastr('CTEP person context association was successful');
                     selectTab(sourceContext); // switch to the new tab
                     if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: sourceContext}) === -1) {
                         // vm.curPerson.cluster.push({context: sourceContext, id: res.person.id});
@@ -242,10 +241,8 @@
                         // }
                         // vm.curPerson.associated_persons.push(res.person);
                         // _prepAssociationGrid(vm.curPerson.associated_persons);
-                        _showToastr('CTEP person context association was successful');
                     }
                 }
-
             }).catch(function(err) {
                 console.error('err: ', err);
             });
@@ -279,7 +276,6 @@
             vm.sourceStatusArr = sourceStatusObj;
             vm.sourceStatusArr.sort(Common.a2zComparator());
             vm.validOrgsCount = 0; // orgs for affiliation
-            console.info('sourceStatusArr: ', vm.sourceStatusArr);
             vm.sourceStatusArrSelected = [];
             vm.sourceContextArr = sourceContextObj;
             vm.savedSelection = [];
@@ -407,7 +403,7 @@
                         return p.id !== ctepPersonId;
                     });
                     vm.associationForRemoval = [];
-                    showToastr('The selected person context association was deleted');
+                    _showToastr('The selected person context association was deleted');
                 }
             }).catch(function(err) {
                 console.error('err: ', err);
