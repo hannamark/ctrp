@@ -1920,7 +1920,7 @@ module.exports = function() {
         });
     });
 
-    this.When(/^I can select a different value for Primary Purpose type:$/, function () {
+    this.When(/^I can select a different value for the Primary Purpose type:$/, function () {
         return browser.sleep(25).then(function() {
             prmryPrpsA = 'Treatment';
             prmryPrpsB = 'Prevention';

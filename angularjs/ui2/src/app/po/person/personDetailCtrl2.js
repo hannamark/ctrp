@@ -41,20 +41,20 @@
         }
 
         function selectTab(contextName) {
-            console.info('context: ', contextName);
             if (!!contextName) {
                 vm.tabOpen = contextName;
                 vm.curPerson = (contextName === 'CTEP') ? vm.ctepPerson : vm.ctrpPerson;
                 vm.sourceStatusArrSelected = _sourceStatusesForContext(vm.curPerson.source_context_id);
 
-                // TODO: if new person, assign the ctrp source context id to it
+                // if new person, assign the ctrp source context id to it
                 if (vm.curPerson.new) {
                     var ctrpContext = _.findWhere(vm.sourceContextArr, {name: 'CTRP'}); // defaulted to CTRP
                     vm.curPerson.source_context_id = !!ctrpContext ? ctrpContext.id : null;
                     var actStatus = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}); // defaulted to 'Active' source status
                     vm.curPerson.source_status_id = !!actStatus ? actStatus.id : null;
                 }
-                if (contextName === 'CTRP' && contextName !== vm.defaultTab) {
+                if (contextName === 'CTRP' && contextName !== vm.defaultTab &&
+                    !angular.isDefined(vm.ctrpPerson.associated_persons)) {
                     // CTRP is not the default tab
                     // fetch associated persons for the CTRP person, because the CTRP person may
                     // have more association than the currently shown CTEP person
@@ -426,6 +426,8 @@
                     _showToastr('The CTEP person context has been successfully cloned');
                     vm.matchedCtrpPersons = []; // clean up
                     vm.ctrpPerson = res.matched[0];
+                    vm.ctepPerson.ctrp_id = vm.ctrpPerson.ctrp_id; // update the ctepPerson with the ctrp_id
+                    vm.curPerson.ctrp_id = vm.ctepPerson.ctrp_id; // the current person is still CTEP, so update its ctrp_id for view
                     selectTab('CTRP'); //show the new cloned CTRP person
                     // vm.curPerson.associated_persons.push(res.matched[0]);
                 } else {
