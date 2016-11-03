@@ -49,7 +49,8 @@
 
                 if (status >= 200 && status <= 210) {
                     if (response.username) {
-                        $scope.userDetail_form.$setPristine();
+                        //$scope.userDetail_form.$setPristine();
+                        // error is:  TypeError: Cannot read property '$setPristine' of undefined(…)
                         vm.userDetails.send_activation_email = false;
                         toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
                         if (vm.userDetailsOrig.username !== response.username) {
@@ -59,7 +60,7 @@
                     if (vm.logUserOut === true){
                         vm.logUserOut = false;
                         UserService.logout();
-                    } else if (redirect) {
+                    } else if (redirect || vm.inactivatingUser) {
                         UserService.allOrgUsers = null;
                         $timeout(function() {
                             $state.go('main.users', {}, {reload: true});
@@ -251,7 +252,8 @@
                     });
                 } else if (vm.userRole === 'ROLE_ACCOUNT-APPROVER') {
                     vm.statusArrForROLEAPPROVER = _.filter(vm.statusArr, function (item) {
-                        var allowedStatus = ['ACT', 'INR'];
+                        var allowedStatus = ['ACT', 'INR', 'INA'];
+                        console.log("pooo")
                         return _.contains(allowedStatus, item.code);
                     });
                 } else {

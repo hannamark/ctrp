@@ -152,7 +152,7 @@
 
 /* min-height ~ grid height for cases where grid is too small for actions menu to be visible */
 .grid .ui-grid-canvas {
-    min-height: 465px;
+    min-height: 450px;
 }
 
 .grid-md .ui-grid-canvas {
@@ -160,7 +160,7 @@
 }
 
 .grid-sm .ui-grid-canvas {
-    min-height: 160px;
+    min-height: 145px;
 }
 
 .ui-grid-header-cell .ui-grid-cell-contents {
