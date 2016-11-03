@@ -813,5 +813,9 @@
         $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
             vm.gridTrialsOwnedOptions.gridMenuCustomItems = new UserService.TransferTrialsGridMenuItems($scope, vm);
         });
+
+        $timeout(function() {
+            vm.userDetail_form.$setPristine();
+        }, 1000);
     }
 }());
