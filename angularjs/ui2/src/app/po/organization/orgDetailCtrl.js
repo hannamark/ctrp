@@ -257,13 +257,12 @@
         vm.checkUniqueOrganization = function() {
             vm.showUniqueWarning = false;
             if (vm.ctrpOrg && vm.ctrpOrg.name && vm.ctrpOrg.name.length > 0 && ((vm.ctrpOrgCopy && (vm.ctrpOrg.name !== vm.ctrpOrgCopy.name)) || !vm.ctrpOrgCopy ) ) {
-                var searchParams = {
+                OrgService.checkUniqueOrganization({
                     "org_name": vm.ctrpOrg.name,
                     "source_context_id": vm.ctrpOrg.source_context_id,
                     "org_exists": angular.isObject(vm.ctrpOrg),
                     "org_id": vm.ctrpOrg.id
-                };
-                OrgService.checkUniqueOrganization(searchParams).then(function (response) {
+                }).then(function (response) {
                     var status = response.server_response.status;
 
                     if (status >= 200 && status <= 210) {
