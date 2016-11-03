@@ -302,7 +302,6 @@
             } else if (vm.person.source_context === 'CTEP') {
                 vm.ctepPerson = vm.person;
                 vm.ctrpPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTRP', source_status: 'Active'}) || null;
-                console.info('ctrp person: ', vm.ctrpPerson);
             } else {
                 vm.ctrpPerson = null;
                 vm.ctepPerson = null;
