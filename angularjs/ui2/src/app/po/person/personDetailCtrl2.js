@@ -30,7 +30,7 @@
         vm.toggleSelection = toggleSelection;
         vm.openCalendar = openCalendar;
         vm.updatePerson = updatePerson;
-
+        vm.cloneCtepPerson = cloneCtepPerson;
 
         activate();
         function activate() {
@@ -220,6 +220,7 @@
                 if (res.server_response.status >= 200 && res.server_response.status < 226) {
                     vm.associatedPersonContexts = []; // clean up container for accepting ctep persons
                     vm.matchedCtrpPersons = []; // TODO: what is this?
+                    vm.showMatchedCtrpPerson = false;
                     if (sourceContext === 'CTEP') {
                         res.person.source_context = ctepPerson.source_context;
                         res.person.source_status = ctepPerson.source_status;
@@ -403,11 +404,36 @@
                         return p.id !== ctepPersonId;
                     });
                     vm.associationForRemoval = [];
+                    vm.ctepPerson = null; // deleted
                     _showToastr('The selected person context association was deleted');
                 }
             }).catch(function(err) {
                 console.error('err: ', err);
             }).finally(function() {
+            });
+        } // removePersonAssociation
+
+        function cloneCtepPerson(ctepPersonId, forceClone) {
+            PersonService.cloneCtepPerson(ctepPersonId, forceClone).then(function(res) {
+                console.info('res from clone: ', res);
+                if (res.is_cloned && angular.isArray(res.matched) && res.matched.length > 0) {
+                    _showToastr('The CTEP person context has been successfully cloned');
+                    vm.matchedCtrpPersons = []; // clean up
+                    vm.ctrpPerson = res.matched[0];
+                    selectTab('CTRP'); //show the new cloned CTRP person
+                    // vm.curPerson.associated_persons.push(res.matched[0]);
+                } else {
+                    vm.showMatchedCtrpPerson = true; // show modal for confirming the matched CTRP person
+                    // TODO: this matched CTRP person may have been associated to another CTEP person!
+                    // create the association function
+                    vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // vm.curPerson is CTEP person
+                    // vm.confirmAssociatePerson = _.partial(_associateCtepPerson, vm.curPerson); // vm.curPerson is CTEP person, to be filled: CTRP person, 'CTRP'
+                    // vm.matchedCtrpPersons = res.matched;
+                    vm.confirm = {};
+                    vm.confirm.title = 'The following CTRP person(s) matched the CTEP person. Select one for association or click "Cancel" to abort';
+                }
+            }).catch(function(err) {
+                console.error('err in cloning person: ', err);
             });
         }
 
