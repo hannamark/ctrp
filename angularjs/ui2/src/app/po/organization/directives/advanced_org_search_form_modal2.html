@@ -11,9 +11,16 @@
     <div class="modal-footer">
         <div class="col-xs-12">
             <div class="btn-toolbar">
-                <button class="btn btn-primary pull-right" ng-click="advOrgSearchForm2ModalView.confirmSelection()" ng-disabled="selectedOrgsArray.length == 0">Confirm Selection</button>
-                <button class="btn btn-danger pull-right" ng-click="advOrgSearchForm2ModalView.cancel()">
+                <button class="btn btn-primary pull-right" id="searchPopConfirmBtn" ng-click="advOrgSearchForm2ModalView.confirmSelection()" ng-disabled="selectedOrgsArray.length == 0">
+                    Confirm Selection
+                </button>
+                <button class="btn btn-danger pull-right" id="searchPopCloseBtn" ng-click="advOrgSearchForm2ModalView.cancel()">
                     <i class="glyphicon glyphicon-remove"></i> Close
+                </button>
+                <button class="btn btn-primary pull-right" id="searchPopBtn3"
+                        ng-if="advOrgSearchForm2ModalView.preSearch.button3Label"
+                        ng-click="advOrgSearchForm2ModalView.cancel(); advOrgSearchForm2ModalView.preSearch.button3Clicked = true; console.log(window.opener.$windowScope)">
+                    <i class="glyphicon"></i> {{advOrgSearchForm2ModalView.preSearch.button3Label}}
                 </button>
             </div>
         </div>

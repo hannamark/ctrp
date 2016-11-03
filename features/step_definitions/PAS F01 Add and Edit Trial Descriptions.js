@@ -378,7 +378,67 @@ module.exports = function () {
                             });
                         }
                     });
-
+                    //Study Model - Trial Design
+                    trialDesign.descriptionOfOtherStudyModelTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.descriptionOfOtherStudyModelTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    trialDesign.descriptionOfOtherStudyModelTxt.getAttribute('value').then(function (txtValue) {
+                                        if (txtValue !== '') {
+                                            commonCharacterTxt = ''+ commonMsg.twoHundredCharTxt +'';
+                                            trialDesign.setStudyModelOtherDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, commonMsg.zeroCharLeftMsg, '4', 'Verifying Description of Other Study Model field Character left message');
+                                        } else {
+                                            commonCharacterTxt = ''+ commonMsg.oneThousanCharTxt +'';
+                                            trialDesign.setStudyModelOtherDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, commonMsg.zeroCharLeftMsg, '4', 'Verifying Description of Other Study Model field Character left message');
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    //Time Perspective - Trial Design
+                    trialDesign.descriptionOfOtherTimePerspectiveTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.descriptionOfOtherTimePerspectiveTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    trialDesign.descriptionOfOtherTimePerspectiveTxt.getAttribute('value').then(function (txtValue) {
+                                        if (txtValue !== '') {
+                                            commonCharacterTxt = ''+ commonMsg.twoHundredCharTxt +'';
+                                            trialDesign.setTimePerspectiveOtherDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, commonMsg.zeroCharLeftMsg, '5', 'Verifying Description of Other Time Perspective field Character left message');
+                                        } else {
+                                            commonCharacterTxt = ''+ commonMsg.oneThousanCharTxt +'';
+                                            trialDesign.setTimePerspectiveOtherDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, commonMsg.zeroCharLeftMsg, '5', 'Verifying Description of Other Time Perspective field Character left message');
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    //Time Perspective - Trial Design
+                    trialDesign.bioSpecimenDescriptionTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.bioSpecimenDescriptionTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    trialDesign.bioSpecimenDescriptionTxt.getAttribute('value').then(function (txtValue) {
+                                        if (txtValue !== '') {
+                                            commonCharacterTxt = ''+ commonMsg.oneThousanCharTxt +'';
+                                            trialDesign.setBioSpecimenDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblBio, commonMsg.zeroCharLeftMsg, '6', 'Verifying Description of Other Time Perspective field Character left message');
+                                        } else {
+                                            commonCharacterTxt = ''+ commonMsg.oneThousanCharTxt +'';
+                                            trialDesign.setBioSpecimenDescription(commonCharacterTxt);
+                                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblBio, commonMsg.zeroCharLeftMsg, '6', 'Verifying Description of Other Time Perspective field Character left message');
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    //
                 }
             });
         });
@@ -538,6 +598,21 @@ module.exports = function () {
                             });
                         }
                     });
+                    trialDesign.bioSpecimenDescriptionTxt.isPresent().then(function (statusPresent){
+                        if (statusPresent){
+                            trialDesign.bioSpecimenDescriptionTxt.isDisplayed().then(function (statusDisplay){
+                                if (statusDisplay){
+                                    console.log('flagFour');
+                                    var pasFalgValue = 'flagFour';
+                                    function retFalgValue(){
+                                        return pasFalgValue;
+                                    }
+                                    curtnElementStatus = retFalgValue();
+                                    console.log('Setting up the curtnElementStatus as: '+ curtnElementStatus);
+                                }
+                            });
+                        }
+                    });
                     browser.driver.wait(function () {
                         console.log('wait here');
                         return true;
@@ -550,10 +625,13 @@ module.exports = function () {
                             commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '1', 'Verifying 0 character left message');
                         } else if (curtnElementStatus === 'flagTwo') {
                             console.log('curtnElementStatus: ' + curtnElementStatus);
-                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '2', 'Verifying 0 character left message');
+                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, noCharLft, '4', 'Verifying 0 character left message');
                         } else if (curtnElementStatus === 'flagThree') {
                             console.log('curtnElementStatus: ' + curtnElementStatus);
-                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '3', 'Verifying 0 character left message');
+                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, noCharLft, '5', 'Verifying 0 character left message');
+                        } else if (curtnElementStatus === 'flagFour') {
+                            console.log('curtnElementStatus: ' + curtnElementStatus);
+                            commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, noCharLft, '6', 'Verifying 0 character left message');
                         } else {
                             console.log('curtnElementStatus: ' + curtnElementStatus);
                             commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, noCharLft, '0', 'Verifying 0 character left message');

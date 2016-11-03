@@ -8,13 +8,12 @@
     angular.module('ctrp.app.po')
         .controller('orgDetailCtrl', orgDetailCtrl);
 
-    orgDetailCtrl.$inject = ['associatedOrgsObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService', '$filter', '_', 'uiGridExporterConstants', 'uiGridExporterService',
-        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$uibModal', '$timeout', 'GeoLocationService', 'serviceRequests'];
+    orgDetailCtrl.$inject = ['associatedOrgsObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService',
+        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$timeout'];
 
-    function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService, $filter, _,uiGridExporterConstants, uiGridExporterService,
-                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal, $timeout, GeoLocationService, serviceRequests) {
+    function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService,
+                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $timeout) {
         var vm = this;
-        console.info('associatedOrgsObj: ', associatedOrgsObj);
         vm.addedNameAliases = [];
         vm.states = [];
         vm.processingStatuses = OrgService.getProcessingStatuses();
@@ -63,7 +62,7 @@
                     }, 1000);
                 }
             }).catch(function (err) {
-                console.log("error in updating organization " + JSON.stringify(vm.curOrg));
+                console.log("error in updating organization: ", err);
             }).finally(function() {
                 vm.disableBtn = false;
             });
@@ -158,11 +157,12 @@
             if (vm.ctrpOrgsArr.length < 2) {
                 return vm.ctrpOrgsArr[0];
             } else {
-                return vm.ctrpOrg = _.filter(
+                vm.ctrpOrg = _.filter(
                     getOrgByContext(vm.associatedOrgs, 'CTRP'), function (item) {
                         return _.isEqual(associatedOrgsObj.active_id, item.id);
                     }
                 )[0];
+                return vm.ctrpOrg
             }
         }
 
@@ -205,7 +205,7 @@
                     vm.gridApi = gridApi;
                 };
             });
-        };
+        }
 
         $scope.cloneBtnClicked = function () {
             vm.cloningCTEP = true;
@@ -268,7 +268,7 @@
                             vm.showUniqueWarning = true;
                     }
                 }).catch(function (err) {
-                    console.log("error in checking for duplicate org name " + JSON.stringify(err));
+                    console.log("error in checking for duplicate org name: ", err);
                 });
             }
         };
@@ -300,7 +300,7 @@
                         associateOrgsRefresh();
                         toastr.success('Organization has been associated.', 'Operation Successful!');
                     }).catch(function (err) {
-                        console.log("error in associating organization " + JSON.stringify(vm.ctrpOrg));
+                        console.log("error in associating organization: ", err);
                     }).finally(function() {
                         vm.tabOpen = 'CTRP';
                     });
@@ -324,7 +324,7 @@
                     }
                 }
             }).catch(function (err) {
-                console.log("error in disassociating organization " + JSON.stringify(vm.ctrpOrg));
+                console.log("error in disassociating organization: ", err);
             }).finally(function() {
                 vm.selectedOrgs = [];
             });
@@ -352,13 +352,23 @@
                             }
                         }
                     }).catch(function (err) {
-                        console.log("error in associating organization " + JSON.stringify(vm.ctrpOrg));
+                        console.log("error in associating organization: ", err);
                     }).finally(function() {
                         vm.tabOpen = 'CTRP';
                     });
                 });
             }
         };
+
+        function validateNewAssociation(newValue) {
+            var newAssociatedOrg = newValue[0];
+            if ( (newValue[0].source_context === 'CTEP' && (!vm.ctepOrg || (vm.ctepOrg && newAssociatedOrg.id !== vm.ctepOrg.id))) ||
+                (newValue[0].source_context === 'NLM' && (!vm.nlmOrg || (vm.nlmOrg && newAssociatedOrg.id !== vm.nlmOrg.id))) ) {
+                vm.confirmOverrideAssociatePopUp = true;
+            } else {
+                toastr.success('The chosen organization is already associated to this organization.', 'Operation Cancelled!');
+            }
+        }
 
         $scope.$watch(function() {
             return vm.selectedOrgsArray;
@@ -369,13 +379,7 @@
                 vm.ctepAssociateOrgs();
 
             } else if (newValue && newValue[0] && newValue[0].ctrp_id) {
-                var newAssociatedOrg = newValue[0];
-                if ( (newValue[0].source_context === 'CTEP' && (!vm.ctepOrg || (vm.ctepOrg && newAssociatedOrg.id !== vm.ctepOrg.id))) ||
-                    (newValue[0].source_context === 'NLM' && (!vm.nlmOrg || (vm.nlmOrg && newAssociatedOrg.id !== vm.nlmOrg.id))) ) {
-                    vm.confirmOverrideAssociatePopUp = true;
-                } else {
-                    toastr.success('The chosen organization is already associated to this organization.', 'Operation Cancelled!');
-                }
+                validateNewAssociation(newValue)
             } else {
                 vm.associateOrgs();
             }
@@ -399,7 +403,7 @@
                     }
                 }
             }).catch(function (err) {
-                console.log("error in cloning ctep organization " + JSON.stringify(vm.ctepOrg));
+                console.log("error in cloning ctep organization: ", err);
             }).finally(function() {
                 vm.disableBtn = false;
                 vm.cloningCTEP = false;
