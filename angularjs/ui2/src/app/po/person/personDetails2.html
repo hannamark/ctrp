@@ -72,6 +72,24 @@
                 </div>
             </div>
         </modal>
+        <modal visible="personDetailView.showMatchedCtrpPerson" title="Please confirm" id="confirm_association_ctrp_person">
+            <div class="modal-body">
+                {{personDetailView.confirm.title}}
+                <!-- TODO: ui-grid to list matched ctrp persons here -->
+            </div>
+            <div class="modal-footer">
+                <div class="btn-toolbar">
+                    <button type="button" class="btn btn-primary pull-right"  id="confirmChangeOverrideContext2"
+                            ng-click="personDetailView.confirmAssociatePerson('true')"><i class="glyphicon glyphicon-ok"></i>
+                        Confirm Selection
+                    </button>
+                    <button type="button" class="btn btn-warning pull-right" id="cancelChangeOverrideContext2"
+                            ng-click="personDetailView.showMatchedCtrpPerson = false"><i class="glyphicon glyphicon-remove"></i>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </modal>
     </div>
     <!-- end of person detail section -->
 

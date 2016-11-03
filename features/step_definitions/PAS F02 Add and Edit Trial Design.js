@@ -2810,7 +2810,12 @@ module.exports = function() {
                 }
             });
             //Save Initial Values to test reset function
-            trialDesign.clickSaveTrialDesign();
+            browser.driver.wait(function () {
+                console.log('wait here');
+                return true;
+            }, 200).then(function () {
+                trialDesign.clickSaveTrialDesign();
+            });
             //
             //Resetting Values
             //
@@ -3095,6 +3100,42 @@ module.exports = function() {
             });
             studyModlOtherLbl = 'Description of Other Study Model:';
             trialDesign.setStudyModelOtherDescription(commonMsg.oneHundredCharTxt);
+            //Number of Arms group
+            trialDesign.numberOfArmsTxt.getText().then(function (value) {
+                if (value === '0'){
+                    trialDesign.setNumberOfArmsGroups('3');
+                } else if (value === '1'){
+                    trialDesign.setNumberOfArmsGroups('3');
+                } else if (value === '2'){
+                    trialDesign.setNumberOfArmsGroups('3');
+                } else {
+                    trialDesign.setNumberOfArmsGroups('3');
+                }
+            });
+            //Target Enrollment
+            trialDesign.targetEnrollmentTxt.getText().then(function (value) {
+                if (value === '0'){
+                    trialDesign.setTargetEnrollment('3');
+                } else if (value === '1'){
+                    trialDesign.setTargetEnrollment('3');
+                } else if (value === '2'){
+                    trialDesign.setTargetEnrollment('3');
+                } else {
+                    trialDesign.setTargetEnrollment('3');
+                }
+            });
+            //Final enrollment for CT.gov
+            trialDesign.finalEnrollmentTxt.getText().then(function (value) {
+                if (value === '0'){
+                    trialDesign.setFinalEnrollmentForCT('3');
+                } else if (value === '1'){
+                    trialDesign.setFinalEnrollmentForCT('3');
+                } else if (value === '2'){
+                    trialDesign.setFinalEnrollmentForCT('3');
+                } else {
+                    trialDesign.setFinalEnrollmentForCT('3');
+                }
+            });
             trialDesign.clickSaveTrialDesign();
             trialDesign.verifyStudyModelOther(studyModlOtherLbl, commonMsg.oneHundredCharTxt);
         });
@@ -3109,13 +3150,173 @@ module.exports = function() {
             strCharacLftSpltA = strCharacLftSplt[0];
             if (strCharacLftSpltA === '200 characters left'){
                 strCharacLftVlue = commonMsg.oneHundredCharLeftMsg;
-                commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strCharacLftVlue, '2', 'Verifying Description of Other Secondary Purpose field Character Left message');
+                commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, strCharacLftVlue, '4', 'Verifying Description of Other Study Model field Character Left message');
             } else {
                 strCharacLftVlue = strCharacLftSpltA;
-                commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLbl, strCharacLftVlue, '2', 'Verifying Description of Other Secondary Purpose field Character Left message');
+                commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, strCharacLftVlue, '4', 'Verifying Description of Other Study Model field Character Left message');
             }
         });
     });
+
+    /*
+     Scenario:  #17 Character display for Time Perspective of Other
+     Given I am on the Trial Design screen
+     And Clinical Research Category is Observational or Ancillary Correlative
+     And the 'time Perspective' is 'Other', describe' box displays
+     Then a comment appears below the Time Perspective of Other field to display the number of characters available to enter into the field.
+     |200 characters left|
+     And "x characters left" will be displayed as characters are added
+     When 200 characters have been entered
+     Then no additional text can be entered
+     */
+
+    this.Given(/^the 'time Perspective' is 'Other', describe' box displays$/, function (callback) {
+        return browser.sleep(25).then(function() {
+            studyMdlA = 'Cohort';
+            studyMdlB = 'Case-Control';
+            studyMdlC = 'Case-Only';
+            studyMdlD = 'Case-Crossover';
+            studyMdlE = 'Ecologic or Community';
+            studyMdlF = 'Family-Based';
+            studyMdlG = 'Other';
+            trialDesign.interventionModelLst.$('option:checked').getText().then(function (value) {
+                var crntstudyMdlValue = '' + value + '';
+                if (crntstudyMdlValue === 'Other'){
+                    console.log('System Identified [' + crntstudyMdlValue + '] as the current Study Model value');
+                    trialDesign.selectStudyModel(studyMdlA);
+                    vfStudyModelValue = studyMdlA;
+                } else {
+                    trialDesign.selectStudyModel(studyMdlA);
+                    vfStudyModelValue = studyMdlA;
+                }
+            });
+            timePrspctvA = 'Retrospective';
+            timePrspctvB = 'Prospective';
+            timePrspctvC = 'Cross sectional';
+            timePrspctvD = 'Other';
+            trialDesign.interventionModelLst.$('option:checked').getText().then(function (value) {
+                var crnttimePrspctvValue = '' + value + '';
+                if (crnttimePrspctvValue === 'Other'){
+                    console.log('System Identified [' + crnttimePrspctvValue + '] as the current Time Perspective value');
+                    trialDesign.selectTimePerspective(timePrspctvD);
+                    vfTimePerspectiveValue = timePrspctvD;
+                } else {
+                    trialDesign.selectTimePerspective(timePrspctvD);
+                    vfTimePerspectiveValue = timePrspctvD;
+                }
+            });
+            timePerspectiveOtherLbl = 'Description of Other time perspective:';
+            trialDesign.setTimePerspectiveOtherDescription(commonMsg.oneHundredCharTxt);
+            //Number of Arms group
+            trialDesign.numberOfArmsTxt.getText().then(function (value) {
+                if (value === '0'){
+                    trialDesign.setNumberOfArmsGroups('3');
+                } else if (value === '1'){
+                    trialDesign.setNumberOfArmsGroups('3');
+                } else if (value === '2'){
+                    trialDesign.setNumberOfArmsGroups('3');
+                } else {
+                    trialDesign.setNumberOfArmsGroups('3');
+                }
+            });
+            //Target Enrollment
+            trialDesign.targetEnrollmentTxt.getText().then(function (value) {
+                if (value === '0'){
+                    trialDesign.setTargetEnrollment('3');
+                } else if (value === '1'){
+                    trialDesign.setTargetEnrollment('3');
+                } else if (value === '2'){
+                    trialDesign.setTargetEnrollment('3');
+                } else {
+                    trialDesign.setTargetEnrollment('3');
+                }
+            });
+            //Final enrollment for CT.gov
+            trialDesign.finalEnrollmentTxt.getText().then(function (value) {
+                if (value === '0'){
+                    trialDesign.setFinalEnrollmentForCT('3');
+                } else if (value === '1'){
+                    trialDesign.setFinalEnrollmentForCT('3');
+                } else if (value === '2'){
+                    trialDesign.setFinalEnrollmentForCT('3');
+                } else {
+                    trialDesign.setFinalEnrollmentForCT('3');
+                }
+            });
+            trialDesign.clickSaveTrialDesign();
+            trialDesign.verifyTimePerspectiveOther(timePerspectiveOtherLbl, commonMsg.oneHundredCharTxt);
+        });
+    });
+
+    this.Then(/^a comment appears below the Time Perspective of Other field to display the number of characters available to enter into the field\.$/, function (table) {
+        return browser.sleep(25).then(function() {
+            var characLft = table.raw();
+            strCharacLft = characLft.toString().replace(/,/g, "\n", -1);
+            console.log('Value(s) in the data table:[' + strCharacLft + ']');
+            var strCharacLftSplt = strCharacLft.toString().split("\n");
+            strCharacLftSpltA = strCharacLftSplt[0];
+            if (strCharacLftSpltA === '200 characters left'){
+                strCharacLftVlue = commonMsg.oneHundredCharLeftMsg;
+                commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, strCharacLftVlue, '5', 'Verifying Description of Other Study Model field Character Left message');
+            } else {
+                strCharacLftVlue = strCharacLftSpltA;
+                commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblStudyModel, strCharacLftVlue, '5', 'Verifying Description of Other Study Model field Character Left message');
+            }
+        });
+    });
+
+    /*
+     Scenario: #18 Bio-specimen Description character count
+     Given I am on the Trial Design screen
+     When I am typing into the Bio-specimen Description  Field
+     Then a comment appears below the Biospecimen Description field to display the number of characters available to enter into the field.
+     |1000 characters left|
+     And "x characters left" will be displayed as characters are added
+     When 1000 characters have been entered
+     Then no additional text can be entered
+     */
+
+    this.When(/^I am typing into the Bio\-specimen Description  Field$/, function () {
+        return browser.sleep(25).then(function() {
+            trialDesign.selectClinicalResearchCategory(crcListValueC);
+            vfClnclRsrchCategryValue = crcListValueC;
+            timePrspctvA = 'Retrospective';
+            timePrspctvB = 'Prospective';
+            timePrspctvC = 'Cross sectional';
+            timePrspctvD = 'Other';
+            trialDesign.interventionModelLst.$('option:checked').getText().then(function (value) {
+                var crnttimePrspctvValue = '' + value + '';
+                if (crnttimePrspctvValue === 'Other'){
+                    console.log('System Identified [' + crnttimePrspctvValue + '] as the current Time Perspective value');
+                    trialDesign.selectTimePerspective(timePrspctvB);
+                    vfTimePerspectiveValue = timePrspctvB;
+                } else {
+                    trialDesign.selectTimePerspective(timePrspctvB);
+                    vfTimePerspectiveValue = timePrspctvB;
+                }
+            });
+            trialDesign.setBioSpecimenDescription(commonMsg.fiveHundredCharTxt);
+        });
+    });
+
+    this.Then(/^a comment appears below the Biospecimen Description field to display the number of characters available to enter into the field\.$/, function (table) {
+        return browser.sleep(25).then(function() {
+            var characLft = table.raw();
+            strCharacLft = characLft.toString().replace(/,/g, "\n", -1);
+            console.log('Value(s) in the data table:[' + strCharacLft + ']');
+            var strCharacLftSplt = strCharacLft.toString().split("\n");
+            strCharacLftSpltA = strCharacLftSplt[0];
+            if (strCharacLftSpltA === '1000 characters left'){
+                strCharacLftVlue = commonMsg.fiveHundredCharLeftMsg;
+                commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblBio, strCharacLftVlue, '6', 'Verifying Description of Other Bio-specimen Description field Character Left message');
+            } else {
+                strCharacLftVlue = strCharacLftSpltA;
+                commonFunctions.verifyTxtByIndex(trialDesc.characterLeftLblBio, strCharacLftVlue, '6', 'Verifying Description of Other Bio-specimen Description field Character Left message');
+            }
+        });
+    });
+
+
 
 
 

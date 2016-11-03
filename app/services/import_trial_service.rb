@@ -96,7 +96,6 @@ class ImportTrialService
     orgs = orgs.matches_name_wc(org_name, true)
     nlm_orgs = orgs.with_source_context("NLM")
 
-    #M.D. Anderson Cancer Center NCT02217865
     #Log Entry for New Import
     if nlm_orgs.length == 1
       nlm_org_ctrp_id = nlm_orgs[0].ctrp_id
@@ -123,14 +122,14 @@ class ImportTrialService
     #Then an NLM Context with an NLM Context Status of "Active" will be automatically created in CTRP
     #And the processing status is "Incomplete"
     #And the service Request is "Create"
+
     nlm_context = SourceContext.find_by_code('NLM')
+    service_request = ServiceRequest.find_by_code('CREATE')
     #processing_status  = ProcessingStatus.find_by_code('InComplete')
-    org = Organization.create(name:org_name,city:"city", address:"address",source_status_id:SourceStatus.find_by_code_and_source_context_id('ACTIVE',nlm_context.id),source_context_id:nlm_context.id)
-    org.save!
-
-    #raise "safety_care group missing!"
-    #import_params[]
-
+    nlm_org_for_imported_trial = Organization.new(name:org_name,city:"city", address:"address",service_request_id:service_request.id,source_status_id:SourceStatus.find_by_code_and_source_context_id('ACTIVE',nlm_context.id),source_context_id:nlm_context.id)
+    Rails.logger.info nlm_org_for_imported_trial
+    ##Creating in before_create method on Trial model thus it inlcudes in the Transaction Block.
+    import_params[:nlm_org_for_imported_trial] = nlm_org_for_imported_trial
     end
 
 
