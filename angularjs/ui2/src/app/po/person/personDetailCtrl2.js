@@ -17,6 +17,7 @@
         vm.person = personDetailObj || {lname: "",
                                         source_status_id: "",
                                         source_context: "CTRP",
+                                        source_context_id: 2,
                                         new: true,
                                         processing_status: "Complete"}; //personDetailObj.data;
         vm.person = vm.person.data || vm.person;
@@ -40,6 +41,7 @@
         }
 
         function selectTab(contextName) {
+            console.info('context: ', contextName);
             if (!!contextName) {
                 vm.tabOpen = contextName;
                 vm.curPerson = (contextName === 'CTEP') ? vm.ctepPerson : vm.ctrpPerson;
@@ -299,13 +301,14 @@
                 vm.ctepPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTEP', source_status: 'Active'});
             } else if (vm.person.source_context === 'CTEP') {
                 vm.ctepPerson = vm.person;
-                vm.ctrpPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTRP', source_status: 'Active'});
+                vm.ctrpPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTRP', source_status: 'Active'}) || null;
+                console.info('ctrp person: ', vm.ctrpPerson);
             } else {
                 vm.ctrpPerson = null;
                 vm.ctepPerson = null;
             }
-            _prepAssociationGrid(vm.ctrpPerson.associated_persons || []);
-            selectTab(vm.defaultTab);
+            _prepAssociationGrid([]);
+            // selectTab(vm.defaultTab);
         }
 
         function _populatePOAff() {
