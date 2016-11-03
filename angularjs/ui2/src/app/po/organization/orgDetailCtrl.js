@@ -14,7 +14,7 @@
     function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $timeout) {
         var vm = this;
-        $scope.setInitialState = function() {
+        vm.setInitialState = function() {
             vm.addedNameAliases = [];
             vm.states = [];
             vm.processingStatuses = OrgService.getProcessingStatuses();
@@ -31,7 +31,7 @@
             vm.cloningCTEP = false;
             vm.nilclose = true;
         };
-        $scope.setInitialState();
+        vm.setInitialState();
 
         vm.updateOrg = function () {
             vm.disableBtn = true;
@@ -279,7 +279,6 @@
         vm.isValidPhoneNumber = function(){
             vm.IsPhoneValid = isValidNumberPO(vm.ctrpOrg.phone, vm.ctrpOrg.country);
             vm.showPhoneWarning = true;
-            console.log('Is phone valid: ' + vm.IsPhoneValid);
         };
 
         var associateOrgsRefresh = function (){
