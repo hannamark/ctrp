@@ -53,7 +53,8 @@
                     var actStatus = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}); // defaulted to 'Active' source status
                     vm.curPerson.source_status_id = !!actStatus ? actStatus.id : null;
                 }
-                if (contextName === 'CTRP' && contextName !== vm.defaultTab) {
+                if (contextName === 'CTRP' && contextName !== vm.defaultTab &&
+                    !angular.isDefined(vm.ctrpPerson.associated_persons)) {
                     // CTRP is not the default tab
                     // fetch associated persons for the CTRP person, because the CTRP person may
                     // have more association than the currently shown CTEP person
