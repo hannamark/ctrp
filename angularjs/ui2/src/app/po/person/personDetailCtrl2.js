@@ -92,8 +92,8 @@
             vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection);
             _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
                 //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
-                aff['effective_date'] = aff.effective_date ? aff['effective_date'] : ''; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
-                aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : ''; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
+                aff['effective_date'] = aff.effective_date ? aff['effective_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
+                aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
                 var affStatusIndex = -1; //PoAffiliationStatus index
                 if (aff.effective_date && !aff.expiration_date) {
                     affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
@@ -109,7 +109,7 @@
             newPerson.new = vm.curPerson.new || '';
             newPerson.id = vm.curPerson.id || '';
             newPerson.person = vm.curPerson;
-
+            vm.isBtnDisabled = true;
             PersonService.upsertPerson(newPerson).then(function (response) {
                 var status = response.status || response.server_response.status;
                 if (newPerson.new && status === 201) {
@@ -132,6 +132,8 @@
                 }
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
+            }).finally(function() {
+                vm.isBtnDisabled = false;
             });
 
         }
@@ -292,6 +294,7 @@
             vm.matchedCtrpPersons = []; // CTRP persons found from attempt to clone ctep person
             vm.associationForRemoval = []; // object person objects
             vm.confirm = {}; // messages
+            vm.isBtnDisabled = false;
             var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
             var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
             vm.isAllowedToComment = _.contains(USER_ROLES_ALLOWED_COMMENT, UserService.getUserRole());
@@ -319,7 +322,8 @@
                     if (status >= 200 && status <= 210) {
                         var curOrg = {"id" : poAff.organization_id, "name": organization.name};
                         curOrg.effective_date = moment(poAff.effective_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.effective_date);
-                        curOrg.expiration_date = moment(poAff.expiration_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
+                        let expDate = !!poAff.expiration_date ? moment(poAff.expiration_date).toDate() : null; //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
+                        curOrg.expiration_date = expDate;
                         curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
                         curOrg.po_affiliation_id = poAff.id; //po affiliation id
                         curOrg.lock_version = poAff.lock_version;
