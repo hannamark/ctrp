@@ -24,18 +24,18 @@ json.associated_orgs do
                   :source_status_name,
                   :families,
                   :name_aliases,
-                  :created_by,
-                  :updated_by,
                   :ctep_id,
                   :ctep_org_type_name,
                   :aff_families_names
-                  json.org_created_date @read_all_access ? organization.org_created_date : nil
-                  json.org_updated_date @read_all_access ? organization.org_updated_date : nil
-                  json.org_assoc_date @read_all_access ? organization.org_assoc_date : nil
-                  json.service_request_name @read_all_access ? organization.service_request_name : nil
-                  json.processing_status @read_all_access ? organization.processing_status : nil
-                  json.uuid @write_access ? organization.uuid : nil
-                  json.ctep_id organization.multiview_ctep_id
+                json.updated_by @read_all_access ? organization.updated_by : nil
+                json.created_by @read_all_access ? organization.created_by : nil
+                json.created_at @read_all_access ? organization.created_at : nil
+                json.updated_at @read_all_access ? organization.updated_at : nil
+                json.association_date @read_all_access ? organization.association_date : nil
+                json.service_request_name @read_all_access ? organization.service_request_name : nil
+                json.processing_status @read_all_access ? organization.processing_status : nil
+                json.uuid @write_access ? organization.uuid : nil
+                json.ctep_id organization.multiview_ctep_id
   end
 end
 json.active_context @active_context

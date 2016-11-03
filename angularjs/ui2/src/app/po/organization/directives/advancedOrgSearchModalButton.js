@@ -136,6 +136,10 @@
             $uibModalInstance.close($scope.selectedOrgsArray);
         }; //confirmSelection
 
+        vm.button3Clicked = function() {
+            Common.broadcastMsg(MESSAGES.ORG_SEARCH_BTN3_CLICKED);
+            vm.cancel();
+        };
 
         activate();
 

@@ -30,6 +30,21 @@
             vm.processStatusArr = OrgService.getProcessingStatuses();
             vm.cloningCTEP = false;
             vm.nilclose = true;
+
+            $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
+                if (vm.cloningCTEP) {
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    $timeout(function () {
+                        //reset cloning flag
+                        vm.cloningCTEP = false;
+                        vm.nilclose = true;
+                    }, 1);
+                }
+            });
+
+            $scope.$on(MESSAGES.ORG_SEARCH_BTN3_CLICKED, function() {
+                vm.cloneCtepOrg();
+            });
         };
         vm.setInitialState();
 
@@ -60,7 +75,7 @@
                     }
                     showToastr(vm.ctrpOrg.name);
                     vm.ctrpOrg.new = false;
-                    vm.ctrpOrg.org_updated_date = response.org_updated_date;
+                    vm.ctrpOrg.updated_at = response.updated_at;
 
                     $timeout(function() {
                         $scope.organization_form.$setPristine();
@@ -212,23 +227,6 @@
                 };
             });
         }
-
-        $scope.cloneBtnClicked = function () {
-            vm.cloningCTEP = true;
-            vm.nilclose = true;
-        };
-
-        $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
-            if (vm.cloningCTEP) {
-                // To make sure setPristine() is executed after all $watch functions are complete
-                $timeout(function () {
-                    //reset cloning flag
-                    vm.cloningCTEP = false;
-                    vm.nilclose = true;
-                    vm.cloneCtepOrg();
-                }, 1);
-            }
-        });
 
         /**
          * Listen to the message for availability of states or provinces
@@ -433,7 +431,7 @@
                 },
                 {
                     name: 'ctep_id',
-                    enableSorting: true,
+                    enableSorting: false,
                     displayName: 'CTEP ID',
                     minWidth: '100'
                 },
@@ -462,7 +460,7 @@
                 {
                     name: 'source_id',
                     displayName: 'Source ID',
-                    enableSorting: true,
+                    enableSorting: false,
                     minWidth: '130'
                 },
                 {
@@ -486,7 +484,7 @@
                 {
                     name: 'city',
                     displayName: 'City',
-                    enableSorting: true,
+                    enableSorting: false,
                     minWidth: '200'
                 },
                 {
@@ -524,26 +522,28 @@
                     name: 'updated_by',
                     displayName: 'Last Updated by',
                     enableSorting: false,
-                    cellFilter: 'date:\'dd-MMM-yyyy\'',
                     width: '*',
                     minWidth: '200'
                 },
                 {
-                    name: 'org_updated_date',
+                    name: 'updated_at',
                     displayName: 'Last Updated Date',
                     enableSorting: false,
+                    type: 'date',
+                    cellFilter: 'date: "dd-MMM-yyyy, H:mm"',
                     width: '*',
                     minWidth: '200'
                 },
                 {
-                    name: 'org_assoc_date',
+                    name: 'association_date',
                     displayName: 'Association Start Date',
                     enableSorting: false,
+                    type: 'date',
+                    cellFilter: 'date: "dd-MMM-yyyy, H:mm"',
                     width: '*',
                     minWidth: '200'
                 }
             ],
-            enableSelectAll: true,
             enableRowHeaderSelection : true,
             enableGridMenu: false
         };

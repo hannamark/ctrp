@@ -18,8 +18,8 @@
                     <i class="glyphicon glyphicon-remove"></i> Close
                 </button>
                 <button class="btn btn-primary pull-right" id="searchPopBtn3"
-                        ng-if="advOrgSearchForm2ModalView.preSearch.button3Label"
-                        ng-click="advOrgSearchForm2ModalView.cancel(); advOrgSearchForm2ModalView.preSearch.button3Clicked = true; console.log(window.opener.$windowScope)">
+                        ng-show="advOrgSearchForm2ModalView.preSearch.button3Label"
+                        ng-click="advOrgSearchForm2ModalView.button3Clicked()">
                     <i class="glyphicon"></i> {{advOrgSearchForm2ModalView.preSearch.button3Label}}
                 </button>
             </div>

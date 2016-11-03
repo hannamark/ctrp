@@ -104,12 +104,6 @@ class Organization < ActiveRecord::Base
     return isNullifiable
   end
 
-  def org_assoc_date
-    if self.association_date.present?
-      return self.association_date
-    end
-  end
-
   def org_created_date
     if self.created_at.present?
       return self.created_at

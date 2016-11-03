@@ -132,7 +132,7 @@
                 {name: 'updated_by', displayName: 'Last Updated By',
                     enableSorting: true, minWidth: '150', width: '*'},
                 {name: 'updated_at', displayName: 'Last Updated Date',
-                    type: 'date', cellFilter: 'date: "dd-MMM-yyyy H:mm"',
+                    type: 'date', cellFilter: 'date: "dd-MMM-yyyy, H:mm"',
                     enableSorting: true, minWidth: '160', width: '*'}
 
 
