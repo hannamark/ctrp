@@ -1,26 +1,7 @@
 <div class="row md-sidenav-push-in-target">
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-3">CTRP Context Person ID:</label>
-        <div class="col-xs-12 col-sm-3">
-            <div class="form-text">{{personDetailView.curPerson.id}}</div>
-        </div>
-    </div>
-    <div class="form-group" ng-show="!personDetailView.curPerson.new">
-        <label class="control-label col-xs-12 col-sm-3">Group ID:</label>
-        <div class="col-xs-12 col-sm-3">
-            <div class="form-text">{{personDetailView.curPerson.ctrp_id}}</div>
-        </div>
-    </div>
-    <div class="form-group has-feedback required">
-        <label for="source_context" class="control-label col-xs-12 col-sm-3">Source Context:</label>
-        <div class="col-xs-12 col-sm-6 form-text">{{personDetailView.curPerson.source_context}}</div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-3">Source ID:</label>
-        <div class="col-xs-12 col-sm-6 form-text">
-            {{personDetailView.curPerson.source_id}}
-        </div>
-    </div>
+    <!-- common fields between CTRP and CTEP -->
+    <div ng-include src="'app/po/person/sub_partials/_common_fields_ids.html'"></div>
+    <!-- common ends -->
     <div class="form-group">
         <label for="prefix" class="control-label col-xs-12 col-sm-3">Prefix:</label>
         <div class="col-xs-12 col-sm-6 form-text">{{personDetailView.curPerson.prefix}}</div>
@@ -85,7 +66,7 @@
         </div>
     </div>
     <!-- common fields between CTRP and CTEP -->
-    <div ng-include src="'app/po/person/sub_partials/_common_fields.html'"></div>
+    <div ng-include src="'app/po/person/sub_partials/_common_fields_updated.html'"></div>
     <!-- common ends -->
     <!-- clone ctep person -->
     <div class="form-group">
