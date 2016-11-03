@@ -59,7 +59,7 @@ And an e-mail "Account Activation(Site User)" will be sent to the user (Email li
 Scenario: #4 I can disable Site Administrative role for CTRP Site Administrators (with the roles: Abstractor, Super, Admin, Account Approver)
 Given I am logged into CTRP 
 When I select the Site Administration feature
-And I will see a list of all CTRP Users with the same Site Affiliation as I have 
+And I will see a list of all CTRP Users
 When I select a site user
 Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
@@ -84,7 +84,7 @@ And the trials with an active submission owned by the user will have their owner
 When I select Transfer Ownership
 Then the system will open the trial management screen to allow the site admin to reassign the trials (Feature Admin F06)
 And the trials displayed will be for selected user
-And the account will not be inactivated
+#And the account will not be inactivated
 
 
 Scenario: #6 Change site affiliation (with the roles: Abstractor, Super, Admin, Account Approver)

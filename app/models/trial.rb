@@ -202,6 +202,7 @@ class Trial < TrialBase
   attr_accessor :edit_type
   attr_accessor :coming_from
   attr_accessor :current_user
+  attr_accessor :nlm_org_for_imported_trial
 
   accepts_nested_attributes_for :interventions, allow_destroy: true
   accepts_nested_attributes_for :associated_trials, allow_destroy: true
@@ -283,6 +284,7 @@ class Trial < TrialBase
 
   before_create :save_history
   before_create :save_internal_source
+  before_create :create_nlm_org_for_ct_gov_trials
   before_save :generate_status
   before_save :check_indicator
   after_create :create_ownership
@@ -880,6 +882,16 @@ class Trial < TrialBase
       self.internal_source = InternalSource.find_by_code('IMP')
     else
       self.internal_source = InternalSource.find_by_code('PRO')
+    end
+  end
+
+  def create_nlm_org_for_ct_gov_trials
+    if self.edit_type == 'import'
+      Rails.logger.info " NLM Org is #{nlm_org_for_imported_trial}"
+      if self.nlm_org_for_imported_trial.present?
+         nlm_org = self.nlm_org_for_imported_trial
+         nlm_org.save!
+      end
     end
   end
 

@@ -14,6 +14,7 @@
     function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService, $filter, _,uiGridExporterConstants, uiGridExporterService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $uibModal, $timeout, GeoLocationService, serviceRequests) {
         var vm = this;
+        console.info('associatedOrgsObj: ', associatedOrgsObj);
         vm.addedNameAliases = [];
         vm.states = [];
         vm.processingStatuses = OrgService.getProcessingStatuses();
@@ -55,6 +56,7 @@
                     }
                     showToastr(vm.ctrpOrg.name);
                     vm.ctrpOrg.new = false;
+                    vm.ctrpOrg.org_updated_date = response.org_updated_date;
 
                     $timeout(function() {
                         $scope.organization_form.$setPristine();
@@ -101,7 +103,7 @@
 
         // Delete the associations
         vm.toggleSelection = function (index, type) {
-            if (type == 'other_id') {
+            if (type === 'other_id') {
                 if (index < vm.addedNameAliases.length) {
                     vm.addedNameAliases[index]._destroy = !vm.addedNameAliases[index]._destroy;
                 }
@@ -119,7 +121,7 @@
             }), function (item) {
                 return _.contains(["ACT","INACT","PEND"], item.code);
             });
-        
+
         /****************** implementations below ***************/
 
         /**
@@ -142,7 +144,7 @@
             } else {
                 vm.ctrpOrg = {};
                 vm.ctrpOrg.new = true;
-                vm.ctrpOrg.processing_status = 'Incomplete';
+                vm.ctrpOrg.processing_status = 'Complete';
                 vm.ctrpOrg.source_status_id =  _.filter(
                     vm.ctrpSourceStatusArr, function (item) {
                         return _.isEqual('ACT', item.code);
@@ -501,7 +503,7 @@
                 },
                 {
                     name: 'id',
-                    displayName: 'Context Org ID',
+                    displayName: 'Context ID',
                     enableSorting: false,
                     minWidth: '180'
                 },

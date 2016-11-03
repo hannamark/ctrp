@@ -58,7 +58,7 @@ And the "Account Activation(Site User)" e-mail will be sent to the user (Email l
 Scenario: #4 I can disable Site Administrative privileges for CTRP Site Administrators with the roles: Admin, Account Approver
 Given I am logged into CTRP 
 When I select the Site Administration feature
-And I will see a list of all CTRP Users with the same Site Affiliation as I have 
+And I will see a list of all CTRP Users
 When I select a site user
 Then the CTRP system will display the user profile for the CTRP User
 And I can change the privileges for the CTRP User to 
