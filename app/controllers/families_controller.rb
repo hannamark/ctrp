@@ -96,11 +96,13 @@ class FamiliesController < ApplicationController
 
     if params[:ctrp_id].present? || params[:name].present? || params[:family_status].present? || params[:family_type].present?
       @families = Family.all_families_data()
+
       @families = @families.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @families = @families.matches('family_statuses.name', params[:family_status]) if params[:family_status].present?
       @families = matches_wc(@families, 'families.name', params[:name],params[:wc_search]) if params[:name].present?
       @families = @families.with_family_type(params[:family_type]) if params[:family_type].present?
       @families = @families.sort_by_col(params[:sort], params[:order])
+
 
       if params[:rows] != nil
         @families = @families.page(params[:start]).per(params[:rows])
