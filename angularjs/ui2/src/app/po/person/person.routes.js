@@ -22,8 +22,8 @@
                 })
                 .state('main.personDetail', {
                     url: '/people/:personId',
-                    templateUrl: 'app/po/person/personDetails.html',
-                    controller: 'personDetailCtrl as personDetailView',
+                    templateUrl: 'app/po/person/personDetails2.html',
+                    controller: 'personDetailCtrl2 as personDetailView',
                     section: 'po',
                     resolve: {
                         OrgService: 'OrgService',
@@ -32,7 +32,7 @@
                             return OrgService.getSourceContexts();
                         },
                         sourceStatusObj: function(OrgService) {
-                            return OrgService.getSourceStatuses();
+                            return OrgService.getSourceStatuses2();
                         },
                         personDetailObj: function($stateParams, PersonService) {
                             return PersonService.getPersonById($stateParams.personId);
@@ -49,8 +49,8 @@
 
                 .state('main.addPerson', {
                     url: '/new_person',
-                    templateUrl: 'app/po/person/personDetails.html',
-                    controller: 'personDetailCtrl as personDetailView',
+                    templateUrl: 'app/po/person/personDetails2.html',
+                    controller: 'personDetailCtrl2 as personDetailView',
                     section: 'po',
                     resolve: {
                         OrgService: 'OrgService',

@@ -60,7 +60,7 @@
                     if (vm.logUserOut === true){
                         vm.logUserOut = false;
                         UserService.logout();
-                    } else if (redirect || vm.inactivatingUser) {
+                    } else if (redirect || (vm.inactivatingUser && vm.userRole === 'ROLE_SITE-SU') ) {
                         UserService.allOrgUsers = null;
                         $timeout(function() {
                             $state.go('main.users', {}, {reload: true});
