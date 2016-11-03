@@ -146,13 +146,14 @@
                 }
                 checkToDisableClone();
             } else {
-                vm.ctrpOrg = {};
-                vm.ctrpOrg.new = true;
-                vm.ctrpOrg.processing_status = 'Complete';
-                vm.ctrpOrg.source_status_id =  _.filter(
-                    vm.ctrpSourceStatusArr, function (item) {
-                        return _.isEqual('ACT', item.code);
-                    })[0].id;
+                vm.ctrpOrg = {
+                    new:                true,
+                    processing_status:  'Complete',
+                    source_status_id:   _.filter(
+                        vm.ctrpSourceStatusArr, function (item) {
+                            return _.isEqual('ACT', item.code);
+                        })[0].id
+                };
                 vm.defaultTab = 'CTRP';
             }
         }
