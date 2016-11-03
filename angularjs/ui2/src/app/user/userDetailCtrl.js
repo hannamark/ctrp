@@ -49,7 +49,7 @@
 
                 if (status >= 200 && status <= 210) {
                     if (response.username) {
-                        //$scope.userDetail_form.$setPristine();
+                        vm.userDetail_form.$setPristine();
                         // error is:  TypeError: Cannot read property '$setPristine' of undefined(…)
                         vm.userDetails.send_activation_email = false;
                         toastr.success('User with username: ' + response.username + ' has been updated', 'Operation Successful!');
@@ -80,7 +80,7 @@
 
         vm.reset = function() {
             vm.userDetails = angular.copy(vm.userDetailsOrig);
-            $scope.userDetail_form.$setPristine();
+            vm.userDetail_form.$setPristine();
             vm.userDetails.send_activation_email = false;
         };
 
