@@ -45,6 +45,21 @@
             $scope.$on(MESSAGES.ORG_SEARCH_BTN3_CLICKED, function() {
                 vm.cloneCtepOrg();
             });
+
+            $scope.$watch(function() {
+                return vm.selectedOrgsArray;
+            }, function(newValue, oldValue) {
+                if (vm.cloningCTEP) {
+                    //reset cloning flag after existing match
+                    vm.nilclose = true; //reset
+                    vm.ctepAssociateOrgs();
+
+                } else if (newValue && newValue[0] && newValue[0].ctrp_id) {
+                    validateNewAssociation(newValue)
+                } else {
+                    vm.associateOrgs();
+                }
+            });
         };
         vm.setInitialState();
 
@@ -369,21 +384,6 @@
                 toastr.success('The chosen organization is already associated to this organization.', 'Operation Cancelled!');
             }
         }
-
-        $scope.$watch(function() {
-            return vm.selectedOrgsArray;
-        }, function(newValue, oldValue) {
-            if (vm.cloningCTEP) {
-                //reset cloning flag after existing match
-                vm.nilclose = true; //reset
-                vm.ctepAssociateOrgs();
-
-            } else if (newValue && newValue[0] && newValue[0].ctrp_id) {
-                validateNewAssociation(newValue)
-            } else {
-                vm.associateOrgs();
-            }
-        });
 
         vm.cloneCtepOrg = function() {
             vm.disableCloneFresh = true;
