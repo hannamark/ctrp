@@ -18,7 +18,7 @@
         </div>
         <div class="row top-offset-xs"></div>
         <div class="row">
-            <form class="form form-horizontal" role="form" name="userDetailView.userDetail_form" novalidate ctrp-submit="userDetailView.validateSave()" ctrp-submit-delete unsaved-changes>
+            <form class="form form-horizontal" role="form" name="userDetailView.userDetail_form" novalidate ctrp-submit="userDetailView.validateSave()" ctrp-submit-delete unsaved-changes unsaved-form-in-child-scope="true">
                 <fieldset restriction-field>
                     <div class="form-group has-feedback required" ng-class="{'has-error': ctrpbtn['userDetailView.userDetail_form'].needsAttention(userDetailView.userDetail_form.username) || userDetailView.newUserNameInvalid}">
                         <label class="control-label col-sm-3">Username:</label>
