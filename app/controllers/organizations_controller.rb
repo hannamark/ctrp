@@ -5,7 +5,7 @@ class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
   ## Please comment the next two lines if you donot want the Authorization checks
   before_filter :wrapper_authenticate_user, :except => [:search, :select] unless Rails.env.test?
-  before_action :set_glob_vars, only: [:create, :edit, :dis_associate, :update, :destroy]
+  before_action :set_glob_vars, only: [:create, :edit, :dis_associate, :update, :destroy, :clone]
   before_action :set_paper_trail_whodunnit, only: [:create,:update, :destroy, :curate, :clone, :dis_associate]
 
   respond_to :html, :json
@@ -150,6 +150,7 @@ class OrganizationsController < ApplicationController
   end
 
   def clone
+    return if !@write_access
     ctepOrg = Organization.find_by_id(params[:org_id])
     ctepOrg.processing_status = 'Complete'
     ctepOrg.updated_by = @current_user.username unless @current_user.nil?
@@ -159,8 +160,11 @@ class OrganizationsController < ApplicationController
     @organization.processing_status = 'Complete'
     @organization.source_context_id = SourceContext.find_by_code("CTRP").id
     @organization.source_status_id = SourceStatus.where(:source_context_id => @organization.source_context_id, :code => 'ACT')[0].id
-    @organization.created_by = ctepOrg.updated_by
+    @organization.created_by = current_user.username unless @current_user.nil?
     @organization.created_at = Time.zone.now
+    @organization.updated_by = @organization.created_by
+    @organization.updated_at = @organization.created_at
+    @rc_tp = true
     respond_to do |format|
       if @organization.save
         ctepOrg = associateTwoOrgs @organization.ctrp_id, ctepOrg

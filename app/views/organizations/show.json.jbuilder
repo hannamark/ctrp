@@ -1,4 +1,5 @@
-json.extract! @organization,
+if @read_all_access
+  json.extract! @organization,
               :id,
               :source_id,
               :name,
@@ -18,14 +19,13 @@ json.extract! @organization,
               :source_status_id,
               :families,
               :name_aliases,
-              :created_by,
-              :updated_by,
               :ctep_id,
-              :uuid,
               :lock_version,
-              :org_created_date,
-              :org_updated_date
+              :uuid,
+              :updated_by,
+              :created_by,
+              :created_at,
+              :updated_at,
+              :association_date
+end
 
-# p @organization.created_at
-# p @organization.updated_at
-# p @organization.org_created_date

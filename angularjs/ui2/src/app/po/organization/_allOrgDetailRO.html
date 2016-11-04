@@ -3,8 +3,8 @@
     <label class="control-label col-sm-3">Context ID:</label>
     <div class="col-sm-6 form-text">{{curOrg.id}}</div>
 </div>
-<div class="form-group">
-    <label class="control-label col-sm-3" ng-show="orgDetailView.currentUserIsReadAll">Group ID:</label>
+<div class="form-group" ng-show="orgDetailView.currentUserIsReadAll">
+    <label class="control-label col-sm-3">Group ID:</label>
     <div class="col-sm-6 form-text">{{curOrg.ctrp_id}}</div>
 </div>
 <div class="form-group">
@@ -93,6 +93,6 @@
     <div class="col-sm-6 form-text">{{curOrg.processing_status}}</div>
 </div>
 <div class="form-group">
-    <label class="control-label col-sm-3">Created By:</label>
-    <div class="col-sm-6 form-text">{{curOrg.created_by}} ({{curOrg.org_created_date | dateFormat:'DD-MMM-YYYY, H:mm:ss': 'DD-MMM-YYYY, H:mm' }})</div>
+    <label class="control-label col-sm-3" ng-show="orgDetailView.currentUserIsReadAll">Created By:</label>
+    <div class="col-sm-6 form-text">{{curOrg.created_by}} ({{curOrg.created_at | dateFormat:'DD-MMM-YYYY, H:mm:ss': 'DD-MMM-YYYY, H:mm' }})</div>
 </div>

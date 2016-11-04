@@ -348,7 +348,7 @@ Given I am logged into the CTRP Protocol Abstraction application
  When I have selected Reset at the Trial Design screen
  Then the information entered or edited on the Trial Design screen will not be saved to the trial record
   And the screen will be refreshed with the data since the last save.
-@runthis
+
 Scenario:  #16 Character display for Study Model of Other
  Given I am on the Trial Design screen
    And Clinical Research Category is Observational or Ancillary Correlative
@@ -372,7 +372,7 @@ Scenario:  #17 Character display for Time Perspective of Other
  Then no additional text can be entered
  
  
-  
+
   Scenario: #18 Bio-specimen Description character count
 Given I am on the Trial Design screen
 When I am typing into the Bio-specimen Description  Field

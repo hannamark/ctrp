@@ -17,6 +17,7 @@
         vm.person = personDetailObj || {lname: "",
                                         source_status_id: "",
                                         source_context: "CTRP",
+                                        source_context_id: 2,
                                         new: true,
                                         processing_status: "Complete"}; //personDetailObj.data;
         vm.person = vm.person.data || vm.person;
@@ -30,7 +31,7 @@
         vm.toggleSelection = toggleSelection;
         vm.openCalendar = openCalendar;
         vm.updatePerson = updatePerson;
-
+        vm.cloneCtepPerson = cloneCtepPerson;
 
         activate();
         function activate() {
@@ -45,14 +46,15 @@
                 vm.curPerson = (contextName === 'CTEP') ? vm.ctepPerson : vm.ctrpPerson;
                 vm.sourceStatusArrSelected = _sourceStatusesForContext(vm.curPerson.source_context_id);
 
-                // TODO: if new person, assign the ctrp source context id to it
+                // if new person, assign the ctrp source context id to it
                 if (vm.curPerson.new) {
                     var ctrpContext = _.findWhere(vm.sourceContextArr, {name: 'CTRP'}); // defaulted to CTRP
                     vm.curPerson.source_context_id = !!ctrpContext ? ctrpContext.id : null;
                     var actStatus = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}); // defaulted to 'Active' source status
                     vm.curPerson.source_status_id = !!actStatus ? actStatus.id : null;
                 }
-                if (contextName === 'CTRP' && contextName !== vm.defaultTab) {
+                if (contextName === 'CTRP' && contextName !== vm.defaultTab &&
+                    !angular.isDefined(vm.ctrpPerson.associated_persons)) {
                     // CTRP is not the default tab
                     // fetch associated persons for the CTRP person, because the CTRP person may
                     // have more association than the currently shown CTEP person
@@ -73,7 +75,6 @@
         }
 
         function updatePerson() {
-            console.info('updating person!, length: ', vm.savedSelection.length);
             if (!angular.isDefined(vm.curPerson)) {
                 console.error('vm.curPerson is undefined');
                 return;
@@ -91,8 +92,8 @@
             vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection);
             _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
                 //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
-                aff['effective_date'] = aff.effective_date ? aff['effective_date'] : ''; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
-                aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : ''; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
+                aff['effective_date'] = aff.effective_date ? aff['effective_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
+                aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
                 var affStatusIndex = -1; //PoAffiliationStatus index
                 if (aff.effective_date && !aff.expiration_date) {
                     affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
@@ -108,7 +109,7 @@
             newPerson.new = vm.curPerson.new || '';
             newPerson.id = vm.curPerson.id || '';
             newPerson.person = vm.curPerson;
-
+            vm.isBtnDisabled = true;
             PersonService.upsertPerson(newPerson).then(function (response) {
                 var status = response.status || response.server_response.status;
                 if (newPerson.new && status === 201) {
@@ -131,6 +132,8 @@
                 }
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
+            }).finally(function() {
+                vm.isBtnDisabled = false;
             });
 
         }
@@ -190,7 +193,6 @@
             }, function(newVal, oldVal) {
                 if (!!newVal && angular.isArray(newVal) && newVal.length > 0) {
                     var ctepPerson = newVal[0];
-                    console.info('ctepPerson selected: ', ctepPerson);
                     if (angular.isDefined(ctepPerson.ctrp_id) && ctepPerson.ctrp_id !== vm.curPerson.ctrp_id) {
                         vm.isConfirmOpen = true;
                         vm.confirm.title = 'This CTEP person has already been associated. Click "Associate" to change the existing association, click "Cancel" to abort.';
@@ -222,6 +224,7 @@
                 if (res.server_response.status >= 200 && res.server_response.status < 226) {
                     vm.associatedPersonContexts = []; // clean up container for accepting ctep persons
                     vm.matchedCtrpPersons = []; // TODO: what is this?
+                    vm.showMatchedCtrpPerson = false;
                     if (sourceContext === 'CTEP') {
                         res.person.source_context = ctepPerson.source_context;
                         res.person.source_status = ctepPerson.source_status;
@@ -231,6 +234,7 @@
                     } else if (sourceContext === 'CTRP') {
                         vm.ctrpPerson = res.person;
                     }
+                    _showToastr('CTEP person context association was successful');
                     selectTab(sourceContext); // switch to the new tab
                     if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: sourceContext}) === -1) {
                         // vm.curPerson.cluster.push({context: sourceContext, id: res.person.id});
@@ -242,10 +246,8 @@
                         // }
                         // vm.curPerson.associated_persons.push(res.person);
                         // _prepAssociationGrid(vm.curPerson.associated_persons);
-                        _showToastr('CTEP person context association was successful');
                     }
                 }
-
             }).catch(function(err) {
                 console.error('err: ', err);
             });
@@ -279,7 +281,6 @@
             vm.sourceStatusArr = sourceStatusObj;
             vm.sourceStatusArr.sort(Common.a2zComparator());
             vm.validOrgsCount = 0; // orgs for affiliation
-            console.info('sourceStatusArr: ', vm.sourceStatusArr);
             vm.sourceStatusArrSelected = [];
             vm.sourceContextArr = sourceContextObj;
             vm.savedSelection = [];
@@ -293,6 +294,7 @@
             vm.matchedCtrpPersons = []; // CTRP persons found from attempt to clone ctep person
             vm.associationForRemoval = []; // object person objects
             vm.confirm = {}; // messages
+            vm.isBtnDisabled = false;
             var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
             var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
             vm.isAllowedToComment = _.contains(USER_ROLES_ALLOWED_COMMENT, UserService.getUserRole());
@@ -302,13 +304,13 @@
                 vm.ctepPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTEP', source_status: 'Active'});
             } else if (vm.person.source_context === 'CTEP') {
                 vm.ctepPerson = vm.person;
-                vm.ctrpPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTRP', source_status: 'Active'});
+                vm.ctrpPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTRP', source_status: 'Active'}) || null;
             } else {
                 vm.ctrpPerson = null;
                 vm.ctepPerson = null;
             }
-            _prepAssociationGrid(vm.ctrpPerson.associated_persons || []);
-            selectTab(vm.defaultTab);
+            _prepAssociationGrid([]);
+            // selectTab(vm.defaultTab);
         }
 
         function _populatePOAff() {
@@ -320,7 +322,8 @@
                     if (status >= 200 && status <= 210) {
                         var curOrg = {"id" : poAff.organization_id, "name": organization.name};
                         curOrg.effective_date = moment(poAff.effective_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.effective_date);
-                        curOrg.expiration_date = moment(poAff.expiration_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
+                        let expDate = !!poAff.expiration_date ? moment(poAff.expiration_date).toDate() : null; //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
+                        curOrg.expiration_date = expDate;
                         curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
                         curOrg.po_affiliation_id = poAff.id; //po affiliation id
                         curOrg.lock_version = poAff.lock_version;
@@ -407,11 +410,38 @@
                         return p.id !== ctepPersonId;
                     });
                     vm.associationForRemoval = [];
-                    showToastr('The selected person context association was deleted');
+                    vm.ctepPerson = null; // deleted
+                    _showToastr('The selected person context association was deleted');
                 }
             }).catch(function(err) {
                 console.error('err: ', err);
             }).finally(function() {
+            });
+        } // removePersonAssociation
+
+        function cloneCtepPerson(ctepPersonId, forceClone) {
+            PersonService.cloneCtepPerson(ctepPersonId, forceClone).then(function(res) {
+                console.info('res from clone: ', res);
+                if (res.is_cloned && angular.isArray(res.matched) && res.matched.length > 0) {
+                    _showToastr('The CTEP person context has been successfully cloned');
+                    vm.matchedCtrpPersons = []; // clean up
+                    vm.ctrpPerson = res.matched[0];
+                    vm.ctepPerson.ctrp_id = vm.ctrpPerson.ctrp_id; // update the ctepPerson with the ctrp_id
+                    vm.curPerson.ctrp_id = vm.ctepPerson.ctrp_id; // the current person is still CTEP, so update its ctrp_id for view
+                    selectTab('CTRP'); //show the new cloned CTRP person
+                    // vm.curPerson.associated_persons.push(res.matched[0]);
+                } else {
+                    vm.showMatchedCtrpPerson = true; // show modal for confirming the matched CTRP person
+                    // TODO: this matched CTRP person may have been associated to another CTEP person!
+                    // create the association function
+                    vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // vm.curPerson is CTEP person
+                    // vm.confirmAssociatePerson = _.partial(_associateCtepPerson, vm.curPerson); // vm.curPerson is CTEP person, to be filled: CTRP person, 'CTRP'
+                    // vm.matchedCtrpPersons = res.matched;
+                    vm.confirm = {};
+                    vm.confirm.title = 'The following CTRP person(s) matched the CTEP person. Select one for association or click "Cancel" to abort';
+                }
+            }).catch(function(err) {
+                console.error('err in cloning person: ', err);
             });
         }
 
