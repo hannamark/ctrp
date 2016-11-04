@@ -127,11 +127,9 @@
                     if (status >= 200 && status <= 210) {
                         vm.gridTrialsOwnedOptions.data = data['trial_ownerships'];
                         vm.gridTrialsOwnedOptions.totalItems = data.total;
+
                         if (vm.gridTrialsOwnedOptions.totalItems > 0
-                               && (vm.userRole === 'ROLE_ADMIN'
-                                    || vm.userRole === 'ROLE_SUPER'
-                                        || vm.userRole === 'ROLE_ACCOUNT-APPROVER'
-                                            || vm.userRole === 'ROLE_SITE-SU') ) {
+                               && _.contains(['ROLE_ADMIN','ROLE_SUPER','ROLE_ACCOUNT-APPROVER','ROLE_SITE-SU','ROLE_ABSTRACTOR'], vm.userRole) ) {
                                 if ( vm.isCurrentUser && vm.checkForOrgChange() ) {
                                     vm.logUserOut = true;
                                 }
@@ -166,12 +164,10 @@
                     redirect = true;
                 }
 
+
                 //new org is not part of the family and user is not an admin
                 if (!_.where(vm.userDetailsOrig.family_orgs, {id: newOrg.id}).length) {
-                   if (vm.userRole !== 'ROLE_ADMIN'
-                     && vm.userRole !== 'ROLE_SUPER'
-                      && vm.userRole !== 'ROLE_ABSTRACTOR'
-                        && vm.userRole !== 'ROLE_ACCOUNT-APPROVER') {
+                    if (_.contains(['ROLE_SITE-SU', 'ROLE_TRIAL-SUBMITTER'], vm.userRole)) {
                            if (vm.userDetails.role === 'ROLE_SITE-SU') {
                                vm.userDetails.role = 'ROLE_TRIAL-SUBMITTER';
                            }
