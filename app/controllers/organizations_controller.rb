@@ -372,7 +372,7 @@ class OrganizationsController < ApplicationController
     params[:start] = 1 if params[:start].blank?
     if params[:allrows] != true && params[:rows].blank?
       params[:rows] = 20
-    else
+    elsif params[:allrows] == true
       params[:rows] = nil
     end
     params[:sort] = 'name' if params[:sort].blank?
