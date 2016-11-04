@@ -21,7 +21,9 @@ As someone without a CTRP User Account, I can request a user account
   And I must select my Organization Name "Organization Name" from organizations using type ahead
   And I fill in the CAPTCHA correctly
   And I press "Register"
-  Then the system will save the User request to the database 
+  Then the system will save the User request to the database
+  And the Status will be "Pending"
+  And the Status Date will be the current date  
   And the system will send the "CTRP Account Request" email to appsupport for the new request (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
   When the account request is approved 
   Then the system will send the "Registration Activation(NIH)" email to the user (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)  
@@ -45,6 +47,8 @@ As someone without a CTRP User Account, I can request a user account
   And I fill in the CAPTCHA correctly
   And I press "Register"
   Then the system will save the User request to the database 
+  And the Status will be "Pending"
+  And the Status Date will be the current date
   And the system will send the "CTRP Account Request" email to appsupport for the new request (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)
   When the request is approved
   Then Then the system will send the "Account Activation(Site User)" email to the user (Email list in the shared drive under Functional/Administration: CTRP System Generated Emails Admin)  
