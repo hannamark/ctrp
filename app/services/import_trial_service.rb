@@ -125,8 +125,8 @@ class ImportTrialService
 
     nlm_context = SourceContext.find_by_code('NLM')
     service_request = ServiceRequest.find_by_code('CREATE')
-    #processing_status  = ProcessingStatus.find_by_code('InComplete')
-    nlm_org_for_imported_trial = Organization.new(name:org_name,city:"city", address:"address",service_request_id:service_request.id,source_status_id:SourceStatus.find_by_code_and_source_context_id('ACTIVE',nlm_context.id),source_context_id:nlm_context.id)
+    processing_status  = "InComplete"
+    nlm_org_for_imported_trial = Organization.new(name:org_name,city:"city",processing_status:processing_status, address:"address",service_request_id:service_request.id,source_status_id:SourceStatus.find_by_code_and_source_context_id('ACTIVE',nlm_context.id),source_context_id:nlm_context.id)
     Rails.logger.info nlm_org_for_imported_trial
     ##Creating in before_create method on Trial model thus it inlcudes in the Transaction Block.
     import_params[:nlm_org_for_imported_trial] = nlm_org_for_imported_trial
