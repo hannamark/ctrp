@@ -64,8 +64,12 @@ class Organization < ActiveRecord::Base
   validates :name, presence: true
   validates :name, length: {maximum: 160}
 
-  validates :address, presence: true
-  validates :city, presence: true
+  #validates :address, presence: true
+  #validates :city, presence: true
+
+  validates_presence_of :address, :unless => "!validations_to_skip.nil? and validations_to_skip.include?('address')"
+  validates_presence_of :city, :unless => "!validations_to_skip.nil? and validations_to_skip.include?('city')"
+
 
   validates :phone, length: {maximum: 60}
   validates :extension, length: {maximum: 30}
@@ -75,6 +79,8 @@ class Organization < ActiveRecord::Base
   before_destroy :check_for_person
 
   after_create   :save_id_to_ctrp_id
+
+  attr_accessor :validations_to_skip
 
   # Get CTEP ID from the CTEP context org in the cluster, comma separate them if there are multiple
   def ctep_id
@@ -104,21 +110,15 @@ class Organization < ActiveRecord::Base
     return isNullifiable
   end
 
-  def org_assoc_date
-    if self.association_date.present?
-      return self.association_date.strftime("%d-%b-%Y %H:%M:%S %Z")
-    end
-  end
-
   def org_created_date
     if self.created_at.present?
-      return self.created_at.strftime("%d-%b-%Y %H:%M:%S %Z")
+      return self.created_at
     end
   end
 
   def org_updated_date
     if self.updated_at.present?
-      return self.updated_at.strftime("%d-%b-%Y %H:%M:%S %Z")
+      return self.updated_at
     else
       return Time.zone.now
     end

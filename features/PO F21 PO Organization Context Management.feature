@@ -71,12 +71,12 @@ Scenario:#3 Organization Source Status CTEP available list
      |Inactive|Nullified|
      |Legacy  |Inactive |
 
-  Scenario:#3b CTEP and NLM Edit screen rules
+  Scenario:#3b CTEP Edit screen rules
     Given I am on the PO application
      When I am on the Edit Organization screen for context type
      
      |CTEP|
-     |NLM|
+     
      And I can view the "Reset" and "Save" button
      Then I can only edit the information type
      |Processing status|

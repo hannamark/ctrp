@@ -56,14 +56,16 @@ class Family < ActiveRecord::Base
   #scopes for search API
   scope :matches, -> (column, value) { where("#{column} = ?", "#{value}") }
 
-  scope :with_family_status, -> (value) { joins(:family_status).where("family_statuses.name = ?", "#{value}") }
-  scope :with_family_type, -> (value) { joins(:family_type).where("family_types.name = ?", "#{value}") }
+  scope :with_family_status, -> (value) { where("family_statuses.name = ?", "#{value}") }
+  scope :with_family_type, -> (value) { where("family_types.name = ?", "#{value}") }
 
   scope :sort_by_col, -> (column, order) {
     if column == 'family_status'
       order("family_statuses.name #{order}")
     elsif column == 'family_type'
       order("family_types.name #{order}")
+    elsif column == 'aff_org_count'
+      order("families_by_org_count.org_count #{order}")
     else
       order("LOWER(families.#{column}) #{order}")
     end
@@ -81,10 +83,21 @@ class Family < ActiveRecord::Base
   scope :all_families_data, -> () {
     join_clause = "LEFT JOIN family_statuses ON families.family_status_id = family_statuses.id "
     join_clause += "LEFT JOIN family_types ON families.family_type_id = family_types.id "
+    join_clause += "LEFT JOIN
+                    (select family_id, count(family_id) as org_count from family_memberships
+                    group by family_id) as families_by_org_count
+                    on families_by_org_count.family_id = families.id "
     select_clause = "
       families.*,
       family_statuses.name as family_status_name,
-      family_types.name as family_type_name
+      family_types.name as family_type_name,
+       (
+          CASE
+            WHEN families_by_org_count.org_count IS NOT null
+            THEN families_by_org_count.org_count
+            ELSE 0
+          END
+       ) as aff_org_count
     "
     joins(join_clause).select(select_clause)
   }

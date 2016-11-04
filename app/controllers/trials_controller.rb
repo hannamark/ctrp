@@ -714,7 +714,12 @@ class TrialsController < ApplicationController
       @search_result[:error_msg] = 'Trial is not found'
     else
       @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
-      @search_result[:official_title] = xml.xpath('//official_title').text
+
+      if xml.xpath('//official_title').present?
+        @search_result[:official_title] = xml.xpath('//official_title').text
+      elsif xml.xpath('//brief_title').present?
+        @search_result[:official_title] = xml.xpath('//brief_title').text
+      end
       @search_result[:research_category] = xml.xpath('//study_type').text
       # @search_result[:status] = xml.xpath('//overall_status').text
       # @search_result[:condition] = ''
@@ -736,7 +741,9 @@ class TrialsController < ApplicationController
   def search_clinical_trials_gov
     @search_result = {}
 
-    existing_nct_ids = OtherId.joins(:trial).where('protocol_id = ? AND protocol_id_origin_id = ? AND (trials.is_rejected = ? OR trials.is_rejected IS NULL)', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id, FALSE)
+    #existing_nct_ids = OtherId.joins(:trial).where('protocol_id = ? AND protocol_id_origin_id = ? AND (trials.is_rejected = ? OR trials.is_rejected IS NULL)', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id, FALSE)
+
+    existing_nct_ids = OtherId.joins(:trial).where('protocol_id = ? AND protocol_id_origin_id = ? ', params[:nct_id].upcase, ProtocolIdOrigin.find_by_code('NCT').id)
     if existing_nct_ids.length > 0
       @search_result[:error_msg] = 'A study with the given identifier already exists in CTRP. To find this trial in CTRP, go to the Search Trials page.'
       return
@@ -753,14 +760,20 @@ class TrialsController < ApplicationController
       org_name = xml.xpath('//sponsors/lead_sponsor/agency').text
 
       dup_trial = Trial.joins(:lead_org).where('organizations.name ilike ? AND lead_protocol_id = ?', org_name, lead_protocol_id)
-      dup_trial = dup_trial.filter_rejected
+      ##dup_trial_filtered_rejected = dup_trial.filter_rejected
+
+
       if dup_trial.length > 0
         @search_result[:error_msg] = 'Combination of Lead Organization Trial ID and Lead Organization must be unique.'
         return
       end
 
       @search_result[:nct_id] = xml.xpath('//id_info/nct_id').text
-      @search_result[:official_title] = xml.xpath('//official_title').text
+      if xml.xpath('//official_title').present?
+        @search_result[:official_title] = xml.xpath('//official_title').text
+      elsif xml.xpath('//brief_title').present?
+        @search_result[:official_title] = xml.xpath('//brief_title').text
+      end
       @search_result[:status] = xml.xpath('//overall_status').text
       @search_result[:condition] = ''
       xml.xpath('//condition').each_with_index do |condition, i|
