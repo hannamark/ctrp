@@ -725,7 +725,7 @@
                     var status = organization.server_response.status;
 
                     if (status >= 200 && status <= 210) {
-                        vm.selectedOrgsArray = [{'id' : vm.userDetails.organization_id, 'name': organization.name}];
+                        vm.selectedOrgsArray = [{'id' : vm.userDetails.organization_id, 'name': vm.userDetails.organization.name}];
                     }
                 });
             }
