@@ -287,6 +287,7 @@ class Trial < TrialBase
   before_create :create_nlm_org_for_ct_gov_trials
   before_save :generate_status
   before_save :check_indicator
+  before_save :set_verification_date
   after_create :create_ownership
 
   # The set_defaults will only work if the object is new
@@ -892,6 +893,12 @@ class Trial < TrialBase
          nlm_org = self.nlm_org_for_imported_trial
          nlm_org.save!
       end
+    end
+  end
+
+  def set_verification_date
+    if self.edit_type == 'update' && self.edit_type != 'import' && self.nci_id.present?
+      self.verification_date = Date.today
     end
   end
 
