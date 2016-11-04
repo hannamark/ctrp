@@ -321,7 +321,8 @@
                     var status = organization.server_response.status;
                     if (status >= 200 && status <= 210) {
                         var curOrg = {"id" : poAff.organization_id, "name": organization.name};
-                        curOrg.effective_date = moment(poAff.effective_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.effective_date);
+                        var effectiveDate = !!poAff.effective_date ? moment(poAff.effective_date).toDate() : null;
+                        curOrg.effective_date = ; //DateService.convertISODateToLocaleDateStr(poAff.effective_date);
                         var expDate = !!poAff.expiration_date ? moment(poAff.expiration_date).toDate() : null; //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
                         curOrg.expiration_date = expDate;
                         curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
