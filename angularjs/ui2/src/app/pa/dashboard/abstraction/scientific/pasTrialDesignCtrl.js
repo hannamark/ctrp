@@ -10,6 +10,16 @@
         MESSAGES, _, $timeout, groupedTrialDesignData, Common, maskings, timePerspectivesObj) {
         var vm = this;
         _setInitialState();
+        var INTERVENTIONAL_FIELDS = ['secondary_purpose_id', 'secondary_purpose_other',
+                                     'intervention_model_id', 'masking_id',
+                                     'masking_role_subject', 'allocation_id',
+                                     'study_classification_id',	'num_of_arms']; // fields/keys in vm.trialDetailObj
+
+        var EXPANDEDACC_FIELDS = INTERVENTIONAL_FIELDS;
+        var OBSERVATIONAL_FIELDS = ['study_model_id', 'study_model_other',
+                                    'time_perspective_id', 'time_perspective_other',
+                                    'biospecimen_retention_id',	'biospecimen_desc'];  // fields/keys in vm.trialDetailObj
+        var ANCILLARY_FIELDS = OBSERVATIONAL_FIELDS;
 
         // actions:
         vm.updateTrialDesign = updateTrialDesign;
@@ -41,17 +51,6 @@
             vm.studyClassifications = [];
             vm.timePerspectives = timePerspectivesObj.data;
             vm.biospecimenRetentions = [];
-            var INTERVENTIONAL_FIELDS = ['secondary_purpose_id', 'secondary_purpose_other',
-                                         'intervention_model_id', 'masking_id',
-                                         'masking_role_subject', 'allocation_id',
-                                         'study_classification_id',	'num_of_arms']; // fields/keys in vm.trialDetailObj
-
-            var EXPANDEDACC_FIELDS = INTERVENTIONAL_FIELDS;
-            var OBSERVATIONAL_FIELDS = ['study_model_id', 'study_model_other',
-                                        'time_perspective_id', 'time_perspective_other',
-                                        'biospecimen_retention_id',	'biospecimen_desc'];  // fields/keys in vm.trialDetailObj
-            var ANCILLARY_FIELDS = OBSERVATIONAL_FIELDS;
-
             vm.isOtherPrimaryPurpose = false;
             vm.isOtherSecondaryPurpose = false;
             vm.isOtherStudyModel = false;
