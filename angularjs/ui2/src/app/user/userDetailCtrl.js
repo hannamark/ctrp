@@ -720,15 +720,11 @@
         };
         /****************** implementations below ***************/
         (function() {
-            if(vm.userDetails.organization_id !== null) {
-                OrgService.getOrgById(vm.userDetails.organization_id).then(function(organization) {
-                    var status = organization.server_response.status;
-
-                    if (status >= 200 && status <= 210) {
-                        vm.selectedOrgsArray = [{'id' : vm.userDetails.organization_id, 'name': vm.userDetails.organization.name}];
-                    }
-                });
-            }
+            $timeout(function() {
+                if(vm.userDetails.organization_id !== null) {
+                    vm.selectedOrgsArray = [{'id' : vm.userDetails.organization_id, 'name': vm.userDetails.organization.name}];
+                }
+            }, 2000);
         }());
 
         $scope.$on(vm.redirectToAllUsers, function () {

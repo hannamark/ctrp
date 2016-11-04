@@ -14,7 +14,7 @@
     function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $timeout) {
         var vm = this;
-        vm.setInitialState = function() {
+         function setInitialState() {
             vm.addedNameAliases = [];
             vm.states = [];
             vm.processingStatuses = OrgService.getProcessingStatuses();
@@ -60,8 +60,8 @@
                     vm.associateOrgs();
                 }
             });
-        };
-        vm.setInitialState();
+        }
+        setInitialState();
 
         vm.updateOrg = function () {
             vm.disableBtn = true;
