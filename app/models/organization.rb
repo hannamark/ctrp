@@ -64,8 +64,12 @@ class Organization < ActiveRecord::Base
   validates :name, presence: true
   validates :name, length: {maximum: 160}
 
-  validates :address, presence: true
-  validates :city, presence: true
+  #validates :address, presence: true
+  #validates :city, presence: true
+
+  validates_presence_of :address, :unless => "!validations_to_skip.nil? and validations_to_skip.include?('address')"
+  validates_presence_of :city, :unless => "!validations_to_skip.nil? and validations_to_skip.include?('city')"
+
 
   validates :phone, length: {maximum: 60}
   validates :extension, length: {maximum: 30}
@@ -75,6 +79,8 @@ class Organization < ActiveRecord::Base
   before_destroy :check_for_person
 
   after_create   :save_id_to_ctrp_id
+
+  attr_accessor :validations_to_skip
 
   # Get CTEP ID from the CTEP context org in the cluster, comma separate them if there are multiple
   def ctep_id
