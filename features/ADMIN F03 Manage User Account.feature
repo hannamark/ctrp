@@ -61,7 +61,7 @@ And the system will send the "CTRP Account Request" email to appsupport for an o
 
 Scenario: #7 I can view a users Trials (See Admin F05 Registered User Details)
 Given I am logged into CTRP
-And I select view trails #view my trials from my profile or view this users trails from User Management Search Results Table
+And I select view trials #view my trials from my profile or view this users trails from User Management Search Results Table
 Then I will see the users information:
 |Username|
 |Last Name|
@@ -70,6 +70,6 @@ Then I will see the users information:
 And the Last Active Submission for all the trials the user is an owner of can be displayed (Protocol Trials)
 And the Last Active Submission for all the trials the trials the user submitted can be displayed (Protocol and Imported Trials)
 And the Last Active Submission for all the trials the user is a participating site on can be displayed (Protocol and Imported Trials)
-And I can select the Username, Last Name, First Name to opne the user's account information #scenario 1
+And I can select the Username, Last Name, First Name to open the user's account information #scenario 1
 
 

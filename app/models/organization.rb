@@ -64,9 +64,6 @@ class Organization < ActiveRecord::Base
   validates :name, presence: true
   validates :name, length: {maximum: 160}
 
-  #validates :address, presence: true
-  #validates :city, presence: true
-
   validates_presence_of :address, :unless => "!validations_to_skip.nil? and validations_to_skip.include?('address')"
   validates_presence_of :city, :unless => "!validations_to_skip.nil? and validations_to_skip.include?('city')"
 

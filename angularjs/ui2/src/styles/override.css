@@ -1817,6 +1817,14 @@ body.users #typeAheadResults {
     padding-top: 5px;
 }
 
+.type-ahead-results {
+    padding: 2px 5px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px dashed #ddd;
+}
+
 .crn-rounded {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
