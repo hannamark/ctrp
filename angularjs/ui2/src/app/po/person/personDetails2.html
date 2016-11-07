@@ -10,23 +10,25 @@
         <div class="row">
             <ctrp-comment instance-uuid="{{personDetailView.curPerson.uuid}}" button-type="icon" field="" model="person" ng-show="personDetailView.isAllowedToComment"></ctrp-comment>
             <form class="form form-horizontal" role="form" name="person_form" novalidate ctrp-submit="personDetailView.updatePerson()" unsaved-changes>
-                <md-tabs md-dynamic-height md-border-bottom md-selected>
-                    <md-tab label="CTRP" md-active="personDetailView.defaultTab === 'CTRP' || personDetailView.tabOpen === 'CTRP'" ng-if="personDetailView.ctrpPerson" md-on-select="personDetailView.selectContext('CTRP')">
-                        <!-- <md-content class="md-padding" ng-class="{'edit-off': !personDetailView.curOrgEditable}">
-                            <div ng-show="personDetailView.curOrgEditable || personDetailView.ctrpOrg.new" ng-include src="'app/po/organization/_ctrpOrgDetailWR.html?_rload='+personDetailView.ctrpUpdateTime"></div>
-                            <div ng-show="!personDetailView.curOrgEditable && !personDetailView.ctrpOrg.new" ng-include src="'app/po/organization/_ctrpOrgDetailRO.html?_rload='+personDetailView.ctrpUpdateTime"></div>
-                            <div ng-include src="'app/po/organization/_associatedOrgs.html?_rload='+personDetailView.updateTime"></div>
-                        </md-content> -->
-                        <md-tab-body>
-                            <div ng-include src="'app/po/person/sub_partials/_ctrpPersonDetail.html'"></div>
-                        </md-tab-body>
-                    </md-tab>
-                    <md-tab label="CTEP" md-active="personDetailView.defaultTab === 'CTEP' || personDetailView.tabOpen === 'CTEP'" ng-if="personDetailView.ctepPerson" md-on-select="personDetailView.selectContext('CTEP')">
-                        <md-tab-body>
-                            <div ng-include src="'app/po/person/sub_partials/_ctepPersonDetail.html'"></div>
-                        </md-tab-body>
-                    </md-tab>
-                </md-tabs>
+                <md-content>
+                    <md-tabs md-dynamic-height md-border-bottom md-selected>
+                        <md-tab label="CTRP" md-active="personDetailView.defaultTab === 'CTRP' || personDetailView.tabOpen === 'CTRP'" ng-if="personDetailView.ctrpPerson" md-on-select="personDetailView.selectContext('CTRP')">
+                            <!-- <md-content class="md-padding" ng-class="{'edit-off': !personDetailView.curOrgEditable}">
+                                <div ng-show="personDetailView.curOrgEditable || personDetailView.ctrpOrg.new" ng-include src="'app/po/organization/_ctrpOrgDetailWR.html?_rload='+personDetailView.ctrpUpdateTime"></div>
+                                <div ng-show="!personDetailView.curOrgEditable && !personDetailView.ctrpOrg.new" ng-include src="'app/po/organization/_ctrpOrgDetailRO.html?_rload='+personDetailView.ctrpUpdateTime"></div>
+                                <div ng-include src="'app/po/organization/_associatedOrgs.html?_rload='+personDetailView.updateTime"></div>
+                            </md-content> -->
+                            <md-tab-body class="md-padding">
+                                <div ng-include src="'app/po/person/sub_partials/_ctrpPersonDetail.html'"></div>
+                            </md-tab-body>
+                        </md-tab>
+                        <md-tab label="CTEP" md-active="personDetailView.defaultTab === 'CTEP' || personDetailView.tabOpen === 'CTEP'" ng-if="personDetailView.ctepPerson" md-on-select="personDetailView.selectContext('CTEP')">
+                            <md-tab-body class="md-padding">
+                                <div ng-include src="'app/po/person/sub_partials/_ctepPersonDetail.html'"></div>
+                            </md-tab-body>
+                        </md-tab>
+                    </md-tabs>
+                </md-content>
             </form>
         </div>
         <modal visible="personDetailView.isConfirmOpen" title="Please confirm" id="confirm_association_person">
