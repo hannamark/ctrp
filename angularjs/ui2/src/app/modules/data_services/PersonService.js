@@ -120,7 +120,7 @@
                     enableSorting: true, minWidth: '150', width: '*'},
                 {name: 'prefix', enableSorting: true, minWidth: '75', width: '*'},
                 {name: 'suffix', enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'context_person_id', displayName: 'Context Person ID', enableSorting: false, minWidth: '75', width: '*'},
+                {name: 'id', displayName: 'Context ID', enableSorting: false, minWidth: '75', width: '*'},
                 {name: 'processing_status', displayName: 'Processing Status', enableSorting: true, minWidth: '100', width: '*'},
                 {name: 'service_request', displayName: 'Service Request', enableSorting: false, minWidth: '75', width: '*'},
             ]
