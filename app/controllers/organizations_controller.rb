@@ -370,9 +370,8 @@ class OrganizationsController < ApplicationController
 
   def processParams
     params[:start] = 1 if params[:start].blank?
-    if params[:allrows] != true && params[:rows].blank?
-      params[:rows] = 20
-    elsif params[:allrows] == true
+    params[:rows] = 20 if params[:start].blank?
+    if params[:allrows] == true
       params[:rows] = nil
     end
     params[:sort] = 'name' if params[:sort].blank?
