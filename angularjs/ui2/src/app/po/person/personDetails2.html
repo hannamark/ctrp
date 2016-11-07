@@ -57,15 +57,20 @@
             </div>
             <div class="modal-footer">
                 <div class="btn-toolbar">
-                    <button type="button" class="btn btn-primary pull-right"  id="confirmChangeOverrideContext2" ng-disabled="!personDetailView.selectedCtrpPerson"
-                            ng-click="personDetailView.confirmAssociatePerson('true')"><i class="glyphicon glyphicon-ok"></i>
-                        Confirm Selection
+                    <button type="button" class="btn btn-primary pull-right"  id="confirmChangeOverrideContext2" ng-show="personDetailView.selectedCtrpPerson && personDetailView.selectedCtrpPerson.is_associated"
+                            ng-click="personDetailView.confirmAssociatePerson()"><i class="glyphicon glyphicon-ok"></i>
+                        Confirm Association
+                    </button>
+                    <button class="btn btn-primary pull-right" id="associate_ctrp_person_btn" ng-disabled="!personDetailView.selectedCtrpPerson || personDetailView.selectedCtrpPerson.is_associated"
+                    ng-click="personDetailView.associate()">
+                        Clone
                     </button>
                     <button type="button" class="btn btn-warning pull-right" id="cancelChangeOverrideContext2"
                             ng-click="personDetailView.showMatchedCtrpPerson = false"><i class="glyphicon glyphicon-remove"></i>
                         Cancel
                     </button>
                 </div>
+                <span class="text-danger" ng-show="personDetailView.selectedCtrpPerson && personDetailView.selectedCtrpPerson.is_associated">The selected CTRP person already has associated CTEP person, please confirm.</span>
             </div>
         </modal>
     </div>

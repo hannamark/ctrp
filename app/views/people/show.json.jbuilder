@@ -16,7 +16,7 @@ json.set! :source_status, SourceStatus.find(@person.source_status_id).name if @p
 json.set! :source_context, SourceContext.find(@person.source_context_id).name if @person.source_context_id.present?
 
 @associated_persons = Person.where(ctrp_id: @person.ctrp_id) #if !@person.ctrp_id.nil? && @person.source_context_id == ctrp_context_id
-@associated_persons = @associated_persons.reject { |p| p.id == @person.id || !active_source_statuses.include?(p.source_status_id) } # remove self and the associated_persons must have active CTEP source status
+@associated_persons = @associated_persons.reject { |p| p.id == @person.id } # remove self
 
 json.associated_persons do
   json.array!(@associated_persons) do |p|

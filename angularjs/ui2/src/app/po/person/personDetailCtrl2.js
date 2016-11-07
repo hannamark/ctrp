@@ -383,6 +383,7 @@
         // remove ctep person from associating to the current ctrp person (vm.curPerson)
         function removePersonAssociation(ctepPerson) {
             if (ctepPerson.is_ctrp_context) return; // do not allow deleting CTRP person (???)
+            var ctepPersonId = ctepPerson.id;
             PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
                 if (res.is_removed) {
                     // filter out the deleted persons (both ctep and its associated ctrp person)
@@ -393,6 +394,7 @@
                     vm.associationForRemoval = [];
                     vm.ctepPerson = null; // deleted
                     _showToastr('The selected person context association was deleted');
+                    selectTab(vm.defaultTab);
                 }
             }).catch(function(err) {
                 console.error('err: ', err);
@@ -416,7 +418,6 @@
                     // TODO: this matched CTRP person may have been associated to another CTEP person!
                     // create the association function
                     vm.selectedCtrpPerson = null;
-                    vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // vm.curPerson is CTEP person
                     // vm.confirmAssociatePerson = _.partial(_associateCtepPerson, vm.curPerson); // vm.curPerson is CTEP person, to be filled: CTRP person, 'CTRP'
                     // vm.matchedCtrpPersons = res.matched;
                     vm.confirm = {};
@@ -438,9 +439,11 @@
                 // vm.selectedCtrpPerson = row.isSelected ? row.entity : null;
                 if (row.isSelected) {
                     vm.selectedCtrpPerson = row.entity;
-                    vm.confirmAssociatePerson = _.partial(_associateCtepPerson, vm.curPerson, row.entity, 'CTRP'); // vm.curPerson is CTEP person
+                    vm.associate = _.partial(_associateCtepPerson, vm.curPerson, vm.selectedCtrpPerson, 'CTRP'); // vm.curPerson is CTEP person
+                    vm.confirmAssociatePerson = _.partial(_associateCtepPerson, vm.curPerson, vm.selectedCtrpPerson, 'CTRP', true); // vm.curPerson is CTEP person
                 } else {
                     vm.selectedCtrpPerson = null;
+                    vm.associate = null;
                     vm.confirmAssociatePerson = null;
                 }
             } else {
