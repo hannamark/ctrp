@@ -79,7 +79,7 @@
 <div class="form-group">
     <label class="control-label col-sm-3">Phone Number:</label>
     <div class="col-sm-6 form-text">
-        <span ng-bind="curOrg.phone"></span>
+        <span ng-bind="curOrg.phone | maskPhoneNumber : curOrg.country"></span>
         <span ng-show="curOrg.extension && curOrg.phone" ng-bind="' | ' + curOrg.extension"></span>
     </div>
     <!--<div class="col-sm-6 form-text">{{curOrg.phone_with_ext}}</div>-->
