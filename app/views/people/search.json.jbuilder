@@ -2,7 +2,7 @@ ctep_context_id = SourceContext.find_by_code('CTEP').id
 
 json.people do
   json.array!(@people) do |person|
-    json.extract! person, :id, :source_id, :fname, :mname, :lname, :prefix, :suffix, :email, :phone, :updated_at, :ctrp_id, :updated_by, :processing_status, :source_status_id, :source_context_id, :service_request_id
+    json.extract! person, :id, :source_id, :fname, :mname, :lname, :prefix, :suffix, :email, :phone, :extension, :updated_at, :ctrp_id, :updated_by, :processing_status, :source_status_id, :source_context_id, :service_request_id
     json.source_context person.source_context.present? ? person.source_context.name : nil
     json.source_status person.source_status.present? ? person.source_status.name : nil
     json.ctep_source_id person.source_id if person.source_context_id == ctep_context_id
