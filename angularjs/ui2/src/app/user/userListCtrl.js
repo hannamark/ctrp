@@ -258,6 +258,7 @@
         vm.removeOrgChoice = function () {
             vm.userChosenOrg = null;
             vm.organization_name = vm.searchParams.user_org_name = vm.searchParams.organization_id = undefined;
+            vm.enterOrg = true;
         };
 
         /* remove ownership */
