@@ -110,7 +110,7 @@
             <span class="help-block" ng-show="person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone) && person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email)" >Either Phone or Email is Required</span>
         </div>
         <div class="col-sm-1">
-            <input type="text" restriction-field class="form-control input-sm" name="extension" maxlength="30" ng-model="personDetailView.curPerson.extension" placeholder="Extension" ng-disabled="!personDetailView.curPerson.phone.length">
+            <input type="text" restriction-field class="form-control input-sm" name="extension" maxlength="30" ng-model="personDetailView.curPerson.extension" placeholder="Ext." ng-disabled="!personDetailView.curPerson.phone.length">
         </div>
     </div>
     <!-- common fields between CTRP and CTEP -->
@@ -129,8 +129,8 @@
         </div>
     </div>
     <div class="form-group" ng-show="personDetailView.isAllowedToComment">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-9">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
             <div class="row animated-item top-offset-tiny table-responsive search-calendar-grid" ng-show="personDetailView.savedSelection.length > 0">
                 <input type="text" ng-model="personDetailView.selectedOrgFilter" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN,ROLE_ABSTRACTOR,ROLE_RO,ROLE_TRIAL-SUBMITTER,ROLE_SITE-SU" class="form-control input-sm" placeholder="Filter selected organizations"/>
                 <table class="table table-bordered table-striped table-condensed">
@@ -197,7 +197,7 @@
     </div>
     <div class="form-group no-bottom-margin" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
         <div class="col-sm-3"></div>
-        <div class="btn-toolbar col-sm-8">
+        <div class="btn-toolbar col-sm-6">
             <div class="btn-toolbar">
                 <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn" ng-disabled="personDetailView.isBtnDisabled">
                     <i class="glyphicon glyphicon-ok"></i> Save
