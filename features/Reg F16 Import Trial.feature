@@ -166,9 +166,8 @@ Then the trial information will be displayed including
 |Data Table 4 Information (Title)|
 |Study Source|
 |Data Table 4 Funding Sponsor/Source|
-
-
 And I can select the "Add My Site" function to add my site as a participating site
+
 
 Scenario: #6 I can enter my site information as a participating site after a trial is imported from ClinicalTrials.gov
 Given I have selected the option to Import an Industrial or Other Trial
