@@ -205,22 +205,11 @@
         }
 
         function _associateCtepPerson(ctepPerson, ctrpPerson, sourceContext, forceFlag) {
-            // TODO:
-            console.info('associating persons: ', ctepPerson, ctrpPerson);
+
             var ctrpId = ctrpPerson.ctrp_id;
-            /*// TODO: opposite association
-            if (ctrpPerson.is_associated && !forceFlag) {
-                vm.isConfirmOpen = true;
-                vm.confirmAssociatePerson = null;
-                vm.confirmAssociatePerson = _.partial(_associateCtepPerson, ctepPerson, ctrpPerson, 'CTRP');
-                vm.confirm = {};
-                vm.confirm.title = 'This CTRP person has been associated to another CTEP person context. Click "Associate" to change the existing association, click "Cancel" to abort';
-                return;
-            }
-            */
             vm.isConfirmOpen = false;
             PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
-                console.info('res with association person: ', res); // resp.person
+
                 if (res.server_response.status >= 200 && res.server_response.status < 226) {
                     vm.associatedPersonContexts = []; // clean up container for accepting ctep persons
                     vm.matchedCtrpPersons = []; // TODO: what is this?
@@ -236,17 +225,6 @@
                     }
                     _showToastr('CTEP person context association was successful');
                     selectTab(sourceContext); // switch to the new tab
-                    if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: sourceContext}) === -1) {
-                        // vm.curPerson.cluster.push({context: sourceContext, id: res.person.id});
-                        // res.person.source_context = ctepPerson.source_context;
-                        // res.person.source_status = ctepPerson.source_status;
-                        // if (!vm.curPerson.associated_persons || !angular.isArray(vm.curPerson.associated_persons)) {
-                        //     vm.curPerson.associated_persons = [];
-                        //     vm.curPerson.associated_persons.push(vm.curPerson);
-                        // }
-                        // vm.curPerson.associated_persons.push(res.person);
-                        // _prepAssociationGrid(vm.curPerson.associated_persons);
-                    }
                 }
             }).catch(function(err) {
                 console.error('err: ', err);
@@ -295,6 +273,7 @@
             vm.associationForRemoval = []; // object person objects
             vm.confirm = {}; // messages
             vm.isBtnDisabled = false;
+            vm.selectedCtrpPerson = null;
             var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
             var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
             vm.isAllowedToComment = _.contains(USER_ROLES_ALLOWED_COMMENT, UserService.getUserRole());
@@ -402,7 +381,8 @@
         } // openCalendar
 
         // remove ctep person from associating to the current ctrp person (vm.curPerson)
-        function removePersonAssociation(ctepPersonId) {
+        function removePersonAssociation(ctepPerson) {
+            if (ctepPerson.is_ctrp_context) return; // do not allow deleting CTRP person (???)
             PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
                 if (res.is_removed) {
                     // filter out the deleted persons (both ctep and its associated ctrp person)
@@ -435,11 +415,13 @@
                     vm.showMatchedCtrpPerson = true; // show modal for confirming the matched CTRP person
                     // TODO: this matched CTRP person may have been associated to another CTEP person!
                     // create the association function
+                    vm.selectedCtrpPerson = null;
                     vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // vm.curPerson is CTEP person
                     // vm.confirmAssociatePerson = _.partial(_associateCtepPerson, vm.curPerson); // vm.curPerson is CTEP person, to be filled: CTRP person, 'CTRP'
                     // vm.matchedCtrpPersons = res.matched;
                     vm.confirm = {};
                     vm.confirm.title = 'The following CTRP person(s) matched the CTEP person. Select one for association or click "Cancel" to abort';
+                    _prepAssociationGrid(res.matched);
                 }
             }).catch(function(err) {
                 console.error('err in cloning person: ', err);
@@ -448,17 +430,28 @@
 
         // callback function for ui-grid row selection
         function gridRowSelectionCB(row) {
-            if (row.entity.is_ctrp_context) {
-                row.isSelected = false; // CTRP person is not selectable for deletion
-                return;
-            }
-            while (vm.associationForRemoval.length > 0) {
-                var del = vm.associationForRemoval.pop();
-                del.isSelected = false; // visually deselect the row
-            }
-            if (row.isSelected && !row.entity.is_ctrp_context) {
-                vm.associationForRemoval.push(row);
-                vm.confirmDisAssociate = _.partial(removePersonAssociation, row.entity.id);
+            // if (row.entity.is_ctrp_context) {
+            //     row.isSelected = false; // CTRP person is not selectable for deletion
+            //     return;
+            // }
+            if (vm.showMatchedCtrpPerson) {
+                // vm.selectedCtrpPerson = row.isSelected ? row.entity : null;
+                if (row.isSelected) {
+                    vm.selectedCtrpPerson = row.entity;
+                    vm.confirmAssociatePerson = _.partial(_associateCtepPerson, vm.curPerson, row.entity, 'CTRP'); // vm.curPerson is CTEP person
+                } else {
+                    vm.selectedCtrpPerson = null;
+                    vm.confirmAssociatePerson = null;
+                }
+            } else {
+                while (vm.associationForRemoval.length > 0) {
+                    var del = vm.associationForRemoval.pop();
+                    del.isSelected = false; // visually deselect the row
+                }
+                if (row.isSelected && !row.entity.is_ctrp_context) {
+                    vm.associationForRemoval.push(row);
+                    vm.confirmDisAssociate = _.partial(removePersonAssociation, row.entity); // row.entity.id
+                }
             }
         }
 
