@@ -69,10 +69,11 @@
     <div ng-include src="'app/po/person/sub_partials/_common_fields_updated.html'"></div>
     <!-- common ends -->
     <!-- clone ctep person -->
-    <div class="form-group" ng-disabled="personDetailView.curPerson.source_context === 'CTEP' && personDetailView.curPerson.ctrp_id">
+    <div class="form-group">
         <div class="col-xs-12 col-sm-3"></div>
         <div class="col-xs-12 col-sm-6 form-text pull-left">
             <button type="button" class="btn btn-primary" id="clone_button" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN"
+                ng-disabled="personDetailView.curPerson.source_context === 'CTEP' && personDetailView.curPerson.ctrp_id"
                 ng-click="personDetailView.cloneCtepPerson(personDetailView.curPerson.id)">Clone</button>
         </div>
     </div>

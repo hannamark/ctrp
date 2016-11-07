@@ -54,7 +54,7 @@
                                 <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
                                        autocomplete="off" placeholder="Organization Name"
                                        ng-blur = "userView.enterOrg = false"
-                                       auto-focus = "userView.enterOrg"
+                                       focus-me = "userView.enterOrg"
                                        ng-model="userView.organization_name"
                                        typeahead-on-select="userView.setUserListTypeAheadOrg($item)"
                                        ng-if="!userView.userChosenOrg"
