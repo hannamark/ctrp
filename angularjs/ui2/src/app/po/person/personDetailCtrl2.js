@@ -64,12 +64,14 @@
                         vm.curPerson = vm.ctrpPerson;
                         _prepAssociationGrid(vm.curPerson.associated_persons);
                         _populatePOAff();
+                        vm.masterCopy = angular.copy(vm.curPerson); // make a copy in the asynch block
                     });
                 } else if (contextName === 'CTRP') {
                     // CTRP is the default tab
                     _populatePOAff(); // do this only when context is CTRP ???
                     _prepAssociationGrid(vm.curPerson.associated_persons);
                 }
+                vm.masterCopy = angular.copy(vm.curPerson); // make a copy
                 _updateFormTitleLabel();
             } // if context name is defined
         }
@@ -92,20 +94,22 @@
             if (vm.curPerson.new) {
                 vm.savedSelection = vm.savedSelection.filter(function(org) {return !org._destroy;}); // keep the active ones
             }
-            vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection);
-            _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
-                //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
-                aff['effective_date'] = aff.effective_date ? aff['effective_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
-                aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
-                var affStatusIndex = -1; //PoAffiliationStatus index
-                if (aff.effective_date && !aff.expiration_date) {
-                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
-                } else if (aff.expiration_date) {
-                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
-                }
-                aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
-                vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
-            });
+            if (vm.curPerson.source_context === 'CTRP') {
+                vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection);
+                _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
+                    //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
+                    aff['effective_date'] = aff.effective_date ? aff['effective_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
+                    aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
+                    var affStatusIndex = -1; //PoAffiliationStatus index
+                    if (aff.effective_date && !aff.expiration_date) {
+                        affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
+                    } else if (aff.expiration_date) {
+                        affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
+                    }
+                    aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
+                    vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
+                });
+            }
 
             //create a nested Person object
             var newPerson = {};
@@ -157,7 +161,6 @@
          */
         function _watchOrgAffiliation() {
             $scope.$watchCollection(function() {return vm.orgsArrayReceiver;}, function(selectedOrgs, oldVal) {
-                console.info('orgs: ', selectedOrgs);
                 if (angular.isDefined(selectedOrgs) && angular.isArray(selectedOrgs)) {
                     _.each(selectedOrgs, function(anOrg, index) {
                         if (_.findIndex(vm.savedSelection, {id: anOrg.id}) === -1) {
@@ -343,7 +346,8 @@
 
         function clearForm() {
             setFormToPristine();
-            var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'source_context_id'];
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'source_context_id', 'associated_persons'];
+            console.info('clearning form: ', vm.curPerson);
             Object.keys(vm.curPerson).forEach(function(key) {
                 if (excludedKeys.indexOf(key) == -1) {
                     vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';

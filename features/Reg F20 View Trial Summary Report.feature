@@ -112,24 +112,29 @@ And I can view TSR document
      Given I can View TSR document
      And the Regulatory Information Section fields will be displayed following the rules below
      
-      |TSR Section           |Field                     |Field Required  |Display Rule when Field Blank  |
-      |Regulatory Information|Oversight Authorities     |Required        |Display "No data available"    |
-      |                      |FDA Regulated Intervention|Required        |Display "No data available"    |
-      |                      |Section 801               |Required        |Display "No data available"    |
-      |                      |DMC Appointed             |Required        |Display "No data available"    |
-      |                      |IND/IDE Study             |Required        |Display "No data available"    |
-      |IND/IDE               |Type                      |Required        |Display "No data available"    |
-      |                      |Grantor                   |Required        |Display "No data available"    |
-      |                      |Number                    |Required        |Display "No data available"    |
-      |                      |Holder Type               |Required        |Display "No data available"    |
-      |                      |Holder                    |Required        |Display "No data available"    |
-      |Human Subject Safety  |Board Approval Status     |Required        |Display "No data available"    |
-      |                      |Board Approval Number     |Required        |Display "No data available"    |
-      |                      |Board                     |Required        |Display "No data available"    |
-      |                      |Address                   |Not Required    |Field not Displayed            |
-      |                      |Phone                     |Not Required    |Field not Displayed            |
-      |                      |Email                     |Not Required    |Field not Displayed            |
-      |                      |Affiliation               |Required        |Display "No data available"    |  
+      |TSR Section           |Field                     |Field Required  |Conditional Fields                              | Display Rule when Field Blank |
+      |Regulatory Information|Oversight Authorities     |Required        |                                                |Display "No data available"    |
+      |                      |FDA Regulated Intervention|Required        |                                                |Display "No data available"    |
+      |                      |Section 801               |Required        |                                                |Display "No data available"    |
+      |                      |DMC Appointed             |Required        |                                                |Display "No data available"    |
+      |                      |IND/IDE Study             |Required        |                                                |Display "No data available"    |
+      |IND/IDE               |Type                      |Required        |Does this trial have an associated IND/IDE?: Yes|Display "No data available"    |
+      |                      |Grantor                   |Required        |Does this trial have an associated IND/IDE?: Yes|Display "No data available"    |
+      |                      |Number                    |Required        |Does this trial have an associated IND/IDE?: Yes|Display "No data available"    |
+      |                      |Holder Type               |Required        |Does this trial have an associated IND/IDE?: Yes|Display "No data available"    |
+      |                      |Holder                    |Required        |Does this trial have an associated IND/IDE?: Yes|Display "No data available"    |
+      |IND/IDE               |Type                      |No Required     |Does this trial have an associated IND/IDE?: No |Data is displayed only when Values Exist|
+      |                      |Grantor                   |No Required     |Does this trial have an associated IND/IDE?: No |Data is displayed only when Values Exist|
+      |                      |Number                    |No Required     |Does this trial have an associated IND/IDE?: No |Data is displayed only when Values Exist|
+      |                      |Holder Type               |No Required     |Does this trial have an associated IND/IDE?: No |Data is displayed only when Values Exist|
+      |                      |Holder                    |No Required     |Does this trial have an associated IND/IDE?: No |Data is displayed only when Values Exist|
+      |Human Subject Safety  |Board Approval Status     |Required        |                                                |Display "No data available"    |
+      |                      |Board Approval Number     |Required        |                                                |Display "No data available"    |
+      |                      |Board                     |Required        |                                                |Display "No data available"    |
+      |                      |Address                   |Not Required    |                                                |Field not Displayed            |
+      |                      |Phone                     |Not Required    |                                                |Field not Displayed            |
+      |                      |Email                     |Not Required    |                                                |Field not Displayed            |
+      |                      |Affiliation               |Required        |                                                |Display "No data available"    |  
       
       
   Scenario:#8 Trial Design Section Display Rules Associated with Interventional/Expanded Access Clinical Research Category
@@ -138,9 +143,9 @@ And I can view TSR document
      
      |TSR Section    |Field                                 |Field Required  |Conditional Fields                |Display Rule when Field Blank|
      |Trial Design   |Primary Purpose                       |Required        |                                  |Display "No data available"   
-     |               |Description of Other Primary Purpose  |Not Required    |                                  |Field not Displayed
+     |               |Description of Primary Purpose Other  |Not Required    |                                  |Field not Displayed
      |               |Secondary Purpose                     |Not Required    |                                  |Field not Displayed
-     |               |Description of Other Secondary Purpose|Not Required    |                                  |Field not Displayed
+     |               |Description of Secondary Purpose Other|Not Required    |                                  |Field not Displayed
      |               |Phase                                 |Required        |                                  |Display "No data available" 
      |               |Intervention Model                    |Required        |                                  |Display "No data available" 
      |               |Number of Arms/Groups                 |Required        |                                  |Display "No data available" 

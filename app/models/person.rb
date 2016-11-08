@@ -108,20 +108,6 @@ class Person < ActiveRecord::Base
     return isNullifiable
   end
 
-#   def person_created_date
-#     if self.created_at.present?
-# #     return self.created_at.to_s(:app_time)
-#       return self.created_at.strftime("%d-%b-%Y %H:%M:%S %Z")
-#     end
-#   end
-#
-#   def person_updated_date
-#     if self.updated_at.present?
-#       return self.updated_at.strftime("%d-%b-%Y %H:%M:%S %Z")
-# #      return self.updated_at.to_s(:app_time)
-#     end
-#   end
-
   private
 
   # Method to check for the presence of phone or email. If both are empty, then return false
@@ -197,6 +183,8 @@ class Person < ActiveRecord::Base
   scope :matches, -> (column, value) { where("#{column} = ?", "#{value}") }
 
   scope :with_source_context, -> (value) { joins(:source_context).where("source_contexts.name = ?", "#{value}") }
+
+  scope :ctep_person_with_ctrp_id, -> (value) { joins(:source_context).where("source_contexts.code = 'CTEP' AND ctrp_id = ?", "#{value}")}
 
   # search against source_status for the given source_context_id
   scope :with_source_status_context, -> (value, source_context_id) { joins(:source_status).where("source_statuses.code = ? AND source_statuses.source_context_id = ?", "#{value}", "#{source_context_id}") }
