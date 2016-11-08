@@ -160,6 +160,7 @@
             findContextId: findContextId,
             checkUniqueOrganization: checkUniqueOrganization,
             typeAheadOrgNameSearch: typeAheadOrgNameSearch,
+            setTypeAheadOrgNameSearch: setTypeAheadOrgNameSearch,
             setTypeAheadOrg: setTypeAheadOrg,
             getServiceRequests: getServiceRequests,
             getProcessingStatuses: getProcessingStatuses,
@@ -280,8 +281,27 @@
                 organization_name: org_search_name,
                 organization_details: userChosenOrg
             }
-        };
+        }
+        
+        function setTypeAheadOrgNameSearch (controller) {
+            controller.typeAheadNameSearch = function () {
+                return typeAheadOrgNameSearch(controller.organization_name, controller.searchOrganizationFamily);
+            };
+            
+            controller.setUserListTypeAheadOrg = function (searchObj) {
+                var orgSearch = setTypeAheadOrg(searchObj);
+                controller.organization_name = orgSearch.organization_name;
+                controller.userChosenOrg = orgSearch.organization_details;
+                controller.searchParams.organization_id = controller.userChosenOrg.id;
+            };
 
+            controller.removeOrgChoice = function () {
+                controller.userChosenOrg = null;
+                controller.organization_name = controller.searchParams.user_org_name = controller.searchParams.organization_id = undefined;
+                controller.enterOrg = true;
+            };
+        }
+        
         function typeAheadOrgNameSearch(field, family) {
 
             var wildcardOrgName = field.indexOf('*') > -1 ? field : '*' + field + '*';

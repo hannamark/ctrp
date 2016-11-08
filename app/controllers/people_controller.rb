@@ -116,10 +116,11 @@ class PeopleController < ApplicationController
         params[:suffix].present? || params[:email].present? || params[:phone].present? ||
         params[:source_context].present? || params[:source_status].present? || params[:date_range_arr].present? ||
         params[:updated_by].present? || params[:affiliated_org_name].present? || params[:processing_status].present? ||
-        params[:service_request].present?
+        params[:service_request].present? || params[:organization_id].present?
 
-      @people = Person.all
+      @people = Person.all_people_data()
       @people = @people.affiliated_with_organization(params[:affiliated_org_name]) if params[:affiliated_org_name].present?
+      @people = @people.affiliated_with_organization_id(params[:organization_id]) if params[:organization_id].present?
       @people = @people.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
       @people = @people.matches('id', params[:ctrp_id]) if params[:ctrp_id].present?
       @people = @people.matches('processing_status', params[:processing_status]) if params[:processing_status].present?
@@ -131,7 +132,7 @@ class PeopleController < ApplicationController
       @people = matches_wc(@people, 'suffix', params[:suffix],params[:wc_search]) if params[:suffix].present?
       @people = matches_wc(@people, 'email', params[:email],params[:wc_search]) if params[:email].present?
       @people = matches_wc(@people, 'phone', params[:phone],params[:wc_search]) if params[:phone].present?
-      @people = @people.with_service_request(params[:service_request]) if params[:service_request].present?
+      @people = @people.matches('service_request_id', params[:service_request]) if params[:service_request].present?
 
 
       if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
@@ -149,8 +150,9 @@ class PeopleController < ApplicationController
         # TODO need constant for Active
         @people = @people.with_source_status_context('ACT', ctrp_source_context_id)
       end
+      @people = @people.page(params[:start]).per(params[:rows])
 
-      @people = @people.sort_by_col(params[:sort], params[:order]).group(:'people.id').page(params[:start]).per(params[:rows])
+      @people = @people.sort_by_col(params[:sort], params[:order]).page(params[:start]).per(params[:rows])
     else
       @people = []
     end

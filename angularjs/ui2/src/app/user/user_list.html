@@ -48,32 +48,8 @@
                         <!-- Status ends -->
 
                         <!-- Organization Name-->
-                        <div class="form-group" id="user_list_organization">
-                            <label for="organization_name" class="control-label col-sm-5">Organization:</label>
-                            <div class="col-sm-7"  ng-if="!userView.searchOrganization">
-                                <input type="text" id="organization_name" class="form-control input-sm" name="organization_name"
-                                       autocomplete="off" placeholder="Organization Name"
-                                       ng-blur = "userView.enterOrg = false"
-                                       focus-me = "userView.enterOrg"
-                                       ng-model="userView.organization_name"
-                                       typeahead-on-select="userView.setUserListTypeAheadOrg($item)"
-                                       ng-if="!userView.userChosenOrg"
-                                       uib-typeahead="org for org in userView.typeAheadNameSearch($viewValue)" ui-typeahead-loading="loadingOrganizations"
-                                       typeahead-min-length="3" typeahead-wait-ms="50" typeahead-no-results="noResults" />
-                                <div class="type-ahead-results" ng-if="userView.userChosenOrg"
-                                     ng-click="userView.removeOrgChoice()"
-                                     title="Change organization">
-                                        <b>{{userView.userChosenOrg.name}}</b>,<br>
-                                        <span ng-if="userView.userChosenOrg.city">{{userView.userChosenOrg.city}}, </span>
-                                        <span ng-if="userView.userChosenOrg.state_province">{{userView.userChosenOrg.state_province}}, </span>
-                                        <span ng-if="userView.userChosenOrg.postal_code">{{userView.userChosenOrg.postal_code}}, </span>
-                                        <span ng-if="userView.userChosenOrg.country">{{userView.userChosenOrg.country}}</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-7 control-label text-left" ng-if="userView.searchOrganization">
-                                {{userView.searchOrganization}}
-                            </div>
-                        </div>
+                        <div ng-include src="'app/po/organization/_orgSearchTypeAhead.html'"
+                             onload="[page_view =  userView, label = 'Organization:' ,label_class = 'col-sm-5', div_class= 'col-sm-7', curOrg = orgDetailView.ctepOrg]" ></div>
                         <!-- Organization Name ends -->
                     </div>
                     <div class="col-xs-12 col-md-6">
