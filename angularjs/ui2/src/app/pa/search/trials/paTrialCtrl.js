@@ -10,12 +10,12 @@
     paTrialCtrl.$inject = ['TrialService', 'uiGridConstants', '$scope', '$rootScope', 'Common', '$uibModal',
         'studySourceObj', 'phaseObj', 'primaryPurposeObj', '$state', 'trialStatusObj', 'PATrialService',
         'milestoneObj', 'processingStatusObj', 'protocolIdOriginObj', 'researchCategoriesObj', 'nciDivObj',
-        'nciProgObj', 'submissionTypesObj', 'submissionMethodsObj', 'internalSourceObj', '_'];
+        'nciProgObj', 'submissionTypesObj', 'submissionMethodsObj', 'internalSourceObj', '_', 'OrgService'];
 
     function paTrialCtrl(TrialService, uiGridConstants, $scope, $rootScope, Commo, $uibModal,
                          studySourceObj, phaseObj, primaryPurposeObj, $state, trialStatusObj, PATrialService,
                          milestoneObj, processingStatusObj, protocolIdOriginObj, researchCategoriesObj, nciDivObj,
-                         nciProgObj, submissionTypesObj, submissionMethodsObj, internalSourceObj, _) {
+                         nciProgObj, submissionTypesObj, submissionMethodsObj, internalSourceObj, _, OrgService) {
 
         var vm = this;
         var fromStateName = $state.fromState.name || '';
@@ -40,6 +40,7 @@
         vm.internalSourceArr = internalSourceObj;
         vm.gridScope = vm;
         vm.searching = false;
+        OrgService.setTypeAheadOrgNameSearch(vm);
 
         //ui-grid plugin options
         vm.gridOptions = PATrialService.getGridOptions();
@@ -102,6 +103,8 @@
                 vm.gridOptions.data = [];
                 return;
             }
+
+            vm.searchParams.org = !vm.searchParams.organization_id? vm.organization_name: undefined;
 
             vm.searching = true;
             vm.searchParams.protocol_origin_type = _.map(vm.searchParams.protocol_origin_type_codes, function(type) {
