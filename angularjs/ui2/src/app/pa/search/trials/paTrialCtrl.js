@@ -87,6 +87,7 @@
         vm.searchTrials = function () {
             vm.isEmptySearch = true;
             if (!vm.searchParams.organization_id) {
+                vm.searchParams.org = vm.organization_name;
                 for (var i = 0; i < FIELDS_REQUIRED.length; i++) {
                     var field = FIELDS_REQUIRED[i];
                     var value = vm.searchParams[field];
@@ -98,6 +99,7 @@
                     }
                 }
             } else {
+                vm.searchParams.org = undefined;
                 vm.isEmptySearch = false;
             }
 
