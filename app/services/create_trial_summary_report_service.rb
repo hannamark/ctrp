@@ -330,7 +330,7 @@ class CreateTrialSummaryReportService
     @trial.lead_org_id.nil? ? lead_org = NO_DATA_AVAILABLE : lead_org = Organization.find_by_id(@trial.lead_org_id).name
     @trial.sponsor_id.nil? ? sponsor = NO_DATA_AVAILABLE : sponsor = Organization.find_by_id(@trial.sponsor_id).name
     @trial.responsible_party_id.nil? ? responsible_party=NO_DATA_AVAILABLE : responsible_party = ResponsibleParty.find_by_id(@trial.responsible_party_id).name
-    h.store("Trial Type",trial_type)
+    h.store("Clinical Research Category",trial_type)
     h.store("Lead Organization",lead_org)
     h.store("Sponsor",sponsor)
     h.store("Responsible Party", responsible_party)
