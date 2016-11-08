@@ -122,10 +122,16 @@
                 // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
                 var isEmptySearch = true;
                 var excludedKeys = ['sort', 'order','rows','start','wc_search'];
-                _.keys($scope.searchParams).forEach(function (key) {
-                    if((excludedKeys.indexOf(key) === -1 && $scope.searchParams[key] !== '') || $scope.searchParams.organization_id)
-                        isEmptySearch = false;
-                });
+
+                if (!$scope.searchParams.organization_id) {
+                    _.keys($scope.searchParams).forEach(function (key) {
+                        if (excludedKeys.indexOf(key) === -1 && $scope.searchParams[key] !== '')
+                            isEmptySearch = false;
+                    });
+                } else {
+                    isEmptySearch = false;
+                }
+
                 if(isEmptySearch && newSearchFlag === 'fromStart') {
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                     $scope.warningMessage = ''; //hide the 0 rows message if no search parameter was supplied
