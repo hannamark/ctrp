@@ -93,7 +93,7 @@
                     vm.ctrpOrg.updated_at = response.updated_at;
 
                     $timeout(function() {
-                        $scope.organization_form.$setPristine();
+                        setFormToPristine();
                     }, 1000);
                 }
             }).catch(function (err) {
@@ -113,11 +113,11 @@
             vm.addedNameAliases = [];
             appendNameAliases();
             listenToStatesProvinces();
-            $scope.organization_form.$setPristine();
+            setFormToPristine();
         };
 
         vm.clearForm = function () {
-            $scope.organization_form.$setPristine();
+            setFormToPristine();
             vm.addedNameAliases = [];
             vm.alias = '';
             listenToStatesProvinces();
@@ -311,9 +311,14 @@
                         id:             newAssociatedOrg.id,
                         organization:   newAssociatedOrg
                     }).then(function (response) {
-                        vm.associatedOrgs = response.associated_orgs;
-                        associateOrgsRefresh();
-                        toastr.success('Organization has been associated.', 'Operation Successful!');
+                        var status = response.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            vm.associatedOrgs = response.associated_orgs;
+                            associateOrgsRefresh();
+                            toastr.success('Organization has been associated.', 'Operation Successful!');
+                            setFormToPristine();
+                        }
                     }).catch(function (err) {
                         console.log("error in associating organization: ", err);
                     }).finally(function() {
@@ -336,6 +341,7 @@
                         vm.associatedOrgs = response.associated_orgs;
                         associateOrgsRefresh();
                         toastr.success('Organization(s) association removed.', 'Operation Successful!');
+                        setFormToPristine();
                     }
                 }
             }).catch(function (err) {
@@ -569,9 +575,14 @@
             }
 
             $timeout(function() {
-                $scope.organization_form.$setPristine();
+                setFormToPristine();
             }, 1000);
         }
+
+        function setFormToPristine() {
+            $scope.organization_form.$setPristine();
+        }
+
         activate();
     }
 }());

@@ -127,7 +127,7 @@
 
                     // To make sure setPristine() is executed after all $watch functions are complete
                     $timeout(function() {
-                       $scope.person_form.$setPristine();
+                       setFormToPristine();
                     }, 1);
                 }
             }).catch(function (err) {
@@ -225,6 +225,7 @@
                     }
                     _showToastr('CTEP person context association was successful');
                     selectTab(sourceContext); // switch to the new tab
+                    setFormToPristine();
                 }
             }).catch(function(err) {
                 console.error('err: ', err);
@@ -335,11 +336,11 @@
             angular.copy(vm.masterCopy, vm.curPerson);
             vm.savedSelection = [];
             _populatePOAff();
-            $scope.person_form.$setPristine();
+            setFormToPristine();
         };
 
         function clearForm() {
-            $scope.person_form.$setPristine();
+            setFormToPristine();
             var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'source_context_id'];
             Object.keys(vm.curPerson).forEach(function(key) {
                 if (excludedKeys.indexOf(key) == -1) {
@@ -395,6 +396,7 @@
                     vm.ctepPerson = null; // deleted
                     _showToastr('The selected person context association was deleted');
                     selectTab(vm.defaultTab);
+                    setFormToPristine();
                 }
             }).catch(function(err) {
                 console.error('err: ', err);
@@ -610,6 +612,10 @@
                 }
             }, 0);
         } // _prepAssociationGrid
+
+        function setFormToPristine() {
+            $scope.person_form.$setPristine();
+        }
 
     } // personDetailCtrl2
 })();
