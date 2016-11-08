@@ -143,9 +143,9 @@ And I can view TSR document
      
      |TSR Section    |Field                                 |Field Required  |Conditional Fields                |Display Rule when Field Blank|
      |Trial Design   |Primary Purpose                       |Required        |                                  |Display "No data available"   
-     |               |Description of Other Primary Purpose  |Not Required    |                                  |Field not Displayed
+     |               |Description of Primary Purpose Other  |Not Required    |                                  |Field not Displayed
      |               |Secondary Purpose                     |Not Required    |                                  |Field not Displayed
-     |               |Description of Other Secondary Purpose|Not Required    |                                  |Field not Displayed
+     |               |Description of Secondary Purpose Other|Not Required    |                                  |Field not Displayed
      |               |Phase                                 |Required        |                                  |Display "No data available" 
      |               |Intervention Model                    |Required        |                                  |Display "No data available" 
      |               |Number of Arms/Groups                 |Required        |                                  |Display "No data available" 
