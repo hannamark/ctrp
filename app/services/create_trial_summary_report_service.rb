@@ -322,9 +322,6 @@ class CreateTrialSummaryReportService
     create_a_table_row(@grey,@foreground_th_text_color,"General Trial Details")
     create_a_table_row(@light_red,@foreground_th_text_color,"General Details")
 
-
-
-
     Hash h = Hash.new
     @trial.research_category_id.nil? ? trial_type = NO_DATA_AVAILABLE : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
     @trial.lead_org_id.nil? ? lead_org = NO_DATA_AVAILABLE : lead_org = Organization.find_by_id(@trial.lead_org_id).name
@@ -343,6 +340,7 @@ class CreateTrialSummaryReportService
     @trial.pi_id.nil? ? principle_investigator = nil : principle_investigator = Person.find_by_id(@trial.pi_id)
    # principle_investigator.nil? ? principle_investigator = nil : principle_investigator = principle_investigator.fname + " " + principle_investigator.mname + " " + principle_investigator.lname
    # investigator.nil? ? investigator = nil : investigator = investigator.fname + " " + investigator.mname + " " + investigator.lname
+    @trial.lead_org_id.nil? ? lead_org_name = NO_DATA_AVAILABLE : lead_org_name = Organization.find_by_id(@trial.lead_org_id).name
 
     if principle_investigator.nil?
       principle_investigator_name = NO_DATA_AVAILABLE
@@ -371,7 +369,7 @@ class CreateTrialSummaryReportService
     end
 
     h.store("Principal Investigator",principle_investigator_name )
-    h.store("Affiliation", "")
+    h.store("   Affiliation", lead_org_name)
 
     array = @document.table(7+count, 2,4000,4000)
     array.border_width =10
@@ -479,11 +477,11 @@ class CreateTrialSummaryReportService
 
   def generate_summary_4_information_table
 
-    create_a_table_row(@grey,@foreground_th_text_color,"Summary 4 Information")
+    create_a_table_row(@grey,@foreground_th_text_color,"Data Table 4 Information")
 
     Hash h = Hash.new
     @trial.study_source_id.nil? ? study_source = NO_DATA_AVAILABLE : study_source = StudySource.find_by_id(@trial.study_source_id).name
-    h.store("Funding Category",study_source)
+    h.store("Study Source",study_source)
     array =@document.table(1, 2,4000,4000)
     array.border_width =10
 
