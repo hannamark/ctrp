@@ -740,35 +740,35 @@ var dbConnection = function () {
         if (err) {
             return console.error('could not connect to postgres', err);
         }
-        //if(typeOfIDNCIORLeadProtocol.toUpperCase() === 'NCI')
-        //{
-        //client.query("SELECT * FROM trials where nci_id = '" + identifier + "'", function (err, trialID) {
-        //    if (err) {
-        //      //  console.error('error running the SELECT query', err);
-        //        assert.fail(0, 1, 'error running Query.');
-        //    }
-        //    trialDBID = trialID.rows[0].id;
-        //    client.query("SELECT * FROM mail_logs where trial_id = " + trialDBID , function (err, mailID) {
-        //        if (err) {
-        //          //  console.error('error running the Select query to find the email', err);
-        //            assert.fail(0, 1, 'error running Query.');
-        //        }
-        //        if(emailTO !== '') {
-        //            expect(mailID.rows[0].to).to.equal(emailTO, 'Verification of Email TO');
-        //        }
-        //        if(emailSubject !== '') {
-        //            expect(mailID.rows[0].subject).to.equal(emailSubject, 'Verification of Email Subject');
-        //        }
-        //        if(emailBody !== '') {
-        //            expect(mailID.rows[0].body).to.equal(emailBody, 'Verification of Email Body');
-        //        }
-        //        expect(mailID.rows[0].result).to.equal('Success', 'Verify Email Result is Success');
-        //        client.on('end', function () {
-        //            console.log("Client was disconnected.")
-        //        });
-        //    });
-        //});
-        //}
+        if(typeOfIDNCIORLeadProtocol.toUpperCase() === 'NCI')
+        {
+        client.query("SELECT * FROM trials where nci_id = '" + identifier + "'", function (err, trialID) {
+            if (err) {
+              //  console.error('error running the SELECT query', err);
+                assert.fail(0, 1, 'error running Query.');
+            }
+            trialDBID = trialID.rows[0].id;
+            client.query("SELECT * FROM mail_logs where trial_id = " + trialDBID , function (err, mailID) {
+                if (err) {
+                  //  console.error('error running the Select query to find the email', err);
+                    assert.fail(0, 1, 'error running Query.');
+                }
+                if(emailTO !== '') {
+                    expect(mailID.rows[0].to).to.equal(emailTO, 'Verification of Email TO');
+                }
+                if(emailSubject !== '') {
+                    expect(mailID.rows[0].subject).to.equal(emailSubject, 'Verification of Email Subject');
+                }
+                if(emailBody !== '') {
+                    expect(mailID.rows[0].body).to.equal(emailBody, 'Verification of Email Body');
+                }
+                expect(mailID.rows[0].result).to.equal('Success', 'Verify Email Result is Success');
+                client.on('end', function () {
+                    console.log("Client was disconnected.")
+                });
+            });
+        });
+        }
         //    else
         if (typeOfIDNCIORLeadProtocol.toUpperCase().replace(/ /g, '') === 'LEADPROTOCOLID') {
             client.query("SELECT * FROM trials where lead_protocol_id = '" + identifier + "'", function (err, trialID) {
@@ -1253,6 +1253,185 @@ var dbConnection = function () {
                 });
             });
         });
+    };
+
+    this.dbConnAddPersonWithOrg = function (userWhoCreated, sourceContext, personPrefix, personSuffix, personEmail, personPhone, personSourceStatus, personFirstName, personMiddleName, personLastName, personPhoneExtension, personProcessingStatus,
+                                            organizationName, orgAddress, orgAddress2, orgCity, orgState, orgPostalCode, orgCountry, orgEmail, orgPhone, orgPhoneExtension, orgProcessingStatus, POAffiliationStatus, err) {
+        var personDBID = '';
+        var orgDBID = '';
+
+        if (err) {
+            return console.error('could not connect to postgres', err);
+        }
+        client.query("select * from source_contexts where lower(name) = lower('" + sourceContext + "')", function (err, srcContextTbl) {
+            if (err) {
+                console.error('error running the Select query to find the source_contexts from source_contexts table', err);
+                assert.fail(0, 1, 'error running Query.');
+            }
+            var srcContextDBID = srcContextTbl.rows[0].id;
+            client.query("select * from source_statuses where lower(name) = lower('" + personSourceStatus + "') and source_context_id = " + srcContextDBID, function (err, srcStatusTbl) {
+                if (err) {
+                    console.error('error running the Select query to find the source_statuses from source_statuses table', err);
+                    assert.fail(0, 1, 'error running Query.');
+                }
+                var srcStatusDBID = srcStatusTbl.rows[0].id;
+                client.query("select count(*) from people where fname = '" + personFirstName + "'", function (err, personTblCnt) {
+                    if (err) {
+                        console.error('error running the Select query to find the Person from people table', err);
+                        assert.fail(0, 1, 'error running Query.');
+                    }
+                    if (personTblCnt.rows[0].count === '0') {
+                        console.log('****** Person does not exist, so Inserting the Person.');
+                        client.query('insert into people VALUES (' +
+                        'nextval(\'seq_persons_id\'),' +
+                        'currval(\'seq_persons_id\'),' +
+                        '\'' + personPrefix + '\',' +
+                        '\'' + personSuffix + '\',' +
+                        '\'' + personEmail + '\',' +
+                        '\'' + personPhone + '\',' +
+                        srcStatusDBID + ',' +
+                        srcContextDBID + ',' +
+                        'current_timestamp,' +
+                        'current_timestamp,' +
+                        'uuid_in(md5(random()::text || now()::text)::cstring),' +
+                        '1,' +
+                        '\'' + personFirstName + '\',' +
+                        '\'' + personMiddleName + '\',' +
+                        '\'' + personLastName + '\',' +
+                        'currval(\'seq_persons_id\'),' +
+                        '\'' + userWhoCreated + '\',' +
+                        '\'' + userWhoCreated + '\',' +
+                        '\'' + personPhoneExtension + '\',' +
+                        '\'' + personProcessingStatus + '\',' +
+                        'NULL,' +
+                        'NULL,' +
+                        'NULL)', function (err) {
+                            if (err) {
+                                console.error('error running the Insert query to insert the person in people table', err);
+                                assert.fail(0, 1, 'error running Query.');
+                            }
+                        });
+                    }
+                            client.query("select * from people where fname = '" + personFirstName + "'", function (err, peopleTable) {
+                                if (err) {
+                                    console.error('error running the Select query to find the first name from people table', err);
+                                    assert.fail(0, 1, 'error running Query.');
+                                }
+                                personDBID = peopleTable.rows[0].id;
+                                personDBFirstName = peopleTable.rows[0].fname;
+                                console.log('Person DB Id' + personDBID);
+                            });
+                    client.query("select count(*) from organizations where name = '" + organizationName + "'", function (err, orgTblCnt) {
+                        if (err) {
+                            console.error('error running the Select query to find the organizations from organizations table', err);
+                            assert.fail(0, 1, 'error running Query.');
+                        }
+                        if (orgTblCnt.rows[0].count === '0') {
+                            console.log('****** Organization does not exist, so Inserting the Organization.');
+                            client.query('insert into organizations VALUES (' +
+                            'nextval(\'seq_organizations_id\'),' +
+                            'currval(\'seq_organizations_id\'),' +
+                            '\'' + organizationName + '\',' +
+                            '\'' + orgAddress + '\',' +
+                            '\'' + orgAddress2 + '\',' +
+                            '\'' + orgCity + '\',' +
+                            '\'' + orgState + '\',' +
+                            '\'' + orgPostalCode + '\',' +
+                            '\'' + orgCountry + '\',' +
+                            '\'' + orgEmail + '\',' +
+                            '\'' + orgPhone + '\',' +
+                            srcStatusDBID + ',' +
+                            srcContextDBID + ',' +
+                            'current_timestamp,' +
+                            'current_timestamp,' +
+                            'uuid_in(md5(random()::text || now()::text)::cstring),' +
+                            '1,' +
+                            'currval(\'seq_organizations_id\'),' +
+                            '\'' + userWhoCreated + '\',' +
+                            '\'' + userWhoCreated + '\',' +
+                            '\'' + orgPhoneExtension + '\',' +
+                            '\'' + orgProcessingStatus + '\',' +
+                            'NULL,' +
+                            'NULL,' +
+                            'NULL,' +
+                            'NULL,' +
+                            'NULL)', function (err) {
+                                if (err) {
+                                    console.error('error running the Insert query to insert the organization in organization table', err);
+                                    assert.fail(0, 1, 'error running Query.');
+                                }
+                            });
+                        }
+                                client.query("select * from organizations where name = '" + organizationName + "'", function (err, organizationTable) {
+                                    if (err) {
+                                        console.error('error running the Select query to find the name from organizations table', err);
+                                        assert.fail(0, 1, 'error running Query.');
+                                    }
+                                    orgDBID = organizationTable.rows[0].id;
+                                    orgDBName = organizationTable.rows[0].name;
+                                    console.log('Org DB Id' + orgDBID);
+                                });
+
+                        client.query("select * from po_affiliation_statuses where lower(name) = lower('" + POAffiliationStatus + "')", function (err, POAffStatusTbl) {
+                            if (err) {
+                                console.error('error running the Select query to find the source_contexts from source_contexts table', err);
+                                assert.fail(0, 1, 'error running Query.');
+                            }
+                            var POAffStatusDBID = POAffStatusTbl.rows[0].id;
+                         //   console.log("SELECT count(*) from po_affiliations where person_id = " + personDBID + " and organization_id = " + orgDBID);
+                            client.query("SELECT count(*) from po_affiliations where person_id = " + personDBID + " and organization_id = " + orgDBID, function (err, personOrgCnt) {
+                                    if (err) {
+                                        console.error('error running the Select query to find the po_affiliations from po_affiliations table', err);
+                                        assert.fail(0, 1, 'error running Query.');
+                                    }
+                                    if (personOrgCnt.rows[0].count === '0') {
+                                        console.log('******  Person Organization affiliation does not exist, so Inserting it.');
+                                        client.query('insert into po_affiliations VALUES (' +
+                                        'DEFAULT,' +
+                                        personDBID + ',' +
+                                        orgDBID + ',' +
+                                        POAffStatusDBID + ',' +
+                                        'current_timestamp,' +
+                                        'current_timestamp,' +
+                                        'uuid_in(md5(random()::text || now()::text)::cstring),' +
+                                        '0,' +
+                                        'current_timestamp,' +
+                                        'NULL)', function (err) {
+                                            if (err) {
+                                                console.error('error running the Insert query to insert the Person Organization affiliation in po_affiliations table', err);
+                                                assert.fail(0, 1, 'error running Query.');
+                                            }
+                                        });
+                                    }
+
+                                    client.on('end', function () {
+                                        console.log("Client was disconnected.")
+                                    });
+                                });
+                        });
+                    });
+                });
+            });
+        });
+    };
+
+
+    this.dbConnVerifyTrialTblSingleItem = function (NCIID, trialTblColumn,valueToVerify,  err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+        }
+        client.query("select " + trialTblColumn + " as columnvalue from trials where nci_id = '" + NCIID + "'", function (err, trialIDTrialTbl) {
+            if (err) {
+                console.error('error running the Select query to find the TrialID from trial table', err);
+                assert.fail(0, 1, 'error running Query.');
+            }
+            var trialColValue = trialIDTrialTbl.rows[0].columnvalue;
+            console.log('Trial Column value for Selected column: ' + trialTblColumn + ' is: ' + trialColValue);
+                    expect(trialColValue).to.equal(valueToVerify, 'Verification of Trial Column value for Selected column: ' + trialTblColumn );
+                    client.on('end', function () {
+                        console.log("Client was disconnected.")
+                    });
+                });
     };
 
 };

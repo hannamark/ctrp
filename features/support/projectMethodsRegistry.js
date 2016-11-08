@@ -1256,7 +1256,6 @@ var projectMethodsRegistry = function () {
                 return Q.when('');//leadProtocolID = emptyPromise;
             }
         });
-
         nciID = addTrial.viewTrialNCIID.isPresent().then(function (state) {
             if (state) {
                 return addTrial.viewTrialNCIID.getText().then(function (nciIDTrial) {
@@ -1268,7 +1267,6 @@ var projectMethodsRegistry = function () {
                 return Q.when('');//nciID = emptyPromise;
             }
         });
-
         otherIDs = addTrial.viewTrialOtherIdentifierValuePresent.isPresent().then(function (state) {
             if (state) {
                 return addTrial.viewTrialOtherIdentifierAllValues.getText().then(function (otherIDTrial) {
@@ -1280,7 +1278,6 @@ var projectMethodsRegistry = function () {
                 return Q.when('');//otherIDs = emptyPromise;
             }
         });
-
         officialTitle = addTrial.viewTrialOfficialTitle.isPresent().then(function (state) {
             if (state) {
                 return addTrial.viewTrialOfficialTitle.getText().then(function (trialOfficialTitle) {
@@ -1310,14 +1307,11 @@ var projectMethodsRegistry = function () {
                     console.log('Trial Primary Purpose is ----> ' + trialPurpose);
                     return trialPurpose;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Primary Purpose does not exist in Page.');
                 return Q.when('');//purpose = emptyPromise;
             }
         });
-
-
         principalInvestigator = addTrial.viewTrialPrincipalInvestigator.isPresent().then(function (state) {
             if (state) {
                // principalInvestigator =
@@ -1325,21 +1319,18 @@ var projectMethodsRegistry = function () {
                     console.log('Trial Principal Investigator is ----> ' + trialPrincipalInvestigator);
                     return trialPrincipalInvestigator;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Principal Investigator is does not exist in Page.');
                 return Q.when('');//principalInvestigator = Q.reject();//Promise.resolve('');//Q('');//Q.promise(function () {});//Q.Deferred().resolve();//emptyPromise;
             }
         });
-
         leadOrganization = addTrial.viewTrialLeadOrganization.isPresent().then(function (state) {
             if (state) {
                return addTrial.viewTrialLeadOrganization.getText().then(function (trialLeadOrganization) {
                     console.log('Trial Lead Organization is ----> ' + trialLeadOrganization);
                     return trialLeadOrganization;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Lead Organization does not exist in Page.');
                 return Q.when('');//leadOrganization = emptyPromise;
             }
@@ -1350,9 +1341,74 @@ var projectMethodsRegistry = function () {
                     console.log('Trial Sponsor is ----> ' + trialSponsor);
                     return trialSponsor;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Sponsor does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        grantTbl = addTrial.viewTrialVerifyGrantTableExist.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialVerifyGrantTable.getText().then(function (trialGrant) {
+                    console.log('Trial Grant array is ----> ' + trialGrant);
+                    return trialGrant;
+                });
+            } else {
+                console.log('Trial Grant does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        trialStatus = addTrial.viewTrialStatus.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialStatus.getText().then(function (trialStatus) {
+                    console.log('Trial Sponsor is ----> ' + trialStatus);
+                    return trialStatus;
+                });
+            } else {
+                console.log('Trial Status does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        trialDate = addTrial.viewTrialStatusDate.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialStatusDate.getText().then(function (trialDate) {
+                    console.log('Trial Status Date is ----> ' + trialDate);
+                    return trialDate;
+                });
+            } else {
+                console.log('Trial Status Date does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        trialStartDateWithOption = addTrial.viewTrialStartDate.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialStartDate.getText().then(function (trialStartDateOption) {
+                    console.log('Trial Start Date with Option is ----> ' + trialStartDateOption);
+                    return trialStartDateOption;
+                });
+            } else {
+                console.log('Trial Start Date with Option does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        trialPrimaryStartDateOption = addTrial.viewTrialPrimaryCompletionDate.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialPrimaryCompletionDate.getText().then(function (trialPrimStartDateOption) {
+                    console.log('Trial Primary Start Date with Option is ----> ' + trialPrimStartDateOption);
+                    return trialPrimStartDateOption;
+                });
+            } else {
+                console.log('Trial Primary Start Date with Option does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        trialCompletionDateOption = addTrial.viewTrialCompletionDate.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialCompletionDate.getText().then(function (trialCompDateOption) {
+                    console.log('Trial Completion Date with Option is ----> ' + trialCompDateOption);
+                    return trialCompDateOption;
+                });
+            } else {
+                console.log('Trial Completion Date with Option does not exist in Page.');
                 return Q.when('');//sponsor = emptyPromise;
             }
         });
@@ -1362,8 +1418,7 @@ var projectMethodsRegistry = function () {
                     console.log('Trial Participating Site is ----> ' + trialParticipatingSite);
                     return trialParticipatingSite;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Participating Site does not exist in Page.');
                 return Q.when('');//participatingSiteInTrial = emptyPromise;
             }
@@ -1374,10 +1429,20 @@ var projectMethodsRegistry = function () {
                     console.log('Trial Document array is ----> ' + trialDocuments);
                     return trialDocuments;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Documents does not exist in Page.');
                 return Q.when('');//documents = emptyPromise;
+            }
+        });
+        participatingSiteTbl = addTrial.viewTrialPsticipatingSitesTblExist.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialPsticipatingSites.getText().then(function (trialPS) {
+                    console.log('Trial Participating Site Tbl array is ----> ' + trialPS);
+                    return trialPS;
+                });
+            } else {
+                console.log('Trial Participating Site Tbl does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
             }
         });
 
