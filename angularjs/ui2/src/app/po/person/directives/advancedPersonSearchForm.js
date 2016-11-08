@@ -87,6 +87,9 @@
             $scope.endDateOpened = ''; // false;
             $scope.searchWarningMessage = '';
             $scope.searching = false;
+            $scope.scope = $scope;
+            
+            OrgService.setTypeAheadOrgNameSearch($scope.scope);
 
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
@@ -105,11 +108,10 @@
             $scope.showGrid = angular.isDefined($scope.showGrid) ? $scope.showGrid : false;
 
             $scope.searchPeople = function (newSearchFlag) {
-                console.info('searching people: ', $scope.searchParams);
                 if (newSearchFlag === 'fromStart') {
                     $scope.searchParams.start = 1;
                 }
-
+                
                 $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
                 if ($scope.searchParams.date_range_arr.length === 0) {
                     delete $scope.searchParams.date_range_arr;
@@ -119,10 +121,18 @@
                 // Right now, ignoring the alias parameter as it is set to true by default. To refactor and look at default parameters instead of hardcoding -- radhika
                 var isEmptySearch = true;
                 var excludedKeys = ['sort', 'order','rows','start','wc_search'];
-                _.keys($scope.searchParams).forEach(function (key) {
-                    if(excludedKeys.indexOf(key) === -1 && $scope.searchParams[key] !== '')
-                        isEmptySearch = false;
-                });
+
+                if (!$scope.searchParams.organization_id) {
+                    $scope.searchParams.affiliated_org_name = $scope.organization_name;
+                    _.keys($scope.searchParams).forEach(function (key) {
+                        if (excludedKeys.indexOf(key) === -1 && $scope.searchParams[key] !== '')
+                            isEmptySearch = false;
+                    });
+                } else {
+                    isEmptySearch = false;
+                    $scope.searchParams.affiliated_org_name = undefined;
+                }
+
                 if(isEmptySearch && newSearchFlag === 'fromStart') {
                     $scope.searchWarningMessage = "At least one selection value must be entered prior to running the search";
                     $scope.warningMessage = ''; //hide the 0 rows message if no search parameter was supplied
@@ -201,29 +211,6 @@
                         $scope.searchParams.endDate = '';
                 }
             };
-
-
-            $scope.typeAheadNameSearch = function () {
-                var wildcardOrgName = $scope.searchParams.affiliated_org_name.indexOf('*') > -1 ? $scope.searchParams.affiliated_org_name : '*' + $scope.searchParams.affiliated_org_name + '*';
-
-                return OrgService.searchOrgs({name: wildcardOrgName, source_context: "CTRP"}).then(function (res) {
-                    var status = res.server_response.status;
-
-                    if (status >= 200 && status <= 210) {
-                        var uniqueNames = [];
-                        var orgNames = [];
-                        orgNames = res.orgs.map(function (org) {
-                            return org.name;
-                        });
-
-                        return uniqueNames = orgNames.filter(function (name) {
-                            return uniqueNames.indexOf(name) === -1;
-                        });
-                    }
-                });
-            }; //typeAheadOrgNameSearch
-
-
 
             $scope.resetSearch = function () {
                 // $scope.states.length = 0;
