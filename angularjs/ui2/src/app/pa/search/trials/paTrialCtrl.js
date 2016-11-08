@@ -86,15 +86,19 @@
                                 'submission_method', 'nih_nci_prog', 'internal_sources']; // at least one field must be filled
         vm.searchTrials = function () {
             vm.isEmptySearch = true;
-            for (var i = 0; i < FIELDS_REQUIRED.length; i++) {
-                var field = FIELDS_REQUIRED[i];
-                var value = vm.searchParams[field];
-                if (field in vm.searchParams && angular.isDefined(value)) {
-                    vm.isEmptySearch = angular.isArray(value) ? value.length === 0 : false;
+            if (!vm.searchParams.organization_id) {
+                for (var i = 0; i < FIELDS_REQUIRED.length; i++) {
+                    var field = FIELDS_REQUIRED[i];
+                    var value = vm.searchParams[field];
+                    if (field in vm.searchParams && angular.isDefined(value)) {
+                        vm.isEmptySearch = angular.isArray(value) ? value.length === 0 : false;
+                    }
+                    if (vm.isEmptySearch === false) {
+                        break;
+                    }
                 }
-                if (vm.isEmptySearch === false) {
-                    break;
-                }
+            } else {
+                vm.isEmptySearch = false;
             }
 
             if (vm.isEmptySearch) {
