@@ -111,8 +111,7 @@
                 if (newSearchFlag === 'fromStart') {
                     $scope.searchParams.start = 1;
                 }
-                $scope.searchParams.affiliated_org_name = !$scope.searchParams.organization_id? $scope.organization_name: undefined;
-
+                
                 $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
                 if ($scope.searchParams.date_range_arr.length === 0) {
                     delete $scope.searchParams.date_range_arr;
@@ -124,12 +123,14 @@
                 var excludedKeys = ['sort', 'order','rows','start','wc_search'];
 
                 if (!$scope.searchParams.organization_id) {
+                    $scope.searchParams.affiliated_org_name = $scope.organization_name;
                     _.keys($scope.searchParams).forEach(function (key) {
                         if (excludedKeys.indexOf(key) === -1 && $scope.searchParams[key] !== '')
                             isEmptySearch = false;
                     });
                 } else {
                     isEmptySearch = false;
+                    $scope.searchParams.affiliated_org_name = undefined;
                 }
 
                 if(isEmptySearch && newSearchFlag === 'fromStart') {
