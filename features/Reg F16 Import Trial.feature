@@ -135,7 +135,7 @@ And the error message will be displayed "A trial exists in the system with the s
 Scenario: #4d.1 I will be able to Import a trial for the same lead organization and lead organization ID
 Given I have selected the option to Import an Industrial or Other Trial
 And I have entered a NCT Number
-When the lead organization and lead organization ID for the trial to be imported match the lead organization and lead organization ID for a trial registered in CTRP which has been Rejected OR Submission Terminated
+When the lead organization and lead organization ID for the trial to be imported match the lead organization and lead organization ID for a trial registered in CTRP which has been Rejected 
 Then The Trial with the associated lead organization and lead organization ID should be allowed to be imported
 
 
