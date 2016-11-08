@@ -59,26 +59,28 @@
                     // fetch associated persons for the CTRP person, because the CTRP person may
                     // have more association than the currently shown CTEP person
                     PersonService.getPersonById(vm.curPerson.id).then(function(res) {
-                        console.info('res from person service: ', res);
                         vm.ctrpPerson = res.data;
                         vm.curPerson = vm.ctrpPerson;
                         _prepAssociationGrid(vm.curPerson.associated_persons);
+                        _populatePOAff();
                     });
                 } else if (contextName === 'CTRP') {
                     // CTRP is the default tab
+                    _populatePOAff(); // do this only when context is CTRP ???
                     _prepAssociationGrid(vm.curPerson.associated_persons);
                 }
-
-                _populatePOAff(); // TODO: do this only when context is CTRP ???
                 _updateFormTitleLabel();
             } // if context name is defined
         }
 
         function updatePerson() {
+            console.info('updating person: ', vm.curPerson);
             if (!angular.isDefined(vm.curPerson)) {
                 console.error('vm.curPerson is undefined');
                 return;
             }
+            console.info('submitted person context: ', vm.curPerson.source_context);
+            console.info('vm.validOrgsCount: ', vm.validOrgsCount);
 
             if (vm.validOrgsCount === 0 && vm.curPerson.source_context === 'CTRP') {
                 vm.affiliatedOrgError = true;
@@ -121,7 +123,7 @@
                 } else if (status === 200) {
                     // updated
                     console.info('response with update: ', response);
-                    vm.curPerson = response.data;
+                    vm.curPerson = response.data; // TODO: if the CTEP person just updated, update ctepPerson object as well
                     _showToastr('Person ' + vm.curPerson.lname + ' has been recorded');
                     vm.curPerson.new = false;
 
