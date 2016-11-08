@@ -102,7 +102,7 @@
         </div>
         -->
     </div>
-    <div class="form-group has-feedback" ng-class="{'has-error': (person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email) && person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone))}">
+    <div class="form-group has-feedback required" ng-class="{'has-error': (person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email) && person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone))}">
         <label for="phone" class="control-label col-sm-3">Phone:</label>
         <div class="col-sm-3">
             <input type="text" restriction-field class="form-control input-sm" name="phone" id="phone" maxlength="30" ng-model="personDetailView.curPerson.phone" ng-required="!personDetailView.curPerson.email" placeholder="Phone">
@@ -186,32 +186,24 @@
             <!--</div>-->
         </div>
     </div>
-    <div class="form-group"
-        ng-if="!personDetailView.curPerson.new" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
-        <label for="person_context" class="control-label col-sm-3">Associate Person Context:</label>
-        <div class="col-sm-5">
-            <button type="button" class="btn btn-primary" id="person_search_modal" person-search-modal-button2 source-context-only="'CTEP'" ng-model="personDetailView.associatedPersonContexts" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN" ng-disabled="personDetailView.curPerson.associated_persons.length > 0">
-                <i class="glyphicon glyphicon-search"></i> Search Persons
-            </button>
-        </div>
-    </div>
-    <div class="form-group no-bottom-margin" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
+    <div class="form-group" ng-class="{'no-bottom-margin': personDetailView.curPerson.associated_persons.length && personDetailView.curPerson.is_ctrp_context && personDetailView.isAllowedToComment}" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
         <div class="col-sm-3"></div>
         <div class="btn-toolbar col-sm-6">
-            <div class="btn-toolbar">
-                <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn" ng-disabled="personDetailView.isBtnDisabled">
-                    <i class="glyphicon glyphicon-ok"></i> Save
-                </button>
-                <button type="button" restriction-field  ng-hide="!personDetailView.curPerson.new" class="btn btn-warning pull-right" id="reset_btn" ng-click="personDetailView.clearForm()" ng-disabled="personDetailView.isBtnDisabled">
-                    <i class="glyphicon glyphicon-remove"></i> Reset
-                </button>
-                <button type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="personDetailView.resetForm()" ng-disabled="personDetailView.isBtnDisabled">
-                    <i class="glyphicon glyphicon-remove"></i> Reset
-                </button>
-                <!-- <button  type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
-                    <i class="glyphicon glyphicon-trash"></i> Delete This Person
-                </button> -->
-            </div>
+            <button type="button" class="btn btn-primary pull-left btn-no-left-margin" id="person_search_modal" person-search-modal-button2 source-context-only="'CTEP'" ng-model="personDetailView.associatedPersonContexts" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN" ng-disabled="personDetailView.curPerson.associated_persons.length > 0">
+                <i class="glyphicon glyphicon-search"></i> Associate Person Context
+            </button>
+            <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn" ng-disabled="personDetailView.isBtnDisabled">
+                <i class="glyphicon glyphicon-ok"></i> Save
+            </button>
+            <button type="button" restriction-field  ng-hide="!personDetailView.curPerson.new" class="btn btn-warning pull-right" id="reset_btn" ng-click="personDetailView.clearForm()" ng-disabled="personDetailView.isBtnDisabled">
+                <i class="glyphicon glyphicon-remove"></i> Reset
+            </button>
+            <button type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="personDetailView.resetForm()" ng-disabled="personDetailView.isBtnDisabled">
+                <i class="glyphicon glyphicon-remove"></i> Reset
+            </button>
+            <!-- <button  type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
+                <i class="glyphicon glyphicon-trash"></i> Delete This Person
+            </button> -->
         </div>
     </div>
     <!-- grid of associated persons below -->

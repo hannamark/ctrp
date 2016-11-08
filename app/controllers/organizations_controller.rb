@@ -234,7 +234,7 @@ class OrganizationsController < ApplicationController
       resultOrgs = resultOrgs.matches("source_statuses.name", params[:source_status]) if params[:source_status].present?
       resultOrgs = resultOrgs.matches("source_contexts.name", params[:source_context]) if params[:source_context].present?
     else
-      resultOrgs = resultOrgs.matches("source_statuses.name", "Active").matches("source_contexts.name", "CTRP")
+      resultOrgs = resultOrgs.matches("source_statuses.code", "ACT").matches("source_contexts.code", "CTRP")
     end
     return resultOrgs
   end

@@ -81,7 +81,7 @@
                     visible: false
                 },
                 {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', minWidth: '100', width: '*'},
-                {name: 'ctep_source_id', enableSorting: true, displayName: 'CTEP ID', minWidth: '100', width: '*'},
+                {name: 'multiview_ctep_id', enableSorting: true, displayName: 'CTEP ID', minWidth: '100', width: '*'},
                 {name: 'fname', displayName: 'First', enableSorting: true,  minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
@@ -120,9 +120,9 @@
                     enableSorting: true, minWidth: '150', width: '*'},
                 {name: 'prefix', enableSorting: true, minWidth: '75', width: '*'},
                 {name: 'suffix', enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'id', displayName: 'Context ID', enableSorting: false, minWidth: '75', width: '*'},
+                {name: 'id', displayName: 'Context ID', enableSorting: true, minWidth: '75', width: '*'},
                 {name: 'processing_status', displayName: 'Processing Status', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'service_request', displayName: 'Service Request', enableSorting: false, minWidth: '75', width: '*'},
+                {name: 'service_request_name', displayName: 'Service Request', enableSorting: true, minWidth: '75', width: '*'},
             ]
         };
 

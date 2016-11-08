@@ -135,45 +135,8 @@ And the error message will be displayed "A trial exists in the system with the s
 Scenario: #4d.1 I will be able to Import a trial for the same lead organization and lead organization ID
 Given I have selected the option to Import an Industrial or Other Trial
 And I have entered a NCT Number
-When the lead organization and lead organization ID for the trial to be imported match the lead organization and lead organization ID for a trial registered in CTRP which has been Rejected OR Submission Terminated
+When the lead organization and lead organization ID for the trial to be imported match the lead organization and lead organization ID for a trial registered in CTRP which has been Rejected 
 Then The Trial with the associated lead organization and lead organization ID should be allowed to be imported
 
 
-Scenario: #5 I can add my site as a participating site after a trial is imported from ClinicalTrials.gov
-Given I have selected the option to Import an Industrial or Other Trial
-And I am on the Import ClinicalTrials.gov Trials screen
-And I have entered a NCT Number
-And I have imported the trial successfully
-Then the trial information will be displayed including
-|Trial Identifiers (Title)| 
-|Lead Organization Trial Identifier|
-|NCI ID|
-|ClinicalTrial.gov ID|
-|Other IDs|
-|Trial Details (Title)|
-|Official Title|
-|Phase|
-|Clinical Research Category|
-|Primary Purpose|
-|Trial Status (Title)|
-|Current Trial Status|
-|Trial Dates (Title)|
-|Trial Start Date: Date Type (Actual or Anticipated)|
-|Primary Completion Date : Date Type (Actual or Anticipated)|
-|Completion Date: Date Tye (Actual or Anticipated)|
-|Lead Organization (Title)|
-|Lead Organization|
-|Data Table 4 Information (Title)|
-|Study Source|
-|Data Table 4 Funding Sponsor/Source|
-And I can select the "Add My Site" function to add my site as a participating site
 
-
-Scenario: #6 I can enter my site information as a participating site after a trial is imported from ClinicalTrials.gov
-Given I have selected the option to Import an Industrial or Other Trial
-And I have completed the import
-And I have selected the option to "Add My Site"
-Then I can enter my Local Trial Identifier
-And look-up and add the Site Principal Investigator
-And enter a Program Code
-And enter the Recruitment Status and and Recruitment Status Date
