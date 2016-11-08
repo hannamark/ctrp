@@ -720,7 +720,7 @@
                 if(vm.userDetails.organization_id !== null) {
                     vm.selectedOrgsArray = [{'id' : vm.userDetails.organization_id, 'name': vm.userDetails.organization.name}];
                 }
-            }, 1000);
+            });
         }());
 
         $scope.$on(vm.redirectToAllUsers, function () {
