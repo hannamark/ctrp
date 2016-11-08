@@ -117,7 +117,7 @@
     <div ng-include src="'app/po/person/sub_partials/_common_fields_updated.html'"></div>
     <!-- common ends -->
     <div class="form-group has-feedback required"
-        ng-class="{'has-error': personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.validOrgsCount === 0)}"
+        ng-class="{'has-error': personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.validOrgsCount === 0 && personDetailView.curPerson.source_context === 'CTRP')}"
         restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
         <label class="control-label col-sm-3">Add Affiliated Organization: </label>
         <div class="col-sm-9">
@@ -195,25 +195,7 @@
             </button>
         </div>
     </div>
-    <div class="form-group no-bottom-margin" restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
-        <div class="col-sm-3"></div>
-        <div class="btn-toolbar col-sm-6">
-            <div class="btn-toolbar">
-                <button type="submit" restriction-field class="btn btn-primary pull-right" id="save_btn" ng-disabled="personDetailView.isBtnDisabled">
-                    <i class="glyphicon glyphicon-ok"></i> Save
-                </button>
-                <button type="button" restriction-field  ng-hide="!personDetailView.curPerson.new" class="btn btn-warning pull-right" id="reset_btn" ng-click="personDetailView.clearForm()" ng-disabled="personDetailView.isBtnDisabled">
-                    <i class="glyphicon glyphicon-remove"></i> Reset
-                </button>
-                <button type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-warning pull-right" id="clear_btn" ng-click="personDetailView.resetForm()" ng-disabled="personDetailView.isBtnDisabled">
-                    <i class="glyphicon glyphicon-remove"></i> Reset
-                </button>
-                <!-- <button  type="button" ng-hide="personDetailView.curPerson.new" restriction-field class="btn btn-danger pull-right" id="confirm_btn" ng-click="personDetailView.confirmDelete('sm')">
-                    <i class="glyphicon glyphicon-trash"></i> Delete This Person
-                </button> -->
-            </div>
-        </div>
-    </div>
+    <div ng-include src="'app/po/person/sub_partials/_form_buttons.html'"></div>
     <!-- grid of associated persons below -->
     <div ng-include src="'app/po/person/sub_partials/_associatedPersonGrid.html'"></div>
     <!-- end of grid -->
