@@ -1864,8 +1864,6 @@ body.assign-ownership #user_list_admin_priv, body.assign-ownership #user_list_st
 }
 .edit-off .btn-danger {display: none;}
 
-body.people .ui-grid-selection-row-header-buttons.ui-grid-icon-ok,
-body.organizations .ui-grid-selection-row-header-buttons.ui-grid-icon-ok,
 .edit-off .ui-grid-selection-row-header-buttons.ui-grid-icon-ok {
     display: none;
 }
