@@ -15,7 +15,7 @@
                 placement="top"
                 confirm-msg="Click OK to remove the selected association. Click Cancel to abort."
                 restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN"
-                ng-disabled="!personDetailView.associationForRemoval.length">
+                ng-disabled="!personDetailView.associationForRemoval.length || !personDetailView.isWritable">
                 <i class="glyphicon glyphicon-trash"></i> Remove Selected Associations
             </button>
         </div>

@@ -35,6 +35,7 @@
 
         activate();
         function activate() {
+            _watchWriteMode();
             _watchOrgAffiliation();
             _watchGlobalWriteMode();
             _watchContextAssociation();
@@ -276,6 +277,7 @@
             vm.associationForRemoval = []; // object person objects
             vm.confirm = {}; // messages
             vm.isBtnDisabled = false;
+            vm.isWritable = UserService.isCurationModeEnabled() || false;
             vm.selectedCtrpPerson = null;
             var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
             var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
@@ -617,6 +619,12 @@
 
         function setFormToPristine() {
             $scope.person_form.$setPristine();
+        }
+
+        function _watchWriteMode() {
+            $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                vm.isWritable = UserService.isCurationModeEnabled() || false;
+            });
         }
 
     } // personDetailCtrl2
