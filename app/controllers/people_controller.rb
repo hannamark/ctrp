@@ -145,10 +145,7 @@ class PeopleController < ApplicationController
 
       else
         # TODO need constant for CTRP
-        @people = @people.with_source_context("CTRP")
-        ctrp_source_context_id = SourceContext.find_by_code("CTRP").id
-        # TODO need constant for Active
-        @people = @people.with_source_status_context('ACT', ctrp_source_context_id)
+        @people = @people.matches("source_statuses.code", "ACT").matches("source_contexts.code", "CTRP")
       end
       @people = @people.page(params[:start]).per(params[:rows])
 
