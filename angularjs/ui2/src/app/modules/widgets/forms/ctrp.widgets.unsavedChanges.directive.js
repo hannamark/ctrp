@@ -196,7 +196,6 @@
 
                     }
 
-                    console.log(formCondition);
                     return formCondition;
                 }
             }
