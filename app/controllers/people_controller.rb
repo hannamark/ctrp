@@ -55,14 +55,8 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1
   # PATCH/PUT /people/1.json
   def update
-    if request.nil? || request.content_type.nil?
-      print "request.content_type is nil"
-    else
-      print "hello request type is :: " + request.content_type
-    end
 
     @person.updated_by = @current_user.username unless @current_user.nil?
-
     respond_to do |format|
       #@person.po_affiliations.destroy
       if @person.update(person_params)
@@ -157,6 +151,10 @@ class PeopleController < ApplicationController
     associated_ctep_person = nil
 
     if params.has_key?(:ctep_person_id) and params.has_key?(:ctrp_id)
+      # remove existing assocation to the ctrp person first:
+      ctep_source_context_id = SourceContext.find_by_code('CTEP').id
+      temp_cteps = Person.where(ctrp_id: params[:ctrp_id], source_context_id: ctep_source_context_id)
+      temp_cteps.each { |per| per.update_attributes('ctrp_id': nil, 'association_start_date': nil) }
 
       associated_ctep_person = Person.find(params[:ctep_person_id])
       if !associated_ctep_person.nil?
@@ -279,7 +277,7 @@ class PeopleController < ApplicationController
     def person_params
       params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :extension,
                                      :source_status_id, :source_context_id, :lock_version, :processing_status,
-                                     :registration_type, :service_request, :force_clone,
+                                     :registration_type, :service_request, :force_clone, :id, :source_context,
                                      po_affiliations_attributes: [:id, :organization_id, :effective_date,
                                                                   :expiration_date, :po_affiliation_status_id,
                                                                   :lock_version, :_destroy])

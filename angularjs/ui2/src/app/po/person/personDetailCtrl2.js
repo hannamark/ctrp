@@ -94,20 +94,22 @@
             if (vm.curPerson.new) {
                 vm.savedSelection = vm.savedSelection.filter(function(org) {return !org._destroy;}); // keep the active ones
             }
-            vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection);
-            _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
-                //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
-                aff['effective_date'] = aff.effective_date ? aff['effective_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
-                aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
-                var affStatusIndex = -1; //PoAffiliationStatus index
-                if (aff.effective_date && !aff.expiration_date) {
-                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
-                } else if (aff.expiration_date) {
-                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
-                }
-                aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
-                vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
-            });
+            if (vm.curPerson.source_context === 'CTRP') {
+                vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection);
+                _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
+                    //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
+                    aff['effective_date'] = aff.effective_date ? aff['effective_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
+                    aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
+                    var affStatusIndex = -1; //PoAffiliationStatus index
+                    if (aff.effective_date && !aff.expiration_date) {
+                        affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
+                    } else if (aff.expiration_date) {
+                        affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
+                    }
+                    aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
+                    vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
+                });
+            }
 
             //create a nested Person object
             var newPerson = {};
