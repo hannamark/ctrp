@@ -137,12 +137,8 @@ class PeopleController < ApplicationController
 
       if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
           @current_user.role == "ROLE_ADMIN")
-        # SourceContext.where(code: params[:source_context]).pluck(:id)
-        source_context_id = SourceContext.find_by_code(params[:source_context]).id if params[:source_context].present?
-        @people = @people.with_source_context(params[:source_context]) if params[:source_context].present?
-        @people = @people.with_source_status_context(params[:source_status], source_context_id) if params[:source_status].present? && params[:source_context].present?
-        @people = @people.with_source_status_only(params[:source_status]) if params[:source_status].present? && !params[:source_context].present?
-
+        @people = @people.matches("source_statuses.code", params[:source_status]) if params[:source_status].present?
+        @people = @people.matches("source_contexts.code", params[:source_context]) if params[:source_context].present?
       else
         # TODO need constant for CTRP
         @people = @people.matches("source_statuses.code", "ACT").matches("source_contexts.code", "CTRP")
