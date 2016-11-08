@@ -1,13 +1,13 @@
-<div class="col-sm-12" ng-show="personDetailView.curPerson.associated_persons.length > 0 && personDetailView.curPerson.is_ctrp_context && personDetailView.isAllowedToComment">
+<div class="col-sm-12" ng-if="personDetailView.curPerson.associated_persons.length > 0 && personDetailView.curPerson.is_ctrp_context && personDetailView.isAllowedToComment">
     <hr>
     <div class="form-group">
         <div class="col-sm-1"></div>
         <div class="col-sm-8">
-            <h4>Associated Persons</h4>
-            <div ui-grid="personDetailView.associatedPersonsOptions" ui-grid-move-columns ui-grid-selection class="grid grid-sm"></div>
+            <h4>Associated Persons <toggle-visibility element-to-toggle="#associatedGrid, #removeAssociation"></toggle-visibility></h4>
+            <div id="associatedGrid" ui-grid="personDetailView.associatedPersonsOptions" ui-grid-move-columns ui-grid-selection class="grid grid-sm"></div>
         </div>
     </div>
-    <div class="form-group">
+    <div id="removeAssociation" class="form-group">
         <div class="col-sm-9 btn-toolbar">
             <button type="button" class="btn btn-danger pull-right" id="delete"
                 ctrp-confirm

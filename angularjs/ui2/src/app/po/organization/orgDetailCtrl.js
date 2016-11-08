@@ -337,12 +337,10 @@
             }).then(function (response) {
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
-                    if (status === 200) {
-                        vm.associatedOrgs = response.associated_orgs;
-                        associateOrgsRefresh();
-                        toastr.success('Organization(s) association removed.', 'Operation Successful!');
-                        setFormToPristine();
-                    }
+                    vm.associatedOrgs = response.associated_orgs;
+                    associateOrgsRefresh();
+                    toastr.success('Organization(s) association removed.', 'Operation Successful!');
+                    setFormToPristine();
                 }
             }).catch(function (err) {
                 console.log("error in disassociating organization: ", err);
@@ -363,14 +361,13 @@
                     }).then(function (response) {
                         var status = response.server_response.status;
                         if (status >= 200 && status <= 210) {
-                            if (status === 200) {
-                                vm.associatedOrgs = response.associated_orgs;
-                                vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
-                                vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
-                                vm.ctrpUpdateTime = Date.now();
-                                associateOrgsRefresh();
-                                toastr.success('Organization has been associated.', 'Operation Successful!');
-                            }
+                            vm.associatedOrgs = response.associated_orgs;
+                            vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
+                            vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
+                            vm.ctrpUpdateTime = Date.now();
+                            associateOrgsRefresh();
+                            toastr.success('Organization has been associated.', 'Operation Successful!');
+                            setFormToPristine();
                         }
                     }).catch(function (err) {
                         console.log("error in associating organization: ", err);
@@ -396,17 +393,16 @@
             OrgService.cloneCtepOrg(vm.ctepOrg.id).then(function(response) {
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
-                    if (status === 200) {
-                        $timeout(function () {
-                            vm.associatedOrgs = response.associated_orgs;
-                            vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
-                            vm.ctrpOrg.processing_status = 'Complete';
-                            vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
-                            vm.ctrpUpdateTime = Date.now();
-                            associateOrgsRefresh();
-                            toastr.success('Organization has been associated.', 'Operation Successful!');
-                        }, 1);
-                    }
+                    $timeout(function () {
+                        vm.associatedOrgs = response.associated_orgs;
+                        vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
+                        vm.ctrpOrg.processing_status = 'Complete';
+                        vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
+                        vm.ctrpUpdateTime = Date.now();
+                        associateOrgsRefresh();
+                        toastr.success('Organization has been associated.', 'Operation Successful!');
+                        setFormToPristine();
+                    }, 1);
                 }
             }).catch(function (err) {
                 console.log("error in cloning ctep organization: ", err);
@@ -574,13 +570,13 @@
                 createAssociatedOrgsTable();
             }
 
-            $timeout(function() {
-                setFormToPristine();
-            }, 1000);
+            setFormToPristine();
         }
 
         function setFormToPristine() {
-            $scope.organization_form.$setPristine();
+            $timeout(function() {
+                $scope.organization_form.$setPristine();
+            }, 1000);
         }
 
         activate();

@@ -776,6 +776,10 @@ h5 {
     font-size: 12px;
 }
 
+.glyphicon-sm {
+    font-size: 10px;
+}
+
 .form-horizontal .form-group {
     margin-right: -5px;
     margin-left: -5px;

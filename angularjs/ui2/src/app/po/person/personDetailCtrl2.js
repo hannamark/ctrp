@@ -129,9 +129,7 @@
                     vm.curPerson.new = false;
 
                     // To make sure setPristine() is executed after all $watch functions are complete
-                    $timeout(function() {
-                       setFormToPristine();
-                    }, 1);
+                    setFormToPristine();
                 }
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
@@ -430,6 +428,8 @@
                     vm.confirm.title = 'The following CTRP person(s) matched the CTEP person. Select one for association or click "Cancel" to abort';
                     _prepAssociationGrid(res.matched);
                 }
+
+                setFormToPristine();
             }).catch(function(err) {
                 console.error('err in cloning person: ', err);
             });
@@ -618,7 +618,9 @@
         } // _prepAssociationGrid
 
         function setFormToPristine() {
-            $scope.person_form.$setPristine();
+            $timeout(function() {
+                $scope.person_form.$setPristine();
+            }, 1000);
         }
 
         function _watchWriteMode() {
