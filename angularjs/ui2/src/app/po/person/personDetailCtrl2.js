@@ -65,6 +65,7 @@
                         vm.curPerson = vm.ctrpPerson;
                         _prepAssociationGrid(vm.curPerson.associated_persons);
                         _populatePOAff();
+                        vm.masterCopy = angular.copy(vm.curPerson);
                     });
                 } else if (contextName === 'CTRP') {
                     // CTRP is the default tab
@@ -73,6 +74,7 @@
                 }
 
                 _populatePOAff(); // TODO: do this only when context is CTRP ???
+                vm.masterCopy = angular.copy(vm.curPerson);
                 _updateFormTitleLabel();
             } // if context name is defined
         }
