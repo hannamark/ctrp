@@ -74,6 +74,8 @@
                 vm.masterCopy = angular.copy(vm.curPerson); // make a copy
                 _updateFormTitleLabel();
             } // if context name is defined
+
+            setFormToPristine();
         }
 
         function updatePerson() {
