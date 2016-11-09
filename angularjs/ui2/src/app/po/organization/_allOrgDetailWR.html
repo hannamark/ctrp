@@ -39,7 +39,7 @@
 </div>
 <div class="form-group">
     <label for="source_status" class="control-label col-sm-3">Source Status:</label>
-    <div class="col-sm-2">
+    <div class="col-sm-2" ng-if="orgDetailView.ctrpOrg.source_status_code !== 'NULLIFIED'">
         <div class="animated-item">
             <select restriction-field
                     class="form-control input-sm" id="source_status"
@@ -47,6 +47,9 @@
                     ng-options="status.id as status.name for status in orgDetailView.ctrpSourceStatusArr">
             </select>
         </div>
+    </div>
+    <div class="col-sm-6 form-text" ng-if="orgDetailView.ctrpOrg.source_status_code === 'NULLIFIED'">
+        {{orgDetailView.ctrpOrg.source_status_code}}
     </div>
 </div>
 <div class="form-group">
@@ -177,28 +180,23 @@
         </div>
     </div>
 </div>
-<div class="form-group">
-    <div class="col-sm-6 has-feedback no-padding" ng-class="{'has-error': organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone)}">
-        <label class="control-label col-sm-6">Phone Number:</label>
-        <div class="col-sm-6">
-            <input type="text" restriction-field class="form-control input-sm" id="phone" name="phone" maxlength="30" ng-model="orgDetailView.ctrpOrg.phone" placeholder="Phone" ng-blur="orgDetailView.isValidPhoneNumber()" mask-phone-number mask-country="{{orgDetailView.ctrpOrg.country}}">
-            <span ng-show="orgDetailView.ctrpOrg.phone.length" class="form-control-feedback" ng-class="(orgDetailView.ctrpOrg.phone.length > 0 && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
-            <div class="has-error" ng-if="organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone)">
-                <span class="help-block">Phone is Required</span>
-            </div>
-            <span class="help-block" ng-show="organization_form.phone.$dirty">{{30 - orgDetailView.ctrpOrg.phone.length}} left</span>
-            <div class="has-error" ng-show="orgDetailView.ctrpOrg.phone.length && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid">
-                <span class="help-block">
-                    Warning: Phone number invalid for the selected Country.
-                 </span>
-            </div>
+<div class="form-group has-feedback" ng-class="{'has-error': organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone)}">
+    <label for="phone" class="control-label col-sm-3">Phone Number:</label>
+    <div class="col-sm-3">
+        <input type="text" restriction-field class="form-control input-sm" id="phone" name="phone" maxlength="30" ng-model="orgDetailView.ctrpOrg.phone" placeholder="Phone" ng-blur="orgDetailView.isValidPhoneNumber()" mask-phone-number mask-country="{{orgDetailView.ctrpOrg.country}}">
+        <span ng-show="orgDetailView.ctrpOrg.phone.length" class="form-control-feedback" ng-class="(orgDetailView.ctrpOrg.phone.length > 0 && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid) ? 'glyphicon glyphicon-exclamation-sign glyphicon-red' : 'glyphicon glyphicon-ok glyphicon-green'"></span>
+        <div class="has-error" ng-if="organization_form.phone.$error && ctrpbtn.organization_form.needsAttention(organization_form.phone)">
+            <span class="help-block">Phone is Required</span>
+        </div>
+        <span class="help-block" ng-show="organization_form.phone.$dirty">{{30 - orgDetailView.ctrpOrg.phone.length}} left</span>
+        <div class="has-error" ng-show="orgDetailView.ctrpOrg.phone.length && orgDetailView.showPhoneWarning && !orgDetailView.IsPhoneValid">
+            <span class="help-block">
+                Warning: Phone number invalid for the selected Country.
+             </span>
         </div>
     </div>
-    <div class="col-sm-6 has-feedback no-padding">
-        <label class="control-label col-sm-3">Extension:</label>
-        <div class="col-sm-3">
-            <input type="text" restriction-field class="form-control input-sm" id="extension" name="extension" maxlength="30" ng-model="orgDetailView.ctrpOrg.extension" placeholder="Phone Ext" ng-disabled="!orgDetailView.ctrpOrg.phone.length">
-            <span class="help-block" ng-show="organization_form.extension.$dirty">{{30 - orgDetailView.ctrpOrg.extension.length}} left</span>
-        </div>
+    <div class="col-sm-1">
+        <input type="text" restriction-field class="form-control input-sm" id="extension" name="extension" maxlength="30" ng-model="orgDetailView.ctrpOrg.extension" placeholder="Ext." ng-disabled="!orgDetailView.ctrpOrg.phone.length">
+        <span class="help-block" ng-show="organization_form.extension.$dirty">{{30 - orgDetailView.ctrpOrg.extension.length}} left</span>
     </div>
 </div>

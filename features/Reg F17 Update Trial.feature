@@ -46,7 +46,7 @@ Then I can view participating sites details
      |CTRP Organization Name|
      # Principal Investigator Format (Last Name, First Name)
      |Principal Investigator|
-     |Local Trial Id|
+     |Local Trial Identifier|
      |Program Code|
      |Current Site Recruitment Status|
      |Current Site Recruitment Status Date|
@@ -91,9 +91,9 @@ And I can select Contact Type
 Scenario: #4 I can update contact when contact type is Site investigator
 Given I am on the Update Participating Sites screen 
 When the contact type selected is Site Investigator 
-Then the Contact Name gets populated witht the Site Principal Investiagator name
+Then the Contact Name gets populated with the Site Principal Investigator name
 And the email address will be populated
-And Phone Number and Extention will be populated
+And Phone Number and Extension will be populated
 And only the information type can be edited
      |Contact Email Address|
      |Contact Phone Number-Extension|
@@ -104,15 +104,15 @@ When the contact type selected is Person
 Then I can select a person by conducting a Person Search 
 And Contact Name will be selected 
 And the email address will be populated
-And Phone Number and Extention will be populated
+And Phone Number and Extension will be populated
 And the populated parameters can be edited
 
 Scenario: #6 I can Update contact when contact type is General
-Given I am on the Contact Screen
+Given I am on the Update Participating Sites screen
 When the contact type selected is General
 Then I must enter a contact name information
 And I must enter a contact Email Address
-And I must enter a Phone Number and Extention
+And I must enter a Phone Number and Extension
 And the entered parameters can be edited
 
 
@@ -135,8 +135,7 @@ When I select the review option
 Then CTRP will check the updated information 
 And if there are no errors, I can submit the trial with indication of a successful submission
 And the information updates will be registered in CTRP
-And the CTRO will be able to acknowledge the Update to trial information
-And the "Current Verification Date" will be updated in the Trial Data Verification Screen
+And the "Current Verification Date" will be updated
 And an email entitled "Updated Trial" will be sent to the trial owner (Locate Email list on the shared drive under Functional/registration as: CTRP System Generated Emails)
 
 

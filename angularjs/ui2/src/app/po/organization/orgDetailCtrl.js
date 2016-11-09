@@ -13,24 +13,31 @@
 
     function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $timeout) {
-        var vm = this;
+         var vm = this;
          function setInitialState() {
-            vm.addedNameAliases = [];
-            vm.states = [];
-            vm.processingStatuses = OrgService.getProcessingStatuses();
-            vm.watchCountrySelection = OrgService.watchCountrySelection();
-            vm.countriesArr = countryList;
-            vm.sourceContextArr = sourceContextObj;
-            vm.sourceStatusArr = sourceStatusObj;
-            vm.sourceStatusArr.sort(Common.a2zComparator());
-            vm.alias = '';
-            vm.curationReady = false;
-            vm.showPhoneWarning = false;
-            vm.disableBtn = false;
-            vm.processStatusArr = OrgService.getProcessingStatuses();
-            vm.cloningCTEP = false;
-            vm.nilclose = true;
+             vm.addedNameAliases = [];
+             vm.states = [];
+             vm.processingStatuses = OrgService.getProcessingStatuses();
+             vm.watchCountrySelection = OrgService.watchCountrySelection();
+             vm.countriesArr = countryList;
+             vm.sourceContextArr = sourceContextObj;
+             vm.sourceStatusArr = sourceStatusObj;
+             vm.sourceStatusArr.sort(Common.a2zComparator());
+             vm.alias = '';
+             vm.curationReady = false;
+             vm.showPhoneWarning = false;
+             vm.disableBtn = false;
+             vm.processStatusArr = OrgService.getProcessingStatuses();
+             vm.cloningCTEP = false;
+             vm.nilclose = true;
 
+             OrgService.getServiceRequests().then(function (requests) {
+                 var status = requests.server_response.status;
+                 if (status >= 200 && status <= 210) {
+                     vm.serviceRequests = requests;
+                 }
+             });
+             
             $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
                 if (vm.cloningCTEP) {
                     // To make sure setPristine() is executed after all $watch functions are complete
@@ -72,12 +79,23 @@
                     vm.ctrpOrg.name_aliases_attributes.push(otherId);
                 });
             }
-            // An outer param wrapper is needed for nested attributes to work
-            var outerOrg = {};
-            outerOrg.new = vm.ctrpOrg.new;
-            outerOrg.id = vm.ctrpOrg.id;
-            outerOrg.organization = vm.ctrpOrg;
-            OrgService.upsertOrg(outerOrg).then(function (response) {
+            saveAndRenderOrg({
+                new:    vm.ctrpOrg.new,
+                id:     vm.ctrpOrg.id,
+                organization: vm.ctrpOrg
+            });
+        };
+
+        vm.updateCTEPOrg = function () {
+            vm.disableBtn = true;
+            saveAndRenderOrg({
+                id:     vm.ctepOrg.id,
+                organization: vm.ctepOrg
+            });
+        };
+
+        function saveAndRenderOrg(savedOrgObj) {
+            OrgService.upsertOrg(savedOrgObj).then(function (response) {
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
                     if (vm.ctrpOrg.new && status === 201) {
@@ -93,7 +111,7 @@
                     vm.ctrpOrg.updated_at = response.updated_at;
 
                     $timeout(function() {
-                        $scope.organization_form.$setPristine();
+                        setFormToPristine();
                     }, 1000);
                 }
             }).catch(function (err) {
@@ -101,7 +119,7 @@
             }).finally(function() {
                 vm.disableBtn = false;
             });
-        };
+        }
 
         function showToastr(orgName) {
             toastr.clear();
@@ -113,11 +131,16 @@
             vm.addedNameAliases = [];
             appendNameAliases();
             listenToStatesProvinces();
-            $scope.organization_form.$setPristine();
+            setFormToPristine();
+        };
+        
+        vm.resetCTEPForm = function() {
+            angular.copy(vm.ctepOrgCopy, vm.ctepOrg);
+            setFormToPristine();
         };
 
         vm.clearForm = function () {
-            $scope.organization_form.$setPristine();
+            setFormToPristine();
             vm.addedNameAliases = [];
             vm.alias = '';
             listenToStatesProvinces();
@@ -173,6 +196,9 @@
                 vm.ctrpOrg =  filterOutCTRPOrg();
                 if (vm.ctrpOrg) {
                     vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
+                }
+                if (vm.ctepOrg) {
+                    vm.ctepOrgCopy = angular.copy(vm.ctepOrg);
                 }
                 checkToDisableClone();
             } else {
@@ -311,9 +337,14 @@
                         id:             newAssociatedOrg.id,
                         organization:   newAssociatedOrg
                     }).then(function (response) {
-                        vm.associatedOrgs = response.associated_orgs;
-                        associateOrgsRefresh();
-                        toastr.success('Organization has been associated.', 'Operation Successful!');
+                        var status = response.server_response.status;
+
+                        if (status >= 200 && status <= 210) {
+                            vm.associatedOrgs = response.associated_orgs;
+                            associateOrgsRefresh();
+                            toastr.success('Organization has been associated.', 'Operation Successful!');
+                            setFormToPristine();
+                        }
                     }).catch(function (err) {
                         console.log("error in associating organization: ", err);
                     }).finally(function() {
@@ -332,11 +363,10 @@
             }).then(function (response) {
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
-                    if (status === 200) {
-                        vm.associatedOrgs = response.associated_orgs;
-                        associateOrgsRefresh();
-                        toastr.success('Organization(s) association removed.', 'Operation Successful!');
-                    }
+                    vm.associatedOrgs = response.associated_orgs;
+                    associateOrgsRefresh();
+                    toastr.success('Organization(s) association removed.', 'Operation Successful!');
+                    setFormToPristine();
                 }
             }).catch(function (err) {
                 console.log("error in disassociating organization: ", err);
@@ -357,14 +387,13 @@
                     }).then(function (response) {
                         var status = response.server_response.status;
                         if (status >= 200 && status <= 210) {
-                            if (status === 200) {
-                                vm.associatedOrgs = response.associated_orgs;
-                                vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
-                                vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
-                                vm.ctrpUpdateTime = Date.now();
-                                associateOrgsRefresh();
-                                toastr.success('Organization has been associated.', 'Operation Successful!');
-                            }
+                            vm.associatedOrgs = response.associated_orgs;
+                            vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
+                            vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
+                            vm.ctrpUpdateTime = Date.now();
+                            associateOrgsRefresh();
+                            toastr.success('Organization has been associated.', 'Operation Successful!');
+                            setFormToPristine();
                         }
                     }).catch(function (err) {
                         console.log("error in associating organization: ", err);
@@ -390,17 +419,16 @@
             OrgService.cloneCtepOrg(vm.ctepOrg.id).then(function(response) {
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
-                    if (status === 200) {
-                        $timeout(function () {
-                            vm.associatedOrgs = response.associated_orgs;
-                            vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
-                            vm.ctrpOrg.processing_status = 'Complete';
-                            vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
-                            vm.ctrpUpdateTime = Date.now();
-                            associateOrgsRefresh();
-                            toastr.success('Organization has been associated.', 'Operation Successful!');
-                        }, 1);
-                    }
+                    $timeout(function () {
+                        vm.associatedOrgs = response.associated_orgs;
+                        vm.ctrpOrg = filterOutCTRPOrg(vm.associatedOrgs);
+                        vm.ctrpOrg.processing_status = 'Complete';
+                        vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
+                        vm.ctrpUpdateTime = Date.now();
+                        associateOrgsRefresh();
+                        toastr.success('Organization has been associated.', 'Operation Successful!');
+                        setFormToPristine();
+                    }, 1);
                 }
             }).catch(function (err) {
                 console.log("error in cloning ctep organization: ", err);
@@ -568,10 +596,15 @@
                 createAssociatedOrgsTable();
             }
 
+            setFormToPristine();
+        }
+
+        function setFormToPristine() {
             $timeout(function() {
                 $scope.organization_form.$setPristine();
             }, 1000);
         }
+
         activate();
     }
 }());

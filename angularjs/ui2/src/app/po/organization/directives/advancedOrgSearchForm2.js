@@ -202,28 +202,40 @@
                 }
             }; //resetSearch
 
+            function clearOrgToBeNullifed() {
+                $scope.nullifiedId = '';
+                $scope.nullifiedOrgName = '';
+            }
 
             /* nullify entity */
             function nullifyEntity(rowEntity) {
-                // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
-                var isActive = rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1;
-                var isNullified = rowEntity.source_status && rowEntity.source_status.indexOf('Nul') > -1;
-                if (isNullified || isActive || !rowEntity.nullifiable) {
-                    //warning to user for nullifying active entity
-                    if (!rowEntity.nullifiable) {
-                        $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
-                    } else if(isActive) {
-                        $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
-                    } else {
-                        $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
-                    }
-                    $scope.nullifiedId = '';
-                    $scope.nullifiedOrgName = '';
-                    //  console.log('cannot nullify this row, because it is active');
+                var isActive = rowEntity.source_status_code === 'ACT';
+
+                var isNullified = rowEntity.source_status_code === 'NULLIFIED';
+
+                //warning to user for nullifying active entity
+                if (isActive) {
+                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
+                    clearOrgToBeNullifed();
+                } else if (isNullified) {
+                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
+                    clearOrgToBeNullifed();
                 } else {
-                    $scope.warningMessage = '';
-                    $scope.nullifiedId = rowEntity.id || '';
-                    $scope.nullifiedOrgName = rowEntity.name;
+                    OrgService.getNullifiable({id: rowEntity.id}).then(function (res) {
+                        var status = res.server_response.status;
+
+                        if (status >= 200 && status <= 210 && res.nullifiable !== true) {
+                            $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
+                            clearOrgToBeNullifed();
+                        } else {
+                            $scope.warningMessage = '';
+                            $scope.nullifiedId = rowEntity.id || '';
+                            $scope.nullifiedOrgName = rowEntity.name;
+                        }
+                    }).catch(function (err) {
+                        console.log('Error in Nillifiable check.', err);
+                    });
+
                 }
             } //nullifyEntity
 
@@ -234,7 +246,7 @@
                 OrgService.curateOrg($scope.toBeCurated).then(function (res) {
                     var status = res.server_response.status;
 
-                    if (status >= 200 && status <= 210) {
+                    if (status >= 200 && status <= 210 && res.nullify_success === true) {
                         initCurationObj();
                         clearSelectedRows();
                         $scope.searchOrgs();
@@ -524,11 +536,12 @@
             function prepareGridOptions() {
                 $scope.gridOptions = OrgService.getGridOptions($scope.usedInModal);
                 $scope.gridOptions.isRowSelectable = function (row) {
-                    var isCTEPContext =row.entity.source_context  && row.entity.source_context.indexOf('CTEP') > -1;
+                    var isCTEPContext = row.entity.source_context  && row.entity.source_context_code === 'CTEP';
+                    var isNullified = row.entity.source_status_code === 'NULLIFIED';
                     if ($scope.usedInModal) {
                         return true;
                     }
-                    else if (isCTEPContext) {
+                    else if (isCTEPContext || isNullified) {
                         return false;
                     } else {
                         return true;

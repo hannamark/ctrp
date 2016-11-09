@@ -77,8 +77,8 @@
                 {name: 'Nullify', displayName: 'Nullify',
                     enableSorting: false,
                     enableFiltering: false,
-                    minWidth: '100', width: '*',
-                    cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify"' +
+                    minWidth: '70', width: '*',
+                    cellTemplate: '<div ng-if="row.isSelected" class="radio-text-center"><input type="radio" name="nullify"' +
                     ' ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },
@@ -160,10 +160,12 @@
             findContextId: findContextId,
             checkUniqueOrganization: checkUniqueOrganization,
             typeAheadOrgNameSearch: typeAheadOrgNameSearch,
+            setTypeAheadOrgNameSearch: setTypeAheadOrgNameSearch,
             setTypeAheadOrg: setTypeAheadOrg,
             getServiceRequests: getServiceRequests,
             getProcessingStatuses: getProcessingStatuses,
             cloneCtepOrg: cloneCtepOrg,
+            getNullifiable: getNullifiable,
             getSourceStatuses2: getSourceStatuses2
         };
 
@@ -209,6 +211,15 @@
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ASSOCIATED_ORGS, orgObj);
         } //getAssociatedOrgs
 
+        /**
+         * Check to see if an org is nulliable
+         *
+         * @param getNullifiable
+         * @returns {*}
+         */
+        function getNullifiable(orgObj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.NULLIFIABLE, orgObj);
+        }
 
         /**
          * dis associate organizations
@@ -280,8 +291,27 @@
                 organization_name: org_search_name,
                 organization_details: userChosenOrg
             }
-        };
+        }
+        
+        function setTypeAheadOrgNameSearch (controller) {
+            controller.typeAheadNameSearch = function () {
+                return typeAheadOrgNameSearch(controller.organization_name, controller.searchOrganizationFamily);
+            };
+            
+            controller.setUserListTypeAheadOrg = function (searchObj) {
+                var orgSearch = setTypeAheadOrg(searchObj);
+                controller.organization_name = orgSearch.organization_name;
+                controller.userChosenOrg = orgSearch.organization_details;
+                controller.searchParams.organization_id = controller.userChosenOrg.id;
+            };
 
+            controller.removeOrgChoice = function () {
+                controller.userChosenOrg = null;
+                controller.organization_name = controller.searchParams.user_org_name = controller.searchParams.organization_id = undefined;
+                controller.enterOrg = true;
+            };
+        }
+        
         function typeAheadOrgNameSearch(field, family) {
 
             var wildcardOrgName = field.indexOf('*') > -1 ? field : '*' + field + '*';

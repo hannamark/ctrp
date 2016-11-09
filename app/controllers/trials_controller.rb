@@ -325,7 +325,7 @@ class TrialsController < ApplicationController
           @trials = Trial.matches('lead_org_id', current_user.organization_id).where(nih_nci_prog: nil).filter_rejected.active_submissions
         end
       end
-    elsif params[:org].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
+    elsif params[:org].present? || params[:organization_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present?
       @trials = Trial.filter_rejected
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = matches_wc(@trials, 'official_title', params[:official_title], true) if params[:official_title].present?
@@ -333,6 +333,7 @@ class TrialsController < ApplicationController
       @trials = @trials.with_purposes(params[:purposes]) if params[:purposes].present?
       @trials = @trials.matches('pilot', params[:pilot]) if params[:pilot].present?
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
+      @trials = @trials.with_org_id(params[:organization_id], params[:org_types]) if params[:organization_id].present?
       if params[:pi].present?
         splits = params[:pi].split(',').map(&:strip)
         @trials = @trials.with_pi_lname(splits[0])
@@ -354,7 +355,7 @@ class TrialsController < ApplicationController
       @trials = @trials.is_not_draft if params[:searchType] == 'All Trials'
       @trials = @trials.is_draft(@current_user.username) if params[:searchType] == 'Saved Drafts'
       #@trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
-      @trials = @trials.order("#{params[:sort]} #{params[:order]}").page(params[:start]).per(params[:rows])
+      @trials = @trials.order("#{params[:sort]} #{params[:order]}").group(:'trials.id').page(params[:start]).per(params[:rows])
 
        #@trials = @trials.filter(@trials, {:phases => params[:phases], :purposes => params[:purposes]})
 
@@ -480,7 +481,7 @@ class TrialsController < ApplicationController
     params[:sort] = 'lead_protocol_id' if params[:sort].blank?
     params[:order] = 'asc' if params[:order].blank?
 
-    if params[:checkout].present? || params[:scientific_checkout].present? || params[:admin_checkout].present? || params[:submission_type].present? ||  params[:submission_method].present? ||params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present?  || params[:study_sources].present? || params[:internal_sources].present?
+    if params[:checkout].present? || params[:scientific_checkout].present? || params[:admin_checkout].present? || params[:submission_type].present? ||  params[:submission_method].present? ||params[:nih_nci_prog].present? || params[:nih_nci_div].present? || params[:milestone].present? || params[:protocol_origin_type] || params[:processing_status].present? || params[:trial_status].present? || params[:research_category].present? || params[:other_id].present? || params[:protocol_id].present? || params[:official_title].present? || params[:phases].present? || params[:purposes].present? || params[:pilot].present? || params[:pi].present? || params[:org].present? || params[:organization_id].present?   || params[:study_sources].present? || params[:internal_sources].present?
       @trials = Trial.all
       @trials = @trials.with_protocol_id(params[:protocol_id]) if params[:protocol_id].present?
       @trials = matches_wc(@trials, 'official_title', params[:official_title], true) if params[:official_title].present?
@@ -494,6 +495,7 @@ class TrialsController < ApplicationController
       end
       @trials = @trials.user_trials(params[:user_id]) if params[:user_id].present?
       @trials = @trials.with_org(params[:org], params[:org_types]) if params[:org].present?
+      @trials = @trials.with_org_id(params[:organization_id], params[:org_types]) if params[:organization_id].present?
       @trials = @trials.with_study_sources(params[:study_sources]) if params[:study_sources].present?
       @trials = @trials.with_internal_sources(params[:internal_sources]) if params[:internal_sources].present?
       @trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])

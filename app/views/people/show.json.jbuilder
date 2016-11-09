@@ -1,14 +1,14 @@
 json.extract! @person, :id, :source_id, :fname, :mname, :lname, :prefix, :suffix, :email, :phone, :source_status_id,
               :source_context_id, :po_affiliations, :created_at, :updated_at, :created_by, :updated_by,
-              :lock_version, :uuid, :person_created_date, :person_updated_date, :processing_status, :ctrp_id, :association_start_date,
+              :lock_version, :uuid, :created_at, :updated_at, :processing_status, :ctrp_id, :association_start_date,
               :service_request_id, :registration_type, :extension
 
 
 ctrp_context_id = SourceContext.find_by_code('CTRP').id
 ctep_context_id = SourceContext.find_by_code('CTEP').id
 ctep_active_source_status = SourceStatus.where(source_context_id: ctep_context_id, code: 'ACT')
-ctep_active_source_status_id = ctep_active_source_status.present? ? ctep_active_source_status[0].id : -1
-active_source_statuses = SourceStatus.where(code: 'ACT').pluck(:id)
+# ctep_active_source_status_id = ctep_active_source_status.present? ? ctep_active_source_status[0].id : -1
+# active_source_statuses = SourceStatus.where(code: 'ACT').pluck(:id)
 
 json.set! :is_ctrp_context, ctrp_context_id == @person.source_context_id # flag if this person is ctrp context
 json.set! :service_request, ServiceRequest.find(@person.service_request_id).name if @person.service_request_id.present?
@@ -16,7 +16,7 @@ json.set! :source_status, SourceStatus.find(@person.source_status_id).name if @p
 json.set! :source_context, SourceContext.find(@person.source_context_id).name if @person.source_context_id.present?
 
 @associated_persons = Person.where(ctrp_id: @person.ctrp_id) #if !@person.ctrp_id.nil? && @person.source_context_id == ctrp_context_id
-@associated_persons = @associated_persons.reject { |p| p.id == @person.id || !active_source_statuses.include?(p.source_status_id) } # remove self and the associated_persons must have active CTEP source status
+@associated_persons = @associated_persons.reject { |p| p.id == @person.id } # remove self
 
 json.associated_persons do
   json.array!(@associated_persons) do |p|

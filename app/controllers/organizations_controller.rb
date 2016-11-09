@@ -63,7 +63,7 @@ class OrganizationsController < ApplicationController
     @organization.updated_by = @current_user.username unless @current_user.nil?
     if isAssociatedOrgUpdate
       saveAndRenderAssociatedOrgs
-    elsif @organization.source_context_id == @ctrpId
+    elsif @organization.source_context_id == @ctrpId || @organization.source_context_id == @ctepId
       saveAndRenderUpdatedOrg
     end
   end
@@ -83,13 +83,22 @@ class OrganizationsController < ApplicationController
     end
   end
 
-
+  def nullifiable
+    nullifiable = false
+    nullifiable_org = Organization.find_by_id(params[:id])
+    if !nullifiable_org.blank?
+      nullifiable = nullifiable_org.nullifiable
+    end
+    respond_to do |format|
+      format.json {render :json => {:nullifiable => nullifiable}}
+    end
+  end
 
   def curate
 
     respond_to do |format|
       if Organization.nullify_duplicates(params)
-        format.html { redirect_to organizations_url, notice: 'Organization was successfully curated.' }
+        format.json {render :json => {:nullify_success => true}}
       else
         format.json { render json: @organization.errors, status: :unprocessable_entity  }
       end
@@ -107,6 +116,7 @@ class OrganizationsController < ApplicationController
       params[:remove_ids].each do |org|
         contextOrg = Organization.find_by_id(org[:id])
         dissassociated_org = disAssociateTwoOrgs params[:ctrp_id], contextOrg
+        dissassociated_org.validations_to_skip = ["address","city"]
         dissassociated_org.save
       end
       @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
@@ -234,7 +244,7 @@ class OrganizationsController < ApplicationController
       resultOrgs = resultOrgs.matches("source_statuses.name", params[:source_status]) if params[:source_status].present?
       resultOrgs = resultOrgs.matches("source_contexts.name", params[:source_context]) if params[:source_context].present?
     else
-      resultOrgs = resultOrgs.matches("source_statuses.name", "Active").matches("source_contexts.name", "CTRP")
+      resultOrgs = resultOrgs.matches("source_statuses.code", "ACT").matches("source_contexts.code", "CTRP")
     end
     return resultOrgs
   end
@@ -323,6 +333,7 @@ class OrganizationsController < ApplicationController
   end
 
   def saveAndRenderAssociatedOrgs
+    @organization.validations_to_skip = ["address","city"]
     respond_to do |format|
       @organization = associateTwoOrgs organization_params[:ctrp_id], @organization
       if @organization.source_context_id == @ctepId
@@ -340,6 +351,7 @@ class OrganizationsController < ApplicationController
   end
 
   def saveAndRenderUpdatedOrg
+    @organization.validations_to_skip = ["address","city"]
     respond_to do |format|
       if @organization.update(organization_params.except(:ctrp_id))
         @active_context = 'CTRP'
@@ -370,7 +382,7 @@ class OrganizationsController < ApplicationController
 
   def processParams
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 20 if params[:start].blank?
+    params[:rows] = 20 if params[:rows].blank?
     if params[:allrows] == true
       params[:rows] = nil
     end

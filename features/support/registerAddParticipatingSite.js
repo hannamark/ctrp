@@ -21,6 +21,7 @@ var importTrialPage = function() {
     this.addPSPrincipalInvestigator = element(by.css('input[name="pi_name1"]'));
     this.addPSSiteProgramCode = element(by.model('curPs.program_code'));
     this.addPSTrialStatus = element(by.model('sr_status_id'));
+    this.addPSTrialRemoveTrialStatus = element(by.css('table[ng-show="addedStatuses.length > 0"]')).all(by.css('.glyphicon.glyphicon-remove-circle'));
     this.addPSTrialComment = element(by.model('status_comment'));
     this.addPSTrialStatusTable = element.all(by.binding('status.sr_status_name'));
     this.addPSTrialStatusDateTable = element.all(by.binding('status.status_date | dateFormat '));

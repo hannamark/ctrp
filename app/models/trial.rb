@@ -1249,6 +1249,28 @@ class Trial < TrialBase
     end
   }
 
+  scope :with_org_id, -> (value, type) {
+    join_clause = "LEFT JOIN organizations lead_orgs ON lead_orgs.id = trials.lead_org_id LEFT JOIN organizations sponsors ON sponsors.id = trials.sponsor_id LEFT JOIN participating_sites ps ON ps.trial_id = trials.id LEFT JOIN organizations sites ON sites.id = ps.organization_id"
+    where_clause = ""
+
+    if type.present?
+      type.each_with_index { |e, i|
+        where_clause += " OR " if i > 0
+        if e == 'Lead Organization'
+          where_clause += "lead_orgs.id = #{value}"
+        elsif e == 'Sponsor'
+          where_clause += "sponsors.id = #{value}"
+        elsif e == 'Participating Site'
+          where_clause += "sites.id = #{value}"
+        end
+      }
+    else
+      where_clause = "lead_orgs.id = #{value} OR sponsors.id = #{value} OR sites.id = #{value}"
+    end
+
+    joins(join_clause).where(where_clause)
+  }
+
   scope :with_org, -> (value, type) {
     str_len = value.length
     if value[0] == '*' && value[str_len - 1] != '*'
