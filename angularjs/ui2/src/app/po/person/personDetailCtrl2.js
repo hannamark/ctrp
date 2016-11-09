@@ -108,7 +108,8 @@
                 aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
                 vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
             });
-
+            vm.curPerson.service_request_id = 1;
+            console.info('vm.person to be updated: ', vm.curPerson);
             //create a nested Person object
             var newPerson = {};
             newPerson.new = vm.curPerson.new || false;
