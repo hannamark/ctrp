@@ -116,6 +116,7 @@ class OrganizationsController < ApplicationController
       params[:remove_ids].each do |org|
         contextOrg = Organization.find_by_id(org[:id])
         dissassociated_org = disAssociateTwoOrgs params[:ctrp_id], contextOrg
+        dissassociated_org.validations_to_skip = ["address","city"]
         dissassociated_org.save
       end
       @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
@@ -332,6 +333,7 @@ class OrganizationsController < ApplicationController
   end
 
   def saveAndRenderAssociatedOrgs
+    @organization.validations_to_skip = ["address","city"]
     respond_to do |format|
       @organization = associateTwoOrgs organization_params[:ctrp_id], @organization
       if @organization.source_context_id == @ctepId
@@ -349,6 +351,7 @@ class OrganizationsController < ApplicationController
   end
 
   def saveAndRenderUpdatedOrg
+    @organization.validations_to_skip = ["address","city"]
     respond_to do |format|
       if @organization.update(organization_params.except(:ctrp_id))
         @active_context = 'CTRP'
