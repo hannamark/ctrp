@@ -77,8 +77,8 @@
                 {name: 'Nullify', displayName: 'Nullify',
                     enableSorting: false,
                     enableFiltering: false,
-                    minWidth: '100', width: '*',
-                    cellTemplate: '<div ng-if="row.isSelected"><input type="radio" name="nullify"' +
+                    minWidth: '70', width: '*',
+                    cellTemplate: '<div ng-if="row.isSelected" class="radio-text-center"><input type="radio" name="nullify"' +
                     ' ng-click="grid.appScope.nullifyEntity(row.entity)"></div>',
                     visible: false
                 },

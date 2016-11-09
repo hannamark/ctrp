@@ -39,7 +39,7 @@
 </div>
 <div class="form-group">
     <label for="source_status" class="control-label col-sm-3">Source Status:</label>
-    <div class="col-sm-2">
+    <div class="col-sm-2" ng-if="orgDetailView.ctrpOrg.source_status_code !== 'NULLIFIED'">
         <div class="animated-item">
             <select restriction-field
                     class="form-control input-sm" id="source_status"
@@ -47,6 +47,9 @@
                     ng-options="status.id as status.name for status in orgDetailView.ctrpSourceStatusArr">
             </select>
         </div>
+    </div>
+    <div class="col-sm-6 form-text" ng-if="orgDetailView.ctrpOrg.source_status_code === 'NULLIFIED'">
+        {{orgDetailView.ctrpOrg.source_status_code}}
     </div>
 </div>
 <div class="form-group">

@@ -63,7 +63,7 @@ class OrganizationsController < ApplicationController
     @organization.updated_by = @current_user.username unless @current_user.nil?
     if isAssociatedOrgUpdate
       saveAndRenderAssociatedOrgs
-    elsif @organization.source_context_id == @ctrpId
+    elsif @organization.source_context_id == @ctrpId || @organization.source_context_id == @ctepId
       saveAndRenderUpdatedOrg
     end
   end
@@ -98,7 +98,7 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       if Organization.nullify_duplicates(params)
-        format.html { redirect_to organizations_url, notice: 'Organization was successfully curated.' }
+        format.json {render :json => {:nullify_success => true}}
       else
         format.json { render json: @organization.errors, status: :unprocessable_entity  }
       end

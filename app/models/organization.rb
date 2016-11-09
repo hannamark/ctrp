@@ -186,7 +186,16 @@ class Organization < ActiveRecord::Base
 
       #sleep(2.minutes);
 
-      nullify_references
+      #All references in CTRP to the nullified organization as Lead Organization will reference the retained organization as Lead Organization
+      @toBeNullifiedOrg.lo_trials.each do |trial|
+        trial.lead_org_id=@toBeRetainedOrg.id
+        trial.save!
+      end
+      #All references in CTRP to the nullified organization as Sponsor will reference the retained organization as Sponsor
+      @toBeNullifiedOrg.sponsor_trials.each do |trial|
+        trial.sponsor_id=@toBeRetainedOrg.id
+        trial.save!
+      end
 
       #All references in CTRP to the nullified organization as Participating Site will reference the retained organization as Participating Site
       ## Future Implementation
@@ -212,7 +221,20 @@ class Organization < ActiveRecord::Base
         end
       end
 
-      move_aliases
+      #Name of the Nullified organization will be listed as an alias on the retained organization
+      NameAlias.create(organization_id:@toBeRetainedOrg.id,name:@toBeNullifiedOrg.name)
+      ## Aliases of nullified organizations will be moved to aliases of the retained organization
+      aliasesOfNullifiedOrganization = NameAlias.where(organization_id: @toBeNullifiedOrg.id)
+      aliasesOfRetainedOrganization = NameAlias.where(organization_id: @toBeRetainedOrg.id)
+      aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name.upcase}
+      aliasesOfNullifiedOrganization.each do |al|
+        if(!aliasesNamesOfRetainedOrganization.include?al.name.upcase)
+          al.organization_id=@toBeRetainedOrg.id
+          al.save!
+        else
+          al.destroy!
+        end
+      end
 
       #If both organizations had CTEP IDs only the retained organization CTEP ID will be associated with the retained organization
       #The status of the organization to be nullified will be "Nullified"
