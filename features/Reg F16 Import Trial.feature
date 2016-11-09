@@ -20,7 +20,10 @@ When the imported Clinical Trial does not have an Official Title
 Then the Clinical Trial Brief Title should be displayed in the search results
 Then I can import the trial information from ClinicalTrials.gov into CTRP
 And the trial Study Souce will be listed as Industrial
-And the XML from ClinicalTrials.gov will be attached to the trial document
+And the view trial screen will display imported trial details 
+And the "Add My Site" button will be displayed (# Reg F22 Register Participating Site)
+ And the XML from ClinicalTrials.gov will be saved internally
+ And The saved XML won't be be displayed in registration application (#But the XML document should be displayed and viewed in PA)
 And The file name will be "import_””NCT ID””_””Current Date YYYY-MM-DD””_””Current Time HHMM(24HR)””.xml" "Example: import_NCT09809876_2016-05-03-1230.xml"
 And the trial milestone "Submission Received Date" will be added with the date of the import
 |Import Mappings are in CTRP AUM\Functional\Registration\ClinicalTrials Import Data Element Mapping v6.docx|
@@ -73,8 +76,7 @@ Scenario:#2a  NLM Context will be created for an Imported trial
     
      Scenario:#2d NLM Context will be created for an Imported trial  
     Given I am logged into the CTRP
-      When a trial has been imported with a "Sponsor Name" that does not exist in the NLM Context in the CTRP
-     And that "Sponsor Name" does not match an organization name "Agency" name in CTRP
+      When a trial has been imported with a "Sponsor Name" that does not match an organization name in the NLM Context record in CTRP
      Then an NLM Context with an NLM Context Status of "Active" will be automatically created in CTRP
      And the processing status is "Incomplete"
      And the service Request is "Create"
@@ -90,7 +92,7 @@ Scenario:#2a  NLM Context will be created for an Imported trial
      Then the available organization source status will be
      
      |Active|
-     |Inactive|
+     
     
      
 Scenario: #3 I can import an Expanded Access trial by NCT ID from ClinicalTrials.gov
