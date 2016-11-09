@@ -35,6 +35,7 @@
 
         activate();
         function activate() {
+            _watchWriteMode();
             _watchOrgAffiliation();
             _watchGlobalWriteMode();
             _watchContextAssociation();
@@ -53,8 +54,8 @@
                     var actStatus = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}); // defaulted to 'Active' source status
                     vm.curPerson.source_status_id = !!actStatus ? actStatus.id : null;
                 }
-                if (contextName === 'CTRP' && contextName !== vm.defaultTab &&
-                    !angular.isDefined(vm.ctrpPerson.associated_persons)) {
+                //  && !angular.isDefined(vm.ctrpPerson.associated_persons)
+                if (contextName === 'CTRP' && contextName !== vm.defaultTab) {
                     // CTRP is not the default tab
                     // fetch associated persons for the CTRP person, because the CTRP person may
                     // have more association than the currently shown CTEP person
@@ -63,9 +64,11 @@
                         vm.ctrpPerson = res.data;
                         vm.curPerson = vm.ctrpPerson;
                         _prepAssociationGrid(vm.curPerson.associated_persons);
+                        _populatePOAff();
                     });
                 } else if (contextName === 'CTRP') {
                     // CTRP is the default tab
+                    _populatePOAff();
                     _prepAssociationGrid(vm.curPerson.associated_persons);
                 }
 
@@ -122,6 +125,11 @@
                     // updated
                     console.info('response with update: ', response);
                     vm.curPerson = response.data;
+                    if (vm.curPerson.source_context === 'CTEP') {
+                        vm.ctepPerson = angular.copy(vm.curPerson);
+                    } else {
+                        vm.ctrpPerson = angular.copy(vm.curPerson);
+                    }
                     _showToastr('Person ' + vm.curPerson.lname + ' has been recorded');
                     vm.curPerson.new = false;
 
@@ -616,6 +624,12 @@
         function setFormToPristine() {
             $scope.person_form.$setPristine();
         }
+
+        function _watchWriteMode() {
+             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                vm.isWritable = UserService.isCurationModeEnabled() || false;
+            });
+        } // _watchWriteMode
 
     } // personDetailCtrl2
 })();
