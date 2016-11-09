@@ -120,14 +120,14 @@
         ng-class="{'has-error': personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.validOrgsCount === 0 && personDetailView.curPerson.source_context === 'CTRP')}"
         restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN">
         <label class="control-label col-sm-3">Add Affiliated Organization: </label>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <ctrp-org-adv-search-modal-button pre-search = '{"source_contextfilter": ["CTRP"]}' use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
             <span class="help-block" ng-show="personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.validOrgsCount === 0 && personDetailView.curPerson.source_context === 'CTRP')">
                 Organization Affiliation is Required
             </span>
             <!-- ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0 && personDetailView.curPersonEditable) -->
         </div>
-        <div class="col-sm-2" ng-show="personDetailView.savedSelection.length">
+        <div class="col-sm-3" ng-show="personDetailView.savedSelection.length">
             <toggle-visibility element-to-toggle="#affiliatedOrgsGrid" element-label="Affiliated Organizations" toggle-visibility-default="true" class="pull-right small-sm"></toggle-visibility>
         </div>
     </div>
