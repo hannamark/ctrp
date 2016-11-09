@@ -287,9 +287,9 @@ Given I am logged into the CTRP Protocol Abstraction application
  When I change Clinical Research Category to Expanded Access
   And I can select a different value for the Primary Purpose type:
   And I can select a different value for the Secondary Purpose Type:
-  And I can select a different value for Trial Phase type:
+  And I can select a different value for the Trial Phase type:
   And I select a different value for the question"Is this a pilot" type
-  And I can select a value for Intervention Model type
+  And I can select a value for the Intervention Model type
   And I can enter a value for Number of Arms
   And I can select a value for Masking
   And I can select a value for Allocation
