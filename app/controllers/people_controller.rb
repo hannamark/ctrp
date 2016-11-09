@@ -156,6 +156,11 @@ class PeopleController < ApplicationController
       temp_cteps = Person.where(ctrp_id: params[:ctrp_id], source_context_id: ctep_source_context_id)
       temp_cteps.each { |per| per.update_attributes('ctrp_id': nil, 'association_start_date': nil) }
 
+      # remove existing association to the ctrp person first
+      ctep_source_context_id = SourceContext.find_by_code('CTEP').id
+      temp_cteps = Person.where(ctrp_id: params[:ctrp_id], source_context_id: ctep_source_context_id)
+      temp_cteps.each { |per| per.update_attributes('ctrp_id': nil, 'association_start_date': nil) }
+
       associated_ctep_person = Person.find(params[:ctep_person_id])
       if !associated_ctep_person.nil?
         associated_ctep_person.ctrp_id = params[:ctrp_id]
@@ -277,10 +282,9 @@ class PeopleController < ApplicationController
     def person_params
       params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :extension,
                                      :source_status_id, :source_context_id, :lock_version, :processing_status,
-                                     :registration_type, :service_request, :force_clone, :id, :source_context,
+                                     :registration_type, :force_clone, :service_request_id,
                                      po_affiliations_attributes: [:id, :organization_id, :effective_date,
                                                                   :expiration_date, :po_affiliation_status_id,
                                                                   :lock_version, :_destroy])
     end
-
 end

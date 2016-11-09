@@ -98,17 +98,21 @@
             OrgService.upsertOrg(savedOrgObj).then(function (response) {
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
-                    if (vm.ctrpOrg.new && status === 201) {
+                    if (savedOrgObj.new && status === 201) {
                         $state.go('main.orgDetail', {orgId: response.id});
                     } else if (status === 200) {
-                        vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
-                        vm.ctrpOrg.name_aliases = response.name_aliases;
-                        vm.addedNameAliases = [];
-                        appendNameAliases();
+                        if (savedOrgObj.organization.source_context_code === 'CTRP') {
+                            vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
+                            vm.ctrpOrg.name_aliases = response.name_aliases;
+                            vm.addedNameAliases = [];
+                            appendNameAliases();
+                        } else if (savedOrgObj.organization.source_context_code === 'CTEP') {
+                            vm.ctepOrgCopy = angular.copy(vm.ctepOrg);
+                        }
                     }
-                    showToastr(vm.ctrpOrg.name);
-                    vm.ctrpOrg.new = false;
-                    vm.ctrpOrg.updated_at = response.updated_at;
+                    showToastr(savedOrgObj.organization.name);
+                    savedOrgObj.new = false;
+                    savedOrgObj.organization.updated_at = response.updated_at;
 
                     $timeout(function() {
                         setFormToPristine();
@@ -364,6 +368,7 @@
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
                     vm.associatedOrgs = response.associated_orgs;
+                    vm.associatedOrgsGridOpen = true;
                     associateOrgsRefresh();
                     toastr.success('Organization(s) association removed.', 'Operation Successful!');
                     setFormToPristine();

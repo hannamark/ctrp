@@ -60,6 +60,7 @@
                     // fetch associated persons for the CTRP person, because the CTRP person may
                     // have more association than the currently shown CTEP person
                     PersonService.getPersonById(vm.curPerson.id).then(function(res) {
+                        console.info('res from person service: ', res);
                         vm.ctrpPerson = res.data;
                         vm.curPerson = vm.ctrpPerson;
                         _prepAssociationGrid(vm.curPerson.associated_persons);
@@ -68,10 +69,12 @@
                     });
                 } else if (contextName === 'CTRP') {
                     // CTRP is the default tab
-                    _populatePOAff(); // do this only when context is CTRP ???
+                    _populatePOAff();
                     _prepAssociationGrid(vm.curPerson.associated_persons);
                 }
-                vm.masterCopy = angular.copy(vm.curPerson); // make a copy
+
+                _populatePOAff(); // TODO: do this only when context is CTRP ???
+                vm.masterCopy = angular.copy(vm.curPerson);
                 _updateFormTitleLabel();
             } // if context name is defined
 
@@ -79,13 +82,10 @@
         }
 
         function updatePerson() {
-            console.info('updating person: ', vm.curPerson);
             if (!angular.isDefined(vm.curPerson)) {
                 console.error('vm.curPerson is undefined');
                 return;
             }
-            console.info('submitted person context: ', vm.curPerson.source_context);
-            console.info('vm.validOrgsCount: ', vm.validOrgsCount);
 
             if (vm.validOrgsCount === 0 && vm.curPerson.source_context === 'CTRP') {
                 vm.affiliatedOrgError = true;
@@ -115,7 +115,7 @@
 
             //create a nested Person object
             var newPerson = {};
-            newPerson.new = vm.curPerson.new || '';
+            newPerson.new = vm.curPerson.new || false;
             newPerson.id = vm.curPerson.id || '';
             newPerson.person = vm.curPerson;
             vm.isBtnDisabled = true;
@@ -130,7 +130,12 @@
                 } else if (status === 200) {
                     // updated
                     console.info('response with update: ', response);
-                    vm.curPerson = response.data; // TODO: if the CTEP person just updated, update ctepPerson object as well
+                    vm.curPerson = response.data;
+                    if (vm.curPerson.source_context === 'CTEP') {
+                        vm.ctepPerson = angular.copy(vm.curPerson);
+                    } else {
+                        vm.ctrpPerson = angular.copy(vm.curPerson);
+                    }
                     _showToastr('Person ' + vm.curPerson.lname + ' has been recorded');
                     vm.curPerson.new = false;
 
@@ -630,10 +635,10 @@
         }
 
         function _watchWriteMode() {
-            $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
                 vm.isWritable = UserService.isCurationModeEnabled() || false;
             });
-        }
+        } // _watchWriteMode
 
     } // personDetailCtrl2
 })();
