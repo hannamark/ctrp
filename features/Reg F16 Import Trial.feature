@@ -86,15 +86,7 @@ Scenario:#2a  NLM Context will be created for an Imported trial
     |Trial Funding Source: Null|
     |Lead org: Null|
   
-  Scenario:#2e Organization Source Status NLM available list
-    Given I am logged into the CTRP Application
-     When an NLM Organization is created in the CTRP 
-     Then the available organization source status will be
-     
-     |Active|
-     
     
-     
 Scenario: #3 I can import an Expanded Access trial by NCT ID from ClinicalTrials.gov
 Given I have selected the option to Import an Industrial or Other Trial
 And I am on the Import ClinicalTrials.gov Trials screen
