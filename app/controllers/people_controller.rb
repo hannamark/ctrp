@@ -163,6 +163,11 @@ class PeopleController < ApplicationController
 
     if params.has_key?(:ctep_person_id) and params.has_key?(:ctrp_id)
 
+      # remove existing association to the ctrp person first
+      ctep_source_context_id = SourceContext.find_by_code('CTEP').id
+      temp_cteps = Person.where(ctrp_id: params[:ctrp_id], source_context_id: ctep_source_context_id)
+      temp_cteps.each { |per| per.update_attributes('ctrp_id': nil, 'association_start_date': nil) }
+
       associated_ctep_person = Person.find(params[:ctep_person_id])
       if !associated_ctep_person.nil?
         associated_ctep_person.ctrp_id = params[:ctrp_id]
