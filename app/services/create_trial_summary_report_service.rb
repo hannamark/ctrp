@@ -676,7 +676,7 @@ class CreateTrialSummaryReportService
           Hash h = Hash.new
           #h.store("Type", board_approval_status)
           @trial.primary_purpose_id.nil? ? primary_purpose=NO_DATA_AVAILABLE : primary_purpose = PrimaryPurpose.find_by_id(@trial.primary_purpose_id).name
-          @trial.secondary_purpose_id.nil? ? secondary_purpose=NO_DATA_AVAILABLE : secondary_purpose = PrimaryPurpose.find_by_id(@trial.secondary_purpose_id).name
+          @trial.secondary_purpose_id.nil? ? secondary_purpose=nil : secondary_purpose = PrimaryPurpose.find_by_id(@trial.secondary_purpose_id).name
           @trial.phase_id.nil? ? phase=NO_DATA_AVAILABLE : phase = Phase.find_by_id(@trial.phase_id).name
           @trial.intervention_model_id.nil? ? interventional_model=NO_DATA_AVAILABLE : interventional_model = InterventionModel.find_by_id(@trial.intervention_model_id).name
           @trial.masking_id.nil? ? masking = NO_DATA_AVAILABLE : masking = Masking.find_by_id(@trial.masking_id).name
@@ -691,13 +691,20 @@ class CreateTrialSummaryReportService
 
           @trial.research_category_id.nil? ? trial_type = NO_DATA_AVAILABLE : trial_type = ResearchCategory.find_by_id(@trial.research_category_id).name
 
+          if primary_purpose == "Other"
+            @trial.primary_purpose_other.present? ? primary_other_descr = @trial.primary_purpose_other : primary_other_descr = "No Data Available"
+            primary_purpose = primary_purpose + ' , ' + primary_other_descr
+          end
+          if secondary_purpose == "Other"
+            @trial.secondary_purpose_other.present? ?  secondary_other_descr = @trial.secondary_purpose_other : secondary_other_descr = "No Data Available"
+            secondary_purpose = secondary_purpose + ' , ' + secondary_other_descr
+          end
 
 
-          if trial_type == "Interventional" || trial_type ="Expanded Access"
+
+          if trial_type == "Interventional" || trial_type == "Expanded Access"
                 h.store("Primary Purpose",primary_purpose)
-                h.store("Description of Other Primary Purpose",@trial.primary_purpose_other) if primary_purpose == "Other"
-                h.store("Secondary Purpose",secondary_purpose)
-                h.store("Description of Other Secondary Purpose",@trial.secondary_purpose_other) if secondary_purpose == "Other"
+                h.store("Secondary Purpose",secondary_purpose) if secondary_purpose.present?
                 h.store("Phase",phase)
                 h.store("Intervention Model",interventional_model)
                 h.store("Number of Arms",@trial.num_of_arms.to_s)
@@ -716,27 +723,21 @@ class CreateTrialSummaryReportService
                   h.store("Masking Roles",masking_roles_str)
                 end
 
-
                 h.store("Allocation",allocation)
                 h.store("Study Classification",classification)
                 h.store("Target Enrollment",get_value_based_on_display_rule(@trial.target_enrollment.to_s,"Required"))
 
-          elsif trial_type == "Observational" || trial_type ="Ancillary Correlative"
+          elsif trial_type == "Observational" || trial_type == "Ancillary Correlative"
                 h.store("Primary Purpose",primary_purpose)
                 h.store("Phase",phase)
                 h.store("Study Model",study_model)
                 h.store("Time Perspective",time_perspective)
                 h.store("Description of Other Time Perspective",@trial.time_perspective_other) if time_perspective == "Other"
-
                 h.store("Bio-Specimen Retention",biospecimen_retention)
                 h.store("Bio-Specimen Description",biospecimen_desc)
-                h.store("Number of Arms",@trial.num_of_arms.to_s)
+                h.store("Number of Arms/Groups",@trial.num_of_arms.to_s)
                 h.store("Target Enrollment",get_value_based_on_display_rule(@trial.target_enrollment.to_s,"Required"))
           end
-
-
-
-
 
           array =@document.table(h.length,2,4000,4000)
           array.border_width =10
@@ -758,7 +759,7 @@ class CreateTrialSummaryReportService
 
           @trial.brief_title.nil? ? brief_title = NO_DATA_AVAILABLE : brief_title = @trial.brief_title
           @trial.brief_summary.nil? ? brief_summary = NO_DATA_AVAILABLE : brief_summary = @trial.brief_summary
-          @trial.objective.nil? ? objective = NO_DATA_AVAILABLE : objective = @trial.objective
+          @trial.objective.nil? ? objective = nil : objective = @trial.objective
           @trial.detailed_description.nil? ? detailed_description = NO_DATA_AVAILABLE : detailed_description = @trial.detailed_description
 
           create_a_table_row(@light_red,@foreground_th_text_color,"Brief Title")
@@ -766,10 +767,10 @@ class CreateTrialSummaryReportService
 
           create_a_table_row(@light_red,@foreground_th_text_color,"Brief Summary")
           create_a_table_row_node(@trial_description_table,brief_summary)
-
-          create_a_table_row(@light_red,@foreground_th_text_color,"Objectives")
-          create_a_table_row_node(@trial_description_table,objective)
-
+           if objective.present?
+             create_a_table_row(@light_red,@foreground_th_text_color,"Objectives")
+             create_a_table_row_node(@trial_description_table,objective)
+           end
           create_a_table_row(@light_red,@foreground_th_text_color,"Detailed Description")
           create_a_table_row_node(@trial_description_table,detailed_description)
 
@@ -785,9 +786,9 @@ class CreateTrialSummaryReportService
 
           array =@document.table(1,4,2000,2000,2000,2000)
           array.border_width =10
-          array[0][0] << "Type"
-          array[0][1] << "Name"
-          array[0][2] << "Alternate Name"
+          array[0][0] << "Intervention Type"
+          array[0][1] << "Preferred Name"
+          array[0][2] << "Synonyms"
           array[0][3] << "Description"
 
           interventions = @trial.interventions
@@ -812,12 +813,12 @@ class CreateTrialSummaryReportService
       def generate_arm_groups_table
           create_a_table_row(@grey,@foreground_th_text_color,"Arm/Group(s)")
 
-          array =@document.table(1,3,2800,2600,2600)
+          array =@document.table(1,4,2800,2600,2600)
           array.border_width =10
           array[0][0] << "Arm Type"
           array[0][1] << "Label"
           array[0][2] << "Description"
-
+          array[0][3] << "Intervention Name"
           arms_groups = @trial.arms_groups
           arms_groups_num = 0
           arms_groups_num = arms_groups.size if arms_groups
@@ -825,6 +826,14 @@ class CreateTrialSummaryReportService
           array.border_width =10
           i = 0
           i = 0
+
+          if arms_groups_num == 0
+            array =@document.table(1, 1,8000)
+            array[0][0] << NO_DATA_AVAILABLE
+            array.border_width =10
+          end
+
+
           arms_groups.each do |col|
             array[i][0] <<  get_value_based_on_display_rule(col.arms_groups_type,"Required")
             array[i][1] <<  get_value_based_on_display_rule(col.label,"Required")
@@ -1013,7 +1022,7 @@ class CreateTrialSummaryReportService
           array[0].shading_colour = @light_red
           array.border_width =10
 
-          array[0][0].foreground(@foreground_th_text_color) << "Marker Name"
+          array[0][0].foreground(@foreground_th_text_color) << "Protocol Name"
           array[0][1].foreground(@foreground_th_text_color) << "Evaluation Type"
           array[0][2].foreground(@foreground_th_text_color) << "Assay Type"
           array[0][3].foreground(@foreground_th_text_color) << "Biomarker Use"
