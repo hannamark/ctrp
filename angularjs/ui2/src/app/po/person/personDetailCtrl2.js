@@ -111,7 +111,7 @@
 
             //create a nested Person object
             var newPerson = {};
-            newPerson.new = vm.curPerson.new || '';
+            newPerson.new = vm.curPerson.new || false;
             newPerson.id = vm.curPerson.id || '';
             newPerson.person = vm.curPerson;
             vm.isBtnDisabled = true;
