@@ -70,9 +70,6 @@ class CreateTrialSummaryReportService
     ###############################################
     ###############################################
 
-
-
-
     @document.paragraph(@styles['PS_NORMAL']) do |p2|
       today_date = Date.today()
       @trial.verification_date.nil? ? verification_date="" : verification_date = @trial.verification_date.strftime("%d-%h-%Y").to_s
@@ -276,7 +273,7 @@ class CreateTrialSummaryReportService
       end
     end
 
-    array =@document.table(2+other_ids_num+amend_count, 2,4000,4000)
+    array =@document.table(2+other_ids_num+amend_count, 2,1000,7000)
     array.border_width =10
 
     Hash h = Hash.new
@@ -833,7 +830,6 @@ class CreateTrialSummaryReportService
             array.border_width =10
           end
 
-
           arms_groups.each do |col|
             array[i][0] <<  get_value_based_on_display_rule(col.arms_groups_type,"Required")
             array[i][1] <<  get_value_based_on_display_rule(col.label,"Required")
@@ -932,11 +928,18 @@ class CreateTrialSummaryReportService
          diseases = @trial.diseases
          num_of_rows = diseases.size
 
-         array = @document.table(num_of_rows,1,8000)
+         array =@document.table(1,2,4000,4000)
          array.border_width =10
+         array[0][0] << "Diseases/Conditions"
+         array[0][1] << "Disease Code"
+         if num_of_rows == 0
+           array = @document.table(1,1,8000)
+           array[0][0] << NO_DATA_AVAILABLE
+         end
          i=0
          diseases.each do |col|
            array[i][0] << col.display_name
+           array[i][1] << col.code
            array[i][0].line_break
            i = i+1
          end
@@ -1014,7 +1017,7 @@ class CreateTrialSummaryReportService
         end
 
         def generate_markers_table
-          create_a_table_row(@grey,@foreground_th_text_color,"Markers")
+          create_a_table_row(@grey,@foreground_th_text_color,"Biomarkers")
           markers = @trial.markers
           num_of_rows = markers.size
 
