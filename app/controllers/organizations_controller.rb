@@ -63,7 +63,7 @@ class OrganizationsController < ApplicationController
     @organization.updated_by = @current_user.username unless @current_user.nil?
     if isAssociatedOrgUpdate
       saveAndRenderAssociatedOrgs
-    elsif @organization.source_context_id == @ctrpId
+    elsif @organization.source_context_id == @ctrpId || @organization.source_context_id == @ctepId
       saveAndRenderUpdatedOrg
     end
   end
@@ -83,13 +83,22 @@ class OrganizationsController < ApplicationController
     end
   end
 
-
+  def nullifiable
+    nullifiable = false
+    nullifiable_org = Organization.find_by_id(params[:id])
+    if !nullifiable_org.blank?
+      nullifiable = nullifiable_org.nullifiable
+    end
+    respond_to do |format|
+      format.json {render :json => {:nullifiable => nullifiable}}
+    end
+  end
 
   def curate
 
     respond_to do |format|
       if Organization.nullify_duplicates(params)
-        format.html { redirect_to organizations_url, notice: 'Organization was successfully curated.' }
+        format.json {render :json => {:nullify_success => true}}
       else
         format.json { render json: @organization.errors, status: :unprocessable_entity  }
       end
@@ -370,7 +379,7 @@ class OrganizationsController < ApplicationController
 
   def processParams
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 20 if params[:start].blank?
+    params[:rows] = 20 if params[:rows].blank?
     if params[:allrows] == true
       params[:rows] = nil
     end

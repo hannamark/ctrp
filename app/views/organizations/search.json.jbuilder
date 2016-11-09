@@ -31,6 +31,8 @@ json.orgs do
       json.ctep_id organization.multiview_ctep_id
       json.source_context organization.source_context_name
       json.source_status organization.source_status_name
+      json.source_context_code @read_all_access ? organization.source_context_code : nil
+      json.source_status_code @read_all_access ? organization.source_status_code : nil
       json.url organization_url(organization, format: :json)
     end
   end

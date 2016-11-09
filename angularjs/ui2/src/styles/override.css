@@ -966,6 +966,15 @@ div.ui-grid-cell .ui-grid-datepicker input:hover {
   font-size: 0;
 }
 
+div.ui-grid-cell div.radio-text-center {
+    text-align: center;
+    padding-top: 3px;
+}
+
+div.ui-grid-cell div.radio-text-center input {
+    width: auto;
+}
+
 div.ui-grid-cell input[type="checkbox"] {
     margin-top: 0;
 }

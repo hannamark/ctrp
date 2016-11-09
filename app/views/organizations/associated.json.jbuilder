@@ -34,6 +34,8 @@ json.associated_orgs do
                 json.association_date @read_all_access ? organization.association_date : nil
                 json.service_request_name @read_all_access ? organization.service_request_name : nil
                 json.processing_status @read_all_access ? organization.processing_status : nil
+                json.source_context_code @read_all_access ? organization.source_context_code : nil
+                json.source_status_code @read_all_access ? organization.source_status_code : nil
                 json.uuid @write_access ? organization.uuid : nil
                 json.ctep_id organization.multiview_ctep_id
   end

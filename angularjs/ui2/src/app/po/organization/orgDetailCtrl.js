@@ -13,24 +13,31 @@
 
     function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService,
                            $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $timeout) {
-        var vm = this;
+         var vm = this;
          function setInitialState() {
-            vm.addedNameAliases = [];
-            vm.states = [];
-            vm.processingStatuses = OrgService.getProcessingStatuses();
-            vm.watchCountrySelection = OrgService.watchCountrySelection();
-            vm.countriesArr = countryList;
-            vm.sourceContextArr = sourceContextObj;
-            vm.sourceStatusArr = sourceStatusObj;
-            vm.sourceStatusArr.sort(Common.a2zComparator());
-            vm.alias = '';
-            vm.curationReady = false;
-            vm.showPhoneWarning = false;
-            vm.disableBtn = false;
-            vm.processStatusArr = OrgService.getProcessingStatuses();
-            vm.cloningCTEP = false;
-            vm.nilclose = true;
+             vm.addedNameAliases = [];
+             vm.states = [];
+             vm.processingStatuses = OrgService.getProcessingStatuses();
+             vm.watchCountrySelection = OrgService.watchCountrySelection();
+             vm.countriesArr = countryList;
+             vm.sourceContextArr = sourceContextObj;
+             vm.sourceStatusArr = sourceStatusObj;
+             vm.sourceStatusArr.sort(Common.a2zComparator());
+             vm.alias = '';
+             vm.curationReady = false;
+             vm.showPhoneWarning = false;
+             vm.disableBtn = false;
+             vm.processStatusArr = OrgService.getProcessingStatuses();
+             vm.cloningCTEP = false;
+             vm.nilclose = true;
 
+             OrgService.getServiceRequests().then(function (requests) {
+                 var status = requests.server_response.status;
+                 if (status >= 200 && status <= 210) {
+                     vm.serviceRequests = requests;
+                 }
+             });
+             
             $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
                 if (vm.cloningCTEP) {
                     // To make sure setPristine() is executed after all $watch functions are complete
@@ -72,12 +79,23 @@
                     vm.ctrpOrg.name_aliases_attributes.push(otherId);
                 });
             }
-            // An outer param wrapper is needed for nested attributes to work
-            var outerOrg = {};
-            outerOrg.new = vm.ctrpOrg.new;
-            outerOrg.id = vm.ctrpOrg.id;
-            outerOrg.organization = vm.ctrpOrg;
-            OrgService.upsertOrg(outerOrg).then(function (response) {
+            saveAndRenderOrg({
+                new:    vm.ctrpOrg.new,
+                id:     vm.ctrpOrg.id,
+                organization: vm.ctrpOrg
+            });
+        };
+
+        vm.updateCTEPOrg = function () {
+            vm.disableBtn = true;
+            saveAndRenderOrg({
+                id:     vm.ctepOrg.id,
+                organization: vm.ctepOrg
+            });
+        };
+
+        function saveAndRenderOrg(savedOrgObj) {
+            OrgService.upsertOrg(savedOrgObj).then(function (response) {
                 var status = response.server_response.status;
                 if (status >= 200 && status <= 210) {
                     if (vm.ctrpOrg.new && status === 201) {
@@ -101,7 +119,7 @@
             }).finally(function() {
                 vm.disableBtn = false;
             });
-        };
+        }
 
         function showToastr(orgName) {
             toastr.clear();
@@ -113,6 +131,11 @@
             vm.addedNameAliases = [];
             appendNameAliases();
             listenToStatesProvinces();
+            setFormToPristine();
+        };
+        
+        vm.resetCTEPForm = function() {
+            angular.copy(vm.ctepOrgCopy, vm.ctepOrg);
             setFormToPristine();
         };
 
@@ -173,6 +196,9 @@
                 vm.ctrpOrg =  filterOutCTRPOrg();
                 if (vm.ctrpOrg) {
                     vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
+                }
+                if (vm.ctepOrg) {
+                    vm.ctepOrgCopy = angular.copy(vm.ctepOrg);
                 }
                 checkToDisableClone();
             } else {
