@@ -1051,7 +1051,7 @@ input[type=radio] {
 }
 
 .modal-header .close {
-    margin-top: -10px;
+    margin-top: 0px;
 }
 
 .drop-shadow {

@@ -6,10 +6,12 @@
     'use strict';
 
     angular.module('ctrp.app.layout')
-        .controller('headerNavigationCtrl', headerNavigationCtrl);
+        .controller('headerNavigationCtrl', headerNavigationCtrl)
+        .controller('requestModalCtrl', requestModalCtrl);
 
-    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle', 'MESSAGES',
-        '$uibModal', '$timeout', '$state', 'Common'];
+    headerNavigationCtrl.$inject = ['UserService', '$scope', 'Idle',
+                                    'MESSAGES', '$uibModal', '$timeout', '$state', 'Common'];
+    requestModalCtrl.$inject = ['$scope', '$uibModalInstance', 'reqType'];
 
     function headerNavigationCtrl(UserService, $scope, Idle, MESSAGES,
                                   $uibModal, $timeout, $state, Common) {
@@ -45,6 +47,24 @@
 
             $state.go('main.sign_in', {}, {reload: true});
         }; //logOut
+
+
+        vm.requestPersonOrOrg = function(type) {
+            var requestType = type;
+
+            vm.requestModal = $uibModal.open({
+                animation: true,
+                templateUrl: 'app/layout/request.html',
+                controller: 'requestModalCtrl as requestCtrl',
+                size: 'md',
+                windowClass: 'modal-center',
+                resolve: {
+                    reqType: function() {
+                        return requestType;
+                    }
+                }
+            });
+        }
 
         activate();
 
@@ -155,8 +175,6 @@
             });
         } //watchIdleEvents
 
-
-
         /**
          * Highlight the navbar according to the current state name
          * @param stateNames
@@ -178,8 +196,17 @@
                 }
             }, true);
         }
+    }
 
+    function requestModalCtrl($scope, $uibModalInstance, reqType) {
+        var vm = this;
 
+        vm.requestHeader = 'Request New ' + reqType;
+        vm.message = 'To request a New ' + reqType + ' record in CTRP, contact the CTRO at ncictro@mail.nih.gov and provide the following information:';
+
+        vm.cancel = function() {
+            $uibModalInstance.dismiss('cancel');
+        };
     }
 
 
