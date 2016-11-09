@@ -166,7 +166,6 @@
          */
         function _watchOrgAffiliation() {
             $scope.$watchCollection(function() {return vm.orgsArrayReceiver;}, function(selectedOrgs, oldVal) {
-                console.info('orgs: ', selectedOrgs);
                 if (angular.isDefined(selectedOrgs) && angular.isArray(selectedOrgs)) {
                     _.each(selectedOrgs, function(anOrg, index) {
                         if (_.findIndex(vm.savedSelection, {id: anOrg.id}) === -1) {
@@ -284,6 +283,7 @@
             vm.associationForRemoval = []; // object person objects
             vm.confirm = {}; // messages
             vm.isBtnDisabled = false;
+            vm.isWritable = UserService.isCurationModeEnabled() || false;
             vm.selectedCtrpPerson = null;
             var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
             var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
