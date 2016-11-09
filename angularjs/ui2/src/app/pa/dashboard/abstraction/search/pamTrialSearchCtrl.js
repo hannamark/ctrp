@@ -21,6 +21,8 @@
         vm.onholdReasonsArr = onholdReasonObj;
         vm.milestonesArr = milestoneObj;
         vm.processingStatusesArr = processingStatuses;
+        
+        OrgService.setTypeAheadOrgNameSearch($scope);
 
         /**** TRIALS *****/
         // Initial Search Parameters
@@ -285,23 +287,6 @@
                 console.log('error is: ', err);
                 console.log('Get User Submitted Trials failed');
             });
-        };
-
-        vm.typeAheadParams = {};
-        vm.typeAheadNameSearch = function () {
-            return OrgService.typeAheadOrgNameSearch(vm.organization_name, vm.searchOrganizationFamily);
-        };
-
-        vm.setPamTrialsTypeAheadOrg = function (searchObj) {
-            var orgSearch = OrgService.setTypeAheadOrg(searchObj);
-            vm.organization_name = orgSearch.organization_name;
-            vm.userChosenOrg = orgSearch.organization_details;
-            vm.searchParams.organization_id = vm.userChosenOrg.id;
-        };
-
-        vm.removeOrgChoice = function () {
-            vm.userChosenOrg = null;
-            vm.organization_name = vm.searchParams.organization_name = vm.searchParams.organization_id = undefined;
         };
 
         /****************** implementations below ***************/

@@ -35,6 +35,7 @@
 
         activate();
         function activate() {
+            _watchWriteMode();
             _watchOrgAffiliation();
             _watchGlobalWriteMode();
             _watchContextAssociation();
@@ -59,26 +60,32 @@
                     // fetch associated persons for the CTRP person, because the CTRP person may
                     // have more association than the currently shown CTEP person
                     PersonService.getPersonById(vm.curPerson.id).then(function(res) {
-                        console.info('res from person service: ', res);
                         vm.ctrpPerson = res.data;
                         vm.curPerson = vm.ctrpPerson;
                         _prepAssociationGrid(vm.curPerson.associated_persons);
+                        _populatePOAff();
+                        vm.masterCopy = angular.copy(vm.curPerson); // make a copy in the asynch block
                     });
                 } else if (contextName === 'CTRP') {
                     // CTRP is the default tab
+                    _populatePOAff(); // do this only when context is CTRP ???
                     _prepAssociationGrid(vm.curPerson.associated_persons);
                 }
-
-                _populatePOAff(); // TODO: do this only when context is CTRP ???
+                vm.masterCopy = angular.copy(vm.curPerson); // make a copy
                 _updateFormTitleLabel();
             } // if context name is defined
+
+            setFormToPristine();
         }
 
         function updatePerson() {
+            console.info('updating person: ', vm.curPerson);
             if (!angular.isDefined(vm.curPerson)) {
                 console.error('vm.curPerson is undefined');
                 return;
             }
+            console.info('submitted person context: ', vm.curPerson.source_context);
+            console.info('vm.validOrgsCount: ', vm.validOrgsCount);
 
             if (vm.validOrgsCount === 0 && vm.curPerson.source_context === 'CTRP') {
                 vm.affiliatedOrgError = true;
@@ -89,20 +96,22 @@
             if (vm.curPerson.new) {
                 vm.savedSelection = vm.savedSelection.filter(function(org) {return !org._destroy;}); // keep the active ones
             }
-            vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection);
-            _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
-                //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
-                aff['effective_date'] = aff.effective_date ? aff['effective_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
-                aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
-                var affStatusIndex = -1; //PoAffiliationStatus index
-                if (aff.effective_date && !aff.expiration_date) {
-                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
-                } else if (aff.expiration_date) {
-                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
-                }
-                aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
-                vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
-            });
+            if (vm.curPerson.source_context === 'CTRP') {
+                vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection);
+                _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
+                    //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
+                    aff['effective_date'] = aff.effective_date ? aff['effective_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
+                    aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
+                    var affStatusIndex = -1; //PoAffiliationStatus index
+                    if (aff.effective_date && !aff.expiration_date) {
+                        affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
+                    } else if (aff.expiration_date) {
+                        affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
+                    }
+                    aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
+                    vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
+                });
+            }
 
             //create a nested Person object
             var newPerson = {};
@@ -121,14 +130,12 @@
                 } else if (status === 200) {
                     // updated
                     console.info('response with update: ', response);
-                    vm.curPerson = response.data;
+                    vm.curPerson = response.data; // TODO: if the CTEP person just updated, update ctepPerson object as well
                     _showToastr('Person ' + vm.curPerson.lname + ' has been recorded');
                     vm.curPerson.new = false;
 
                     // To make sure setPristine() is executed after all $watch functions are complete
-                    $timeout(function() {
-                       $scope.person_form.$setPristine();
-                    }, 1);
+                    setFormToPristine();
                 }
             }).catch(function (err) {
                 console.log("error in updating person " + JSON.stringify(newPerson));
@@ -156,7 +163,6 @@
          */
         function _watchOrgAffiliation() {
             $scope.$watchCollection(function() {return vm.orgsArrayReceiver;}, function(selectedOrgs, oldVal) {
-                console.info('orgs: ', selectedOrgs);
                 if (angular.isDefined(selectedOrgs) && angular.isArray(selectedOrgs)) {
                     _.each(selectedOrgs, function(anOrg, index) {
                         if (_.findIndex(vm.savedSelection, {id: anOrg.id}) === -1) {
@@ -205,22 +211,11 @@
         }
 
         function _associateCtepPerson(ctepPerson, ctrpPerson, sourceContext, forceFlag) {
-            // TODO:
-            console.info('associating persons: ', ctepPerson, ctrpPerson);
+
             var ctrpId = ctrpPerson.ctrp_id;
-            /*// TODO: opposite association
-            if (ctrpPerson.is_associated && !forceFlag) {
-                vm.isConfirmOpen = true;
-                vm.confirmAssociatePerson = null;
-                vm.confirmAssociatePerson = _.partial(_associateCtepPerson, ctepPerson, ctrpPerson, 'CTRP');
-                vm.confirm = {};
-                vm.confirm.title = 'This CTRP person has been associated to another CTEP person context. Click "Associate" to change the existing association, click "Cancel" to abort';
-                return;
-            }
-            */
             vm.isConfirmOpen = false;
             PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
-                console.info('res with association person: ', res); // resp.person
+
                 if (res.server_response.status >= 200 && res.server_response.status < 226) {
                     vm.associatedPersonContexts = []; // clean up container for accepting ctep persons
                     vm.matchedCtrpPersons = []; // TODO: what is this?
@@ -236,17 +231,7 @@
                     }
                     _showToastr('CTEP person context association was successful');
                     selectTab(sourceContext); // switch to the new tab
-                    if (_.findIndex(vm.curPerson.cluster, {id: res.person.id, context: sourceContext}) === -1) {
-                        // vm.curPerson.cluster.push({context: sourceContext, id: res.person.id});
-                        // res.person.source_context = ctepPerson.source_context;
-                        // res.person.source_status = ctepPerson.source_status;
-                        // if (!vm.curPerson.associated_persons || !angular.isArray(vm.curPerson.associated_persons)) {
-                        //     vm.curPerson.associated_persons = [];
-                        //     vm.curPerson.associated_persons.push(vm.curPerson);
-                        // }
-                        // vm.curPerson.associated_persons.push(res.person);
-                        // _prepAssociationGrid(vm.curPerson.associated_persons);
-                    }
+                    setFormToPristine();
                 }
             }).catch(function(err) {
                 console.error('err: ', err);
@@ -295,6 +280,8 @@
             vm.associationForRemoval = []; // object person objects
             vm.confirm = {}; // messages
             vm.isBtnDisabled = false;
+            vm.isWritable = UserService.isCurationModeEnabled() || false;
+            vm.selectedCtrpPerson = null;
             var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
             var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
             vm.isAllowedToComment = _.contains(USER_ROLES_ALLOWED_COMMENT, UserService.getUserRole());
@@ -321,8 +308,9 @@
                     var status = organization.server_response.status;
                     if (status >= 200 && status <= 210) {
                         var curOrg = {"id" : poAff.organization_id, "name": organization.name};
-                        curOrg.effective_date = moment(poAff.effective_date).toDate(); //DateService.convertISODateToLocaleDateStr(poAff.effective_date);
-                        let expDate = !!poAff.expiration_date ? moment(poAff.expiration_date).toDate() : null; //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
+                        var effectiveDate = !!poAff.effective_date ? moment(poAff.effective_date).toDate() : null;
+                        curOrg.effective_date = effectiveDate; //DateService.convertISODateToLocaleDateStr(poAff.effective_date);
+                        var expDate = !!poAff.expiration_date ? moment(poAff.expiration_date).toDate() : null; //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
                         curOrg.expiration_date = expDate;
                         curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
                         curOrg.po_affiliation_id = poAff.id; //po affiliation id
@@ -355,12 +343,13 @@
             angular.copy(vm.masterCopy, vm.curPerson);
             vm.savedSelection = [];
             _populatePOAff();
-            $scope.person_form.$setPristine();
+            setFormToPristine();
         };
 
         function clearForm() {
-            $scope.person_form.$setPristine();
-            var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'source_context_id'];
+            setFormToPristine();
+            var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'source_context_id', 'associated_persons'];
+            console.info('clearning form: ', vm.curPerson);
             Object.keys(vm.curPerson).forEach(function(key) {
                 if (excludedKeys.indexOf(key) == -1) {
                     vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
@@ -401,7 +390,9 @@
         } // openCalendar
 
         // remove ctep person from associating to the current ctrp person (vm.curPerson)
-        function removePersonAssociation(ctepPersonId) {
+        function removePersonAssociation(ctepPerson) {
+            if (ctepPerson.is_ctrp_context) return; // do not allow deleting CTRP person (???)
+            var ctepPersonId = ctepPerson.id;
             PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
                 if (res.is_removed) {
                     // filter out the deleted persons (both ctep and its associated ctrp person)
@@ -412,6 +403,8 @@
                     vm.associationForRemoval = [];
                     vm.ctepPerson = null; // deleted
                     _showToastr('The selected person context association was deleted');
+                    selectTab(vm.defaultTab);
+                    setFormToPristine();
                 }
             }).catch(function(err) {
                 console.error('err: ', err);
@@ -434,12 +427,15 @@
                     vm.showMatchedCtrpPerson = true; // show modal for confirming the matched CTRP person
                     // TODO: this matched CTRP person may have been associated to another CTEP person!
                     // create the association function
-                    vm.associate = _.partial(_associateCtepPerson, vm.curPerson); // vm.curPerson is CTEP person
+                    vm.selectedCtrpPerson = null;
                     // vm.confirmAssociatePerson = _.partial(_associateCtepPerson, vm.curPerson); // vm.curPerson is CTEP person, to be filled: CTRP person, 'CTRP'
                     // vm.matchedCtrpPersons = res.matched;
                     vm.confirm = {};
                     vm.confirm.title = 'The following CTRP person(s) matched the CTEP person. Select one for association or click "Cancel" to abort';
+                    _prepAssociationGrid(res.matched);
                 }
+
+                setFormToPristine();
             }).catch(function(err) {
                 console.error('err in cloning person: ', err);
             });
@@ -447,17 +443,30 @@
 
         // callback function for ui-grid row selection
         function gridRowSelectionCB(row) {
-            if (row.entity.is_ctrp_context) {
-                row.isSelected = false; // CTRP person is not selectable for deletion
-                return;
-            }
-            while (vm.associationForRemoval.length > 0) {
-                var del = vm.associationForRemoval.pop();
-                del.isSelected = false; // visually deselect the row
-            }
-            if (row.isSelected && !row.entity.is_ctrp_context) {
-                vm.associationForRemoval.push(row);
-                vm.confirmDisAssociate = _.partial(removePersonAssociation, row.entity.id);
+            // if (row.entity.is_ctrp_context) {
+            //     row.isSelected = false; // CTRP person is not selectable for deletion
+            //     return;
+            // }
+            if (vm.showMatchedCtrpPerson) {
+                // vm.selectedCtrpPerson = row.isSelected ? row.entity : null;
+                if (row.isSelected) {
+                    vm.selectedCtrpPerson = row.entity;
+                    vm.associate = _.partial(_associateCtepPerson, vm.curPerson, vm.selectedCtrpPerson, 'CTRP'); // vm.curPerson is CTEP person
+                    vm.confirmAssociatePerson = _.partial(_associateCtepPerson, vm.curPerson, vm.selectedCtrpPerson, 'CTRP', true); // vm.curPerson is CTEP person
+                } else {
+                    vm.selectedCtrpPerson = null;
+                    vm.associate = null;
+                    vm.confirmAssociatePerson = null;
+                }
+            } else {
+                while (vm.associationForRemoval.length > 0) {
+                    var del = vm.associationForRemoval.pop();
+                    del.isSelected = false; // visually deselect the row
+                }
+                if (row.isSelected && !row.entity.is_ctrp_context) {
+                    vm.associationForRemoval.push(row);
+                    vm.confirmDisAssociate = _.partial(removePersonAssociation, row.entity); // row.entity.id
+                }
             }
         }
 
@@ -613,6 +622,18 @@
                 }
             }, 0);
         } // _prepAssociationGrid
+
+        function setFormToPristine() {
+            $timeout(function() {
+                $scope.person_form.$setPristine();
+            }, 1000);
+        }
+
+        function _watchWriteMode() {
+            $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
+                vm.isWritable = UserService.isCurationModeEnabled() || false;
+            });
+        }
 
     } // personDetailCtrl2
 })();

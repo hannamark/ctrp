@@ -53,6 +53,7 @@ Rails.application.routes.draw do
         get 'search'
         get '/associated/:id', to: 'organizations#associated'
         post 'associated', to: 'organizations#associated', defaults: {format: 'json'}
+        post 'nullifiable', to: 'organizations#nullifiable', defaults: {format: 'json'}
         post 'dis_associate', to: 'organizations#dis_associate', defaults: {format: 'json'}
         post 'search'
         post 'select'

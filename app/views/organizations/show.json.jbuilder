@@ -1,4 +1,4 @@
-if @read_all_access
+
   json.extract! @organization,
               :id,
               :source_id,
@@ -27,5 +27,5 @@ if @read_all_access
               :created_at,
               :updated_at,
               :association_date
-end
+
 

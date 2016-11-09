@@ -182,6 +182,7 @@ var registerTrial = function(){
 
 
     this.addTrialPsticipatingSitesTableHeader = element(by.css('table[st-table="trialDetailView.curTrial.participating_sites"]')).all(by.css('table.table th'));
+    this.addTrialPsticipatingSitesTableExist = element(by.css('table[st-table="trialDetailView.curTrial.participating_sites"]'));
     this.addTrialPsticipatingSitesTable = element.all(by.css('table[st-table="trialDetailView.curTrial.participating_sites"]'));
     this.addTrialPsticipatingSitesTableCTRPID = element(by.binding('ps.organization.source_id'));
     this.addTrialPsticipatingSitesTableCTRPIDElement = 'ps.organization.source_id';
@@ -249,7 +250,7 @@ var registerTrial = function(){
     this.viewTrialSerialNumberVerify = element(by.css('.select2-choice.ui-select-match'));
     this.viewTrialNCIDivisionProgramCode = element(by.model('trialDetailView.nci'));
     this.viewTrialviewGrantInfoButton = element(by.css('button[ng-click="trialDetailView.addGrant()"]'));
-   // this.viewTrialVerifyGrantTable = element.all(by.css('tr[ng-repeat="grant in trialDetailView.viewedGrants track by $index"]'));
+    this.viewTrialVerifyGrantTableExist = element(by.css('tr[ng-repeat="grant in viewTrialView.curTrial.grants track by $index"]'));
     this.viewTrialVerifyGrantTable = element.all(by.css('tr[ng-repeat="grant in viewTrialView.curTrial.grants track by $index"]'));
 
     /** Trial Status **/
@@ -310,6 +311,7 @@ var registerTrial = function(){
     /** Trial Participating Sites **/
     this.viewParticipatingSiteNamePresent = element(by.binding('ps.organization.name'));
     this.viewParticipatingSiteName = element.all(by.binding('ps.organization.name'));
+    this.viewTrialPsticipatingSitesTblExist = element(by.css('tr[ng-repeat="ps in viewTrialView.curTrial.participating_sites track by $index"]'));
     this.viewTrialPsticipatingSites = element.all(by.css('tr[ng-repeat="ps in viewTrialView.curTrial.participating_sites track by $index"]'));
     this.viewTrialPsticipatingSitesTableHeader = element(by.css('table[st-table="viewTrialView.curTrial.participating_sites"]')).all(by.css('table.table th'));
 

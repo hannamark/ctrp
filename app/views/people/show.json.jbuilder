@@ -1,13 +1,14 @@
 json.extract! @person, :id, :source_id, :fname, :mname, :lname, :prefix, :suffix, :email, :phone, :source_status_id,
               :source_context_id, :po_affiliations, :created_at, :updated_at, :created_by, :updated_by,
-              :lock_version, :uuid, :person_created_date, :person_updated_date, :processing_status, :ctrp_id, :association_start_date,
+              :lock_version, :uuid, :created_at, :updated_at, :processing_status, :ctrp_id, :association_start_date,
               :service_request_id, :registration_type, :extension
 
 
 ctrp_context_id = SourceContext.find_by_code('CTRP').id
 ctep_context_id = SourceContext.find_by_code('CTEP').id
 ctep_active_source_status = SourceStatus.where(source_context_id: ctep_context_id, code: 'ACT')
-ctep_active_source_status_id = ctep_active_source_status.present? ? ctep_active_source_status[0].id : -1
+# ctep_active_source_status_id = ctep_active_source_status.present? ? ctep_active_source_status[0].id : -1
+# active_source_statuses = SourceStatus.where(code: 'ACT').pluck(:id)
 
 json.set! :is_ctrp_context, ctrp_context_id == @person.source_context_id # flag if this person is ctrp context
 json.set! :service_request, ServiceRequest.find(@person.service_request_id).name if @person.service_request_id.present?

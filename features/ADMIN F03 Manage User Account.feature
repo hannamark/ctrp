@@ -61,7 +61,7 @@ And the system will send the "CTRP Account Request" email to appsupport for an o
 
 Scenario: #7 I can view a users Trials (See Admin F05 Registered User Details)
 Given I am logged into CTRP
-And I select view trails #view my trials from my profile or view this users trails from User Management Search Results Table
+And I select view trials #view my trials from my profile or view this users trails from User Management Search Results Table
 Then I will see the users information:
 |Username|
 |Last Name|
