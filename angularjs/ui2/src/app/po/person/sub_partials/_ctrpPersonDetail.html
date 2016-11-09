@@ -105,7 +105,7 @@
     <div class="form-group has-feedback required" ng-class="{'has-error': (person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email) && person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone))}">
         <label for="phone" class="control-label col-sm-3">Phone:</label>
         <div class="col-sm-3">
-            <input type="text" restriction-field class="form-control input-sm" name="phone" id="phone" maxlength="30" ng-model="personDetailView.curPerson.phone" ng-required="!personDetailView.curPerson.email" placeholder="Phone">
+            <input type="text" restriction-field class="form-control input-sm" name="phone" id="phone" maxlength="30" ng-model="personDetailView.curPerson.phone" ng-required="!personDetailView.curPerson.email" placeholder="Phone" mask-phone-number>
             <span ng-show="personDetailView.curPerson.phone.length" class="form-control-feedback" ng-class="!ctrpbtn.person_form.needsAttention(person_form.phone) ? 'glyphicon glyphicon-ok glyphicon-green' : 'glyphicon glyphicon-exclamation-sign glyphicon-red'"></span>
             <span class="help-block" ng-show="person_form.phone.$error && ctrpbtn.person_form.needsAttention(person_form.phone) && person_form.email.$error && ctrpbtn.person_form.needsAttention(person_form.email)" >Either Phone or Email is Required</span>
         </div>
