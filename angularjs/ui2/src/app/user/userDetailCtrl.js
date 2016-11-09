@@ -715,13 +715,12 @@
             }
         };
         /****************** implementations below ***************/
-        (function() {
-            $timeout(function() {
-                if(vm.userDetails.organization_id !== null) {
-                    vm.selectedOrgsArray = [{'id' : vm.userDetails.organization_id, 'name': vm.userDetails.organization.name}];
-                }
-            });
-        }());
+        /* Required to initially popuplate user's Affiliated Organization */
+        $timeout(function () {
+            if (vm.userDetails.organization_id !== null) {
+                vm.selectedOrgsArray[0] = {'id' : vm.userDetails.organization_id, 'name': vm.userDetails.organization.name};
+            }
+        }, 250);
 
         $scope.$on(vm.redirectToAllUsers, function () {
             vm.states = [];
