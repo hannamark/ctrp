@@ -83,7 +83,16 @@ class OrganizationsController < ApplicationController
     end
   end
 
-
+  def nullifiable
+    nullifiable = false
+    nullifiable_org = Organization.find_by_id(params[:id])
+    if !nullifiable_org.blank?
+      nullifiable = nullifiable_org.nullifiable
+    end
+    respond_to do |format|
+      format.json {render :json => {:nullifiable => nullifiable}}
+    end
+  end
 
   def curate
 

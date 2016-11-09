@@ -165,6 +165,7 @@
             getServiceRequests: getServiceRequests,
             getProcessingStatuses: getProcessingStatuses,
             cloneCtepOrg: cloneCtepOrg,
+            getNullifiable: getNullifiable,
             getSourceStatuses2: getSourceStatuses2
         };
 
@@ -210,6 +211,15 @@
             return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.ASSOCIATED_ORGS, orgObj);
         } //getAssociatedOrgs
 
+        /**
+         * Check to see if an org is nulliable
+         *
+         * @param getNullifiable
+         * @returns {*}
+         */
+        function getNullifiable(orgObj) {
+            return PromiseTimeoutService.postDataExpectObj(URL_CONFIGS.NULLIFIABLE, orgObj);
+        }
 
         /**
          * dis associate organizations

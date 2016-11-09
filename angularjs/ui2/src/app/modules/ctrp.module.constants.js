@@ -14,6 +14,7 @@
             'CURATE_ORG': '/ctrp/organizations/curate',
             'UNIQUE_ORG': '/ctrp/organizations/unique',
             'ASSOCIATED_ORGS': '/ctrp/organizations/associated/',
+            'NULLIFIABLE': '/ctrp/organizations/nullifiable',
             'DISASSOCIATE_ORGS': '/ctrp/organizations/dis_associate/',
             'CLONE_CTEP_ORG': '/ctrp/organizations/clone.json',
             'COUNTRY_LIST': '/ctrp/countries.json',

@@ -96,15 +96,9 @@ class Organization < ActiveRecord::Base
 
 
   def nullifiable
-    isNullifiable = true
-    source_status_arr = []
-    source_status_arr = Organization.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:"source_status_id") if self.ctrp_id.present?
-    source_status_arr.each { |e|
-      if SourceStatus.ctrp_context_source_statuses.find_by_id(e).code == "ACT"
-        isNullifiable = false
-      end
-    }
-    return isNullifiable
+    return Organization.joins(:source_context, :source_status)
+               .where("ctrp_id = ? AND source_contexts.code = ? AND source_statuses.code = ?", self.ctrp_id, "CTEP", "ACT")
+               .blank?
   end
 
   def org_created_date
@@ -418,6 +412,8 @@ class Organization < ActiveRecord::Base
        ) as multiview_ctep_id,
       source_statuses.name as source_status_name,
       source_contexts.name as source_context_name,
+      source_statuses.code as source_status_code,
+      source_contexts.code as source_context_code,
        (
           CASE
             WHEN family_name is not null
