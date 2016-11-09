@@ -2,15 +2,13 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
   #around_filter :global_request_logging
 
   ##CONSTANTS FOR REQUEST VALIDATIONS
-  ##
   XSD_PATH            =   Rails.root.to_s + "/po-rest.xsd"
-  CREATE_ACTION     =   "create"
+  CREATE_ACTION       =   "create"
   UPDATE_ACTION       =   "update"
   POST                =   "POST"
   PUT                 =   "PUT"
-  REGISTER_ROOT_NODE  =   "CompleteTrialRegistration"
-  UPDATE_ROOT_NODE    =   "CompleteTrialUpdate"
-  AMEND_ROOT_NODE     =   "CompleteTrialAmendment"
+  CREATE_ROOT_NODE    =   "createOrganization"
+  UPDATE_ROOT_NODE    =   "updateOrganization"
 
   ## Class Variables
   ##
@@ -22,30 +20,10 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
     validate_rest_request
   end
 
-
   before_filter only: [:create] do
+    load_xml_mapper
     Rails.logger.info("Restfulservices=> current user #@current_user");
     val_errors = Array.new()
-
-    ## Check Lead_org_id and lead_org_trial_id must be unique otherwise throw error
-     ##
-
-    #if !@xmlMapperObject.leadOrganization.newOrganization.nil?
-     # val_errors.push("Accepting newOrganization element to create Person/Organization on the fly has been deprecated, please refer 5.x wiki for more details");
-    #else
-      lead_protocol_id = @xmlMapperObject.lead_protocol_id
-      lead_org_id = @xmlMapperObject.leadOrganization.existingOrganization.id
-      lead_org_id_pk= Organization.find_by_ctrp_id(lead_org_id).id if Organization.find_by_ctrp_id(lead_org_id)
-
-      @trial = Trial.find_by_lead_protocol_id_and_lead_org_id(lead_protocol_id,lead_org_id_pk)
-
-
-      if @trial.present?
-        val_errors.push("A trial has already been existed with given Lead Org Trial ID and Lead organization ID");
-      else
-        val_errors=    validate_clinicalTrialsDotGovXmlRequired_dependencies(@xmlMapperObject)
-      end
-    #end
 
     if val_errors.any?
       response_body = val_errors.to_xml
@@ -55,11 +33,14 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
 
   end
 
-
   before_filter only: [:create] do
 
-    @paramsLoader = ApiTrialParamsLoader.new()
-    @paramsLoader.load_params(@xmlMapperObject,"create","")
+     #Rails.logger.info "***** Before Calling Loader **********"
+
+     @paramsLoader = ApiOrganizationsParamsLoader.new()
+     @paramsLoader.load_params(@xmlMapperObject,"create")
+
+     #Rails.logger.info "***** After Calling Loader **********"
 
     if !@paramsLoader.errors.empty?
       response_body = @paramsLoader.errors
@@ -70,72 +51,114 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
 
 
 
-  before_filter only:[:update] do
+  before_filter only: [:update] do
+    val_errors = Array.new
+        begin
+          @organization = Organization.where(id: params[:id])
+        rescue => e
+          Rails.logger.info "This is exception #{e}"
+        end
 
-    if params[:idType] == "nci"
-      @trial = Trial.find_by_nci_id(params[:id])
-    else
-
-      response_body = Array.new
-      response_body.push "Expected id types are nci,pa,dcp,ctep but currently trial is being identifed"
-      render xml: response_body.to_xml, status: :bad_request
-      response_logging(@trial,"404",response_body.to_xml)
-    end
-    response_body = Array.new
-    response_body.push "Given trial with NCI_ID does not exist in CTRP "
-    render xml: response_body.to_xml , status: :not_found unless @trial.present?
-    response_logging(@trial,"404",response_body.to_xml)
-
+        if @organization.present?
+          load_xml_mapper
+        else
+          val_errors.push(" Organization does not exist with the given CTRP ID.")
+          #elsif @organization.present? && @organization.length > 1
+          # val_errors.push(" More than one Organization existed in CTRP, This could be data entry error from CTRP. ")
+        end
+        if val_errors.any?
+          response_body = val_errors.to_xml
+          render xml:response_body, status: '404'
+          response_logging(nil,"404",response_body)
+        end
   end
+
 
   before_filter only: [:update] do
 
-    @paramsLoader = ApiTrialParamsLoader.new()
-    @paramsLoader.load_params(@xmlMapperObject,"update",@trial)
+    Rails.logger.info "***** Before Calling Loader in update **********"
+
+    @paramsLoader = ApiOrganizationsParamsLoader.new()
+    @paramsLoader.load_params(@xmlMapperObject,"update")
+
+    Rails.logger.info "***** After Calling Loader update **********"
+
     if !@paramsLoader.errors.empty?
       response_body = @paramsLoader.errors
-      render xml: response_body, status:'404'
-      response_logging(@trial,"404",response_body)
+      render xml:response_body , status: '404'
+      response_logging(nil,"404",response_body)
     end
-
-  end #end of before_update
+  end # end of before_update
 
 
   def create
+
+     #Rails.logger.info "My XML Body #{request.body.read}"
+     #Rails.logger.info "##### My XML Body #{doc.root.name}"
+     #@org_params = Hash.from_xml(request.body.read);
+
     @rest_params = @paramsLoader.get_rest_params
     @rest_params[:current_user] = @current_user
     @rest_params[:created_by]   = @current_user.username unless @current_user.nil?
     @rest_params[:updated_by]   = @current_user.username unless @current_user.nil?
 
-    ##Make rest service user as default trial owner.
-    ##$rest_params[:trial_ownerships_attributes].push({user_id:@current_user.id})
 
+     #Rails.logger.info "calling org_params ### #{org_params}"
 
-    @trial =Trial.new(@rest_params)
-    @trial.current_user = @current_user
-    if @trial.save!
-      response_body = @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
+     #org_params.store("name", "Rest Org Name");
+     #org_params.store("address", "Rest Org Name");
+     #org_params.store("city", "Rest Org Name");
+
+     #Rails.logger.info "Params coming from REST request and used to create Organization #{org_params}"
+
+     @organization = Organization.new(@rest_params)
+     @organization.current_user = @current_user
+
+     # Rails.logger.info "This is inside @organization   ### ### ### "
+     if @organization.save
+      response_body = @organization.to_xml(only: [:id], root:'OrganizationCreateConfirmation', :skip_types => true)
       render xml:response_body
-      response_logging(@trial,"200",response_body)
-    else
-      render nothing: true, status: :bad_request
+      response_logging(@organization,"200",response_body)
+      else
+      render xml: @organization.errors.to_xml, status: :bad_request
       response_logging(nil,"404","")
       return
     end
+
   end
 
   def update
+
+    #Rails.logger.info "My XML Body #{request.body.read}"
+    #Rails.logger.info "##### My XML Body #{doc.root.name}"
+
+    #@org_params = Hash.from_xml(request.body.read);
     @rest_params = @paramsLoader.get_rest_params
     @rest_params[:current_user] = @current_user
+    @rest_params[:created_by]   = @current_user.username unless @current_user.nil?
     @rest_params[:updated_by]   = @current_user.username unless @current_user.nil?
-    @trial.current_user = @current_user
-    if @trial.update(@rest_params)
-      response_body = @trial.to_xml(only: [:id , :nci_id], root:'TrialRegistrationConfirmation', :skip_types => true)
-      render xml: response_body
-      response_logging(nil,"404",response_body)
+
+
+    #Rails.logger.info "calling org_params ### #{org_params}"
+
+    #org_params.store("name", "Rest Org Name");
+    #org_params.store("address", "Rest Org Name");
+    #org_params.store("city", "Rest Org Name");
+
+    #Rails.logger.info "Params coming from REST request and used to create Organization #{org_params}"
+
+    @organization = @organization.first
+    @organization.current_user = @current_user
+
+    # Rails.logger.info "This is inside @organization   ### ### ### "
+    if @organization.update(@rest_params)
+      response_body = @organization.to_xml(only: [:id,:error], root:'OrganizationUpdateConfirmation', :skip_types => true)
+      render xml:response_body
+      response_logging(@organization,"200",response_body)
     else
-      render nothing: true, status: :bad_request
+      render xml: @organization.errors.to_xml, status: :bad_request
       response_logging(nil,"404","")
+      return
     end
   end
 
@@ -143,18 +166,19 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
 
   def validate_rest_request
 
+    #Rails.logger.info "######  I am insde validate rest request ##### #{CREATE_ACTION}  #{request.request_method.casecmp(POST)}"
 
     ##Get action from request header
-    action = request.path_parameters[:action]
+    action = request.path_parameters[:action] ##
 
     ##feed rootElement based on request method and URL
-    if action == REGISTER_ACTION && request.request_method.casecmp(POST)
-      $rootElement =REGISTER_ROOT_NODE
-    elsif action== UPDATE_ACTION  && request.request_method.casecmp(POST)
+    if action ==   CREATE_ACTION && request.request_method.casecmp(POST)
+      $rootElement =CREATE_ROOT_NODE
+    elsif action == UPDATE_ACTION && request.request_method.casecmp(POST)
       $rootElement = UPDATE_ROOT_NODE
-    elsif action == AMEND_ACTION && request.request_method.casecmp(PUT)
-      $rootElement = AMEND_ROOT_NODE
     end
+
+    #Rails.logger.info "about rootElement  #{$rootElement}"
 
     $requestString = request.body.read
     xsd = Nokogiri::XML::Schema(File.open(XSD_PATH))
@@ -162,10 +186,10 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
     xsd_errors =Array.new()
     exception = Array.new
 
-
-
-      ## validate wheather root node is correct or not
+      #Rails.logger.info "about rootElement in request  #{doc.root.name}"
+      ## validate if root node is correct or not
       if  doc.root.name == $rootElement
+       p  "I am about to validate now "
         xsd.validate(doc).each do |error|
           #p error.code()
           #p error.column()
@@ -173,31 +197,14 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
           #p error.inspect()
           #p error.level()
           #p error.line()
-          xsd_errors.push(error.message.gsub('{gov.nih.nci.pa.webservices.types}',''))
+          xsd_errors.push(error.message.gsub('{gov.nih.nci.po.webservices.types}',''))
         end
-        xsd_errors.push("Refer 5.x WS XSD on wiki for above erros") if xsd_errors.any?
+        xsd_errors.push("Alpha Block:: Refer 5.x WS XSD on wiki for above erros") if xsd_errors.any?
       else
-        xsd_errors.push("Refer 5.x WS XSD on wiki for correct request body ")
+        xsd_errors.push("Beta Block:: Refer 5.x WS XSD on wiki for correct request body ")
       end
 
       request_logging(doc,"Request",action,@current_user.username)
-
-      ##
-      ####This is compatibility maintainence with 4.x, if they submitted we will accept it but throw an error
-      if !xsd_errors.any?
-        a = doc.xpath("//tns:leadOrganization/tns:newOrganization")
-        b = doc.xpath("//tns:sponsor/tns:newOrganization")
-        c = doc.xpath("//tns:pi/tns:newPerson")
-        d = doc.xpath("//tns:summary4FundingSponsor/tns:newOrganization")
-
-        xsd_errors.push("leadOrganization: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details") if a.length >= 1
-        xsd_errors.push("sponsor: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details") if b.length >= 1
-        xsd_errors.push("pi: Creating new Person feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details")     if c.length >= 1
-        xsd_errors.push("summary4FundingSponsor: Creating new Organization feature has been deprecated in 5.x Restservices, refer 5.x wiki for more details")     if d.length >= 1
-
-        #e = doc.xpath("//")
-
-      end
 
       if xsd_errors.any?
         render xml:xsd_errors.to_xml, status: '404'
@@ -205,8 +212,15 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
       else
         ## This block is very important and will thourughly look for a valid XML
             begin
+              #Rails.logger.info "********* ************"
+              #Rails.logger.info "********* ************"
+              #p REXML::Document.new($requestString).root
 
-              @xmlMapperObject = ApiTrialCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+              @xmlMapperObject = ApiOrganizationCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+              #p $requestString
+              #p  @xmlMapperObject
+              #.address#.city
+              Rails.logger.info "******** xmlMapperObject ************* "
 
             rescue => e
               exception.push(e)
@@ -217,57 +231,24 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
   end
 
 
-  def find_trial
 
-    if params.has_key?("idType")
-      if params[:idType] == "nci"
-        @trial = Trial.find_by_nci_id(params[:id])
-      else
-        response_body = "Expected idtypes are nci,pa,dcp,ctep but currently nci is accepting"
-        render xml:response_body , status: :bad_request
-        response_logging(nil,"404",response_body)
-      end
-    else
-      @trial = Trial.find_by_id(params[:id])
+  def load_xml_mapper
+    ## This block is very important and will thourughly look for a valid XML
+    begin
+      #Rails.logger.info "********* ************"
+      #Rails.logger.info "********* ************"
+      #p REXML::Document.new($requestString).root
+
+      @xmlMapperObject = ApiOrganizationCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+      #p $requestString
+      #p  @xmlMapperObject
+      #.address#.city
+      #Rails.logger.info "******** xmlMapperObject ************* "
+
+    rescue => e
+      exception.push(e)
+      render xml:exception, status: '404'
     end
-    response_body = ""
-    render nothing: true, status: :not_found unless @trial.present?
-    response_logging(nil,"404",response_body)
-
-  end
-
-  ## Responsible Party should not be specified if clinicalTrialsDotGovXmlRequired is false.
-  ## Regulatory Information is required if clinicalTrialsDotGovXmlRequired is true and should not be specified otherwise.
-  ## Sponsor should not be specified if clinicalTrialsDotGovXmlRequired is false.
-
-  def validate_clinicalTrialsDotGovXmlRequired_dependencies(xmlMapperObject)
-
-    val_errors =Array.new()
-
-    if xmlMapperObject.clinical_trial_dot_xml_required == "Yes"
-
-       if xmlMapperObject.regulatoryInformation.nil?
-         val_errors.push("Regulatory Information is required if clinicalTrialsDotGovXmlRequired is true")
-       end
-
-   end
-
-    if xmlMapperObject.clinical_trial_dot_xml_required == "No"
-       if !xmlMapperObject.responsible_party.nil?
-         val_errors.push("Responsible Party should not be specified if clinicalTrialsDotGovXmlRequired is false")
-       end
-       if !xmlMapperObject.sponsor.nil?
-         val_errors.push("Sponsor should not be specified if clinicalTrialsDotGovXmlRequired is false")
-       end
-
-       if !xmlMapperObject.regulatoryInformation.nil?
-         val_errors.push("Regulatory Information should not be specified if clinicalTrialsDotGovXmlRequired is false")
-       end
-    end
-
-    return val_errors
-
-
   end
 
   def global_request_logging
@@ -289,9 +270,11 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
     add_file("rest_log.xml", doc, "xml", "tmp", action, "","",user)
   end
 
-  def response_logging(trial,status, response_body)
-    if trial
-      object_id = trial.id
+  # Need to optimize this block
+
+  def response_logging(organization,status, response_body)
+    if organization
+      object_id = organization.id
     else
       object_id =""
     end
@@ -300,7 +283,7 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
     logDatum.update({:status => status, :object_id => object_id, :response_body => response_body}) if logDatum
   end
 
-  def add_file(file_name, file_content,document_type,tmp_file_name, action,status,trial_id,user)
+  def add_file(file_name, file_content,document_type,tmp_file_name, action,status,org_id,user)
 
     if file_content.nil?
       return
@@ -310,16 +293,15 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
     file_extension = File.extname(file_name).delete('.') ##sample.pdf will give pdf
     file_format    = File.extname(file_name)             ##sample.pdf will give .pdf
 
-      temp_file = Tempfile.new(['Sample2',file_format])
-      temp_file.binmode
-      temp_file <<  decode_base64_content
-      #temp_file.rewind
-      file_params = {:filename => file_name, :tempfile => temp_file}
+    temp_file = Tempfile.new(['Sample2',file_format])
+    temp_file.binmode
+    temp_file <<  decode_base64_content
+    #temp_file.rewind
+    file_params = {:filename => file_name, :tempfile => temp_file}
 
     uploaded_file = ActionDispatch::Http::UploadedFile.new(file_params)
-    log_datum_params = {:file => uploaded_file, :document_type =>document_type, :file_name => file_name, :context => "REST", :object =>"Trial", :method => action, :status => status, :object_id => trial_id, :user => user}
+    log_datum_params = {:file => uploaded_file, :document_type =>document_type, :file_name => file_name, :context => "REST", :object =>"Organization", :method => action, :status => status, :object_id => org_id, :user => user}
     $logDatumId = LogDatum.create(log_datum_params)
   end
-
 
 end #main end

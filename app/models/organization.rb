@@ -54,6 +54,11 @@ class Organization < ActiveRecord::Base
   has_many :sponsor_trials, foreign_key: :sponsor_id, class_name: "Trial"
   has_many :inv_aff_trials, foreign_key: :investigator_aff_id, class_name: "Trial"
 
+  #Restful attributes
+  attr_accessor :edit_type
+  attr_accessor :coming_from
+  attr_accessor :current_user
+
   # PA fields
   has_many :board_trials, foreign_key: :board_affiliation_id, class_name: "Trial"
   has_many :participating_sites

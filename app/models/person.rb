@@ -44,6 +44,11 @@ class Person < ActiveRecord::Base
   has_many :participating_site_investigators, -> { order 'participating_site_investigators.id' }
   has_many :participating_sites, through: :participating_site_investigators
 
+  #Restful attributes
+  attr_accessor :edit_type
+  attr_accessor :coming_from
+  attr_accessor :current_user
+
   attr_accessor :is_associated
 
   accepts_nested_attributes_for :po_affiliations, allow_destroy: true

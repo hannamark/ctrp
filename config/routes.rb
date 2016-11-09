@@ -38,13 +38,19 @@ Rails.application.routes.draw do
           end
 
           scope '/organizations' do
-            scope '/complete' do
               post '/' => 'api_organizations#create'
-              #post '/:idType/:id' => 'api_trials#update',constraints: { idType:  'nci'}
-              #put '/:idType/:id' => 'api_trials#amend',constraints: { idType:  'nci'}
-            end
+              post '/:idType/:id' => 'api_organizations#update', constraints: {
+                                                                            idType: 'ctrp'
+                                                                    }
           end
-        end
+
+          scope '/persons' do
+            post '/' => 'api_persons#create'
+            post '/:idType/:id' => 'api_persons#update', constraints: {
+                idType: 'ctrp'
+            }
+          end
+          end
       end
     end
 
