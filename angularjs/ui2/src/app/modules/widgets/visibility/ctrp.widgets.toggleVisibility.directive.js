@@ -14,7 +14,7 @@
 
                 var elementToToggle = attrs.elementToToggle.split(',');
                 scope.isHidden = attrs.toggleVisibilityDefault ? attrs.toggleVisibilityDefault : false;
-                scope.label = attrs.elementLabel ? attrs.elementLabel : '';
+                scope.label = attrs.elementLabel ? ' ' + attrs.elementLabel : '';
 
                 element.on('click', function(e) {
                     toggleElem();
