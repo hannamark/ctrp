@@ -273,7 +273,7 @@ class CreateTrialSummaryReportService
       end
     end
 
-    array =@document.table(2+other_ids_num+amend_count, 2,1000,7000)
+    array =@document.table(2+other_ids_num+amend_count, 2,2000,6000)
     array.border_width =10
 
     Hash h = Hash.new
@@ -736,7 +736,7 @@ class CreateTrialSummaryReportService
                 h.store("Target Enrollment",get_value_based_on_display_rule(@trial.target_enrollment.to_s,"Required"))
           end
 
-          array =@document.table(h.length,2,4000,4000)
+          array =@document.table(h.length,2,3000,5000)
           array.border_width =10
           i = 0
 
@@ -781,7 +781,7 @@ class CreateTrialSummaryReportService
         def generate_interventions_table
           create_a_table_row(@grey,@foreground_th_text_color,"Intervention(s)")
 
-          array =@document.table(1,4,2000,2000,2000,2000)
+          array =@document.table(1,4,1500,1500,3000,2000)
           array.border_width =10
           array[0][0] << "Intervention Type"
           array[0][1] << "Preferred Name"
@@ -791,7 +791,7 @@ class CreateTrialSummaryReportService
           interventions = @trial.interventions
           interventions_num = 0
           interventions_num = interventions.size if interventions
-          array =@document.table(interventions_num, 4,2000,2000,2000,2000)
+          array =@document.table(interventions_num,4,1500,1500,3000,2000)
           array.border_width =10
           i = 0
 
@@ -810,7 +810,7 @@ class CreateTrialSummaryReportService
       def generate_arm_groups_table
           create_a_table_row(@grey,@foreground_th_text_color,"Arm/Group(s)")
 
-          array =@document.table(1,4,2800,2600,2600)
+          array =@document.table(1,4,1500,1500,3000,2000)
           array.border_width =10
           array[0][0] << "Arm Type"
           array[0][1] << "Label"
@@ -819,7 +819,7 @@ class CreateTrialSummaryReportService
           arms_groups = @trial.arms_groups
           arms_groups_num = 0
           arms_groups_num = arms_groups.size if arms_groups
-          array =@document.table(arms_groups_num, 3,2800,2600,2600)
+          array =@document.table(arms_groups_num, 4,1500,1500,3500,1500)
           array.border_width =10
           i = 0
           i = 0
@@ -881,7 +881,7 @@ class CreateTrialSummaryReportService
           h.store("Study Population",get_value_based_on_display_rule(@trial.study_pop_desc,"Required"))
         end
 
-        array =@document.table(h.length,2,4000,4000)
+        array =@document.table(h.length,2,3000,5000)
         array.border_width =10
         i = 0
 
@@ -900,7 +900,7 @@ class CreateTrialSummaryReportService
           array[0][0] << NO_DATA_AVAILABLE
         else
           inclusion_criteria.each do |col|
-            array[0][0] << col.criteria_desc
+            array[0][0] << '. ' + col.criteria_desc
             array[0][0].line_break
           end
         end
@@ -915,7 +915,7 @@ class CreateTrialSummaryReportService
           array[0][0] << NO_DATA_AVAILABLE
         else
           exclusion_criteria.each do |col|
-            array[0][0] << col.criteria_desc
+            array[0][0] << '. ' + col.criteria_desc
             array[0][0].line_break
           end
         end
@@ -928,7 +928,7 @@ class CreateTrialSummaryReportService
          diseases = @trial.diseases
          num_of_rows = diseases.size
 
-         array =@document.table(1,2,4000,4000)
+         array =@document.table(1,2,6000,2000)
          array.border_width =10
          array[0][0] << "Diseases/Conditions"
          array[0][1] << "Disease Code"
@@ -940,7 +940,7 @@ class CreateTrialSummaryReportService
          diseases.each do |col|
            array[i][0] << col.display_name
            array[i][1] << col.code
-           array[i][0].line_break
+           #array[i][0].line_break
            i = i+1
          end
        end
@@ -952,7 +952,7 @@ class CreateTrialSummaryReportService
           primary_oms = oms.where("outcome_measure_type_id = ? ", outcome_measure_type_id)
           num_of_rows = primary_oms.size
 
-          array = @document.table(num_of_rows+1,4,2000,2000,2000,2000)
+          array = @document.table(num_of_rows+1,4,2000,4000,1000,1000)
           array[0].shading_colour = @light_red
           array.border_width =10
 
@@ -1090,7 +1090,7 @@ class CreateTrialSummaryReportService
         participating_sites = @trial.participating_sites
         num_of_rows = participating_sites.size
 
-        array = @document.table(num_of_rows+1,5,1600,1600,1600,1600,1600)
+        array = @document.table(num_of_rows+1,5,2000,2000,1500,1000,1500)
         array.border_width =10
         array[0].shading_colour = @light_red
 

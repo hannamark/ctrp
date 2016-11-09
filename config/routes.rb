@@ -36,7 +36,21 @@ Rails.application.routes.draw do
               post '/:id' => 'api_trials#import_trial'
             end
           end
-        end
+
+          scope '/organizations' do
+              post '/' => 'api_organizations#create'
+              post '/:idType/:id' => 'api_organizations#update', constraints: {
+                                                                            idType: 'ctrp'
+                                                                    }
+          end
+
+          scope '/persons' do
+            post '/' => 'api_persons#create'
+            post '/:idType/:id' => 'api_persons#update', constraints: {
+                idType: 'ctrp'
+            }
+          end
+          end
       end
     end
 
