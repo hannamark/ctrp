@@ -89,12 +89,12 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
      And the table displays the columns type
      
       #All fields should be displayed even when no value exists
-     |CTRP Org ID|
-     # CTRP Org ID=Source ID when Source CTRP org
+     |CTRP ID|
+     # CTRP ID=Source ID when Source CTRP org
      |CTRP Organization Name|
      |Principal Investigator|
      # Principal Investigator Format (Last Name, First Name)
-     |Local Trial Identifier|
+     |Local Trial Id|
      |Program Code|
      |Current Site Recruitment Status|
      |Current Site Recruitment Status Date|
@@ -223,10 +223,47 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Change Memo Document  |
       |Protocol Highlighted Document|
       |TSR  |
-      |Other|
+      |All Other|
 
 
-      
+      Scenario: #15 I can add my site as a participating site after a trial is imported from ClinicalTrials.gov
+Given I have selected the option to Import an Industrial or Other Trial
+And I am on the Import ClinicalTrials.gov Trials screen
+And I have entered a NCT Number
+And I have imported the trial successfully
+Then the trial information will be displayed including
+|Trial Identifiers (Title)| 
+|Lead Organization Trial Identifier|
+|NCI ID|
+|ClinicalTrial.gov ID|
+|Other IDs|
+|Trial Details (Title)|
+|Official Title|
+|Phase|
+|Clinical Research Category|
+|Primary Purpose|
+|Trial Status (Title)|
+|Current Trial Status|
+|Trial Dates (Title)|
+|Trial Start Date: Date Type (Actual or Anticipated)|
+|Primary Completion Date : Date Type (Actual or Anticipated)|
+|Completion Date: Date Tye (Actual or Anticipated)|
+|Lead Organization (Title)|
+|Lead Organization|
+|Data Table 4 Information (Title)|
+|Study Source|
+|Data Table 4 Funding Sponsor/Source|
+And I can select the "Add My Site" function to add my site as a participating site
+
+
+Scenario: #16 I can enter my site information as a participating site after a trial is imported from ClinicalTrials.gov
+Given I have selected the option to Import an Industrial or Other Trial
+And I have completed the import
+And I have selected the option to "Add My Site"
+Then I can enter my Local Trial Identifier
+And look-up and add the Site Principal Investigator
+And enter a Program Code
+And enter the Recruitment Status and and Recruitment Status Date
 
 
  

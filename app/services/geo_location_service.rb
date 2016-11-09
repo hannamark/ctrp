@@ -1,3 +1,6 @@
+#
+# rubocop:disable ClassLength
+
 class GeoLocationService
 
   def get_country_name_from_alpha3(alpha3)

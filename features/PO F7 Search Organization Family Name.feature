@@ -24,17 +24,23 @@ Feature: PO F7 Search Organization Family Name
      |FamilyName|
       |FamilyStatus|
       |FamilyType|
-      |OrganizationFamilyMembers|
-      |OrganizationFamilyMemberRelationship|
+      |Membership Size|
+      
 
-    And the result should be sorted by family name
+Scenario: #1a I can export Family Parameters into an Excel spreadsheet
+Given I am logged into the CTRP PO application
+And I am on the Search Family Results screen
+When I select the export to Excel option
+Then the family search results details will be exported to an Excel format spreadsheet 
+And will include the following fields:
+And the result should be sorted by family name
 
-
-    Examples:
-      |family Name                 |Family Status  |Family Type           |Result    |
-      |Albert Einstein Cancer Center|Active         |Cancer Center         |True      |
-      |Yale Cancer Center           |Inactive       |NIH                   |True      |
-      |shilpi org 546               |Null           |Test                  |False|
+      |FamilyName|
+      |FamilyStatus|
+      |FamilyType|
+      |Organization|
+      |Relationship|
+     
 
 
   Scenario:#6 As a curator, I can Search Family when the Exact Search box is checked

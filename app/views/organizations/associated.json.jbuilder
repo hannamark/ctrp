@@ -9,7 +9,6 @@ json.associated_orgs do
                   :address,
                   :address2,
                   :address3,
-                  :processing_status,
                   :city,
                   :state_province,
                   :postal_code,
@@ -25,19 +24,23 @@ json.associated_orgs do
                   :source_status_name,
                   :families,
                   :name_aliases,
-                  :created_by,
-                  :updated_by,
                   :ctep_id,
                   :ctep_org_type_name,
-                  :org_created_date,
-                  :org_updated_date,
-                  :aff_families_names,
-                  :org_assoc_date,
-                  :service_request_name
-    json.uuid @ac_tp ? organization.uuid : nil
-    json.ctep_id organization.multiview_ctep_id
+                  :aff_families_names
+                json.updated_by @read_all_access ? organization.updated_by : nil
+                json.created_by @read_all_access ? organization.created_by : nil
+                json.created_at @read_all_access ? organization.created_at : nil
+                json.updated_at @read_all_access ? organization.updated_at : nil
+                json.association_date @read_all_access ? organization.association_date : nil
+                json.service_request_name @read_all_access ? organization.service_request_name : nil
+                json.processing_status @read_all_access ? organization.processing_status : nil
+                json.source_context_code @read_all_access ? organization.source_context_code : nil
+                json.source_status_code @read_all_access ? organization.source_status_code : nil
+                json.uuid @write_access ? organization.uuid : nil
+                json.ctep_id organization.multiview_ctep_id
   end
 end
 json.active_context @active_context
 json.active_id params[:id].to_i
-json.ac_tp @ac_tp
+json.ac_tp @write_access
+json.rc_tp @read_all_access

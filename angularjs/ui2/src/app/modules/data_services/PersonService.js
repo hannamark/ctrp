@@ -81,7 +81,7 @@
                     visible: false
                 },
                 {name: 'ctrp_id', enableSorting: true, displayName: 'CTRP ID', minWidth: '100', width: '*'},
-                {name: 'ctep_source_id', enableSorting: true, displayName: 'CTEP ID', minWidth: '100', width: '*'},
+                {name: 'multiview_ctep_id', enableSorting: true, displayName: 'CTEP ID', minWidth: '100', width: '*'},
                 {name: 'fname', displayName: 'First', enableSorting: true,  minWidth: '100', width: '*',
                     cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" title="{{COL_FIELD}}">' +
                     '<a ui-sref="main.personDetail({personId : row.entity.id })">{{COL_FIELD CUSTOM_FILTERS}}</a></div>'
@@ -120,9 +120,9 @@
                     enableSorting: true, minWidth: '150', width: '*'},
                 {name: 'prefix', enableSorting: true, minWidth: '75', width: '*'},
                 {name: 'suffix', enableSorting: true, minWidth: '75', width: '*'},
-                {name: 'context_person_id', displayName: 'Context Person ID', enableSorting: false, minWidth: '75', width: '*'},
+                {name: 'id', displayName: 'Context ID', enableSorting: true, minWidth: '75', width: '*'},
                 {name: 'processing_status', displayName: 'Processing Status', enableSorting: true, minWidth: '100', width: '*'},
-                {name: 'service_request', displayName: 'Service Request', enableSorting: false, minWidth: '75', width: '*'},
+                {name: 'service_request_name', displayName: 'Service Request', enableSorting: true, minWidth: '75', width: '*'},
             ]
         };
 
@@ -203,38 +203,41 @@
          */
         function getInitialPersonSearchParams() {
             var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
-            var curator_role = 'curator';
-            if(user_role.toUpperCase() !== curator_role.toUpperCase()) {
+            // var curator_role = 'curator';
+            if (user_role !== 'curator') {
                 initPersonSearchParams.wc_search = false;
             }
             return initPersonSearchParams;
         } //getInitialPersonSearchParams
 
-
-
         function getGridOptions(usedInModal) {
             //var user_role= !!UserService.getUserRole() ? UserService.getUserRole().split('_')[1].toLowerCase() : '';
             var user_role = !!UserService.getUserRole() ? UserService.getUserRole() : '';
+            var options = angular.copy(gridOptions); // make a copy
 
-            var updated_at_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_at');
-            console.log('updated_at_index is ' + updated_at_index);
-
-            var curator_role = 'curator';
-            if(user_role.toUpperCase().indexOf(curator_role.toUpperCase()) === -1) {
-
-                if (updated_at_index >= 0)
-                    gridOptions.columnDefs.splice(updated_at_index,1);
+            if(user_role === 'ROLE_CURATOR') {
+                // var updated_at_index = Common.indexOfObjectInJsonArray(options.columnDefs, 'name', 'updated_at');
+                var updatedAtIndex = _.findIndex(options.columnDefs, {name: 'updated_at'});
+                if (updatedAtIndex >= 0)
+                    options.columnDefs.splice(updatedAtIndex, 1);
                 //Recompute the updated_by_index, given that the columnDefs have changed
-                var updated_by_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'updated_by');
-                if (updated_by_index >= 0)
-                    gridOptions.columnDefs.splice(updated_by_index,1);
+                // var updated_by_index = Common.indexOfObjectInJsonArray(options.columnDefs, 'name', 'updated_by');
+                var updatedByIndex = _.findIndex(options.columnDefs, {name: 'updated_by'});
+                if (updatedByIndex >= 0)
+                    options.columnDefs.splice(updatedByIndex,1);
+            } else if (user_role === 'ROLE_TRIAL-SUBMITTER') {
+                // splice out columns: context id, Processing Status, and Service Request from trial submitter role
+                options.columnDefs = _.without(options.columnDefs, _.findWhere(options.columnDefs, {displayName: 'Context ID'}));
+                options.columnDefs = _.without(options.columnDefs, _.findWhere(options.columnDefs, {name: 'processing_status'}));
+                options.columnDefs = _.without(options.columnDefs, _.findWhere(options.columnDefs, {name: 'service_request'}));
             }
             if(usedInModal){
-                var nullify_index = Common.indexOfObjectInJsonArray(gridOptions.columnDefs, 'name', 'Nullify');
-                if (nullify_index >= 0)
-                    gridOptions.columnDefs.splice(nullify_index,1);
+                // var nullify_index = Common.indexOfObjectInJsonArray(options.columnDefs, 'name', 'Nullify');
+                var nullifyIndex = _.findIndex(options.columnDefs, {name: 'Nullify'});
+                if (nullifyIndex >= 0)
+                    options.columnDefs.splice(nullifyIndex,1);
             }
-            return gridOptions;
+            return options;
         }
 
 

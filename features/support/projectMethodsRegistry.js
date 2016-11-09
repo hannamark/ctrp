@@ -180,12 +180,14 @@ var projectMethodsRegistry = function () {
                // element.all(by.css('.glyphicon.glyphicon-remove-circle')).get(0).click();
                 addTrial.addTrialRemoveOtherTrialIdentifier.click();
                 addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'Other Identifier')).click();
-                addTrial.setAddTrialProtocolID('OTHupd' + projectFunctions.getRandomInt(100000, 990000));
+                otherIdentifierID = 'OTHupd' + projectFunctions.getRandomInt(100000, 990000);
+                addTrial.setAddTrialProtocolID(otherIdentifierID);
                 addTrial.clickAddTrialAddProtocolButton();
             }
             else {
                 addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'Other Identifier')).click();
-                addTrial.setAddTrialProtocolID('OTHupd' + projectFunctions.getRandomInt(100000, 990000));
+                otherIdentifierID = 'OTHupd' + projectFunctions.getRandomInt(100000, 990000);
+                addTrial.setAddTrialProtocolID(otherIdentifierID);
                 addTrial.clickAddTrialAddProtocolButton();
             }
         });
@@ -347,13 +349,12 @@ var projectMethodsRegistry = function () {
                 return rowName === status;
             });
         }).then(function (rows) {
-                //console.log('value of row' + rows);
+            if (rows) {
                 rows[0].element(by.css('.glyphicon.glyphicon-remove-circle')).click();
-            },
-            function (err) {
-                console.log('There was an error! ' + err);
+            } else {
+                console.log('Provided Status is not there');
             }
-        );
+        });
     };
 
 
@@ -522,6 +523,7 @@ var projectMethodsRegistry = function () {
                         addPeople.setAddPersonSuffix('suffix');
                         addPeople.setAddPersonEmail('email@eml.com');
                         addPeople.setAddPersonPhone('222-444-5555');
+                        addPeople.setAddPersonPhoneExtension('001');
                         searchOrg.clickOrgSearchModel();
                         cukeOrganization.then(function (value) {
                             console.log('Add org Name' + value);
@@ -1254,7 +1256,6 @@ var projectMethodsRegistry = function () {
                 return Q.when('');//leadProtocolID = emptyPromise;
             }
         });
-
         nciID = addTrial.viewTrialNCIID.isPresent().then(function (state) {
             if (state) {
                 return addTrial.viewTrialNCIID.getText().then(function (nciIDTrial) {
@@ -1266,7 +1267,6 @@ var projectMethodsRegistry = function () {
                 return Q.when('');//nciID = emptyPromise;
             }
         });
-
         otherIDs = addTrial.viewTrialOtherIdentifierValuePresent.isPresent().then(function (state) {
             if (state) {
                 return addTrial.viewTrialOtherIdentifierAllValues.getText().then(function (otherIDTrial) {
@@ -1278,7 +1278,6 @@ var projectMethodsRegistry = function () {
                 return Q.when('');//otherIDs = emptyPromise;
             }
         });
-
         officialTitle = addTrial.viewTrialOfficialTitle.isPresent().then(function (state) {
             if (state) {
                 return addTrial.viewTrialOfficialTitle.getText().then(function (trialOfficialTitle) {
@@ -1308,14 +1307,11 @@ var projectMethodsRegistry = function () {
                     console.log('Trial Primary Purpose is ----> ' + trialPurpose);
                     return trialPurpose;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Primary Purpose does not exist in Page.');
                 return Q.when('');//purpose = emptyPromise;
             }
         });
-
-
         principalInvestigator = addTrial.viewTrialPrincipalInvestigator.isPresent().then(function (state) {
             if (state) {
                // principalInvestigator =
@@ -1323,21 +1319,18 @@ var projectMethodsRegistry = function () {
                     console.log('Trial Principal Investigator is ----> ' + trialPrincipalInvestigator);
                     return trialPrincipalInvestigator;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Principal Investigator is does not exist in Page.');
                 return Q.when('');//principalInvestigator = Q.reject();//Promise.resolve('');//Q('');//Q.promise(function () {});//Q.Deferred().resolve();//emptyPromise;
             }
         });
-
         leadOrganization = addTrial.viewTrialLeadOrganization.isPresent().then(function (state) {
             if (state) {
                return addTrial.viewTrialLeadOrganization.getText().then(function (trialLeadOrganization) {
                     console.log('Trial Lead Organization is ----> ' + trialLeadOrganization);
                     return trialLeadOrganization;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Lead Organization does not exist in Page.');
                 return Q.when('');//leadOrganization = emptyPromise;
             }
@@ -1348,9 +1341,74 @@ var projectMethodsRegistry = function () {
                     console.log('Trial Sponsor is ----> ' + trialSponsor);
                     return trialSponsor;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Sponsor does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        grantTbl = addTrial.viewTrialVerifyGrantTableExist.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialVerifyGrantTable.getText().then(function (trialGrant) {
+                    console.log('Trial Grant array is ----> ' + trialGrant);
+                    return trialGrant;
+                });
+            } else {
+                console.log('Trial Grant does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        trialStatus = addTrial.viewTrialStatus.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialStatus.getText().then(function (trialStatus) {
+                    console.log('Trial Sponsor is ----> ' + trialStatus);
+                    return trialStatus;
+                });
+            } else {
+                console.log('Trial Status does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        trialDate = addTrial.viewTrialStatusDate.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialStatusDate.getText().then(function (trialDate) {
+                    console.log('Trial Status Date is ----> ' + trialDate);
+                    return trialDate;
+                });
+            } else {
+                console.log('Trial Status Date does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        trialStartDateWithOption = addTrial.viewTrialStartDate.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialStartDate.getText().then(function (trialStartDateOption) {
+                    console.log('Trial Start Date with Option is ----> ' + trialStartDateOption);
+                    return trialStartDateOption;
+                });
+            } else {
+                console.log('Trial Start Date with Option does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        trialPrimaryStartDateOption = addTrial.viewTrialPrimaryCompletionDate.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialPrimaryCompletionDate.getText().then(function (trialPrimStartDateOption) {
+                    console.log('Trial Primary Start Date with Option is ----> ' + trialPrimStartDateOption);
+                    return trialPrimStartDateOption;
+                });
+            } else {
+                console.log('Trial Primary Start Date with Option does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
+            }
+        });
+        trialCompletionDateOption = addTrial.viewTrialCompletionDate.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialCompletionDate.getText().then(function (trialCompDateOption) {
+                    console.log('Trial Completion Date with Option is ----> ' + trialCompDateOption);
+                    return trialCompDateOption;
+                });
+            } else {
+                console.log('Trial Completion Date with Option does not exist in Page.');
                 return Q.when('');//sponsor = emptyPromise;
             }
         });
@@ -1360,8 +1418,7 @@ var projectMethodsRegistry = function () {
                     console.log('Trial Participating Site is ----> ' + trialParticipatingSite);
                     return trialParticipatingSite;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Participating Site does not exist in Page.');
                 return Q.when('');//participatingSiteInTrial = emptyPromise;
             }
@@ -1372,10 +1429,20 @@ var projectMethodsRegistry = function () {
                     console.log('Trial Document array is ----> ' + trialDocuments);
                     return trialDocuments;
                 });
-            }
-            else {
+            } else {
                 console.log('Trial Documents does not exist in Page.');
                 return Q.when('');//documents = emptyPromise;
+            }
+        });
+        participatingSiteTbl = addTrial.viewTrialPsticipatingSitesTblExist.isPresent().then(function (state) {
+            if (state) {
+                return addTrial.viewTrialPsticipatingSites.getText().then(function (trialPS) {
+                    console.log('Trial Participating Site Tbl array is ----> ' + trialPS);
+                    return trialPS;
+                });
+            } else {
+                console.log('Trial Participating Site Tbl does not exist in Page.');
+                return Q.when('');//sponsor = emptyPromise;
             }
         });
 
@@ -1920,10 +1987,10 @@ var projectMethodsRegistry = function () {
         var primaryPurposeNT = 'Screening';
         var secondaryPurpose = '';
         var accrualDisease = 'SDC';
-        var leadOrgNT = 'trialOrgSS upd';
-        var principalInvNT = 'prinInvSS upd';
-        var sponsorOrgNT = 'trialOrgSS upd';
-        var dataTableOrg = 'trialOrgSS upd';
+        var leadOrgNT = 'trialOrgSS';
+        var principalInvNT = 'prinInvSS';
+        var sponsorOrgNT = 'trialOrgSS';
+        var dataTableOrg = 'trialOrgSS';
         var programCode = '';
         var grantOption = 'yes';
         var grantFundingMechanism = 'R01';
@@ -2338,320 +2405,6 @@ var projectMethodsRegistry = function () {
                     });
                 };
 
-    this.validateTrialUpdateScreen = function (userWhoWillCreateTrial,                                                                                                             //Name of User who will create Trial
-                                    trialType, leadOrgIdentifier, otherClinicalTrialID, otherObsoleteClinicalTrialID, otherIdentifier,                                  //Trial Identifiers
-                                    officialTitle, phase, pilotOption, researchCategory, primaryPurpose, secondaryPurpose, accrualDisease,                              //Trial Details
-                                    leadOrg, principalInv,                                                                                                              //Lead Organization/Principal Investigator
-                                    sponsorOrg,                                                                                                                         //Sponsor
-                                    dataTableOrg, programCode,                                                                                                          //Data Table 4 Information
-                                    grantOption, grantFundingMechanism, grantInstituteCode, grantSerialNumber, grantNCIDivisionCode,                                    //NIH Grant Information (for NIH funded Trials)
-                                    trialStatus, trialComment, trialWhyStudyStopped,                                                                                    //Trial Status
-                                    INDIDEOption, INDIDEType, INDIDENumber, INDIDEGrantor, INDIDEHolder, INDIDEInstitution,                                             //FDA IND/IDE Information for applicable trials
-                                    responsibleParty, trialOversightCountry, trialOversightOrg, FDARegulatedIndicator, section801Indicator, dataMonitoringIndicator,    //Regulatory Information
-                                    protocolDoc, IRBDoc, participatingSiteDoc, informedConsentDoc, otherDoc,                                                            //Trial Related Documents
-                                    saveDraftOrSubmitTrial                                                                                                              //Choose whether to Save Draft OR Submit Trial
-    ) {
-        var saveDraft = 'SAVEDRAFT';
-        var submitTrial = 'SUBMITTRIAL';
-        storeLeadProtocolId = leadOrgIdentifier + trialType.substring(0, 3) + ' ' + moment().format('MMMDoYY');
-        self.selectTrials(trialType);
-
-//      Create Lead Org, Principal Investigator, sponsor Org, DataTable Org//
-        /****** Create Lead Organization ********/
-        if (leadOrg !== '') {
-            self.createOrgforTrial(leadOrg, trialType, '0', userWhoWillCreateTrial);
-
-            /** Stores the value of Lead Org **/
-            storeLeadOrg = cukeOrganization.then(function (value) {
-                console.log('This is the Lead Organization that is added' + value);
-                return value;
-            });
-        }
-        browser.driver.wait(function () {
-            console.log('wait here');
-            return true;
-        }, 10).then(function () {
-
-            /****** Create Principal Investigator ********/
-            if (principalInv !== '') {
-                self.createPersonforTrial(principalInv, trialType, '0', userWhoWillCreateTrial);
-
-                /** Stores the value of Principal Investigator **/
-                storePI = cukePerson.then(function (value) {
-                    console.log('This is the Principal Investigator that is added' + value);
-                    return value;
-                });
-            }
-            browser.driver.wait(function () {
-                console.log('wait here');
-                return true;
-            }, 10).then(function () {
-
-                /****** Create Sponsor Organization ********/
-                if (sponsorOrg !== '') {
-                    self.createOrgforTrial(sponsorOrg, trialType, '1', userWhoWillCreateTrial);
-
-                    /** Stores the value of Sponsor Org **/
-                    storeSponsorOrg = cukeOrganization.then(function (value) {
-                        console.log('This is the Sponsor Organization that is added' + value);
-                        return value;
-                    });
-                }
-                browser.driver.wait(function () {
-                    console.log('wait here');
-                    return true;
-                }, 10).then(function () {
-
-                    /****** Create Data Table 4 Funding Source Organization ********/
-                    if (dataTableOrg !== '') {
-                        self.createOrgforTrial(dataTableOrg, trialType, '2', userWhoWillCreateTrial);
-
-                        /** Stores the value of Data Table 4 Funding Source Org **/
-                        storeFundingSrcOrg = cukeOrganization.then(function (value) {
-                            console.log('This is the Funding Source Organization that is added' + value);
-                            return value;
-                        });
-                    }
-
-                    /**** Trial Identifiers ****/
-                        //  storeLeadProtocolId.then(function (value) {
-                    console.log('This is the Lead Organization Trial Identifier that is added' + storeLeadProtocolId);
-                    addTrial.setAddTrialLeadProtocolIdentifier(storeLeadProtocolId);
-                    //  });
-                    if (otherClinicalTrialID !== '') {
-                        addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'ClinicalTrials.gov Identifier')).click();
-                        addTrial.setAddTrialProtocolID(otherClinicalTrialID);
-                        storeClinicalTrialID = addTrial.addTrialProtocolID.getAttribute('value').then(function (value) {
-                            console.log('This is the Clinical Trial Identifier that was added' + value);
-                            return value;
-                        });
-                        addTrial.clickAddTrialAddProtocolButton();
-                    }
-                    if (otherObsoleteClinicalTrialID !== '') {
-                        addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'Obsolete ClinicalTrials.gov Identifier')).click();
-                        addTrial.setAddTrialProtocolID(otherObsoleteClinicalTrialID);
-                        storeObsoleteClinicalTrialID = addTrial.addTrialProtocolID.getAttribute('value').then(function (value) {
-                            console.log('This is the Obsolete Clinical Trial Identifier that was added' + value);
-                            return value;
-                        });
-                        addTrial.clickAddTrialAddProtocolButton();
-                    }
-                    if (otherIdentifier !== '') {
-                        addTrial.addTrialProtocolIDOrigin.element(by.cssContainingText('option', 'Other Identifier')).click();
-                        addTrial.setAddTrialProtocolID(otherIdentifier);
-                        storeOtherClinicalTrialID = addTrial.addTrialProtocolID.getAttribute('value').then(function (value) {
-                            console.log('This is the Other Trial Identifier that was added' + value);
-                            return value;
-                        });
-                        addTrial.clickAddTrialAddProtocolButton();
-                    }
-
-                    /**** Trial Details ****/
-                    addTrial.setAddTrialOfficialTitle(officialTitle + ' ' + moment().format('MMMDoYY'));
-                    addTrial.selectAddTrialPhase(phase);
-                    if (pilotOption !== '') {
-                        addTrial.selectAddTrialPilotOption(pilotOption);
-                    }
-                    addTrial.selectAddTrialResearchCategory(researchCategory);
-                    addTrial.selectAddTrialPrimaryPurpose(primaryPurpose);
-                    if (secondaryPurpose !== '') {
-                        addTrial.selectAddTrialSecondaryPurpose(secondaryPurpose);
-                    }
-                    addTrial.selectAddTrialAccrualDiseaseTerminology(accrualDisease);
-
-                    /**** Lead Organization/Principal Investigator ****/
-                    /***** This will add the Lead Org  if Lead org is not there ******/
-                    if (leadOrg !== '') {
-                        addTrial.addTrialLeadOrganization.getAttribute('value').then(function (value) {
-                            console.log('value of Lead Org"' + value + '"is this');
-                            if (value === '') {
-
-                                storeLeadOrg.then(function (value) {
-                                    self.selectOrgforTrial(value, '0');
-                                });
-                            }
-                        });
-                    }
-
-                    /***** This will add the Principal Investigator if PI is not there ******/
-                    if (principalInv !== '') {
-                        addTrial.addTrialPrincipalInvestigator.getAttribute('value').then(function (value) {
-                            console.log('value of PI"' + value + '"is this');
-                            if (value.trim() === '') {
-                                storePI.then(function (value) {
-                                    self.selectPerForTrial(value, '0');
-                                });
-                            }
-                        });
-                    }
-
-                    /**** Sponsor ****/
-                    /***** This will add the Sponsor Org if Sponsor Org is not there ******/
-                    if (sponsorOrg !== '') {
-                        addTrial.addTrialSponsor.getAttribute('value').then(function (value) {
-                            console.log('value of Sponsor Org"' + value + '"is this');
-                            if (value === '') {
-                                storeSponsorOrg.then(function (value) {
-                                    self.selectOrgforTrial(value, '1');
-                                });
-                            }
-                        });
-                    }
-
-                    /**** Data Table 4 Information ****/
-                    /***** This will add the Funding Source Org if it is not there******/
-                    if (dataTableOrg !== '') {
-                        addTrial.addTrialDataTable4FundingSourceValues.getAttribute('value').then(function (value) {
-                            console.log('value of data table Org"' + value + '"is this');
-                            if (value === '') {
-
-                                storeFundingSrcOrg.then(function (value) {
-                                    self.selectOrgforTrial(value, '2');
-                                });
-                            }
-                        });
-                    }
-
-                    if (programCode !== '') {
-                        addTrial.setAddTrialDataTable4ProgramCode(programCode);
-                    }
-
-                    /**** NIH Grant Information (for NIH funded Trials) ****/
-                    if (grantOption !== '') {
-                        addTrial.selectAddTrialFundedByNCIOption(grantOption);
-
-                        if (grantOption.toUpperCase() !== 'NO' && grantOption !== '1') {
-                            addTrial.selectAddTrialFundingMechanism(grantFundingMechanism);
-                            addTrial.selectAddTrialInstituteCode(grantInstituteCode);
-                            addTrial.setAddTrialSerialNumber(grantSerialNumber);
-                            addTrial.addTrialSerialNumberSelect.click();
-                            addTrial.selectAddTrialNCIDivisionProgramCode(grantNCIDivisionCode);
-                            addTrial.clickAddTrialAddGrantInfoButton();
-                        }
-                    }
-
-                    /**** Trial Status ****/
-                    addTrial.clickAddTrialDateField(0);
-                    addTrial.clickAddTrialDateToday();
-                    addTrial.selectAddTrialStatus(trialStatus);
-                    if (trialComment !== '') {
-                        addTrial.setAddTrialStatusComment(trialComment);
-                    }
-                    if (trialStatus === 'Withdrawn' || trialStatus === 'Temporarily Closed to Accrual' || trialStatus === 'Temporarily Closed to Accrual and Intervention' || trialStatus === 'Administratively Complete') {
-                        addTrial.setAddTrialWhyStudyStopped(trialWhyStudyStopped);
-                    }
-                    addTrial.clickAddTrialAddStatusButton();
-
-                    /**** Trial Dates ****/
-                    addTrial.clickAddTrialDateField(1);
-                    addTrial.clickAddTrialDateFieldPreviousMonth('10');
-                    addTrial.selectAddTrialStartDateOption('0');
-                    addTrial.clickAddTrialDateField(2);
-                    addTrial.clickAddTrialDateToday();
-                    addTrial.selectAddTrialPrimaryCompletionDateOption('0');
-                    addTrial.clickAddTrialDateField(3);
-                    addTrial.clickAddTrialDateFieldNextMonth('10');
-                    addTrial.selectAddTrialCompletionDateOption('1');
-
-                    /**** FDA IND/IDE Information for applicable trials ****/
-                    if (INDIDEOption !== '') {
-                        addTrial.selectAddTrialFDAIND_IDEOption(INDIDEOption);
-                    }
-                    if (INDIDEOption.toUpperCase() !== 'NO' && INDIDEOption !== '1') {
-                        addTrial.selectAddTrialFDAIND_IDETypes(INDIDEType);
-                        addTrial.setAddTrialFDAIND_IDENumber(INDIDENumber);
-                        addTrial.selectAddTrialFDAIND_IDEGrantor(INDIDEGrantor);
-                        addTrial.selectAddTrialFDAIND_IDEHolderType(INDIDEHolder);
-                        if (INDIDEInstitution !== '') {
-                            addTrial.selectAddTrialFDAProgramCode(INDIDEInstitution);
-                        }
-                        addTrial.clickAddTrialAddIND_IDEButton();
-                    }
-
-                    /**** Regulatory Information ****/
-                    if (responsibleParty !== '') {
-                        addTrial.selectAddTrialResponsibleParty(responsibleParty);
-                    }
-                    if (trialOversightCountry !== '') {
-                        addTrial.selectAddTrialOversightAuthorityCountry(trialOversightCountry);
-                        addTrial.selectAddTrialOversightAuthorityOrganization(trialOversightOrg);
-                        addTrial.clickAddTrialAddOversightAuthorityButton();
-                    }
-                    if (FDARegulatedIndicator !== '') {
-                        addTrial.selectAddTrialFDARegulatedInterventionIndicator(FDARegulatedIndicator);
-                    }
-                    if (section801Indicator !== '') {
-                        addTrial.selectAddTrialSection801Indicator(section801Indicator);
-                    }
-                    if (dataMonitoringIndicator !== '') {
-                        addTrial.selectAddTrialDataMonitoringCommitteeAppointedIndicator(dataMonitoringIndicator);
-                    }
-
-                    /**** Trial Related Documents ****/
-                    if (protocolDoc !== '') {
-                        trialDoc.trialRelatedFileUpload('reg', '1', protocolDoc);
-                    }
-                    if (IRBDoc !== '') {
-                        trialDoc.trialRelatedFileUpload('reg', '2', IRBDoc);
-                    }
-                    if (participatingSiteDoc !== '') {
-                        trialDoc.trialRelatedFileUpload('reg', '3', participatingSiteDoc);
-                    }
-                    if (informedConsentDoc !== '') {
-                        trialDoc.trialRelatedFileUpload('reg', '4', informedConsentDoc);
-                    }
-                    if (otherDoc !== '') {
-                        trialDoc.trialRelatedFileUpload('reg', '5', otherDoc);
-                    }
-                    if (saveDraftOrSubmitTrial.toUpperCase() === saveDraft) {
-                        addTrial.clickAddTrialSaveDraftButton();
-                        addTrial.addTrialLeadProtocolIdValidationMessage.getText().then(function (warningMsg) {
-                            if (warningMsg === '') {
-                                //   storeLeadProtocolId.then(function (leadProtocolID) {
-                                console.log('Draft is Save with Lead protocol ID *************   ' + storeLeadProtocolId + '   ************ Trial Type ->  ' + trialType);
-
-                                trialMenuItem.clickTrials();
-                                trialMenuItem.clickListSearchTrialLink();
-                                searchTrial.setSearchTrialProtocolID(storeLeadProtocolId);
-                                searchTrial.clickSavedDrafts();
-                                element(by.linkText(storeLeadProtocolId)).click();
-                                self.importTrialFieldValues();
-
-                                // });
-                            }
-                            else {
-                                assert.fail(0, 1, '\nDraft not Saved.\n' + 'Error message in Page:\n-->' + warningMsg);
-                            }
-                        });
-                    }
-                    else if (saveDraftOrSubmitTrial.toUpperCase() === submitTrial) {
-                        return addTrial.addTrialSubmitButton.isPresent().then(function (state) {
-                            if (state === true) {
-                                addTrial.clickAddTrialReviewButton();
-                                console.log('Trial Successfully created');
-                                helper.wait(addTrial.viewTrialNCIID, 'NCI ID element on View Trial Page');
-                                addTrial.viewTrialNCIID.getText().then(function (nciID) {
-                                    console.log('NCI ID of the Trial that was created is *************   ' + nciID + '   ************ Trial Type ->  ' + trialType);
-                                });
-                                self.importTrialFieldValues();
-                            } else {
-                                addTrial.clickAddTrialReviewButton();
-                                menuItem.addWarningMessage.getText().then(function (warningMsg) {
-                                    addTrial.addTrialValidationMessage.getText().then(function (associationWarningMsg) {
-                                        assert.fail(0, 1, '\nSubmit button not found in the Page, may be form has some errors.\n See below if error is listed\n' + 'Error message in Page:\n-->' + underscore.compact(warningMsg).join("\n-->") + '\nAssociation error msg in Page: \n-->' + underscore.compact(associationWarningMsg).join("\n-->"));
-                                    });
-                                });
-                            }
-                        });
-                    }
-                    else {
-                        assert.fail(0, 1, 'No Match Found with the provided Option -- ' + saveDraftOrSubmitTrial + ' -- Please choose the option either as \'SaveDraft\' OR \'SubmitTrial\'');
-                    }
-                });
-            });
-        });
-    };
-
 
     this.validateTrialFields = function (trialType, leadOrgIdentifier, nciID, allOtherTrialIdentifierWithTypeArr,                                   //Trial Identifiers
                                          officialTitle, phase, pilotOption, researchCategory, primaryPurpose, secondaryPurpose, accrualDisease,     //Trial Details
@@ -2909,6 +2662,76 @@ var projectMethodsRegistry = function () {
         });
     };
 
+
+    /*****************************************************************
+     * Method: Edit Participating Site Update Screen
+     * @param itemFromRow
+     * @param colmNum
+     *****************************************************************/
+    this.editParticipatingSiteFromGrid = function (itemFromRow,colmNum) {
+        return addTrial.addTrialPsticipatingSitesTable.getText().filter(function (row) {
+            // Get the second column's text.
+            return row.$$('td').get(colmNum).getText().then(function (rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name: ' + rowName + 's');
+                console.log('Item from row: '+ itemFromRow + 's');
+                return rowName.toString() === itemFromRow.toString();
+            });
+        }).then(function (rows) {
+                console.log('value of row' + rows);
+                storePSCTRPID = addTrial.addTrialPsticipatingSitesTableCTRPID.getText();
+                storePSOrgName = addTrial.addTrialPsticipatingSitesTableOrgName.getText();
+               // storePSPIName = addTrial.addTrialPsticipatingSitesTablePIName.getText();
+                storePSLocalID = addTrial.addTrialPsticipatingSitesTableLocalID.getText();
+                storePSPC = addTrial.addTrialPsticipatingSitesTablePC.getText();
+                storePSStatus = addTrial.addTrialPsticipatingSitesTableStatus.getText();
+                storePSStatusDate = addTrial.addTrialPsticipatingSitesTableStatusDate.getText();
+                storePSContactName = addTrial.addTrialPsticipatingSitesTableContactName.getText();
+                storePSContactEmail = addTrial.addTrialPsticipatingSitesTableContactEmail.getText();
+                storePSContactPhone = addTrial.addTrialPsticipatingSitesTableContactPhone.getText();
+            browser.driver.wait(function () {
+                console.log('wait here');
+                return true;
+            }, 40).then(function () {
+               rows[0].element(by.css('.glyphicon.glyphicon-edit')).click();
+            });
+            },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
+
+    /*****************************************************************
+     * Method: Verify a Single Participating Site Update Screen
+     *****************************************************************/
+    this.verifySingleParticipatingSiteFromGrid = function (itemFromRow,colmNum, CTRPOrgID, CTRPOrgName, principalInvestigator, localTrialID, programCode, siteStatus, siteStatusDate, primaryContact, email, phoneExt) {
+        return addTrial.addTrialPsticipatingSitesTable.getText().filter(function (row) {
+            // Get the second column's text.
+            return row.$$('td').get(colmNum).getText().then(function (rowName) {
+                // Filter rows matching the name you are looking for.
+                console.log('print row name: ' + rowName + 's');
+                console.log('Item from row: '+ itemFromRow + 's');
+                return rowName.toString() === itemFromRow.toString();
+            });
+        }).then(function (rows) {
+                console.log('value of row' + rows);
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableCTRPIDElement)).getText()).to.eventually.equal(CTRPOrgID.toString(), 'Verification of CTRP org ID in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableOrgNameElement)).getText()).to.eventually.equal(CTRPOrgName, 'Verification of CTRP org Name in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTablePINameElement)).getText()).to.eventually.equal(principalInvestigator, 'Verification of principal Investigator in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableLocalIDElement)).getText()).to.eventually.equal(localTrialID, 'Verification of localTrialID in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTablePCElement)).getText()).to.eventually.equal(programCode, 'Verification of programCode in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableStatusElement)).getText()).to.eventually.equal(siteStatus, 'Verification of siteStatus in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableStatusDateElement)).getText()).to.eventually.equal(siteStatusDate, 'Verification of siteStatusDatein PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableContactNameElement)).getText()).to.eventually.equal(primaryContact, 'Verification of primaryContact in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableContactEmailElement)).getText()).to.eventually.equal(email, 'Verification of email in PS table');
+                expect(rows[0].element(by.binding(addTrial.addTrialPsticipatingSitesTableContactPhoneElement)).getText()).to.eventually.equal(phoneExt, 'Verification of phoneExt in PS table');
+            },
+            function (err) {
+                console.log('There was an error! ' + err);
+            }
+        );
+    };
 
 };
 module.exports = projectMethodsRegistry;
