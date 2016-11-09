@@ -379,7 +379,7 @@ class OrganizationsController < ApplicationController
 
   def processParams
     params[:start] = 1 if params[:start].blank?
-    params[:rows] = 20 if params[:start].blank?
+    params[:rows] = 20 if params[:rows].blank?
     if params[:allrows] == true
       params[:rows] = nil
     end
