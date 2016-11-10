@@ -100,6 +100,7 @@
             if ($scope.usedInModal) {
                 $scope.sourceContextOnly = $scope.sourceContextOnly || 'CTRP';
                 $scope.searchParams.source_context = $scope.sourceContextOnly;
+                $scope.searchParams.source_status = 'ACT'; // search only Active source status in modal
             }
             // $scope.sourceContextOnly = angular.isDefined($scope.sourceContextOnly) && $scope.usedInModal ? $scope.sourceContextOnly : undefined;
             $scope.showGrid = angular.isDefined($scope.showGrid) ? $scope.showGrid : false;
@@ -135,7 +136,7 @@
                     if ($scope.usedInModal) {
                         // in modal, search against CTRP context and Active people!
                         $scope.searchParams.source_context = $scope.sourceContextOnly || 'CTRP';
-                        // $scope.searchParams.source_status = 'Active'; // TODO: source status should be active in the search for in modal use
+                        $scope.searchParams.source_status = 'ACT'; // source status should be active in the search for in modal use
                     }
                     PersonService.searchPeople($scope.searchParams).then(function (data) {
                         var status = data.status;
