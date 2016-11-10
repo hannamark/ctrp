@@ -94,21 +94,24 @@
             if (vm.curPerson.new) {
                 vm.savedSelection = vm.savedSelection.filter(function(org) {return !org._destroy;}); // keep the active ones
             }
-            vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection);
-            _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
-                //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
-                aff['effective_date'] = aff.effective_date ? aff['effective_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
-                aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
-                var affStatusIndex = -1; //PoAffiliationStatus index
-                if (aff.effective_date && !aff.expiration_date) {
-                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
-                } else if (aff.expiration_date) {
-                    affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
-                }
-                aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
-                vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
-            });
-            vm.curPerson.service_request_id = 1;
+            if (vm.curPerson.source_context === 'CTRP') {
+                vm.curPerson.po_affiliations_attributes = OrgService.preparePOAffiliationArr(vm.savedSelection);
+                _.each(vm.curPerson.po_affiliations_attributes, function (aff, idx) {
+                    //convert the ISO date to Locale Date String (dates are already converted correctly by the dateFormatter directive so no need to convert them again below)
+                    aff['effective_date'] = aff.effective_date ? aff['effective_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['effective_date']) : '';
+                    aff['expiration_date'] = aff.expiration_date ? aff['expiration_date'] : null; // DateService.convertISODateToLocaleDateStr(aff['expiration_date']) : '';
+                    var affStatusIndex = -1; //PoAffiliationStatus index
+                    if (aff.effective_date && !aff.expiration_date) {
+                        affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Active'});
+                    } else if (aff.expiration_date) {
+                        affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
+                    }
+                    aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
+                    vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
+                });
+            } else {
+                vm.curPerson.po_affiliations_attributes = []; // CTEP person does not have PO affiliations
+            }
             console.info('vm.person to be updated: ', vm.curPerson);
             //create a nested Person object
             var newPerson = {};
@@ -292,7 +295,7 @@
 
             if (vm.person.source_context === 'CTRP') {
                 vm.ctrpPerson = vm.person;
-                vm.ctepPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTEP', source_status: 'Active'});
+                vm.ctepPerson = _.findWhere(vm.person.associated_persons, {source_status: 'Active', source_context: 'CTEP'});
             } else if (vm.person.source_context === 'CTEP') {
                 vm.ctepPerson = vm.person;
                 vm.ctrpPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTRP', source_status: 'Active'}) || null;
@@ -300,6 +303,7 @@
                 vm.ctrpPerson = null;
                 vm.ctepPerson = null;
             }
+            console.info('ctepPerson: ', vm.ctepPerson, vm.ctrpPerson);
             _prepAssociationGrid([]);
             // selectTab(vm.defaultTab);
         }
