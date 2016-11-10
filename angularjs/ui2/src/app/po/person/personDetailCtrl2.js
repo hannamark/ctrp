@@ -420,6 +420,7 @@
         } // removePersonAssociation
 
         function cloneCtepPerson(ctepPersonId, forceClone) {
+            vm.isBtnDisabled = true;
             PersonService.cloneCtepPerson(ctepPersonId, forceClone).then(function(res) {
                 console.info('res from clone: ', res);
                 if (res.is_cloned && angular.isArray(res.matched) && res.matched.length > 0) {
@@ -446,6 +447,8 @@
                 setFormToPristine();
             }).catch(function(err) {
                 console.error('err in cloning person: ', err);
+            }).finally(function() {
+                vm.isBtnDisabled = false;
             });
         }
 
