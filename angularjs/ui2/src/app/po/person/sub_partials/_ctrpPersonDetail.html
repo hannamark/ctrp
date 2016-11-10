@@ -122,7 +122,7 @@
         <label class="control-label col-sm-3">Add Affiliated Organization: </label>
         <div class="col-sm-9">
             <ctrp-org-adv-search-modal-button pre-search = '{"source_contextfilter": ["CTRP"]}' use-built-in-template="false" allow-overwrite="false" selected-orgs-array="personDetailView.orgsArrayReceiver"></ctrp-org-adv-search-modal-button>
-            <span class="help-block" ng-show="personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.validOrgsCount === 0)">
+            <span class="help-block" ng-show="personDetailView.affiliatedOrgError && ctrpbtn.person_form.needsAttention(null, personDetailView.validOrgsCount === 0 && personDetailView.curPerson.source_context === 'CTRP')">
                 Organization Affiliation is Required
             </span>
             <!-- ctrpbtn.person_form.needsAttention(null, personDetailView.savedSelection.length === 0 && personDetailView.curPersonEditable) -->
