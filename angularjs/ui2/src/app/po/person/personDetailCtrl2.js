@@ -71,6 +71,7 @@
                     });
                 } else if (contextName === 'CTRP') {
                     // CTRP is the default tab
+                    console.info('after removal: ', vm.curPerson);
                     _populatePOAff();
                     _prepAssociationGrid(vm.curPerson.associated_persons);
                 }
@@ -235,7 +236,8 @@
                         res.person.source_status = ctepPerson.source_status;
                         vm.ctepPerson = angular.copy(res.person);
                         // current person is CTRP
-                        vm.curPerson.associated_persons = [res.person].concat(vm.curPerson.associated_persons || []);
+                        vm.ctrpPerson.associated_persons = [res.person].concat(vm.ctrpPerson.associated_persons || []);
+                        // vm.curPerson.associated_persons = [res.person].concat(vm.curPerson.associated_persons || []);
                     } else if (sourceContext === 'CTRP') {
                         vm.ctrpPerson = res.person;
                         vm.ctepPerson.ctrp_id = vm.ctrpPerson.ctrp_id;
@@ -406,12 +408,10 @@
             if (ctepPerson.is_ctrp_context) return; // do not allow deleting CTRP person (???)
             var ctepPersonId = ctepPerson.id;
             PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
+                console.info('res for removal: ', res);
                 if (res.is_removed) {
-                    // filter out the deleted persons (both ctep and its associated ctrp person)
-                    vm.curPerson.associated_persons = _.filter(vm.curPerson.associated_persons, function(p) {
-                        // return p.ctrp_source_id !== ctrp_source_id;
-                        return p.id !== ctepPersonId;
-                    });
+                    vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, {id: res.removed_person.id}); // remove the ctep from container
+                    vm.ctrpPerson = angular.copy(vm.curPerson);
                     vm.associationForRemoval = [];
                     vm.ctepPerson = null; // deleted
                     _showToastr('The selected person context association was deleted');
