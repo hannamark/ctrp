@@ -65,6 +65,10 @@
                     </button>
                     <button class="btn btn-primary pull-right" id="associate_ctrp_person_btn" ng-disabled="!personDetailView.selectedCtrpPerson || personDetailView.selectedCtrpPerson.is_associated"
                     ng-click="personDetailView.associate()">
+                        Associate
+                    </button>
+                    <button class="btn btn-primary pull-right" id="associate_ctrp_person_btn"
+                    ng-click="personDetailView.cloneCtepPerson(personDetailView.curPerson.id, true)">
                         Clone
                     </button>
                     <button type="button" class="btn btn-warning pull-right" id="cancelChangeOverrideContext2"

@@ -355,14 +355,14 @@ class TrialsController < ApplicationController
       @trials = @trials.is_not_draft if params[:searchType] == 'All Trials'
       @trials = @trials.is_draft(@current_user.username) if params[:searchType] == 'Saved Drafts'
       #@trials = @trials.sort_by_col(params).group(:'trials.id').page(params[:start]).per(params[:rows])
-      @trials = @trials.order("#{params[:sort]} #{params[:order]}").page(params[:start]).per(params[:rows])
+      @trials = @trials.order("#{params[:sort]} #{params[:order]}").group(:'trials.id').page(params[:start]).per(params[:rows])
 
        #@trials = @trials.filter(@trials, {:phases => params[:phases], :purposes => params[:purposes]})
 
 
       #### Write here a join query to avoid the access of db tables from View.
       ###
-      Rails.logger.info "Started querying multitable with Trials to avoid the access of db tables from View"
+      Rails.logger.error "Started querying multitable with Trials to avoid the access of db tables from View"
 
       #@trials = @trials.uniq
       #@trials = @trials.my_available_actions

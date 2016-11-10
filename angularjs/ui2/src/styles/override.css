@@ -1051,7 +1051,7 @@ input[type=radio] {
 }
 
 .modal-header .close {
-    margin-top: -10px;
+    margin-top: 0px;
 }
 
 .drop-shadow {
@@ -1651,7 +1651,7 @@ div[disabled] {
     border-color: #CCC;
 }
 
-/* Center modal vertically as much as possible */
+/* Modal vertical positioning options */
 .modal-center .modal-dialog {
     position: absolute;
     left: 0;
@@ -1661,9 +1661,12 @@ div[disabled] {
     margin: auto;
 }
 
+
+.modal-center.modal-top .modal-dialog {
+    top: 25%;
+}
+
 /* Set modal to mimic default browser look/feel */
-
-
 .modal-default .modal-header {
     padding: 10px;
     background-color: #D5D5D5;

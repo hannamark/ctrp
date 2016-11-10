@@ -166,6 +166,16 @@ module.exports = function() {
     var crcListValueB = 'Expanded Access';
     var crcListValueC = 'Observational';
     var crcListValueD = 'Ancillary Correlative';
+    var slctValStudyMdl = 'Cohort';
+    var prmPrpsSlctVal = 'Supportive Care';
+    var secondryPurposeSlctVal = 'Ancillary-Correlative';
+    var trialPhaseSlctVal = 'IV';
+    var pilotSlctVal = 'Yes';
+    var interventionModelSlctVal = 'Single Group Assignment';
+    var maskingSlctVal = 'Open Label';
+    var allocationSlctVal = 'Randomized';
+    var numberOfArmsGrpSlctVal = '1';
+    var targetEnrollmentSlctVal = '1';
 
 
     /*
@@ -187,7 +197,9 @@ module.exports = function() {
             leftNav.scientificTrialDesign.isPresent().then(function (value) {
                 console.log('Current Trial Design button status: '+value+ '');
                 if (value === true) {
+                    commonFunctions.alertMsgOK();
                     leftNav.clickScientificTrialDesign();
+                    commonFunctions.alertMsgOK();
                     leftNav.checkPanelTitle(pageTtitle, '6');
                 } else if (value === false) {
                     commonFunctions.alertMsgOK();
@@ -813,15 +825,19 @@ module.exports = function() {
                if (value === '0'){
                    trialDesign.setNumberOfArmsGroups('1');
                    commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '1');
+                   vfNmbrOfArmsGrpValue = '1';
                } else if (value === '1'){
                    trialDesign.setNumberOfArmsGroups('2');
                    commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '2');
+                   vfNmbrOfArmsGrpValue = '2';
                } else if (value === '2'){
                    trialDesign.setNumberOfArmsGroups('1');
                    commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '1');
+                   vfNmbrOfArmsGrpValue = '1';
                } else {
                    trialDesign.setNumberOfArmsGroups('1');
                    commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '1');
+                   vfNmbrOfArmsGrpValue = '1';
                }
             });
         });
@@ -956,15 +972,19 @@ module.exports = function() {
                 if (value === '0'){
                     trialDesign.setTargetEnrollment('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '1');
+                    vfTargetEnrollmentValue = '1';
                 } else if (value === '1'){
                     trialDesign.setTargetEnrollment('2');
                     commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '2');
+                    vfTargetEnrollmentValue = '2';
                 } else if (value === '2'){
                     trialDesign.setTargetEnrollment('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '1');
+                    vfTargetEnrollmentValue = '1';
                 } else {
                     trialDesign.setTargetEnrollment('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '1');
+                    vfTargetEnrollmentValue = '1';
                 }
             });
         });
@@ -976,15 +996,19 @@ module.exports = function() {
                 if (value === '0'){
                     trialDesign.setFinalEnrollmentForCT('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.finalEnrollmentTxt, '1');
+                    vfClinicalTrialsValue = '1';
                 } else if (value === '1'){
                     trialDesign.setFinalEnrollmentForCT('2');
                     commonFunctions.verifyTextFieldValue(trialDesign.finalEnrollmentTxt, '2');
+                    vfClinicalTrialsValue = '2';
                 } else if (value === '2'){
                     trialDesign.setFinalEnrollmentForCT('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.finalEnrollmentTxt, '1');
+                    vfClinicalTrialsValue = '1';
                 } else {
                     trialDesign.setFinalEnrollmentForCT('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.finalEnrollmentTxt, '1');
+                    vfClinicalTrialsValue = '1';
                 }
             });
         });
@@ -1032,6 +1056,9 @@ module.exports = function() {
             commonFunctions.verifyListFieldValue(trialDesign.maskingLst, vfMaskingValue);
             commonFunctions.verifyListFieldValue(trialDesign.allocationLst, vfAllocationValue);
             commonFunctions.verifyListFieldValue(trialDesign.studyClassficationLst, vfClassificationValue);
+            commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, vfNmbrOfArmsGrpValue);
+            commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, vfTargetEnrollmentValue);
+            commonFunctions.verifyTextFieldValue(trialDesign.finalEnrollmentTxt, vfClinicalTrialsValue);
         });
     });
 
@@ -1058,6 +1085,13 @@ module.exports = function() {
     this.Given(/^the Clinical research Category is Interventional$/, function () {
         return browser.sleep(25).then(function() {
             trialDesign.selectClinicalResearchCategory('Interventional');
+            trialDesign.selectPrimaryPurpose(prmPrpsSlctVal);
+            trialDesign.selectTrialPhase(trialPhaseSlctVal);
+            trialDesign.selectInterventionalModel(interventionModelSlctVal);
+            trialDesign.selectMasking(maskingSlctVal);
+            trialDesign.selectAllocation(allocationSlctVal);
+            trialDesign.setNumberOfArmsGroups(numberOfArmsGrpSlctVal);
+            trialDesign.setTargetEnrollment(targetEnrollmentSlctVal);
         });
     });
 
@@ -1070,6 +1104,15 @@ module.exports = function() {
     });
 
     this.When(/^The Trial Design field (.*) is not entered$/, function (TrialDesignField) {
+        //prmPrpsSlctVal
+        //secondryPurposeSlctVal
+        //trialPhaseSlctVal
+        //pilotSlctVal
+        //interventionModelSlctVal
+        //maskingSlctVal
+        //allocationSlctVal
+        //numberOfArmsGrpSlctVal
+        //targetEnrollmentSlctVal
         return browser.sleep(25).then(function() {
             if (TrialDesignField === 'Primary Purpose'){
                 var selectValPrimaryPurpose = '- Please select a primary purpose...';
@@ -1089,10 +1132,10 @@ module.exports = function() {
             } else if (TrialDesignField === 'Study Model'){
                 //trialDesign.setNumberOfArmsGroups('1');
                 var selectValStdyModel = '- Please select a study model...';
-                trialDesign.selectStudyModel('Cohort');
+                trialDesign.selectStudyModel(selectValStdyModel);
             } else if (TrialDesignField === 'Time Perspective'){
                 //trialDesign.setNumberOfArmsGroups('1');
-                trialDesign.selectStudyModel(selectValStdyModel);
+                trialDesign.selectStudyModel(slctValStudyMdl);
                 var selectValTmePrspctv = '- Please select a time perspective...';
                 trialDesign.selectTimePerspective(selectValTmePrspctv);
             } else if (TrialDesignField === 'Allocation'){
@@ -1213,6 +1256,10 @@ module.exports = function() {
 
     this.Then(/^a text will be displayed "([^"]*)"$/, function (arg1) {
         return browser.sleep(25).then(function() {
+            helper.selectCheckBox(trialDesign.maskingRolesSubjectCheck, 'uncheck');
+            helper.selectCheckBox(trialDesign.maskingRolesInvestigatorCheck, 'uncheck');
+            helper.selectCheckBox(trialDesign.maskingRolesCaregiverCheck, 'uncheck');
+            helper.selectCheckBox(trialDesign.maskingRolesOutcomesAssessorCheck, 'uncheck');
             commonFunctions.verifyTxtByIndex(trialDesign.maskingRolesMsg, arg1+'.', '2', 'Verifying Masking Roles Alert Text');
         });
     });
@@ -1549,15 +1596,19 @@ module.exports = function() {
                 if (value === '0'){
                     trialDesign.setNumberOfArmsGroups('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '1');
+                    vfNmbrOfArmsGrpValue = '1';
                 } else if (value === '1'){
                     trialDesign.setNumberOfArmsGroups('2');
                     commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '2');
+                    vfNmbrOfArmsGrpValue = '2';
                 } else if (value === '2'){
                     trialDesign.setNumberOfArmsGroups('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '1');
+                    vfNmbrOfArmsGrpValue = '1';
                 } else {
                     trialDesign.setNumberOfArmsGroups('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '1');
+                    vfNmbrOfArmsGrpValue = '1';
                 }
             });
         });
@@ -1569,15 +1620,19 @@ module.exports = function() {
                 if (value === '0'){
                     trialDesign.setTargetEnrollment('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '1');
+                    vfTargetEnrollmentValue = '1';
                 } else if (value === '1'){
                     trialDesign.setTargetEnrollment('2');
                     commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '2');
+                    vfTargetEnrollmentValue = '2';
                 } else if (value === '2'){
                     trialDesign.setTargetEnrollment('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '1');
+                    vfTargetEnrollmentValue = '1';
                 } else {
                     trialDesign.setTargetEnrollment('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '1');
+                    vfTargetEnrollmentValue = '1';
                 }
             });
         });
@@ -1589,15 +1644,19 @@ module.exports = function() {
                 if (value === '0'){
                     trialDesign.setFinalEnrollmentForCT('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.finalEnrollmentTxt, '1');
+                    vfClinicalTrialsValue = '1';
                 } else if (value === '1'){
                     trialDesign.setFinalEnrollmentForCT('2');
                     commonFunctions.verifyTextFieldValue(trialDesign.finalEnrollmentTxt, '2');
+                    vfClinicalTrialsValue = '2';
                 } else if (value === '2'){
                     trialDesign.setFinalEnrollmentForCT('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.finalEnrollmentTxt, '1');
+                    vfClinicalTrialsValue = '1';
                 } else {
                     trialDesign.setFinalEnrollmentForCT('1');
                     commonFunctions.verifyTextFieldValue(trialDesign.finalEnrollmentTxt, '1');
+                    vfClinicalTrialsValue = '1';
                 }
             });
         });
@@ -1618,6 +1677,9 @@ module.exports = function() {
             commonFunctions.verifyListFieldValue(trialDesign.timePerspectiveLst, vfTimePerspectiveValue);
             commonFunctions.verifyListFieldValue(trialDesign.bioSpecimenRetentionLst, vfbiospecimenRetentionValue);
             commonFunctions.verifyTextFieldValue(trialDesign.bioSpecimenDescriptionTxt, descriptionBio);
+            commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, vfNmbrOfArmsGrpValue);
+            commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, vfTargetEnrollmentValue);
+            commonFunctions.verifyTextFieldValue(trialDesign.finalEnrollmentTxt, vfClinicalTrialsValue);
         });
     });
 
@@ -1790,6 +1852,9 @@ module.exports = function() {
             commonFunctions.verifyListFieldValue(trialDesign.timePerspectiveLst, vfTimePerspectiveValue);
             commonFunctions.verifyListFieldValue(trialDesign.bioSpecimenRetentionLst, vfbiospecimenRetentionValue);
             commonFunctions.verifyTextFieldValue(trialDesign.bioSpecimenDescriptionTxt, descriptionBio);
+            commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, vfNmbrOfArmsGrpValue);
+            commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, vfTargetEnrollmentValue);
+            commonFunctions.verifyTextFieldValue(trialDesign.finalEnrollmentTxt, vfClinicalTrialsValue);
         });
     });
 
@@ -1814,6 +1879,135 @@ module.exports = function() {
         return browser.sleep(25).then(function() {
             trialDesign.selectClinicalResearchCategory('Observational');
             vfClnclRsrchCategryValue = 'Observational';
+            //Primary Purpose
+            prmryPrpsA = 'Treatment';
+            prmryPrpsB = 'Prevention';
+            prmryPrpsC = 'Supportive Care';
+            prmryPrpsD = 'Screening';
+            prmryPrpsE = 'Diagnostic';
+            prmryPrpsF = 'Health Services Research';
+            prmryPrpsG = 'Basic Science';
+            prmryPrpsH = 'Other';
+            trialDesign.primaryPurposeLst.$('option:checked').getText().then(function (value) {
+                var crntPrmryPrpsValue = '' + value + '';
+                if (crntPrmryPrpsValue === 'Treatment'){
+                    console.log('System Identified [' + crntPrmryPrpsValue + '] as the current Primary Purpose value');
+                    trialDesign.selectPrimaryPurpose(prmryPrpsB);
+                    vfPrmryPrpsValue = prmryPrpsB;
+                } else if (crntPrmryPrpsValue === 'Prevention'){
+                    console.log('System Identified [' + crntPrmryPrpsValue + '] as the current Primary Purpose value');
+                    trialDesign.selectPrimaryPurpose(prmryPrpsC);
+                    vfPrmryPrpsValue = prmryPrpsC;
+                } else if (crntPrmryPrpsValue === 'Supportive Care'){
+                    console.log('System Identified [' + crntPrmryPrpsValue + '] as the current Primary Purpose value');
+                    trialDesign.selectPrimaryPurpose(prmryPrpsD);
+                    vfPrmryPrpsValue = prmryPrpsD;
+                } else if (crntPrmryPrpsValue === 'Screening'){
+                    console.log('System Identified [' + crntPrmryPrpsValue + '] as the current Primary Purpose value');
+                    trialDesign.selectPrimaryPurpose(prmryPrpsE);
+                    vfPrmryPrpsValue = prmryPrpsE;
+                } else if (crntPrmryPrpsValue === 'Diagnostic'){
+                    console.log('System Identified [' + crntPrmryPrpsValue + '] as the current Primary Purpose value');
+                    trialDesign.selectPrimaryPurpose(prmryPrpsF);
+                    vfPrmryPrpsValue = prmryPrpsF;
+                } else if (crntPrmryPrpsValue === 'Health Services Research'){
+                    console.log('System Identified [' + crntPrmryPrpsValue + '] as the current Primary Purpose value');
+                    trialDesign.selectPrimaryPurpose(prmryPrpsG);
+                    vfPrmryPrpsValue = prmryPrpsG;
+                } else if (crntPrmryPrpsValue === 'Basic Science'){
+                    console.log('System Identified [' + crntPrmryPrpsValue + '] as the current Primary Purpose value');
+                    trialDesign.selectPrimaryPurpose(prmryPrpsA);
+                    vfPrmryPrpsValue = prmryPrpsA;
+                } else if (crntPrmryPrpsValue === 'Other'){
+                    console.log('System Identified [' + crntPrmryPrpsValue + '] as the current Primary Purpose value');
+                    trialDesign.selectPrimaryPurpose(prmryPrpsA);
+                    vfPrmryPrpsValue = prmryPrpsA;
+                } else {
+                    trialDesign.selectPrimaryPurpose(prmryPrpsA);
+                    vfPrmryPrpsValue = prmryPrpsA;
+                }
+            });
+            //Trial Phase
+            trialPhseA = '0';
+            trialPhseB = 'I';
+            trialPhseC = 'I/II';
+            trialPhseD = 'II';
+            trialPhseE = 'II/III';
+            trialPhseF = 'III';
+            trialPhseG = 'IV';
+            trialPhseH = 'NA';
+            trialDesign.trialPhaseLst.$('option:checked').getText().then(function (value) {
+                var crnttrialPhseValue = '' + value + '';
+                if (crnttrialPhseValue === '0'){
+                    console.log('System Identified [' + crnttrialPhseValue + '] as the current Trial Phase value');
+                    trialDesign.selectTrialPhase(trialPhseB);
+                    vfTrialPhaseValue = trialPhseB;
+                } else if (crnttrialPhseValue === 'I'){
+                    console.log('System Identified [' + crnttrialPhseValue + '] as the current Trial Phase value');
+                    trialDesign.selectTrialPhase(trialPhseA);
+                    vfTrialPhaseValue = trialPhseA;
+                } else if (crnttrialPhseValue === 'I/II'){
+                    console.log('System Identified [' + crnttrialPhseValue + '] as the current Trial Phase value');
+                    trialDesign.selectTrialPhase(trialPhseA);
+                    vfTrialPhaseValue = trialPhseA;
+                } else if (crnttrialPhseValue === 'II'){
+                    console.log('System Identified [' + crnttrialPhseValue + '] as the current Trial Phase value');
+                    trialDesign.selectTrialPhase(trialPhseA);
+                    vfTrialPhaseValue = trialPhseA;
+                } else if (crnttrialPhseValue === 'II/III'){
+                    console.log('System Identified [' + crnttrialPhseValue + '] as the current Trial Phase value');
+                    trialDesign.selectTrialPhase(trialPhseA);
+                    vfTrialPhaseValue = trialPhseA;
+                } else if (crnttrialPhseValue === 'III'){
+                    console.log('System Identified [' + crnttrialPhseValue + '] as the current Trial Phase value');
+                    trialDesign.selectTrialPhase(trialPhseA);
+                    vfTrialPhaseValue = trialPhseA;
+                } else if (crnttrialPhseValue === 'IV'){
+                    console.log('System Identified [' + crnttrialPhseValue + '] as the current Trial Phase value');
+                    trialDesign.selectTrialPhase(trialPhseH);
+                    vfTrialPhaseValue = trialPhseH;
+                } else if (crnttrialPhseValue === 'NA'){
+                    console.log('System Identified [' + crnttrialPhseValue + '] as the current Trial Phase value');
+                    trialDesign.selectTrialPhase(trialPhseA);
+                    vfTrialPhaseValue = trialPhseA;
+                } else {
+                    trialDesign.selectTrialPhase(trialPhseA);
+                    vfTrialPhaseValue = trialPhseA;
+                }
+            });
+            //Number of Arms Group
+            trialDesign.numberOfArmsTxt.getText().then(function (value) {
+                if (value === '0'){
+                    trialDesign.setNumberOfArmsGroups('1');
+                    commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '1');
+                } else if (value === '1'){
+                    trialDesign.setNumberOfArmsGroups('2');
+                    commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '2');
+                } else if (value === '2'){
+                    trialDesign.setNumberOfArmsGroups('1');
+                    commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '1');
+                } else {
+                    trialDesign.setNumberOfArmsGroups('1');
+                    commonFunctions.verifyTextFieldValue(trialDesign.numberOfArmsTxt, '1');
+                }
+            });
+            //Target Enrollment
+            trialDesign.targetEnrollmentTxt.getText().then(function (value) {
+                if (value === '0'){
+                    trialDesign.setTargetEnrollment('1');
+                    commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '1');
+                } else if (value === '1'){
+                    trialDesign.setTargetEnrollment('2');
+                    commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '2');
+                } else if (value === '2'){
+                    trialDesign.setTargetEnrollment('1');
+                    commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '1');
+                } else {
+                    trialDesign.setTargetEnrollment('1');
+                    commonFunctions.verifyTextFieldValue(trialDesign.targetEnrollmentTxt, '1');
+                }
+            });
+            trialDesign.clickSaveTrialDesign();
         });
     });
 
@@ -1910,13 +2104,16 @@ module.exports = function() {
         return browser.sleep(25).then(function() {
             trialDesign.selectClinicalResearchCategory(crcListValueA);
             vfClnclRsrchCategryValue = crcListValueA;
+            trialDesign.selectPrimaryPurpose(prmPrpsSlctVal);
         });
     });
 
     this.When(/^I change Clinical Research Category to Expanded Access$/, function () {
         return browser.sleep(25).then(function() {
+            vfClnclRsrchCategryValue = '';
             trialDesign.selectClinicalResearchCategory(crcListValueB);
             vfClnclRsrchCategryValue = crcListValueB;
+            console.log('Clinical Research Category list option selected as: '+vfClnclRsrchCategryValue);
         });
     });
 

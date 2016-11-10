@@ -851,7 +851,7 @@ participatingSite.setAddPSContactName('Rami Jr. Neil');
         });
     });
 
-    this.Then(/^I must enter a Phone Number and Extention$/, function () {
+    this.Then(/^I must enter a Phone Number and Extension$/, function () {
         return  browser.sleep(25).then(function () {
             participatingSite.setAddPSContactPhone('(999) 452-6799');
             participatingSite.setAddPSContactPhoneExtension('091');
@@ -1176,6 +1176,7 @@ participatingSite.setAddPSContactName('Rami Jr. Neil');
             addTrial.clickAddTrialDateFieldDifferentYear(currentYear.toString(), nextMonth.toString(), '25');
             addTrial.selectAddTrialCompletionDateOption('1');
             addTrial.clickAddTrialReviewButton();
+            helper.wait(addTrial.viewTrialNCIID, 'NCI ID element on View Trial Page');
         });
     });
 
@@ -1183,12 +1184,8 @@ participatingSite.setAddPSContactName('Rami Jr. Neil');
         callback();
     });
 
-    this.Then(/^the CTRO will be able to acknowledge the Update to trial information$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback.pending();
-    });
 
-    this.Then(/^the "([^"]*)" will be updated in the Trial Data Verification Screen$/, function (arg1) {
+    this.Then(/^the "([^"]*)" will be updated$/, function (arg1) {
         return browser.sleep(25).then(function () {
             nciIDNT.then(function (trialNciIDNT) {
                 dbConnect.dbConnVerifyTrialTblSingleItem(trialNciIDNT, 'verification_date', moment().format('YYYY-MM-DD') );
@@ -1198,60 +1195,60 @@ participatingSite.setAddPSContactName('Rami Jr. Neil');
 
     this.Then(/^an email entitled "([^"]*)" will be sent to the trial owner \(Locate Email list on the shared drive under Functional\/registration as: CTRP System Generated Emails\)$/, function (arg1) {
         return browser.sleep(25).then(function () {
-            //   assert.fail(0,1,'Email of Draft does not match with requirement');
-            leadProtocolIDNT.then(function (trialLeadProtocolID) {
-                nciIDNT.then(function (trialNciIDNT) {
-                    trialOfficialTitleNT.then(function (trialOfficialTitle) {
-                        element(by.linkText('ctrptrialsubmitter')).click();
-                        userProfile.userProfileFirstName.getAttribute('value').then(function (userFirstName) {
-                            userProfile.userProfileLastName.getAttribute('value').then(function (userLastName) {
-
-                                userProfile.userProfileEmail.getAttribute('value').then(function (userCurrentEmail) {
-                                    projectFunctionsRegistry.baseEnvironment();
-                                    var emailSubject = initialEmailEnv + emailSubjectUpd + trialNciIDNT + ', ' + trialLeadProtocolID;
-
-                                    var emailBody = '\<p>' + initialEmailEnv + '\</p><!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />\n' +
-                                        '                            \</head><body><hr> <p><b>Title: </b>' + trialOfficialTitle + '\</p>\n' +
-                                        '                            \<div>\n' +
-                                        '                                \<p><b>NCI Trial ID: </b>' + trialOfficialTitle + '\</p>\n' +
-                                        '                                \<p><b>Lead Organization Trial ID: </b>' + leadProtocolID + '\</p>\n' +
-                                        '                                \<p><b>Lead Organization: </b></p>\n' +
-                                        '                                \<p><b>CTRP-assigned Lead Organization ID: </b></p>\n' +
-                                        '                                \<p><b>Submission Date: </b></p>\n' + moment().format('DD-MMM-YYYY') +
-                                        '                            \</div>\n' +
-                                        '                            \<hr>\n' +
-                                        '                            \<p>Date: ' + moment().format('DD-MMM-YYYY') + '\</p>\n' +
-                                        '                            \ <p><b>Dear ' + userFirstName + ' ' + userLastName + '\ </b>,</p>' +
-                                            // '                            \<p><b>Dear CTRP User</b>,</p>\n' +
-                                        '                            \<p>You have saved a draft of the trial identified above for submission to the NCI Clinical Trials Reporting Program (CTRP).</p>\n\n' +
-
-                                        '                            \<p><b>NEXT STEPS:</b></p>\n' +
-                                        '                            \<p>To retrieve and complete your submission, use the "Search Saved Drafts" feature on the "Search Trials" page in the CTRP Registration application.</p>\n' +
-                                        '                            \<p>Clinical Trials Reporting Office (CTRO) staff will not access or process your trial until you have completed the submission. </p>\n' +
-                                        '                            \<p><b>Important!</b> You can save your draft for a maximum of 30 days.</p>\n' +
-                                        '                            \<p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov</p>\n' +
-                                        '                            \<p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>\n' +
-                                        '                            \</body></html>';
-
-                                    browser.driver.wait(function () {
-                                        console.log('wait here');
-                                        return true;
-                                    }, 40).then(function () {
-                                        dbConnect.dbConnectionMailVerification('NCI', trialNciIDNT, userCurrentEmail, emailSubject, emailBody, getDBConnection);
-                                        login.clickWriteMode('On');
-                                        mailID.rows[0].then(function (value) {
-
-
-                                            console.log('&&&%&%&% HERE' + value);// mailID.rows[0].to);
-                                        });
-                                        //  expect(mailBodyFromDB).to.equal(emailBody, 'Verification of Email TO')
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
+               assert.fail(0,1,'Email of Update does not match with requirement');
+            //leadProtocolIDNT.then(function (trialLeadProtocolID) {
+            //    nciIDNT.then(function (trialNciIDNT) {
+            //        trialOfficialTitleNT.then(function (trialOfficialTitle) {
+            //            element(by.linkText('ctrptrialsubmitter')).click();
+            //            userProfile.userProfileFirstName.getAttribute('value').then(function (userFirstName) {
+            //                userProfile.userProfileLastName.getAttribute('value').then(function (userLastName) {
+            //
+            //                    userProfile.userProfileEmail.getAttribute('value').then(function (userCurrentEmail) {
+            //                        projectFunctionsRegistry.baseEnvironment();
+            //                        var emailSubject = initialEmailEnv + emailSubjectUpd + trialNciIDNT + ', ' + trialLeadProtocolID;
+            //
+            //                        var emailBody = '\<p>' + initialEmailEnv + '\</p><!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />\n' +
+            //                            '                            \</head><body><hr> <p><b>Title: </b>' + trialOfficialTitle + '\</p>\n' +
+            //                            '                            \<div>\n' +
+            //                            '                                \<p><b>NCI Trial ID: </b>' + trialOfficialTitle + '\</p>\n' +
+            //                            '                                \<p><b>Lead Organization Trial ID: </b>' + leadProtocolID + '\</p>\n' +
+            //                            '                                \<p><b>Lead Organization: </b></p>\n' +
+            //                            '                                \<p><b>CTRP-assigned Lead Organization ID: </b></p>\n' +
+            //                            '                                \<p><b>Submission Date: </b></p>\n' + moment().format('DD-MMM-YYYY') +
+            //                            '                            \</div>\n' +
+            //                            '                            \<hr>\n' +
+            //                            '                            \<p>Date: ' + moment().format('DD-MMM-YYYY') + '\</p>\n' +
+            //                            '                            \ <p><b>Dear ' + userFirstName + ' ' + userLastName + '\ </b>,</p>' +
+            //                                // '                            \<p><b>Dear CTRP User</b>,</p>\n' +
+            //                            '                            \<p>You have saved a draft of the trial identified above for submission to the NCI Clinical Trials Reporting Program (CTRP).</p>\n\n' +
+            //
+            //                            '                            \<p><b>NEXT STEPS:</b></p>\n' +
+            //                            '                            \<p>To retrieve and complete your submission, use the "Search Saved Drafts" feature on the "Search Trials" page in the CTRP Registration application.</p>\n' +
+            //                            '                            \<p>Clinical Trials Reporting Office (CTRO) staff will not access or process your trial until you have completed the submission. </p>\n' +
+            //                            '                            \<p><b>Important!</b> You can save your draft for a maximum of 30 days.</p>\n' +
+            //                            '                            \<p>If you have questions about this or other CTRP topics, please contact us at ncictro@mail.nih.gov</p>\n' +
+            //                            '                            \<p>Thank you for participating in the NCI Clinical Trials Reporting Program. </p>\n' +
+            //                            '                            \</body></html>';
+            //
+            //                        browser.driver.wait(function () {
+            //                            console.log('wait here');
+            //                            return true;
+            //                        }, 40).then(function () {
+            //                            dbConnect.dbConnectionMailVerification('NCI', trialNciIDNT, userCurrentEmail, emailSubject, emailBody, getDBConnection);
+            //                            login.clickWriteMode('On');
+            //                            mailID.rows[0].then(function (value) {
+            //
+            //
+            //                                console.log('&&&%&%&% HERE' + value);// mailID.rows[0].to);
+            //                            });
+            //                            //  expect(mailBodyFromDB).to.equal(emailBody, 'Verification of Email TO')
+            //                        });
+            //                    });
+            //                });
+            //            });
+            //        });
+            //    });
+            //});
         });
     });
 
