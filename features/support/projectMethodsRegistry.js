@@ -67,7 +67,8 @@ var projectMethodsRegistry = function () {
     var participatingSite = new participatingSitePage();
     var self = this;
     var registryMessage = new registryMessagePage();
-
+    var orgCTRPIDColNumberInOrgModel = '5';
+    var personCTRPIDColNumberInPerModel = '7';
 
 
 
@@ -370,6 +371,10 @@ var projectMethodsRegistry = function () {
         return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
             if (state === true) {
                 console.log('Organization exists');
+                orgSourceId = menuItem.searchResult.get(orgCTRPIDColNumberInOrgModel).getText();
+                orgSourceId.then(function(value){
+                console.log('-- Organization CTRP ID is --' + value);
+                });
                 searchOrg.selectOrgModelItem();
                 searchOrg.clickOrgModelConfirm();
             }
@@ -381,7 +386,7 @@ var projectMethodsRegistry = function () {
                 browser.driver.wait(function () {
                     console.log('wait here');
                     return true;
-                }, 5000).then(function () {
+                }, 500).then(function () {
                     commonFunctions.onPrepareLoginTest('ctrpcurator');
                 });
                 //login.login('ctrpcurator', 'Welcome01');
@@ -463,6 +468,10 @@ var projectMethodsRegistry = function () {
         return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
             if (state === true) {
                 console.log('Person exists');
+                perSourceId = menuItem.searchResult.get(personCTRPIDColNumberInPerModel).getText();
+                perSourceId.then(function(value){
+                    console.log('-- Person CTRP ID is --' + value);
+                });
                 searchOrg.selectOrgModelItem();
                 searchOrg.clickOrgModelConfirm();
             }
@@ -555,6 +564,10 @@ var projectMethodsRegistry = function () {
                                 searchPeople.setPersonFirstName(value);
                             });
                             searchOrg.clickSearchButton();
+                            perSourceId = menuItem.searchResult.get(personCTRPIDColNumberInPerModel).getText();
+                            perSourceId.then(function(value){
+                                console.log('-- Person CTRP ID is --' + value);
+                            });
                             searchOrg.selectOrgModelItem();
                             searchOrg.clickOrgModelConfirm();
                         });
@@ -794,6 +807,7 @@ var projectMethodsRegistry = function () {
                       //  addOrg.setAddFax('898-9420-442');
                         addOrg.setAddExtension('01');
                         addOrg.clickSave();
+                        helper.wait(addOrg.addOrgCTRPID,'CTRPID from Organization Page');
                         orgSourceId = addOrg.addOrgCTRPID.getText();
                     });
                 }
@@ -1514,6 +1528,10 @@ var projectMethodsRegistry = function () {
         return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
             if (state === true) {
                 console.log('PI exists');
+                perSourceId = menuItem.searchResult.get(personCTRPIDColNumberInPerModel).getText();
+                perSourceId.then(function(value){
+                    console.log('-- Person CTRP ID is --' + value);
+                });
                 searchOrg.selectOrgModelItem();
                 searchOrg.clickOrgModelConfirm();
             }
@@ -1600,6 +1618,10 @@ var projectMethodsRegistry = function () {
                                 searchPeople.setPersonFirstName(value);
                             });
                             searchOrg.clickSearchButton();
+                            perSourceId = menuItem.searchResult.get(personCTRPIDColNumberInPerModel).getText();
+                            perSourceId.then(function(value){
+                                console.log('-- Person CTRP ID is --' + value);
+                            });
                             searchOrg.selectOrgModelItem();
                             searchOrg.clickOrgModelConfirm();
                         });
@@ -2609,6 +2631,10 @@ var projectMethodsRegistry = function () {
         return element(by.css('div.ui-grid-cell-contents')).isPresent().then(function (state) {
             if (state === true) {
                 console.log('Organization: ' + orgName + 'exists');
+                cukeOrganization.then(function (value) {
+                    element(by.linkText(value)).click();
+                    orgSourceId = addOrg.addOrgCTRPID.getText();
+                });
             }
             else {
                 browser.driver.wait(function () {
