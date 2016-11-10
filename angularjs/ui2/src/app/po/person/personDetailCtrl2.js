@@ -112,10 +112,9 @@
                     vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
                 });
             } else {
-                vm.curPerson.source_context_id = 1; // TODO: do not hardcode
                 vm.curPerson.po_affiliations_attributes = []; // CTEP person does not have PO affiliations
             }
-            console.info('vm.person to be updated: ', vm.curPerson);
+
             //create a nested Person object
             var newPerson = {};
             newPerson.new = vm.curPerson.new || false;
