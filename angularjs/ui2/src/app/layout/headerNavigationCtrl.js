@@ -57,7 +57,7 @@
                 templateUrl: 'app/layout/request.html',
                 controller: 'requestModalCtrl as requestCtrl',
                 size: 'md',
-                windowClass: 'modal-center',
+                windowClass: 'modal-center modal-top',
                 resolve: {
                     reqType: function() {
                         return requestType;
@@ -200,14 +200,16 @@
 
     function requestModalCtrl($scope, $uibModalInstance, reqType) {
         var vm = this;
+        var requestMap = {
+            'Person': 'The required information is First Name, Last Name, Email, City, State/Province, Country and Organization Affiliation of the Person.',
+            'Organization': 'The required information is Organization Name, Street Address, City, State, Country, phone, and email.'
+        }
 
         vm.requestHeader = 'Request New ' + reqType;
-        vm.message = 'To request a New ' + reqType + ' record in CTRP, contact the CTRO at ncictro@mail.nih.gov and provide the following information:';
+        vm.message = 'To request the creation of a new ' + reqType.toLowerCase() + ' record, please contact the Clinical Trials Reporting Office (CTRO) at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>. ' + requestMap[reqType];
 
         vm.cancel = function() {
             $uibModalInstance.dismiss('cancel');
         };
     }
-
-
 })();
