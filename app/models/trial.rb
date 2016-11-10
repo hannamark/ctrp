@@ -307,9 +307,10 @@ class Trial < TrialBase
           actions.append('complete')
         else
           actions.append('update')
-            is_avr = self.processing_status_wrappers.detect { |p| p.processing_status_id == avr_id }
-            is_vnr = self.processing_status_wrappers.detect { |p| p.processing_status_id == vnr_id }
-            if (!is_avr.nil? || !is_vnr.nil?)
+          if self.current_processing_status.present? && (self.current_processing_status.id == avr_id || self.current_processing_status.id == vnr_id)
+            #is_avr = self.processing_status_wrappers.detect { |p| p.processing_status_id == avr_id }
+            #is_vnr = self.processing_status_wrappers.detect { |p| p.processing_status_id == vnr_id }
+            #if (!is_avr.nil? || !is_vnr.nil?)
             actions.append('amend')
             actions.append('verify-data')
             actions.append('view-tsr')
