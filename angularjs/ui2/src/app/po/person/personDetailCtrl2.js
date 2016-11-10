@@ -425,6 +425,7 @@
                 if (res.is_cloned && angular.isArray(res.matched) && res.matched.length > 0) {
                     _showToastr('The CTEP person context has been successfully cloned');
                     vm.matchedCtrpPersons = []; // clean up
+                    vm.showMatchedCtrpPerson = false;
                     vm.ctrpPerson = res.matched[0];
                     vm.ctepPerson.ctrp_id = vm.ctrpPerson.ctrp_id; // update the ctepPerson with the ctrp_id
                     vm.curPerson.ctrp_id = vm.ctepPerson.ctrp_id; // the current person is still CTEP, so update its ctrp_id for view
