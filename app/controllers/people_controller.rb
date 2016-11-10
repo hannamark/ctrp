@@ -56,7 +56,7 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1.json
   def update
 
-    p "processing status: #{params}"
+    p "processing status: #{person_params}"
     @person.updated_by = @current_user.username unless @current_user.nil?
 
     respond_to do |format|
@@ -281,9 +281,8 @@ class PeopleController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
       params.require(:person).permit(:source_id, :id, :fname, :mname, :lname, :prefix, :suffix, :email, :phone, :extension,
-                                     :source_status_id, :source_context_id, :lock_version,
-                                     :registration_type, :force_clone,
-                                     :service_request_id, :processing_status,
+                                     :source_status_id, :source_context_id, :lock_version, :processing_status,
+                                     :registration_type, :force_clone, :service_request_id,
                                      po_affiliations_attributes: [:id, :organization_id, :effective_date,
                                                                   :expiration_date, :po_affiliation_status_id,
                                                                   :lock_version, :_destroy])
