@@ -399,7 +399,7 @@ class OrganizationsController < ApplicationController
   def organization_params
     params.require(:organization).permit(:source_id, :name, :address, :address2, :address3, :city, :state_province, :postal_code,
                                          :country, :email, :phone, :extension, :source_status_id, :ctrp_id, :association_date,
-                                         :source_context_id, :lock_version, :processing_status,
+                                         :source_context_id, :lock_version, :processing_status, :service_request_id,
                                          name_aliases_attributes: [:id,:organization_id,:name,:_destroy])
   end
 end
