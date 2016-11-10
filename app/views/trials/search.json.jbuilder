@@ -34,8 +34,9 @@ json.trials do
         other_ids = trial.other_ids
         other_ids_string = ""
         delimiter = ""
+        nct = ProtocolIdOrigin.find_by_code('NCT')
         other_ids.each do |o|
-          next if o.protocol_id_origin.nil?
+          next if o.protocol_id_origin.nil? || o.protocol_id_origin_id == nct.id
           name = o.protocol_id_origin.name
           unless name.nil?
             name.gsub!("Identifier", "")

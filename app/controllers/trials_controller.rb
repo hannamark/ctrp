@@ -362,7 +362,7 @@ class TrialsController < ApplicationController
 
       #### Write here a join query to avoid the access of db tables from View.
       ###
-      Rails.logger.info "Started querying multitable with Trials to avoid the access of db tables from View"
+      Rails.logger.error "Started querying multitable with Trials to avoid the access of db tables from View"
 
       #@trials = @trials.uniq
       #@trials = @trials.my_available_actions
