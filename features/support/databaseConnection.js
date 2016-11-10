@@ -1427,7 +1427,13 @@ var dbConnection = function () {
             }
             var trialColValue = trialIDTrialTbl.rows[0].columnvalue;
             console.log('Trial Column value for Selected column: ' + trialTblColumn + ' is: ' + trialColValue);
-                    expect(trialColValue).to.equal(valueToVerify, 'Verification of Trial Column value for Selected column: ' + trialTblColumn );
+            if(moment(trialColValue).isValid()) {
+                console.log('Column value is a Date Type');
+                expect(moment(trialColValue).format('YYYY-MM-DD')).to.equal(valueToVerify, 'Verification of Trial Column value for Selected column: ' + trialTblColumn);
+            }
+            else {
+                expect(trialColValue).to.equal(valueToVerify, 'Verification of Trial Column value for Selected column: ' + trialTblColumn);
+            }
                     client.on('end', function () {
                         console.log("Client was disconnected.")
                     });
