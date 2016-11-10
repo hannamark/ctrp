@@ -44,11 +44,12 @@
         function selectTab(contextName) {
             if (!!contextName) {
                 vm.tabOpen = contextName;
-                vm.curPerson = (contextName === 'CTEP') ? vm.ctepPerson : vm.ctrpPerson;
-                vm.sourceStatusArrSelected = _sourceStatusesForContext(vm.curPerson.source_context_id);
+                vm.curPerson = (contextName === 'CTEP') ? angular.copy(vm.ctepPerson) : angular.copy(vm.ctrpPerson);
+                var sourceContextId = !!vm.curPerson ? vm.curPerson.source_context_id : 2;
+                vm.sourceStatusArrSelected = _sourceStatusesForContext(sourceContextId);
 
                 // if new person, assign the ctrp source context id to it
-                if (vm.curPerson.new) {
+                if (!!vm.curPerson && vm.curPerson.new) {
                     var ctrpContext = _.findWhere(vm.sourceContextArr, {name: 'CTRP'}); // defaulted to CTRP
                     vm.curPerson.source_context_id = !!ctrpContext ? ctrpContext.id : null;
                     var actStatus = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}); // defaulted to 'Active' source status
@@ -62,7 +63,8 @@
                     PersonService.getPersonById(vm.curPerson.id).then(function(res) {
                         console.info('res from person service: ', res);
                         vm.ctrpPerson = res.data;
-                        vm.curPerson = vm.ctrpPerson;
+                        vm.curPerson = angular.copy(vm.ctrpPerson);
+                        vm.curPerson.is_ctrp_context = true;
                         _prepAssociationGrid(vm.curPerson.associated_persons);
                         _populatePOAff();
                         vm.masterCopy = angular.copy(vm.curPerson);
@@ -223,7 +225,6 @@
             var ctrpId = ctrpPerson.ctrp_id;
             vm.isConfirmOpen = false;
             PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
-
                 if (res.server_response.status >= 200 && res.server_response.status < 226) {
                     vm.associatedPersonContexts = []; // clean up container for accepting ctep persons
                     vm.matchedCtrpPersons = []; // TODO: what is this?
@@ -231,7 +232,7 @@
                     if (sourceContext === 'CTEP') {
                         res.person.source_context = ctepPerson.source_context;
                         res.person.source_status = ctepPerson.source_status;
-                        vm.ctepPerson = res.person;
+                        vm.ctepPerson = angular.copy(res.person);
                         // current person is CTRP
                         vm.curPerson.associated_persons = [res.person].concat(vm.curPerson.associated_persons || []);
                     } else if (sourceContext === 'CTRP') {
@@ -249,6 +250,7 @@
         function _updateFormTitleLabel() {
             var writeModeEnabled = UserService.isCurationModeEnabled() || false;
             // vm.formTitleLabel = 'View Person';
+            if (!angular.isDefined(vm.curPerson)) return;
             if (vm.curPerson.new) {
                 vm.formTitleLabel = 'Add Person';
             } else if (writeModeEnabled && !vm.curPerson.new) {
@@ -309,7 +311,7 @@
         }
 
         function _populatePOAff() {
-            if (!angular.isDefined(vm.curPerson.po_affiliations) || vm.curPerson.po_affiliations.length === 0) return;
+            if (!angular.isDefined(vm.curPerson) || !angular.isDefined(vm.curPerson.po_affiliations) || vm.curPerson.po_affiliations.length === 0) return;
             //find the organization name with the given id
             var findOrgName = function(poAff, cb) {
                 OrgService.getOrgById(poAff.organization_id).then(function(organization) {
@@ -428,6 +430,7 @@
                     vm.matchedCtrpPersons = []; // clean up
                     vm.showMatchedCtrpPerson = false;
                     vm.ctrpPerson = res.matched[0];
+                    console.info('cloned ctrp person: ', vm.ctrpPerson);
                     vm.ctepPerson.ctrp_id = vm.ctrpPerson.ctrp_id; // update the ctepPerson with the ctrp_id
                     vm.curPerson.ctrp_id = vm.ctepPerson.ctrp_id; // the current person is still CTEP, so update its ctrp_id for view
                     selectTab('CTRP'); //show the new cloned CTRP person
