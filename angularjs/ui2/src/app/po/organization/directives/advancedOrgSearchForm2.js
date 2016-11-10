@@ -72,7 +72,7 @@
                 $scope.searchWarningMessage = '';
                 $scope.processingStatuses = OrgService.getProcessingStatuses();
                 $scope.serviceRequests = [];
-                $scope.userRole = UserService.getUserRole() ? UserService.getUserRole().split("_")[1].toLowerCase() : '';
+                $scope.userRole = UserService.getUserRole();
                 $scope.dateFormat = DateService.getFormats()[1];
                 $scope.searching = false;
 
@@ -119,7 +119,7 @@
                             return uniqueNames;
                         }
                     });
-                }; //typeAheadNameSearch
+                };
 
                 $scope.resetSearch = function () {
                     $scope.searchParams = $scope.searchParamsOrig;
@@ -185,8 +185,6 @@
                     if (newVal) {
                         //purge the container for rows to be curated when not on curation mode
                         while ($scope.selectedRows.length > 0) {
-                            //alert('len '+$scope.selectedRows.length);
-                            // vm.selectedRows.pop().isSelected = false;
                             var deselectedRow = $scope.selectedRows.pop();
                             deselectedRow.isSelected = false;
                             $scope.nullifiedId = deselectedRow.entity.id === $scope.nullifiedId ? '' : $scope.nullifiedId;
@@ -315,7 +313,6 @@
 
             function nullifyEntity(rowEntity) {
                 var isActive = rowEntity.source_status_code === 'ACT';
-
                 var isNullified = rowEntity.source_status_code === 'NULLIFIED';
 
                 if (isActive) {

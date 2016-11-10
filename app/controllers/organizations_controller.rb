@@ -137,8 +137,28 @@ class OrganizationsController < ApplicationController
         @associated_orgs.push(active_org)
         @active_context = active_org.source_context_name unless @associated_orgs.blank?
       end
+      @ctep_with_associable_ctrps = ctepGetAssociableCTRPs @associated_orgs unless @associated_orgs.blank?
       @write_access = User.org_write_access(@current_user)
       @read_all_access = User.org_read_all_access(@current_user)
+  end
+
+  def ctepGetAssociableCTRPs associated_orgs
+    ctep_org = associated_orgs.select { |org| org.source_context_code == 'CTEP' }
+    p "******************"
+    p "******************"
+    p "******************"
+    p "******************"
+    p ctep_org
+    p "******************"
+    p "******************"
+    p "******************"
+    p "******************"
+
+    #<Organization id: 9990007, source_id: "9999995", name: "CTEP ORG For Testing 3", address: "9607 Medical Center Dr", address2: nil, city: "Frederick", state_province: "Maryland", postal_code: "20850", country: "United States", email: "ncictrpdev@mail.nih.gov", phone: "240-276-0000", source_status_id: 5, source_context_id: 1, created_at: "2016-11-09 16:34:40", updated_at: "2016-11-09 21:14:15", uuid: "b91983f4-8ae8-44d0-97cb-06d381b28ba5", lock_version: 4, ctrp_id: 2118412, created_by: nil, updated_by: "ctrpadmin", extension: nil, processing_status: "Complete", address3: nil, service_request_id: 4, ctep_org_type_id: 1, org_funding_mechanism_id: nil, association_date: "2016-11-09 21:09:42">]
+
+    if !ctep_org.blank?
+
+    end
   end
 
   def search
