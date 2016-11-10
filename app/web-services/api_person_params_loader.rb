@@ -43,12 +43,16 @@ class ApiPersonParamsLoader
     end
     $rest_params[:po_affiliations_attributes] =[]
     rest_ser = PersonRestService.new
+    aff_org_status= PoAffiliationStatus.find_by_code('ACTIVE')
+
     $mapperObject.poaffiliation.orgid.each do |org_id|
-      p org_id
-      count = rest_ser.active_ctrp_org_count(org_id)
+      count = rest_ser.active_ctep_org_count(org_id)
+      Hash po_aff_hash = Hash.new
+      po_aff_hash.store("organization_id",org_id)
+      po_aff_hash.store("po_affiliation_status_id",aff_org_status.id) if aff_org_status.present?
       if count > 0
-        $rest_params[:po_affiliations_attributes].push({organization_id:org_id})
-        else
+        $rest_params[:po_affiliations_attributes].push(po_aff_hash)
+      else
           $errors.store(org_id,"This Organization is not Active")
       end
     end

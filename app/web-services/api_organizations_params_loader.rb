@@ -22,9 +22,15 @@ class ApiOrganizationsParamsLoader
     end
 
 
-    #p "this is mapper object "
+    #p "this is mapper object COUNTRY $$$$$$  "
     #p $mapperObject
 
+    #p $mapperObject.address.country
+    #Checking for Valid country
+    check_state_and_country
+
+
+    #checkCountry = $mapperObject.address.country
     ##In model to add some custom code use following identifier ; so that active model know from where this request is coming;
     $rest_params[:coming_from] = "rest"
     [:source_context_id,:source_id,:ctep_org_type_id,:source_status_id,:name].each do |attr|
@@ -64,5 +70,26 @@ class ApiOrganizationsParamsLoader
     return $rest_params
   end
 
+  def check_state_and_country
+    geo_location_service = GeoLocationService.new
+
+    country = geo_location_service._get_country_name_from_alpha3($mapperObject.address.country)
+
+    if country.present?
+      states = geo_location_service.get_states(country)
+      Rails.logger.debug "States for country #{country}"
+    else
+      errors.store($mapperObject.address.country," Given counry is not valid ")
+    end
+
+    #state = geo_location_service._get_state_name_from_alpha2($mapperObject.address.state_province)
+
+    #if country == "United States" && state.present?
+    #  Rails.logger.debug "States for United States is #{country}"
+    #else
+    #  errors.store($mapperObject.address.country," Given counry is not valid ")
+    #end
+
+  end
 
 end
