@@ -268,7 +268,7 @@
             vm.curPerson = {}; // person currently displayed in the active tab
             vm.ctepPerson = null;
             vm.ctrpPerson = null;
-            vm.person.processing_status = 'Complete';
+            vm.person.processing_status = vm.person.processing_status || 'Complete';
             vm.defaultTab = vm.person.source_context; // default tab
             vm.tabOpen = vm.defaultTab;
             vm.masterCopy= angular.copy(vm.person);
@@ -296,10 +296,10 @@
             vm.isAllowedToComment = _.contains(USER_ROLES_ALLOWED_COMMENT, UserService.getUserRole());
 
             if (vm.person.source_context === 'CTRP') {
-                vm.ctrpPerson = vm.person;
+                vm.ctrpPerson = angular.copy(vm.person);
                 vm.ctepPerson = _.findWhere(vm.person.associated_persons, {source_status: 'Active', source_context: 'CTEP'});
             } else if (vm.person.source_context === 'CTEP') {
-                vm.ctepPerson = vm.person;
+                vm.ctepPerson = angular.copy(vm.person);
                 vm.ctrpPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTRP', source_status: 'Active'}) || null;
             } else {
                 vm.ctrpPerson = null;
