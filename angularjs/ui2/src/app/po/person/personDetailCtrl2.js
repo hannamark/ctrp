@@ -226,8 +226,10 @@
             PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
                 if (res.server_response.status >= 200 && res.server_response.status < 226) {
                     vm.associatedPersonContexts = []; // clean up container for accepting ctep persons
-                    vm.matchedCtrpPersons = []; // TODO: what is this?
+                    vm.matchedCtrpPersons = [];
                     vm.showMatchedCtrpPerson = false;
+                    console.info('associated person response: ', res.person);
+                    console.info('sourceContext: ', sourceContext);
                     if (sourceContext === 'CTEP') {
                         res.person.source_context = ctepPerson.source_context;
                         res.person.source_status = ctepPerson.source_status;
@@ -236,6 +238,7 @@
                         vm.curPerson.associated_persons = [res.person].concat(vm.curPerson.associated_persons || []);
                     } else if (sourceContext === 'CTRP') {
                         vm.ctrpPerson = res.person;
+                        vm.ctepPerson.ctrp_id = vm.ctrpPerson.ctrp_id;
                     }
                     _showToastr('CTEP person context association was successful');
                     selectTab(sourceContext); // switch to the new tab
