@@ -54,8 +54,8 @@
                     var actStatus = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}); // defaulted to 'Active' source status
                     vm.curPerson.source_status_id = !!actStatus ? actStatus.id : null;
                 }
-                if (contextName === 'CTRP' && contextName !== vm.defaultTab &&
-                    !angular.isDefined(vm.ctrpPerson.associated_persons)) {
+                //  && !angular.isDefined(vm.ctrpPerson.associated_persons)
+                if (contextName === 'CTRP' && contextName !== vm.defaultTab) {
                     // CTRP is not the default tab
                     // fetch associated persons for the CTRP person, because the CTRP person may
                     // have more association than the currently shown CTEP person
@@ -111,8 +111,11 @@
                     aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
                     vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
                 });
+            } else {
+                vm.curPerson.source_context_id = 1; // TODO: do not hardcode
+                vm.curPerson.po_affiliations_attributes = []; // CTEP person does not have PO affiliations
             }
-
+            console.info('vm.person to be updated: ', vm.curPerson);
             //create a nested Person object
             var newPerson = {};
             newPerson.new = vm.curPerson.new || false;
@@ -293,7 +296,7 @@
 
             if (vm.person.source_context === 'CTRP') {
                 vm.ctrpPerson = vm.person;
-                vm.ctepPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTEP', source_status: 'Active'});
+                vm.ctepPerson = _.findWhere(vm.person.associated_persons, {source_status: 'Active', source_context: 'CTEP'});
             } else if (vm.person.source_context === 'CTEP') {
                 vm.ctepPerson = vm.person;
                 vm.ctrpPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTRP', source_status: 'Active'}) || null;
