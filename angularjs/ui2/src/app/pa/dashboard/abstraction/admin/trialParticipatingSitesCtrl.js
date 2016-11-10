@@ -13,80 +13,82 @@
     trialParticipatingSitesCtrl.$inject = ['FORMATS', 'TrialService', 'PATrialService', 'PersonService','DateService', '$scope', '$window', '$uibModal', '$timeout','$state', '$stateParams', 'toastr', 'MESSAGES', 'trialDetailObj', 'siteRecruitmentStatusesObj', 'centralContactTypes', 'investigatorTypes', '$location', '$anchorScroll'];
 
     function trialParticipatingSitesCtrl(FORMATS, TrialService, PATrialService, PersonService, DateService , $scope, $window, $uibModal, $timeout, $state, $stateParams, toastr, MESSAGES, trialDetailObj, siteRecruitmentStatusesObj, centralContactTypes, investigatorTypes, $location, $anchorScroll) {
-
         var vm = this;
 
-        // injected objects
-        vm.curTrial = trialDetailObj;
-        vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
+        function _initializeModelProps() {
+            // injected objects
+            vm.curTrial = trialDetailObj;
+            vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
 
-        // initializations
-        vm.deleteListHandler = deleteListHandler;
-        vm.deleteSelected = deleteSelected;
-        vm.currentParticipatingSite = {};
-        vm.current_site_recruitment = {};
-        vm.current_investigator = {};
-        vm.siteRecruitmentGrid = [];
-        vm.investigatorGrid = [];
-        vm.investigatorGridOrig = [];
-        vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
-        vm.currentParticipatingSite.participating_site_investigators=[];
-        vm.persisted_contact = {};
-        vm.persistedOrganization = {};
-        vm.showOrgFields = true;
-        vm.city=null;
-        vm.state_province=null;
-        vm.country=null;
-        vm.postal=null;
-        vm.dateFormat = DateService.getFormats()[1];
-        vm.dateOptions = DateService.getDateOptions();
-        vm.selOrganization = {name: '', array: []};
-        vm.principalInvestigator = {name: '', array: []};
-        vm.selectedPerson = {name: '', array: []};
-        vm.selectedInvestigator = null;
-        vm.investigatorArray = [];
-        vm.selectedContactTypePI = false;
-        vm.centralContactTypes = centralContactTypes.types;
-        vm.investigatorTypes = investigatorTypes;
-        vm.showInvestigatorRoleError = false;
-        vm.invDeleteException = false;
-        vm.srStatusDeleteException = false;
-        vm.duplicateParticipatingSite = false;
-        vm.addEditMode = false;
-        vm.tabIndex = 0;
-        vm.formArray = ['ps_sites_form', 'ps_inv_form', 'ps_contact_form'];
-        vm.isSaved = false;
-        vm.invContactIndex = -1;
+            // initializations
+            vm.deleteListHandler = deleteListHandler;
+            vm.deleteSelected = deleteSelected;
+            vm.currentParticipatingSite = {};
+            vm.current_site_recruitment = {};
+            vm.current_investigator = {};
+            vm.siteRecruitmentGrid = [];
+            vm.investigatorGrid = [];
+            vm.investigatorGridOrig = [];
+            vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
+            vm.currentParticipatingSite.participating_site_investigators=[];
+            vm.persisted_contact = {};
+            vm.persistedOrganization = {};
+            vm.showOrgFields = true;
+            vm.city=null;
+            vm.state_province=null;
+            vm.country=null;
+            vm.postal=null;
+            vm.dateFormat = DateService.getFormats()[1];
+            vm.dateOptions = DateService.getDateOptions();
+            vm.selOrganization = {name: '', array: []};
+            vm.principalInvestigator = {name: '', array: []};
+            vm.selectedPerson = {name: '', array: []};
+            vm.selectedInvestigator = null;
+            vm.investigatorArray = [];
+            vm.selectedContactTypePI = false;
+            vm.centralContactTypes = centralContactTypes.types;
+            vm.investigatorTypes = investigatorTypes;
+            vm.showInvestigatorRoleError = false;
+            vm.invDeleteException = false;
+            vm.srStatusDeleteException = false;
+            vm.duplicateParticipatingSite = false;
+            vm.addEditMode = false;
+            vm.tabIndex = 0;
+            vm.formArray = ['ps_sites_form', 'ps_inv_form', 'ps_contact_form'];
+            vm.isSaved = false;
+            vm.invContactIndex = -1;
 
-        for (var i = 0; i < vm.centralContactTypes.length; i++) {
-           if(vm.centralContactTypes[i].code  === 'NONE') {
-               //console.log('vm.centralContactTypes[i].code=' +vm.centralContactTypes[i].code);
-               vm.centralContactTypes.splice(i, 1);
-           }
+            for (var i = 0; i < vm.centralContactTypes.length; i++) {
+               if(vm.centralContactTypes[i].code  === 'NONE') {
+                   //console.log('vm.centralContactTypes[i].code=' +vm.centralContactTypes[i].code);
+                   vm.centralContactTypes.splice(i, 1);
+               }
+            }
+
+            //actions
+            vm.addSiteRecruitment = addSiteRecruitment;
+            vm.editSiteRecruitment = editSiteRecruitment;
+            vm.deleteSiteRecruitment = deleteSiteRecruitment;
+            vm.cancelSiteRecruitmentEdit = cancelSiteRecruitmentEdit;
+            vm.cancelInvestigatorEdit = cancelInvestigatorEdit;
+            vm.editInvestigator  = editInvestigator;
+            vm.markInvestigatorForDeletion = markInvestigatorForDeletion;
+            vm.deleteInvestigator  = deleteInvestigator;
+            vm.commitEditInvestigator = commitEditInvestigator;
+            vm.setAddMode = setAddMode;
+            vm.setEditMode = setEditMode;
+            vm.openCalendar = openCalendar;
+            vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
+            vm.resetParticipatingSite = resetParticipatingSite;
+            vm.watchContactType = watchContactType;
+
+            vm.disableBtn = false;
+            vm.phoneNumberFormat = FORMATS.NUMERIC;
         }
 
-        //actions
-        vm.addSiteRecruitment = addSiteRecruitment;
-        vm.editSiteRecruitment = editSiteRecruitment;
-        vm.deleteSiteRecruitment = deleteSiteRecruitment;
-        vm.cancelSiteRecruitmentEdit = cancelSiteRecruitmentEdit;
-        vm.cancelInvestigatorEdit = cancelInvestigatorEdit;
-        vm.editInvestigator  = editInvestigator;
-        vm.markInvestigatorForDeletion = markInvestigatorForDeletion;
-        vm.deleteInvestigator  = deleteInvestigator;
-        vm.commitEditInvestigator = commitEditInvestigator;
-        vm.setAddMode = setAddMode;
-        vm.setEditMode = setEditMode;
-        vm.openCalendar = openCalendar;
-        vm.commitEditSiteRecruitment = commitEditSiteRecruitment;
-        vm.resetParticipatingSite = resetParticipatingSite;
-        vm.watchContactType = watchContactType;
 
-        vm.disableBtn = false;
-        vm.phoneNumberFormat = FORMATS.NUMERIC;
-
+        _initializeModelProps();
         activate();
-
 
         /****************** implementations below ***************/
         function activate() {
@@ -153,6 +155,68 @@
 
         vm.saveParticipatingSite = function(callBackString){
             var cbString = callBackString;
+            var outerPS = {};
+
+            prepPsForSave();
+
+            // An outer param wrapper is needed for nested attributes to work
+            var outerPS = {};
+            outerPS.new = vm.currentParticipatingSite.new;
+            outerPS.id = vm.currentParticipatingSite.id;
+            outerPS.participating_site = vm.currentParticipatingSite;
+            vm.currentParticipatingSite.trial_id = trialDetailObj.id;
+
+            vm.deleteInvestigator();
+
+            TrialService.upsertParticipatingSite(outerPS).then(function(response) {
+                var status = response.server_response.status;
+
+                if (status >= 200 && status <= 210) {
+                    var newParticipatingSite = false;
+                    if(!vm.currentParticipatingSite.id){
+                        // New Participating Site
+                        newParticipatingSite = true;
+                        vm.currentParticipatingSite.id = response.id;
+                    }
+
+                    /* Refresh from Cache */
+                    if (vm.currentParticipatingSite.id) {
+                        getParticipatingSite(cbString, newParticipatingSite);
+                    }
+                    vm.selectedAllSites = false;
+                }
+            }).catch(function(err) {
+                console.log("error in updating trial " + JSON.stringify(err));
+            }).finally(function() {
+                vm.disableBtn = false;
+            });
+        };
+
+        vm.reload = function() {
+            $state.go($state.$current, null, { reload: true });
+        };
+
+        // Add Participating to a temp array
+        function watchOrganization() {
+            $scope.$watchCollection(function() {return vm.selOrganization.array;}, function(newVal, oldVal) {
+                if (angular.isArray(newVal) && newVal.length > 0) {
+                    vm.duplicateParticipatingSite = validateDuplicateOrg(newVal[0].id);
+                    vm.currentParticipatingSite.name = newVal[0].name;
+                    vm.currentParticipatingSite.organization = newVal[0];
+                    vm.currentParticipatingSite.organization_id = newVal[0].id;
+                    vm.city = newVal[0].city;
+                    vm.state_province = newVal[0].state_province;
+                    vm.country = newVal[0].country;
+                    vm.postal_code = newVal[0].postal_code;
+                    vm.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
+
+                    $scope.ps_sites_form.$setDirty();
+                }
+            });
+        }
+
+
+        function prepPsForSave() {
             var invGrid = angular.copy(vm.investigatorGrid);
 
             /* Validation to pre-empt deletion if only one site recruitment status or investigator remains */
@@ -200,114 +264,67 @@
             if (vm.currentParticipatingSite.person){
                 vm.currentParticipatingSite.person_id = vm.currentParticipatingSite.person.id
             }
-            // An outer param wrapper is needed for nested attributes to work
-            var outerPS = {};
-            outerPS.new = vm.currentParticipatingSite.new;
-            outerPS.id = vm.currentParticipatingSite.id;
-            outerPS.participating_site = vm.currentParticipatingSite;
-            vm.currentParticipatingSite.trial_id = trialDetailObj.id;
+        }
 
-            vm.deleteInvestigator();
+        /* Refreshes the PS after saving it */
+        function getParticipatingSite(cbString, newPs) {
+            TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
+                var psStatus = response.server_response.status;
 
-            TrialService.upsertParticipatingSite(outerPS).then(function(response) {
-                var status = response.server_response.status;
+                if (psStatus >= 200 && psStatus <= 210) {
+                    vm.currentParticipatingSite = response;
+                    vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
+                    vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
+                    vm.persisted_contact.extension = vm.currentParticipatingSite.extension;
+                    vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
+                    vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
+                    vm.persisted_contact.persisted_person = vm.currentParticipatingSite.person;
+                    vm.persisted_organization = vm.currentParticipatingSite.organization;
+                    vm.initSiteRecruitmentGrid();
+                    vm.initInvestigatorGrid();
 
-                if (status >= 200 && status <= 210) {
-                    var newParticipatingSite = false;
-                    if(!vm.currentParticipatingSite.id){
-                        // New Participating Site
-                        newParticipatingSite = true;
-                        vm.currentParticipatingSite.id = response.id;
-                    }
-
-                    if (vm.currentParticipatingSite.id) {
-                        TrialService.getParticipatingSiteById(vm.currentParticipatingSite.id).then(function (response) {
-                            var psStatus = response.server_response.status;
-
-                            if (psStatus >= 200 && psStatus <= 210) {
-                                vm.currentParticipatingSite = response;
-                                vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
-                                vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
-                                vm.persisted_contact.extension = vm.currentParticipatingSite.extension;
-                                vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
-                                vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
-                                vm.persisted_contact.persisted_person = vm.currentParticipatingSite.person;
-                                vm.persisted_organization = vm.currentParticipatingSite.organization;
-                                vm.initSiteRecruitmentGrid();
-                                vm.initInvestigatorGrid();
-
-                                if(newParticipatingSite){
-                                    vm.currentParticipatingSite.new = false;
-                                    vm.curTrial.participating_sites.push(vm.currentParticipatingSite);
-                                } else {
-                                    for (var i = 0; i < vm.curTrial.participating_sites.length; i++) {
-                                        if (vm.curTrial.participating_sites[i].id === vm.currentParticipatingSite.id) {
-                                            vm.curTrial.participating_sites[i] = vm.currentParticipatingSite;
-                                        }
-                                    }
-                                }
-                                vm.investigatorArray = [];
-                                if (vm.currentParticipatingSite.hasOwnProperty('participating_site_investigators')) {
-                                    for (var j = 0; j < vm.currentParticipatingSite.participating_site_investigators.length; j++) {
-                                        var id = vm.currentParticipatingSite.participating_site_investigators[j].id;
-                                        var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[j].person);
-
-                                        vm.investigatorArray.push({"id": id, "name": name});
-                                    }
-                                }
-
-                                vm.current_site_recruitment = {};
-                                PATrialService.setCurrentTrial(vm.curTrial); // update to cache
-                                $scope.$emit('updatedInChildScope', {});
-                                toastr.clear();
-                                toastr.success('Participating Site of  ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
-
-                                if (cbString && cbString === 'editInv') {
-                                    vm.editInvestigator(vm.investigatorGrid.length - 1);
-                                }
-
-                                // To make sure setPristine() is executed after all $watch functions are complete
-                                resetDirtyForms();
-
-                               vm.isSaved = true;
+                    if (newPs){
+                        vm.currentParticipatingSite.new = false;
+                        vm.curTrial.participating_sites.push(vm.currentParticipatingSite);
+                    } else {
+                        for (var i = 0; i < vm.curTrial.participating_sites.length; i++) {
+                            if (vm.curTrial.participating_sites[i].id === vm.currentParticipatingSite.id) {
+                                vm.curTrial.participating_sites[i] = vm.currentParticipatingSite;
                             }
-                        }).catch(function (err) {
-                            console.log("2server_response="+JSON.stringify(err));
-                        }).finally(function() {
-                            vm.disableBtn = false;
-                        });
+                        }
                     }
-                    vm.selectedAllSites = false;
+                    vm.investigatorArray = [];
+                    if (vm.currentParticipatingSite.hasOwnProperty('participating_site_investigators')) {
+                        for (var j = 0; j < vm.currentParticipatingSite.participating_site_investigators.length; j++) {
+                            var id = vm.currentParticipatingSite.participating_site_investigators[j].id;
+                            var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[j].person);
+
+                            vm.investigatorArray.push({"id": id, "name": name});
+                        }
+                    }
+
+                    vm.current_site_recruitment = {};
+                    PATrialService.setCurrentTrial(vm.curTrial); // update to cache
+                    $scope.$emit('updatedInChildScope', {});
+                    toastr.clear();
+                    toastr.success('Participating Site of  ' + vm.curTrial.lead_protocol_id + ' has been recorded', 'Operation Successful!');
+
+                    if (cbString && cbString === 'editInv') {
+                        vm.editInvestigator(vm.investigatorGrid.length - 1);
+                    }
+
+                    // To make sure setPristine() is executed after all $watch functions are complete
+                    resetDirtyForms();
+
+                   vm.isSaved = true;
                 }
-            }).catch(function(err) {
-                console.log("error in updating trial " + JSON.stringify(err));
+            }).catch(function (err) {
+                console.log("2server_response="+JSON.stringify(err));
             }).finally(function() {
                 vm.disableBtn = false;
             });
-        };//saveParticipatingSite
-
-        vm.reload = function() {
-            $state.go($state.$current, null, { reload: true });
-        };
-
-        // Add Participating to a temp array
-        function watchOrganization() {
-            $scope.$watchCollection(function() {return vm.selOrganization.array;}, function(newVal, oldVal) {
-                if (angular.isArray(newVal) && newVal.length > 0) {
-                    vm.duplicateParticipatingSite = validateDuplicateOrg(newVal[0].id);
-                    vm.currentParticipatingSite.name = newVal[0].name;
-                    vm.currentParticipatingSite.organization = newVal[0];
-                    vm.currentParticipatingSite.organization_id = newVal[0].id;
-                    vm.city = newVal[0].city;
-                    vm.state_province = newVal[0].state_province;
-                    vm.country = newVal[0].country;
-                    vm.postal_code = newVal[0].postal_code;
-                    vm.selOrganization = {name: vm.currentParticipatingSite["po_name"], array: []};
-
-                    $scope.ps_sites_form.$setDirty();
-                }
-            });
         }
+
 
         /**
          *  Set Add Mode. This causes the first tab to appear for a new Participating Site
