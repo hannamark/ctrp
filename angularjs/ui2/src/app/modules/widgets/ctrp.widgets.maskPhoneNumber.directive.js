@@ -15,7 +15,6 @@
 
         function linkerFn(scope, element, attrs, controller) {
             var elem = element,
-                countryElement = element.closest('form').find('#country'),
                 countryVal = null,
                 ctrl = controller;
 

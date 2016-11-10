@@ -18,6 +18,8 @@ json.orgs do
         :country,
         :email,
         :phone_with_ext,
+        :phone,
+        :extension,
         :ctrp_id,
         :aff_families_names,
         :multiview_ctep_id
