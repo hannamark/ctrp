@@ -280,7 +280,7 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:source_id, :id, :fname, :mname, :lname, :suffix, :email, :phone, :extension,
+      params.require(:person).permit(:source_id, :id, :fname, :mname, :lname, :prefix, :suffix, :email, :phone, :extension,
                                      :source_status_id, :source_context_id, :lock_version,
                                      :registration_type, :force_clone,
                                      :service_request_id, :processing_status,
