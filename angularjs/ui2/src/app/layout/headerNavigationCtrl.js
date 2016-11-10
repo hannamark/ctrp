@@ -206,7 +206,7 @@
         }
 
         vm.requestHeader = 'Request New ' + reqType;
-        vm.message = 'To request the creation of a new ' + reqType.toLowerCase() + ' record, please contact the Clinical Trials Reporting Office (CTRO) at <a href="mailto:ncictro@mail.nih.gov">ncictro@mail.nih.gov</a>. ' + requestMap[reqType];
+        vm.message = 'To request the creation of a new ' + reqType.toLowerCase() + ' record, please contact the Clinical Trials Reporting Office (CTRO) at <a href="mailto:ncictro@mail.nih.gov"><strong>ncictro@mail.nih.gov</strong></a>.<br><br>' + requestMap[reqType];
 
         vm.cancel = function() {
             $uibModalInstance.dismiss('cancel');
