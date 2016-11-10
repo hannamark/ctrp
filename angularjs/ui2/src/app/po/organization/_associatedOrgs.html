@@ -15,6 +15,7 @@
                     ctrp-click="orgDetailView.disAssociateOrgs()"
                     placement="top"
                     confirm-msg="Click OK to remove the selected association. Click Cancel to abort."
+                    ng-show="orgDetailView.curOrgEditable"
                     ng-disabled="!orgDetailView.gridApi.selection.getSelectedRows().length">
                 <i class="glyphicon glyphicon-trash"></i> Remove Selected Associations
             </button>
