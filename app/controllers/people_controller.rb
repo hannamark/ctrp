@@ -192,6 +192,7 @@ class PeopleController < ApplicationController
     if params.has_key?(:ctep_person_id)
       # @matched = find_matches(params[:ctep_person_id])
       ctep_person = Person.find(params[:ctep_person_id])
+      ctep_person_source_status_code = SourceStatus.find(ctep_person.source_status_id).code
       ctrp_source_context_id = SourceContext.find_by_code('CTRP').id
       @matched = Person.where(fname: ctep_person.fname, lname: ctep_person.lname, source_context_id: ctrp_source_context_id)
       p "@matched.size1: #{@matched.size}"
@@ -201,8 +202,9 @@ class PeopleController < ApplicationController
 
       @is_cloned = false
       if (@matched.size > 0 && params[:force_clone] == true) || @matched.size == 0
-        clone = ctep_person.dup   # TODO: reserve associations here for the clone
+        clone = ctep_person.dup   # TODO: reserve associations here for the clone ???
         clone.source_context_id = ctrp_source_context_id
+        clone.source_status_id = SourceStatus.find_by_code(ctep_person_source_status_code).id
         clone.association_start_date = nil
         @matched = [clone]
         # @matched.processing_status = nil
@@ -213,11 +215,6 @@ class PeopleController < ApplicationController
         ctep_person.update_attributes('ctrp_id': clone.ctrp_id, 'association_start_date': Time.now, 'processing_status': 'Complete')
       end
     end
-
-     # respond_to do |format|
-     #   format.json { render :json => {:matched => @matched, :is_cloned => @is_cloned} }
-     # end
-
   end
 
 
@@ -280,10 +277,10 @@ class PeopleController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:source_id, :fname, :mname, :lname, :suffix,:prefix, :email, :phone, :extension,
-                                     :source_status_id, :source_context_id, :lock_version, :processing_status,
+      params.require(:person).permit(:source_id, :id, :fname, :mname, :lname, :prefix, :suffix, :email, :phone, :extension,
+                                     :source_status_id, :source_context_id, :lock_version,
                                      :registration_type, :force_clone,
-                                     :service_request_id,
+                                     :service_request_id, :processing_status,
                                      po_affiliations_attributes: [:id, :organization_id, :effective_date,
                                                                   :expiration_date, :po_affiliation_status_id,
                                                                   :lock_version, :_destroy])

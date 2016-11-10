@@ -27,5 +27,6 @@
               :created_at,
               :updated_at,
               :association_date
+              :service_request_id
 
 

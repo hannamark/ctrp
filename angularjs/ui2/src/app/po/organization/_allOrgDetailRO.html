@@ -85,10 +85,10 @@
 <div class="form-group" ng-if="curOrg.source_context_name === 'CTEP' && orgDetailView.currentUserIsReadAll">
     <label class="control-label col-sm-3">Service Request:</label>
     <div class="col-sm-2">
-        <select restriction-field ng-init="curOrg.service_request"
+        <select restriction-field  ng-init="curOrg.service_request"
                 class="form-control input-sm" id="service_request"
-                ng-model="curOrg.service_request_name"
-                ng-options="request.name as request.name for request in orgDetailView.serviceRequests">
+                ng-model="curOrg.service_request_id"
+                ng-options="request.id as request.name for request in orgDetailView.serviceRequests">
         </select>
     </div>
 </div>

@@ -456,6 +456,21 @@
                 {id: 2, name: 'Incomplete'}
             ];
         }
+        
+        var requestServicesArr = [];
+
+        (function getRequestServices() {
+            OrgService.getServiceRequests().then(function (requests) {
+                var status = requests.server_response.status;
+                if (status >= 200 && status <= 210) {
+                    requestServicesArr = requests;
+                }
+            });
+        }());
+
+        function getRequestServicesArr() {
+            return requestServicesArr;
+        }
 
         /**
          * Check if targetOrgsArr contains orgObj by checking the 'id' field
