@@ -32,6 +32,7 @@ json.associated_orgs do
                 json.created_at @read_all_access ? organization.created_at : nil
                 json.updated_at @read_all_access ? organization.updated_at : nil
                 json.association_date @read_all_access ? organization.association_date : nil
+                json.service_request_id @read_all_access ? organization.service_request_id : nil
                 json.service_request_name @read_all_access ? organization.service_request_name : nil
                 json.processing_status @read_all_access ? organization.processing_status : nil
                 json.source_context_code @read_all_access ? organization.source_context_code : nil

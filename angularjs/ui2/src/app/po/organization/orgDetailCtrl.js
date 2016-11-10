@@ -9,15 +9,16 @@
         .controller('orgDetailCtrl', orgDetailCtrl);
 
     orgDetailCtrl.$inject = ['associatedOrgsObj', 'OrgService', 'toastr', 'MESSAGES', 'UserService',
-        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', '$state', '$timeout'];
+        '$scope', 'countryList', 'Common', 'sourceContextObj', 'sourceStatusObj', 'serviceRequests', '$state', '$timeout'];
 
     function orgDetailCtrl(associatedOrgsObj, OrgService, toastr, MESSAGES, UserService,
-                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, $state, $timeout) {
+                           $scope, countryList, Common, sourceContextObj, sourceStatusObj, serviceRequests, $state, $timeout) {
          var vm = this;
          function setInitialState() {
              vm.addedNameAliases = [];
              vm.states = [];
              vm.processingStatuses = OrgService.getProcessingStatuses();
+             vm.serviceRequests = serviceRequests;
              vm.watchCountrySelection = OrgService.watchCountrySelection();
              vm.countriesArr = countryList;
              vm.sourceContextArr = sourceContextObj;
@@ -30,14 +31,6 @@
              vm.processStatusArr = OrgService.getProcessingStatuses();
              vm.cloningCTEP = false;
              vm.nilclose = true;
-
-             OrgService.getServiceRequests().then(function (requests) {
-                 var status = requests.server_response.status;
-                 if (status >= 200 && status <= 210) {
-                     vm.serviceRequests = requests;
-                 }
-             });
-             
             $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
                 if (vm.cloningCTEP) {
                     // To make sure setPristine() is executed after all $watch functions are complete
@@ -72,7 +65,6 @@
 
         vm.updateOrg = function () {
             vm.disableBtn = true;
-            // Construct nested attributes
             if (vm.addedNameAliases.length > 0) {
                 vm.ctrpOrg.name_aliases_attributes = [];
                 _.each(vm.addedNameAliases, function (otherId) {
@@ -90,7 +82,12 @@
             vm.disableBtn = true;
             saveAndRenderOrg({
                 id:     vm.ctepOrg.id,
-                organization: vm.ctepOrg
+                organization: {
+                    source_context_id:  vm.ctepOrg.source_context_id,
+                    service_request_id: vm.ctepOrg.service_request_id,
+                    processing_status:  vm.ctepOrg.processing_status,
+                    source_context_code: 'CTEP'
+                }
             });
         };
 
@@ -162,14 +159,14 @@
             }
         };
 
-        // Delete the associations
+        // toggle remove the aliases
         vm.toggleSelection = function (index, type) {
             if (type === 'other_id') {
                 if (index < vm.addedNameAliases.length) {
                     vm.addedNameAliases[index]._destroy = !vm.addedNameAliases[index]._destroy;
                 }
             }
-        };// toggleSelection
+        };
 
         // first filtering for CTRP then choosing right active, inactive and pending statuses for ids
         vm.ctrpSourceStatusArr = _.filter(
@@ -243,7 +240,7 @@
             return ve;
         }
 
-        // Append associations for existing org
+        // Append aliases for existing CTRP org
         function appendNameAliases() {
             for (var i = 0; i < vm.ctrpOrg.name_aliases.length; i++) {
                 vm.addedNameAliases.push({
