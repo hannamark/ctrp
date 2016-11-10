@@ -43,7 +43,6 @@
             var fromStateName = $state.fromState.name || '';
             var curStateName = $state.$current.name || '';
 
-
             function _initState() {
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
                 $scope.selectedRows = [];
@@ -60,7 +59,6 @@
                 $scope.dateFormat = DateService.getFormats()[1];
                 $scope.searching = false;
 
-
                 // actions
                 $scope.searchOrgs = searchOrgs;
                 $scope.nullifyEntity = nullifyEntity;
@@ -73,10 +71,14 @@
                 } else {
                     $scope.curationModeEnabled = false;
                 }
+
                 //override the inferred curationModeEnabled if 'curationMode' attribute has been set in the directive
                 $scope.curationModeEnabled = angular.isDefined($scope.curationMode) ? $scope.curationMode : $scope.curationModeEnabled;
                 $scope.usedInModal = angular.isDefined($scope.usedInModal) ? $scope.usedInModal : false;
                 $scope.showGrid = angular.isDefined($scope.showGrid) ? $scope.showGrid : false;
+            };
+
+            function _initMethods() {
 
                 $scope.typeAheadNameSearch = function () {
                     var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
@@ -163,8 +165,8 @@
 
             }
             _initState();
+            _initMethods();
 
-            /* searchOrgs */
             function searchOrgs(newSearchFlag) {
 
                 if (newSearchFlag === 'fromStart') {
@@ -199,45 +201,49 @@
                     if (curStateName.indexOf('trial') > -1 || $scope.usedInModal) {
                         $scope.searchParams.source_status = 'Active';
                     }
-
-                    OrgService.searchOrgs($scope.searchParams).then(function (data) {
-                        var status = data.server_response.status;
-
-                        if (status >= 200 && status <= 210) {
-                            if ($scope.showGrid && data.orgs) {
-                                $scope.gridOptions.data = data.orgs;
-                                $scope.gridOptions.totalItems = data.total;
-
-                                // if set to close on no results send flag through false
-                                // selectedOrgsArray to close modal
-                                if ($scope.searchParams.nilclose && (data.total < 1) ) {
-                                    $scope.$parent.selectedOrgsArray = -1;
-                                }
-
-                                //pin the selected rows, if any, at the top of the results
-                                /* eslint-disable */
-                                _.each($scope.selectedRows, function (curRow, idx) {
-                                    var ctrpId = curRow.entity.id;
-                                    var indexOfCurRowInGridData = _.findIndex($scope.gridOptions.data, {id: ctrpId});
-                                    if (indexOfCurRowInGridData > -1) {
-                                        $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
-                                        $scope.gridOptions.totalItems--;
-                                    }
-                                    $scope.gridOptions.data.unshift(curRow.entity);
-                                    $scope.gridOptions.totalItems++;
-                                });
-                                /* eslint-enable */
-                            }
-                            $scope.$parent.orgSearchResults = data;
-                        }
-
-                    }).catch(function (error) {
-                        console.log("error in retrieving orgs: " + JSON.stringify(error));
-                    }).finally(function() {
-                        $scope.searching = false;
-                    });
+                    $scope.executeOrgSearch();
                 }
             }
+
+
+            $scope.executeOrgSearch = function () {
+                OrgService.searchOrgs($scope.searchParams).then(function (data) {
+                    var status = data.server_response.status;
+
+                    if (status >= 200 && status <= 210) {
+                        if ($scope.showGrid && data.orgs) {
+                            $scope.gridOptions.data = data.orgs;
+                            $scope.gridOptions.totalItems = data.total;
+
+                            // if set to close on no results send flag through false
+                            // selectedOrgsArray to close modal
+                            if ($scope.searchParams.nilclose && (data.total < 1) ) {
+                                $scope.$parent.selectedOrgsArray = -1;
+                            }
+
+                            //pin the selected rows, if any, at the top of the results
+                            /* eslint-disable */
+                            _.each($scope.selectedRows, function (curRow, idx) {
+                                var ctrpId = curRow.entity.id;
+                                var indexOfCurRowInGridData = _.findIndex($scope.gridOptions.data, {id: ctrpId});
+                                if (indexOfCurRowInGridData > -1) {
+                                    $scope.gridOptions.data.splice(indexOfCurRowInGridData, 1);
+                                    $scope.gridOptions.totalItems--;
+                                }
+                                $scope.gridOptions.data.unshift(curRow.entity);
+                                $scope.gridOptions.totalItems++;
+                            });
+                            /* eslint-enable */
+                        }
+                        $scope.$parent.orgSearchResults = data;
+                    }
+
+                }).catch(function (error) {
+                    console.log("error in retrieving orgs: " + JSON.stringify(error));
+                }).finally(function() {
+                    $scope.searching = false;
+                });
+            };
 
             $scope.resetSearch = function () {
                 $scope.searchParams = OrgService.getInitialOrgSearchParams();
