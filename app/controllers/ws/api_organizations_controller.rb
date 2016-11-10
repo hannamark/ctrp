@@ -216,7 +216,7 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
               #Rails.logger.info "********* ************"
               #p REXML::Document.new($requestString).root
 
-              @xmlMapperObject = ApiOrganizationCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+              @xmlMapperObject = ApiOrganizationXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
               #p $requestString
               #p  @xmlMapperObject
               #.address#.city
@@ -239,7 +239,7 @@ class Ws::ApiOrganizationsController < Ws::BaseApiController
       #Rails.logger.info "********* ************"
       #p REXML::Document.new($requestString).root
 
-      @xmlMapperObject = ApiOrganizationCreateXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
+      @xmlMapperObject = ApiOrganizationXmlMapper.load_from_xml(REXML::Document.new($requestString).root)
       #p $requestString
       #p  @xmlMapperObject
       #.address#.city
