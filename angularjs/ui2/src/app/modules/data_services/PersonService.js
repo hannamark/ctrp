@@ -220,18 +220,16 @@
                 var updatedAtIndex = _.findIndex(options.columnDefs, {name: 'updated_at'});
                 if (updatedAtIndex >= 0)
                     options.columnDefs.splice(updatedAtIndex, 1);
-                //Recompute the updated_by_index, given that the columnDefs have changed
-                // var updated_by_index = Common.indexOfObjectInJsonArray(options.columnDefs, 'name', 'updated_by');
+                    
                 var updatedByIndex = _.findIndex(options.columnDefs, {name: 'updated_by'});
                 if (updatedByIndex >= 0)
                     options.columnDefs.splice(updatedByIndex,1);
             } else if (user_role === 'ROLE_TRIAL-SUBMITTER' || user_role === 'ROLE_SITE-SU') {
                 // splice out columns: context id, Processing Status, and Service Request from trial submitter role
-                options.columnDefs = _.without(options.columnDefs, _.findWhere(options.columnDefs, {displayName: 'Context ID'}));
-                options.columnDefs = _.without(options.columnDefs, _.findWhere(options.columnDefs, {name: 'processing_status'}));
-                options.columnDefs = _.without(options.columnDefs, _.findWhere(options.columnDefs, {name: 'service_request'}));
-                options.columnDefs = _.without(options.columnDefs, _.findWhere(options.columnDefs, {name: 'updated_at'}));
-                options.columnDefs = _.without(options.columnDefs, _.findWhere(options.columnDefs, {name: 'updated_by'}));
+                var filtered = ['id', 'processing_status', 'service_request', 'updated_at', 'updated_by'];
+                options.columnDefs = _.filter(options.columnDefs, function(col) {
+                    return !_.contains(filtered, col.name);
+                });
             }
             if(usedInModal){
                 // var nullify_index = Common.indexOfObjectInJsonArray(options.columnDefs, 'name', 'Nullify');
