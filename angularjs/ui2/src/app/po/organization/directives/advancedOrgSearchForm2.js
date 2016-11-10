@@ -76,10 +76,9 @@
                 $scope.curationModeEnabled = angular.isDefined($scope.curationMode) ? $scope.curationMode : $scope.curationModeEnabled;
                 $scope.usedInModal = angular.isDefined($scope.usedInModal) ? $scope.usedInModal : false;
                 $scope.showGrid = angular.isDefined($scope.showGrid) ? $scope.showGrid : false;
-            };
+            }
 
             function _initMethods() {
-
                 $scope.typeAheadNameSearch = function () {
                     var wildcardOrgName = $scope.searchParams.name.indexOf('*') > -1 ? $scope.searchParams.name : '*' + $scope.searchParams.name + '*';
                     //search context: 'CTRP', to avoid duplicate names
@@ -125,6 +124,16 @@
                     });
                 };
 
+
+                $scope.rowFormatter = function( row ) {
+                    if (!$scope.usedInModal) {
+                        var isCTEPContext = row.entity.source_context && row.entity.source_context.indexOf('CTEP') > -1;
+                        return isCTEPContext;
+                    } else {
+                        return false;
+                    }
+                };
+
                 $scope.toggleCurationMode = function () {
                     $scope.curationShown = !$scope.curationShown;
                 };
@@ -166,6 +175,7 @@
             }
             _initState();
             _initMethods();
+            checkAndRunPreSearch();
 
             function searchOrgs(newSearchFlag) {
 
@@ -204,7 +214,6 @@
                     $scope.executeOrgSearch();
                 }
             }
-
 
             $scope.executeOrgSearch = function () {
                 OrgService.searchOrgs($scope.searchParams).then(function (data) {
@@ -322,15 +331,6 @@
                 /*eslint-enable no-alert */
 
             }
-
-            $scope.rowFormatter = function( row ) {
-                if (!$scope.usedInModal) {
-                    var isCTEPContext = row.entity.source_context && row.entity.source_context.indexOf('CTEP') > -1;
-                    return isCTEPContext;
-                } else {
-                    return false;
-                }
-            };
 
             /**
              * Open calendar
@@ -700,23 +700,25 @@
                 $scope.curationShown = UserService.isCurationModeEnabled() || false;
             }
 
-            if ($scope.preSearch !== undefined) {
-                for (var property in $scope.preSearch) {
-                    if ({}.hasOwnProperty.call($scope.preSearch, property)) {
-                        $scope.searchParams[property] = $scope.preSearch[property];
+            function checkAndRunPreSearch() {
+                if ($scope.preSearch !== undefined) {
+                    for (var property in $scope.preSearch) {
+                        if ({}.hasOwnProperty.call($scope.preSearch, property)) {
+                            $scope.searchParams[property] = $scope.preSearch[property];
+                        }
                     }
-                }
-                if ($scope.preSearch.preload) {
-                    $scope.searchOrgs();
-                }
-                //trigger country on-change
-                if($scope.preSearch["country"]) {
-                    $timeout(function() {
-                        $scope.searchParams["country"] = "";
+                    if ($scope.preSearch.preload) {
+                        $scope.searchOrgs();
+                    }
+                    //trigger country on-change
+                    if($scope.preSearch["country"]) {
                         $timeout(function() {
-                            $scope.searchParams["country"] = $scope.preSearch["country"];
+                            $scope.searchParams["country"] = "";
+                            $timeout(function() {
+                                $scope.searchParams["country"] = $scope.preSearch["country"];
+                            }, 100);
                         }, 100);
-                    }, 100);
+                    }
                 }
             }
 
