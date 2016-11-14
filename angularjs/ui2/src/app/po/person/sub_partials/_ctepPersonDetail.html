@@ -24,7 +24,20 @@
     </div>
     <div class="form-group" ng-show="personDetailView.isAllowedToComment">
         <label class="control-label col-xs-12 col-sm-3">Service Request:</label>
-        <div class="col-xs-12 col-sm-3 form-text">{{personDetailView.curPerson.service_request}}</div>
+        <!-- <div class="col-xs-12 col-sm-3 form-text">{{personDetailView.curPerson.service_request}}</div> -->
+        <div class="col-xs-12 col-sm-3">
+            <div ng-if="!personDetailView.curPerson.new && personDetailView.curPerson.source_context === 'CTEP'">
+                <select name="service_request" id="service_request" class="form-control input-sm"
+                    restriction-field
+                    ng-model="personDetailView.curPerson.service_request_id"
+                    ng-init="personDetailView.curPerson.service_request_id || personDetailView.serviceRequests[0].id"
+                    ng-options="request.id as request.name for request in personDetailView.serviceRequests">
+                    <option value="">
+                        Select a service request
+                    </option>
+                </select>
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-3">Processing Status: </label>
@@ -40,9 +53,6 @@
                         Select a processing status
                     </option>
                 </select>
-                <span class="help-block" ng-show="ctrpbtn.person_form.needsAttention(person_form.processing_status) && !personDetailView.curPerson.new">
-                    Processing Status is Required
-                </span>
             </div>
         </div>
     </div>

@@ -7,10 +7,10 @@
     angular.module('ctrp.app.po')
         .controller('personDetailCtrl2', personDetailCtrl2);
 
-    personDetailCtrl2.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService', 'MESSAGES',
+    personDetailCtrl2.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService', 'MESSAGES', 'serviceRequests',
         '$scope', 'Common', 'sourceStatusObj','sourceContextObj', '$state', '$uibModal', 'OrgService', 'poAffStatuses', '_', '$timeout'];
 
-    function personDetailCtrl2(personDetailObj, PersonService, toastr, DateService, UserService, MESSAGES,
+    function personDetailCtrl2(personDetailObj, PersonService, toastr, DateService, UserService, MESSAGES, serviceRequests,
                               $scope, Common, sourceStatusObj,sourceContextObj, $state, $uibModal, OrgService, poAffStatuses, _, $timeout) {
 
         var vm = this;
@@ -283,6 +283,9 @@
             vm.validOrgsCount = 0; // orgs for affiliation
             vm.sourceStatusArrSelected = [];
             vm.sourceContextArr = sourceContextObj;
+            delete serviceRequests.server_response;
+            vm.serviceRequests = serviceRequests;
+            console.info("vm.serviceRequests: ", vm.serviceRequests);
             vm.savedSelection = [];
             vm.associatedPersonContexts = [];
             vm.orgsArrayReceiver = []; //receive selected organizations from the modal
