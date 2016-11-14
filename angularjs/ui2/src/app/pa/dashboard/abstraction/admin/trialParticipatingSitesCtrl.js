@@ -21,11 +21,12 @@
 
         /****************** implementations below ***************/
         function _initializeModelProps() {
-            /* Shortening property initializations via looping */
+            /* Shortening property definitions via looping */
             var propNullArray = ['city', 'state_province', 'country', 'postal', 'selectedInvestigator'];
             var propFalseArray = ['selectedContactTypePI', 'showInvestigatorRoleError', 'invDeleteException', 'srStatusDeleteException', 'duplicateParticipatingSite', 'addEditMode', 'isSaved', 'disableBtn'];
             var arrayTypeProps = ['siteRecruitmentGrid', 'investigatorGrid', 'investigatorGridOrig', 'investigatorArray'];
             var objTypeProps = ['currentParticipatingSite', 'current_site_recruitment', 'current_investigator', 'persisted_contact', 'persistedOrganization'];
+            var complexObjTypeProps = ['selOrganization', 'principalInvestigator', 'selectedPerson'];
 
             _.each(propNullArray, function(nullProp) {
                 vm[nullProp] = null;
@@ -43,6 +44,10 @@
                 vm[obj] = {};
             });
 
+            _.each(complexObjTypeProps, function(compObj) {
+                vm[compObj] = {name: '', array: []};
+            });
+
             // injected objects
             vm.curTrial = trialDetailObj;
             vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
@@ -53,9 +58,6 @@
             vm.showOrgFields = true;
             vm.dateFormat = DateService.getFormats()[1];
             vm.dateOptions = DateService.getDateOptions();
-            vm.selOrganization = {name: '', array: []};
-            vm.principalInvestigator = {name: '', array: []};
-            vm.selectedPerson = {name: '', array: []};
             vm.centralContactTypes = centralContactTypes.types;
             vm.investigatorTypes = investigatorTypes;
             vm.tabIndex = 0;
