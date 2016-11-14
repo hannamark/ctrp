@@ -88,7 +88,7 @@
             $scope.searchWarningMessage = '';
             $scope.searching = false;
             $scope.scope = $scope;
-            
+
             OrgService.setTypeAheadOrgNameSearch($scope.scope);
 
             if ($scope.maxRowSelectable > 0) {
@@ -112,7 +112,7 @@
                 if (newSearchFlag === 'fromStart') {
                     $scope.searchParams.start = 1;
                 }
-                
+
                 $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
                 if ($scope.searchParams.date_range_arr.length === 0) {
                     delete $scope.searchParams.date_range_arr;
@@ -241,16 +241,30 @@
             };
 
             $scope.nullifyEntity = function (rowEntity) {
-                // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
-                if (!rowEntity.nullifiable) {
-                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
-                }
-                else if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
-                    // warning to user for nullifying active entity
-                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is not allowed';
+                var sourceStatus = rowEntity.source_status || "active";
+                var isActive = sourceStatus.toLowerCase() === 'active';
+                var isNullified = sourceStatus.toLowerCase() === 'nullified';
+
+                // console.log("chosen to nullify the row: ", rowEntity);
+                if (isActive) {
+                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
                     $scope.nullifiedId = '';
-                    //console.log('cannot nullify this row, because it is active');
+                } else if (isNullified) {
+                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
+                    $scope.nullifiedId = '';
                 } else {
+                    PersonService.isPersonNullifiable(rowEntity.id).then(function(res) {
+                        var status = res.server_response.status;
+                        if (status >= 200 && status <= 210 && res.nullifiable !== true) {
+                            $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
+                            $scope.nullifiedId = '';
+                        } else {
+                            $scope.warningMessage = '';
+                            $scope.nullifiedId = rowEntity.id || '';
+                        }
+                    }).catch(function(err) {
+                        console.error('Error in nullifiable check: ', err);
+                    });
                     $scope.warningMessage = '';
                     $scope.nullifiedId = rowEntity.id || '';
                 }
