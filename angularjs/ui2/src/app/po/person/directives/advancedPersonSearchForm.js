@@ -256,7 +256,7 @@
                     PersonService.isPersonNullifiable(rowEntity.id).then(function(res) {
                         var status = res.server_response.status;
                         if (status >= 200 && status <= 210 && res.nullifiable !== true) {
-                            $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
+                            $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP context associated to it, nullification is prohibited';
                             $scope.nullifiedId = '';
                         } else {
                             $scope.warningMessage = '';
