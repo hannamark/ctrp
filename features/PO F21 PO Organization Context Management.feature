@@ -235,6 +235,8 @@ Scenario:#3 Organization Source Status CTEP available list
      |Source Status|
      |Service Request|
      |Processing Status|
+     |Created By|
+     |Updated By|
 
     Scenario:#14 I can search a NLM Organization to be associated with an Organization in the CTRP Context 
     Given I am logged into the CTRP 
