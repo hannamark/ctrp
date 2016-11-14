@@ -275,7 +275,7 @@
                 PersonService.curatePerson($scope.toBeCurated).then(function(res) {
                     var status = res.server_response.status;
 
-                    if (status >= 200 && status <= 210) {
+                    if (status >= 200 && status <= 210 && res.nullify_success === true) {
                         initCurationObj();
                         clearSelectedRows();
                         $scope.searchPeople();
