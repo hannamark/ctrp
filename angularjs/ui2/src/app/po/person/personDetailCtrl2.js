@@ -7,10 +7,10 @@
     angular.module('ctrp.app.po')
         .controller('personDetailCtrl2', personDetailCtrl2);
 
-    personDetailCtrl2.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService', 'MESSAGES',
+    personDetailCtrl2.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService', 'MESSAGES', 'serviceRequests',
         '$scope', 'Common', 'sourceStatusObj','sourceContextObj', '$state', '$uibModal', 'OrgService', 'poAffStatuses', '_', '$timeout'];
 
-    function personDetailCtrl2(personDetailObj, PersonService, toastr, DateService, UserService, MESSAGES,
+    function personDetailCtrl2(personDetailObj, PersonService, toastr, DateService, UserService, MESSAGES, serviceRequests,
                               $scope, Common, sourceStatusObj,sourceContextObj, $state, $uibModal, OrgService, poAffStatuses, _, $timeout) {
 
         var vm = this;
@@ -71,7 +71,6 @@
                     });
                 } else if (contextName === 'CTRP') {
                     // CTRP is the default tab
-                    console.info('after removal: ', vm.curPerson);
                     _populatePOAff();
                     _prepAssociationGrid(vm.curPerson.associated_persons);
                 }
@@ -282,6 +281,8 @@
             vm.validOrgsCount = 0; // orgs for affiliation
             vm.sourceStatusArrSelected = [];
             vm.sourceContextArr = sourceContextObj;
+            delete serviceRequests.server_response;
+            vm.serviceRequests = serviceRequests;
             vm.savedSelection = [];
             vm.associatedPersonContexts = [];
             vm.orgsArrayReceiver = []; //receive selected organizations from the modal
@@ -297,7 +298,7 @@
             vm.isWritable = UserService.isCurationModeEnabled() || false;
             vm.selectedCtrpPerson = null;
             var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
-            var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
+            var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_RO'];
             vm.isAllowedToComment = _.contains(USER_ROLES_ALLOWED_COMMENT, UserService.getUserRole());
 
             if (vm.person.source_context === 'CTRP') {
@@ -408,9 +409,9 @@
             if (ctepPerson.is_ctrp_context) return; // do not allow deleting CTRP person (???)
             var ctepPersonId = ctepPerson.id;
             PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
-                console.info('res for removal: ', res);
+
                 if (res.is_removed) {
-                    vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, {id: res.removed_person.id}); // remove the ctep from container
+                    vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, _.findWhere(vm.curPerson.associated_persons, {id: res.removed_person.id})); // remove the ctep from container
                     vm.ctrpPerson = angular.copy(vm.curPerson);
                     vm.associationForRemoval = [];
                     vm.ctepPerson = null; // deleted
@@ -533,7 +534,7 @@
                         field: 'mname',
                         enableSorting: false,
                         displayName: 'Middle Name',
-                        minWidth: '100'
+                        minWidth: '125'
                     },
                     {
                         field: 'lname',
@@ -569,13 +570,13 @@
                         field: 'email',
                         enableSorting: true,
                         displayName: 'Email',
-                        minWidth: '100'
+                        minWidth: '200'
                     },
                     {
                         field: 'phone',
                         enableSorting: true,
                         displayName: 'Phone',
-                        minWidth: '100'
+                        minWidth: '125'
                     },
                     // TODO: list orgs
 

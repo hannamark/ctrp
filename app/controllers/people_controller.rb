@@ -84,13 +84,27 @@ class PeopleController < ApplicationController
     end
   end
 
+  def nullifiable
+    nullifiable = false
+    cur_person = Person.find_by_id(params[:id])
+
+    if !cur_person.blank?
+      nullifiable = cur_person.nullifiable
+    end
+    respond_to do |format|
+      format.json {render :json => {:nullifiable => nullifiable}}
+    end
+  end
+
   def curate
 
     respond_to do |format|
       if Person.nullify_duplicates(params)
-        format.html { redirect_to people_url, notice: 'Person was successfully curated.' }
+        format.json { render :json => {:nullify_success => true}}
+        # format.html { redirect_to people_url, notice: 'Person was successfully curated.' }
       else
-        format.json { render json: @person.errors, status: :unprocessable_entity  }
+        format.json { render :json => {:nullify_success => false}}
+        # format.json { render json: @person.errors, status: :unprocessable_entity  }
       end
 
     end
@@ -126,12 +140,12 @@ class PeopleController < ApplicationController
       @people = matches_wc(@people, 'prefix', params[:prefix],params[:wc_search]) if params[:prefix].present?
       @people = matches_wc(@people, 'suffix', params[:suffix],params[:wc_search]) if params[:suffix].present?
       @people = matches_wc(@people, 'email', params[:email],params[:wc_search]) if params[:email].present?
-      @people = matches_wc(@people, 'phone', params[:phone],params[:wc_search]) if params[:phone].present?
+      @people = matches_wc(@people, 'phone', params[:phone].gsub(/\\/,'\&\&'),params[:wc_search]) if params[:phone].present?
       @people = @people.matches('service_request_id', params[:service_request]) if params[:service_request].present?
 
 
       if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
-          @current_user.role == "ROLE_ADMIN")
+          @current_user.role == "ROLE_ADMIN" || @current_user.role == "ROLE_ABSTRACTOR-SU")
         @people = @people.matches("source_statuses.code", params[:source_status]) if params[:source_status].present?
         @people = @people.matches("source_contexts.code", params[:source_context]) if params[:source_context].present?
       else

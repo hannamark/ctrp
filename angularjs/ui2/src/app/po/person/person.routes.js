@@ -39,6 +39,9 @@
                         },
                         poAffStatuses : function(PersonService) {
                             return PersonService.getPoAffStatuses();
+                        },
+                        serviceRequests: function(OrgService) {
+                            return OrgService.getServiceRequests();
                         }
                     }, //resolve the promise and pass it to controller
                     ncyBreadcrumb: {
@@ -68,6 +71,9 @@
                         },
                         poAffStatuses : function(PersonService) {
                             return PersonService.getPoAffStatuses();
+                        },
+                        serviceRequests: function(OrgService) {
+                            return OrgService.getServiceRequests();
                         }
                     },
                     ncyBreadcrumb: {
