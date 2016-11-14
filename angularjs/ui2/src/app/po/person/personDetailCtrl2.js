@@ -7,10 +7,10 @@
     angular.module('ctrp.app.po')
         .controller('personDetailCtrl2', personDetailCtrl2);
 
-    personDetailCtrl2.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService', 'MESSAGES',
+    personDetailCtrl2.$inject = ['personDetailObj', 'PersonService', 'toastr', 'DateService', 'UserService', 'MESSAGES', 'serviceRequests',
         '$scope', 'Common', 'sourceStatusObj','sourceContextObj', '$state', '$uibModal', 'OrgService', 'poAffStatuses', '_', '$timeout'];
 
-    function personDetailCtrl2(personDetailObj, PersonService, toastr, DateService, UserService, MESSAGES,
+    function personDetailCtrl2(personDetailObj, PersonService, toastr, DateService, UserService, MESSAGES, serviceRequests,
                               $scope, Common, sourceStatusObj,sourceContextObj, $state, $uibModal, OrgService, poAffStatuses, _, $timeout) {
 
         var vm = this;
@@ -226,16 +226,20 @@
             PersonService.associatePersonContext(ctepPerson.id, ctrpId).then(function(res) {
                 if (res.server_response.status >= 200 && res.server_response.status < 226) {
                     vm.associatedPersonContexts = []; // clean up container for accepting ctep persons
-                    vm.matchedCtrpPersons = []; // TODO: what is this?
+                    vm.matchedCtrpPersons = [];
                     vm.showMatchedCtrpPerson = false;
+                    console.info('associated person response: ', res.person);
+                    console.info('sourceContext: ', sourceContext);
                     if (sourceContext === 'CTEP') {
                         res.person.source_context = ctepPerson.source_context;
                         res.person.source_status = ctepPerson.source_status;
                         vm.ctepPerson = angular.copy(res.person);
                         // current person is CTRP
-                        vm.curPerson.associated_persons = [res.person].concat(vm.curPerson.associated_persons || []);
+                        vm.ctrpPerson.associated_persons = [res.person].concat(vm.ctrpPerson.associated_persons || []);
+                        // vm.curPerson.associated_persons = [res.person].concat(vm.curPerson.associated_persons || []);
                     } else if (sourceContext === 'CTRP') {
                         vm.ctrpPerson = res.person;
+                        vm.ctepPerson.ctrp_id = vm.ctrpPerson.ctrp_id;
                     }
                     _showToastr('CTEP person context association was successful');
                     selectTab(sourceContext); // switch to the new tab
@@ -268,7 +272,7 @@
             vm.curPerson = {}; // person currently displayed in the active tab
             vm.ctepPerson = null;
             vm.ctrpPerson = null;
-            vm.person.processing_status = 'Complete';
+            vm.person.processing_status = vm.person.processing_status || 'Complete';
             vm.defaultTab = vm.person.source_context; // default tab
             vm.tabOpen = vm.defaultTab;
             vm.masterCopy= angular.copy(vm.person);
@@ -277,6 +281,8 @@
             vm.validOrgsCount = 0; // orgs for affiliation
             vm.sourceStatusArrSelected = [];
             vm.sourceContextArr = sourceContextObj;
+            delete serviceRequests.server_response;
+            vm.serviceRequests = serviceRequests;
             vm.savedSelection = [];
             vm.associatedPersonContexts = [];
             vm.orgsArrayReceiver = []; //receive selected organizations from the modal
@@ -292,14 +298,14 @@
             vm.isWritable = UserService.isCurationModeEnabled() || false;
             vm.selectedCtrpPerson = null;
             var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
-            var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
+            var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_RO'];
             vm.isAllowedToComment = _.contains(USER_ROLES_ALLOWED_COMMENT, UserService.getUserRole());
 
             if (vm.person.source_context === 'CTRP') {
-                vm.ctrpPerson = vm.person;
+                vm.ctrpPerson = angular.copy(vm.person);
                 vm.ctepPerson = _.findWhere(vm.person.associated_persons, {source_status: 'Active', source_context: 'CTEP'});
             } else if (vm.person.source_context === 'CTEP') {
-                vm.ctepPerson = vm.person;
+                vm.ctepPerson = angular.copy(vm.person);
                 vm.ctrpPerson = _.findWhere(vm.person.associated_persons, {source_context: 'CTRP', source_status: 'Active'}) || null;
             } else {
                 vm.ctrpPerson = null;
@@ -403,12 +409,10 @@
             if (ctepPerson.is_ctrp_context) return; // do not allow deleting CTRP person (???)
             var ctepPersonId = ctepPerson.id;
             PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
+                console.info('res for removal: ', res);
                 if (res.is_removed) {
-                    // filter out the deleted persons (both ctep and its associated ctrp person)
-                    vm.curPerson.associated_persons = _.filter(vm.curPerson.associated_persons, function(p) {
-                        // return p.ctrp_source_id !== ctrp_source_id;
-                        return p.id !== ctepPersonId;
-                    });
+                    vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, {id: res.removed_person.id}); // remove the ctep from container
+                    vm.ctrpPerson = angular.copy(vm.curPerson);
                     vm.associationForRemoval = [];
                     vm.ctepPerson = null; // deleted
                     _showToastr('The selected person context association was deleted');
@@ -530,7 +534,7 @@
                         field: 'mname',
                         enableSorting: false,
                         displayName: 'Middle Name',
-                        minWidth: '100'
+                        minWidth: '125'
                     },
                     {
                         field: 'lname',
@@ -566,13 +570,13 @@
                         field: 'email',
                         enableSorting: true,
                         displayName: 'Email',
-                        minWidth: '100'
+                        minWidth: '200'
                     },
                     {
                         field: 'phone',
                         enableSorting: true,
                         displayName: 'Phone',
-                        minWidth: '100'
+                        minWidth: '125'
                     },
                     // TODO: list orgs
 

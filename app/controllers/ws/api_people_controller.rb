@@ -1,4 +1,4 @@
-class Ws::ApiPersonsController < Ws::BaseApiController
+class Ws::ApiPeopleController < Ws::BaseApiController
   #around_filter :global_request_logging
 
   ##CONSTANTS FOR REQUEST VALIDATIONS

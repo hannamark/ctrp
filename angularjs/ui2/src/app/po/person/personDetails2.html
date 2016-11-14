@@ -48,18 +48,18 @@
                 </div>
             </div>
         </modal>
-        <modal visible="personDetailView.showMatchedCtrpPerson" title="Please confirm" id="confirm_association_ctrp_person">
+        <modal visible="personDetailView.showMatchedCtrpPerson" title="Please confirm" id="confirm_association_ctrp_person" size="lg">
             <div class="modal-header">
                 {{personDetailView.confirm.title}}
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div ui-grid="personDetailView.associatedPersonsOptions" ui-grid-move-columns ui-grid-selection class="grid auto-height" ></div>
+                    <div ui-grid="personDetailView.associatedPersonsOptions" ui-grid-move-columns ui-grid-selection class="grid auto-height"></div>
                 </div>
             </div>
             <div class="modal-footer">
                 <div class="btn-toolbar">
-                    <button type="button" class="btn btn-primary pull-right"  id="confirmChangeOverrideContext2" ng-show="personDetailView.selectedCtrpPerson && personDetailView.selectedCtrpPerson.is_associated"
+                    <button type="button" class="btn btn-primary pull-right" id="confirmChangeOverrideContext2" ng-show="personDetailView.selectedCtrpPerson && personDetailView.selectedCtrpPerson.is_associated"
                             ng-click="personDetailView.confirmAssociatePerson()"><i class="glyphicon glyphicon-ok"></i>
                         Confirm Association
                     </button>

@@ -76,6 +76,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
       |Amendment Details  |
       |Trial Details  |
       |Lead Organization/Principal Investigator  |
+      |Sponsor|
       |Data Table 4 Information  |
       |Trial Status  |
       |Trial Dates|
@@ -256,14 +257,7 @@ Then the trial information will be displayed including
 And I can select the "Add My Site" function to add my site as a participating site
 
 
-Scenario: #16 I can enter my site information as a participating site after a trial is imported from ClinicalTrials.gov
-Given I have selected the option to Import an Industrial or Other Trial
-And I have completed the import
-And I have selected the option to "Add My Site"
-Then I can enter my Local Trial Identifier
-And look-up and add the Site Principal Investigator
-And enter a Program Code
-And enter the Recruitment Status and and Recruitment Status Date
+
 
 
  

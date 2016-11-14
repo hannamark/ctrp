@@ -57,7 +57,7 @@
               <po:element type="po:string" name="type" minOccurs="0"/>
               <po:element type="po:string" name="status" minOccurs="0"/>
               <po:element type="po:string" name="name" minOccurs="0"/>
-              <po:element name="address">
+              <po:element name="address" minOccurs="0">
                 <po:complexType>
                   <po:sequence>
                     <po:element type="po:string" name="address1" minOccurs="0"/>
@@ -70,7 +70,7 @@
                   </po:sequence>
                 </po:complexType>
               </po:element>
-              <po:element name="contacts">
+              <po:element name="contacts" minOccurs="0">
                 <po:complexType>
                   <po:sequence>
                     <po:element name="contact" maxOccurs="unbounded" minOccurs="0">
@@ -152,7 +152,7 @@
               <po:element type="po:string" name="code" minOccurs="0"/>
               <po:element type="po:string" name="registrationtype" minOccurs="0"/>
               <po:element type="po:string" name="status" minOccurs="0"/>
-              <po:element name="name">
+              <po:element name="name" minOccurs="0">
                 <po:complexType>
                   <po:sequence>
                     <po:element type="po:string" name="prefix" minOccurs="0"/>
@@ -163,14 +163,14 @@
                   </po:sequence>
                 </po:complexType>
               </po:element>
-              <po:element name="poaffiliation">
+              <po:element name="poaffiliation" minOccurs="0">
                 <po:complexType>
                   <po:sequence>
                     <po:element type="po:string" name="orgid" maxOccurs="unbounded" minOccurs="0"/>
                   </po:sequence>
                 </po:complexType>
               </po:element>
-              <po:element name="contacts">
+              <po:element name="contacts" minOccurs="0">
                 <po:complexType>
                   <po:sequence>
                     <po:element name="contact" maxOccurs="unbounded" minOccurs="0">

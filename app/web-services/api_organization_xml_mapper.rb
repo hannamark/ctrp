@@ -3,7 +3,7 @@ class Address;end
 class Contacts;end
 class ContactXml;end
 
-class ApiOrganizationCreateXmlMapper
+class ApiOrganizationXmlMapper
 
   include XML::Mapping
 
@@ -19,7 +19,6 @@ class OrganizationMap
   include XML::Mapping
 
   #Rails.logger.info "In Organization"
-  #object_node :Organization, "organization", :class => Organization
 
   text_node :source_context_id, "context", :default_value=>nil, :optional=>true,
             :reader=>proc{|obj,xml,default_reader|

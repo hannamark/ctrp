@@ -45,8 +45,8 @@ Rails.application.routes.draw do
           end
 
           scope '/persons' do
-            post '/' => 'api_persons#create'
-            post '/:idType/:id' => 'api_persons#update', constraints: {
+            post '/' => 'api_people#create'
+            post '/:idType/:id' => 'api_people#update', constraints: {
                 idType: 'ctrp'
             }
           end

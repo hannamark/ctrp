@@ -203,7 +203,7 @@
         var requestMap = {
             'Person': 'The required information is First Name, Last Name, Email, City, State/Province, Country and Organization Affiliation of the Person.',
             'Organization': 'The required information is Organization Name, Street Address, City, State, Country, phone, and email.'
-        }
+        };
 
         vm.requestHeader = 'Request New ' + reqType;
         vm.message = 'To request the creation of a new ' + reqType.toLowerCase() + ' record, please contact the Clinical Trials Reporting Office (CTRO) at <a href="mailto:ncictro@mail.nih.gov"><strong>ncictro@mail.nih.gov</strong></a>.<br><br>' + requestMap[reqType];
