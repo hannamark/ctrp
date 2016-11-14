@@ -199,17 +199,13 @@
 
              $scope.$on(MESSAGES.ORG_SEARCH_NIL_DISMISS, function() {
                 if (vm.cloningCTEP) {
-                    // To make sure setPristine() is executed after all $watch functions are complete
-                    $timeout(function () {
-                        //reset cloning flag
-                        vm.cloningCTEP = false;
-                        vm.nilclose = true;
-                    }, 1);
+                    vm.cloneCtepOrg();
                 }
              });
 
              $scope.$on(MESSAGES.ORG_SEARCH_BTN3_CLICKED, function() {
-                vm.cloneCtepOrg();
+                // NO NEED TO DO ANYTHING ELSE FOR NOW WHEN THE THIRD BUTTON IS CLICKED.
+                 // BECAUSE ORG_SEARCH_NIL_DISMISS IS BROADCAST ON CLOSE, ANYTHING IN THAT WATCH WILL RUN
              });
 
              $scope.$watch(function() {
