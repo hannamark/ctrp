@@ -409,9 +409,9 @@
             if (ctepPerson.is_ctrp_context) return; // do not allow deleting CTRP person (???)
             var ctepPersonId = ctepPerson.id;
             PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
-                console.info('res for removal: ', res);
+
                 if (res.is_removed) {
-                    vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, {id: res.removed_person.id}); // remove the ctep from container
+                    vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, _.findWhere(vm.curPerson.associated_persons, {id: res.removed_person.id})); // remove the ctep from container
                     vm.ctrpPerson = angular.copy(vm.curPerson);
                     vm.associationForRemoval = [];
                     vm.ctepPerson = null; // deleted

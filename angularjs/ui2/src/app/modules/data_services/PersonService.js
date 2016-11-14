@@ -143,6 +143,7 @@
             associatePersonContext: associatePersonContext,
             removePersonAssociation: removePersonAssociation,
             cloneCtepPerson: cloneCtepPerson,
+            isPersonNullifiable: isPersonNullifiable,
         };
 
         return services;
@@ -220,7 +221,7 @@
                 var updatedAtIndex = _.findIndex(options.columnDefs, {name: 'updated_at'});
                 if (updatedAtIndex >= 0)
                     options.columnDefs.splice(updatedAtIndex, 1);
-                    
+
                 var updatedByIndex = _.findIndex(options.columnDefs, {name: 'updated_by'});
                 if (updatedByIndex >= 0)
                     options.columnDefs.splice(updatedByIndex,1);
@@ -305,6 +306,11 @@
             return PromiseTimeoutService.getData(url);
         }
 
+        function isPersonNullifiable(personId) {
+            var url = URL_CONFIGS.PERSON_NULLIFIABLE;
+            url = url.replace('{:person_id}', personId);
+            return PromiseTimeoutService.getData(url);
+        }
 
         /**
          * Nullify a person and merge his/her association to the retained person
