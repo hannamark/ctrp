@@ -271,12 +271,7 @@
 
                 if (psStatus >= 200 && psStatus <= 210) {
                     vm.currentParticipatingSite = response;
-                    vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
-                    vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
-                    vm.persisted_contact.extension = vm.currentParticipatingSite.extension;
-                    vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
-                    vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
-                    vm.persisted_contact.persisted_person = vm.currentParticipatingSite.person;
+                    setPsCommonPersistedContactProps();
                     vm.persisted_organization = vm.currentParticipatingSite.organization;
                     vm.initSiteRecruitmentGrid();
                     vm.initInvestigatorGrid();
@@ -285,21 +280,10 @@
                         vm.currentParticipatingSite.new = false;
                         vm.curTrial.participating_sites.push(vm.currentParticipatingSite);
                     } else {
-                        for (var i = 0; i < vm.curTrial.participating_sites.length; i++) {
-                            if (vm.curTrial.participating_sites[i].id === vm.currentParticipatingSite.id) {
-                                vm.curTrial.participating_sites[i] = vm.currentParticipatingSite;
-                            }
-                        }
+                        updateParticipatingSite();
                     }
-                    vm.investigatorArray = [];
-                    if (vm.currentParticipatingSite.hasOwnProperty('participating_site_investigators')) {
-                        for (var j = 0; j < vm.currentParticipatingSite.participating_site_investigators.length; j++) {
-                            var id = vm.currentParticipatingSite.participating_site_investigators[j].id;
-                            var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[j].person);
 
-                            vm.investigatorArray.push({"id": id, "name": name});
-                        }
-                    }
+                    updateInvestigatorArray();
 
                     vm.current_site_recruitment = {};
                     PATrialService.setCurrentTrial(vm.curTrial); // update to cache
@@ -314,7 +298,7 @@
                     // To make sure setPristine() is executed after all $watch functions are complete
                     resetDirtyForms();
 
-                   vm.isSaved = true;
+                    vm.isSaved = true;
                 }
             }).catch(function (err) {
                 console.log("2server_response="+JSON.stringify(err));
@@ -378,12 +362,7 @@
             }
 
             vm.persisted_contact = {};
-            vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
-            vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
-            vm.persisted_contact.extension = vm.currentParticipatingSite.extension;
-            vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
-            vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
-            vm.persisted_contact.persisted_person = vm.currentParticipatingSite.person;
+            setPsCommonPersistedContactProps();
             vm.persisted_organization = vm.currentParticipatingSite.organization;
             vm.initSiteRecruitmentGrid();
             vm.initInvestigatorGrid();
@@ -814,6 +793,15 @@
             vm.currentParticipatingSite.contact_email = null;
         }
 
+        function setPsCommonPersistedContactProps() {
+            vm.persisted_contact.contact_name = vm.currentParticipatingSite.contact_name;
+            vm.persisted_contact.contact_phone = vm.currentParticipatingSite.contact_phone;
+            vm.persisted_contact.extension = vm.currentParticipatingSite.extension;
+            vm.persisted_contact.contact_email = vm.currentParticipatingSite.contact_email;
+            vm.persisted_contact.contact_type = vm.currentParticipatingSite.contact_type;
+            vm.persisted_contact.persisted_person = vm.currentParticipatingSite.person;
+        }
+
         /**
          * Third Tab
          * Selecting a new  Person
@@ -1051,6 +1039,28 @@
             if (status.id === this.site_recruitment_status.id) {
                 this.sr_status_name = status.name;
                 this.sr_status_code = status.code;
+            }
+        }
+
+        /* Updates array after Save */
+        function updateInvestigatorArray() {
+            vm.investigatorArray = [];
+            if (vm.currentParticipatingSite.hasOwnProperty('participating_site_investigators')) {
+                for (var j = 0; j < vm.currentParticipatingSite.participating_site_investigators.length; j++) {
+                    var id = vm.currentParticipatingSite.participating_site_investigators[j].id;
+                    var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[j].person);
+
+                    vm.investigatorArray.push({"id": id, "name": name});
+                }
+            }
+        }
+
+        /* Updates PS after Save */
+        function updateParticipatingSite() {
+            for (var i = 0; i < vm.curTrial.participating_sites.length; i++) {
+                if (vm.curTrial.participating_sites[i].id === vm.currentParticipatingSite.id) {
+                    vm.curTrial.participating_sites[i] = vm.currentParticipatingSite;
+                }
             }
         }
 
