@@ -19,32 +19,18 @@
 
         /****************** implementations below ***************/
         function _initializeModelProps() {
-            /* Shortening property definitions via looping */
-            var propNullArray = ['city', 'state_province', 'country', 'postal', 'selectedInvestigator'];
+            /* Too many properties, define in arrays grouped by common default value */
+            var propNullArray = ['city', 'state_province', 'country', 'postal', 'selectedInvestigator']; // ex: common default value = null
             var propFalseArray = ['selectedContactTypePI', 'showInvestigatorRoleError', 'invDeleteException', 'srStatusDeleteException', 'duplicateParticipatingSite', 'addEditMode', 'isSaved', 'disableBtn'];
             var arrayTypeProps = ['siteRecruitmentGrid', 'investigatorGrid', 'investigatorGridOrig', 'investigatorArray'];
             var objTypeProps = ['currentParticipatingSite', 'current_site_recruitment', 'current_investigator', 'persisted_contact', 'persistedOrganization'];
             var complexObjTypeProps = ['selOrganization', 'principalInvestigator', 'selectedPerson'];
 
-            _.each(propNullArray, function(nullProp) {
-                vm[nullProp] = null;
-            });
-
-            _.each(propFalseArray, function(falseProp) {
-                vm[falseProp] = false;
-            });
-
-            _.each(arrayTypeProps, function(arr) {
-                vm[arr] = [];
-            });
-
-            _.each(objTypeProps, function(obj) {
-                vm[obj] = {};
-            });
-
-            _.each(complexObjTypeProps, function(compObj) {
-                vm[compObj] = {name: '', array: []};
-            });
+            initArrayProps(propNullArray, null);
+            initArrayProps(propFalseArray, false);
+            initArrayProps(arrayTypeProps, []);
+            initArrayProps(objTypeProps, {});
+            initArrayProps(complexObjTypeProps, {name: '', array: []});
 
             // injected objects
             vm.curTrial = trialDetailObj;
@@ -107,6 +93,16 @@
                below resets the forms on initialization.
             */
             resetDirtyForms();
+        }
+
+        /* Takes array of properties and initializes to a specified default value */
+        function initArrayProps(props, val) {
+            var propsArray = props;
+            var defaultVal = val;
+
+            _.each(propsArray, function(prop) {
+                vm[prop] = defaultVal;
+            });
         }
 
         vm.checkAllSites = function () {
