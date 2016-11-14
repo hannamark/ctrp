@@ -41,6 +41,7 @@ json.associated_orgs do
                 json.ctep_id organization.multiview_ctep_id
   end
 end
+json.associable @read_all_access ? @associable : nil
 json.active_context @active_context
 json.active_id params[:id].to_i
 json.ac_tp @write_access

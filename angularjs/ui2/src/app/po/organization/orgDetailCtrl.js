@@ -480,6 +480,7 @@
                 }
                 if (vm.ctepOrg) {
                     vm.ctepOrgCopy = angular.copy(vm.ctepOrg);
+                    vm.ctrpAssociable = associatedOrgsObj.associable;
                 }
                 checkToDisableClone();
             } else {
