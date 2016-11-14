@@ -455,10 +455,7 @@
                     showToastr(savedOrgObj.organization.name);
                     savedOrgObj.new = false;
                     savedOrgObj.organization.updated_at = response.updated_at;
-
-                    $timeout(function() {
-                        setFormToPristine();
-                    }, 1000);
+                    setFormToPristine();
                 }
             }).catch(function (err) {
                 console.log("error in updating organization: ", err);
@@ -607,7 +604,9 @@
 
         function setFormToPristine() {
             $timeout(function() {
-                $scope.organization_form.$setPristine();
+                if ($scope.organization_form) {
+                    $scope.organization_form.$setPristine();
+                }
             }, 1000);
         }
     }
