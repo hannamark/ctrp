@@ -150,6 +150,28 @@ class Person < ActiveRecord::Base
         end
       end
 
+      ## handle trial-related associations
+      @toBeNullifiedPerson.pi_trials.each do |trial|
+        trial.pi_id = @toBeRetainedPerson.id
+        trial.save!
+      end
+
+      @toBeNullifiedPerson.investigator_trials.each do |trial|
+        trial.investigator_id = @toBeRetainedPerson.id
+        trial.save!
+      end
+
+      @toBeNullifiedPerson.trial_co_pis.each do |co_pi|
+        co_pi.person_id = @toBeRetainedPerson.id
+        co_pi.save!
+      end
+
+      ## participating site investigators
+      @toBeNullifiedPerson.participating_site_investigators.each do |ps_investigator|
+        ps_investigator.person_id = @toBeRetainedPerson.id
+        ps_investigator.save!
+      end
+
       ## Destroy associations of to_be_nullified_person
       ##
 
