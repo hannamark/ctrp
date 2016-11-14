@@ -21,15 +21,6 @@ class GeoLocationService
       end
   end
 
-  def _get_state_name_from_alpha2(alpha2)
-      obj = State.find_country_by_alpha2(alpha2)
-      if !obj.nil?
-          return obj.name
-      else
-          return nil
-      end
-  end
-
   def get_countries
     @countries = Country.all.sort
     us_idx = @countries.index(["United States", "US"])

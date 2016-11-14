@@ -23,7 +23,7 @@ class ApiOrganizationsParamsLoader
 
 
     #Checking for Valid country
-    if $mapperObject.address.country.present? && $mapperObject.address.state_province.present?
+    if $mapperObject.address.country.present?
       check_state_and_country
     end
 
@@ -32,16 +32,32 @@ class ApiOrganizationsParamsLoader
     $rest_params[:coming_from] = "rest"
     [:source_context_id,:source_id,:ctep_org_type_id,:source_status_id,:name].each do |attr|
       if !$mapperObject.send(attr).nil?
-        p attr
+        #p attr
         p $mapperObject.send(attr)
           $rest_params[attr] = $mapperObject.send(attr)
       end
     end
 
-    [:address,:address2,:address3,:city,:state_province,:postal_code,:country].each do |attr|
+    [:address,:address2,:address3,:city].each do |attr|
       if !$mapperObject.address.send(attr).nil?
         p $mapperObject.address.send(attr)
         $rest_params[attr] = $mapperObject.address.send(attr)
+      end
+    end
+
+    if $mapperObject.address.country == "USA"
+      [:state_province,:postal_code,:country].each do |attr|
+        if !$mapperObject.address.send(attr).nil?
+          p $mapperObject.address.send(attr)
+          $rest_params[attr] = $mapperObject.address.send(attr)
+        end
+      end
+    else
+      [:country].each do |attr|
+        if !$mapperObject.address.send(attr).nil?
+          p $mapperObject.address.send(attr)
+          $rest_params[attr] = $mapperObject.address.send(attr)
+        end
       end
     end
 
@@ -74,10 +90,17 @@ class ApiOrganizationsParamsLoader
 
     country = geo_location_service._get_country_name_from_alpha3($mapperObject.address.country)
     states = geo_location_service.get_states(country)
-    state_hash = Hash.new
-    state_hash = states
     if country.present?
       Rails.logger.debug "Country is #{country}"
+      state_exist = states.any?  { |e| e[0]== $mapperObject.address.state_province }
+      if country == "United States"
+        #p "inside state check"
+        if !state_exist.present?
+        errors.store($mapperObject.address.state_province,"Given State is missing or invalid")
+        else
+          p "Is State good ? #{state_exist}"
+        end
+      end
     else
       errors.store($mapperObject.address.country," Given counry is not valid ")
     end
