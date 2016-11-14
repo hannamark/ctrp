@@ -57,40 +57,21 @@
 
         return directiveObj;
 
-
         function linkFn(scope, element, attrs) {
             //actions
             scope.searchParams.source_context = scope.sourceContextOnly;
         } //linkFn
 
-
-
         function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService, $state) {
 
             var fromStateName = $state.fromState.name || '';
-            $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
-            $scope.searchParams = PersonService.getInitialPersonSearchParams();
-            $scope.sourceContextArr = []; //sourceContextObj;
-            $scope.sourceStatusArr = []; //sourceStatusObj;
-            $scope.curSourceStatuses = []; // subset of source statuses for the selected source context
-            $scope.nullifiedId = '';
-            $scope.warningMessage = '';
-            $scope.selectedRows = [];
-            $scope.curationShown = false;
-            $scope.curationModeEnabled = false;
-            $scope.processingStatuses = OrgService.getProcessingStatuses();
-            $scope.serviceRequests = [];
-            $scope.dateFormat = DateService.getFormats()[1];
-            // console.log('dateFormat: ' + $scope.dateFormat);
-            $scope.dateOptions = DateService.getDateOptions();
-            $scope.startDateOpened = ''; //false;
-            $scope.endDateOpened = ''; // false;
-            $scope.searchWarningMessage = '';
-            $scope.searching = false;
-            $scope.scope = $scope;
+            _setupState();
+
+            //actions:
+            $scope.commitNullification = commitNullification;
+            $scope.nullifyEntity = nullifyEntity;
 
             OrgService.setTypeAheadOrgNameSearch($scope.scope);
-
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
             } else {
@@ -240,7 +221,7 @@
                 return isCTEPContext;
             };
 
-            $scope.nullifyEntity = function (rowEntity) {
+            function nullifyEntity(rowEntity) {
                 var sourceStatus = rowEntity.source_status || "active";
                 var isActive = sourceStatus.toLowerCase() === 'active';
                 var isNullified = sourceStatus.toLowerCase() === 'nullified';
@@ -270,12 +251,12 @@
                 }
             }; //nullifyEntity
 
-            $scope.commitNullification = function() {
+            function commitNullification() {
                 console.log('tobeCurated: ' + JSON.stringify($scope.toBeCurated));
                 PersonService.curatePerson($scope.toBeCurated).then(function(res) {
                     var status = res.server_response.status;
 
-                    if (status >= 200 && status <= 210) {
+                    if (status >= 200 && status <= 210 && res.nullify_success === true) {
                         initCurationObj();
                         clearSelectedRows();
                         $scope.searchPeople();
@@ -286,13 +267,9 @@
                 });
             }; //commitNullification
 
-
-
-
             activate();
 
             /****************************** implementations **************************/
-
             function activate() {
                 getPromisedData();
                 prepareGidOptions();
@@ -466,7 +443,6 @@
                     delete requests.server_response;
                 });
             } //getPromisedData
-
 
 
             /**
@@ -660,6 +636,29 @@
 
                 });
             }
+
+            function _setupState() {
+                $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
+                $scope.searchParams = PersonService.getInitialPersonSearchParams();
+                $scope.sourceContextArr = []; //sourceContextObj;
+                $scope.sourceStatusArr = []; //sourceStatusObj;
+                $scope.curSourceStatuses = []; // subset of source statuses for the selected source context
+                $scope.nullifiedId = '';
+                $scope.warningMessage = '';
+                $scope.selectedRows = [];
+                $scope.curationShown = false;
+                $scope.curationModeEnabled = false;
+                $scope.processingStatuses = OrgService.getProcessingStatuses();
+                $scope.serviceRequests = [];
+                $scope.dateFormat = DateService.getFormats()[1];
+                // console.log('dateFormat: ' + $scope.dateFormat);
+                $scope.dateOptions = DateService.getDateOptions();
+                $scope.startDateOpened = ''; //false;
+                $scope.endDateOpened = ''; // false;
+                $scope.searchWarningMessage = '';
+                $scope.searching = false;
+                $scope.scope = $scope;
+            } // _setupState
 
         } //advPersonSearchDirectiveController
 
