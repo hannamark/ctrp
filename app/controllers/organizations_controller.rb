@@ -119,7 +119,7 @@ class OrganizationsController < ApplicationController
         dissassociated_org.validations_to_skip = ["address","city"]
         dissassociated_org.save
       end
-      @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
+      @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id), params
       @active_context = 'CTRP'
     end
     respond_to do |format|
@@ -129,11 +129,11 @@ class OrganizationsController < ApplicationController
 
   def associated
       @associated_orgs = []
-      active_org = (filter_by_role Organization.all_orgs_data().where(:id => params[:id]))[0]
+      active_org = (filter_by_role Organization.all_orgs_data().where(:id => params[:id]), params)[0]
       if associatedOrgAccessByAdmin active_org
-        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id)
+        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => active_org.ctrp_id), params
         @active_context = active_org.source_context_name
-      elsif associatedOrgSingleAccess active_org
+      elsif associatedOrgSingleAccess active_org, params
         @associated_orgs.push(active_org)
         @active_context = active_org.source_context_name unless @associated_orgs.blank?
       end
@@ -143,21 +143,24 @@ class OrganizationsController < ApplicationController
   end
 
   def ctepGetAssociableCTRPs associated_orgs
-    ctep_org = associated_orgs.select { |org| org.source_context_code == 'CTEP' }
-    p "******************"
-    p "******************"
-    p "******************"
-    p "******************"
-    p ctep_org
-    p "******************"
-    p "******************"
-    p "******************"
-    p "******************"
+    ctep_org = associated_orgs.select { |org| org.source_context_code == 'CTEP' }[0]
 
     #<Organization id: 9990007, source_id: "9999995", name: "CTEP ORG For Testing 3", address: "9607 Medical Center Dr", address2: nil, city: "Frederick", state_province: "Maryland", postal_code: "20850", country: "United States", email: "ncictrpdev@mail.nih.gov", phone: "240-276-0000", source_status_id: 5, source_context_id: 1, created_at: "2016-11-09 16:34:40", updated_at: "2016-11-09 21:14:15", uuid: "b91983f4-8ae8-44d0-97cb-06d381b28ba5", lock_version: 4, ctrp_id: 2118412, created_by: nil, updated_by: "ctrpadmin", extension: nil, processing_status: "Complete", address3: nil, service_request_id: 4, ctep_org_type_id: 1, org_funding_mechanism_id: nil, association_date: "2016-11-09 21:09:42">]
 
     if !ctep_org.blank?
-
+      #associable qualifiers
+      associableQualifiers = {
+          wc_search: true,
+          name:                 ctep_org[:name],
+          state_province:       ctep_org[:state_province],
+          city:                 ctep_org[:city],
+          country:              ctep_org[:country]
+      }
+      @associable = (searchOrgs associableQualifiers)
+                        .matches("source_statuses.code", "ACT")
+                        .matches("source_contexts.code", "CTRP")
+                        .distinct
+                        .size
     end
   end
 
@@ -173,7 +176,7 @@ class OrganizationsController < ApplicationController
     org_keys = %w[ name source_context source_id source_status family_name address address2 city
                     ctrp_id state_province country postal_code email phone updated_by date_range_arr]
     if (params.keys & org_keys).any?
-      getSearchResults getSortBy
+      getSearchResults getSortBy, params
     end
     @read_all_access = User.org_read_all_access(@current_user)
     @write_access = User.org_write_access(@current_user)
@@ -199,7 +202,7 @@ class OrganizationsController < ApplicationController
       if @organization.save
         ctepOrg = associateTwoOrgs @organization.ctrp_id, ctepOrg
         ctepOrg.save
-        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
+        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id), params
         @active_context = 'CTRP'
         format.json { render :associated }
       else
@@ -232,57 +235,61 @@ class OrganizationsController < ApplicationController
 
   private
 
-  def getSearchResults sortBy
-    @organizations = filterSearch Organization.all_orgs_data() # get complete resultset
-    @organizations = @organizations.order("#{sortBy} #{params[:order]}")
+  def getSearchResults sortBy, searchParams
+    @organizations = searchOrgs searchParams
+    @organizations = @organizations.order("#{sortBy} #{searchParams[:order]}")
     @total = @organizations.distinct.size # get total: faster here than in jbuilder (jbuilder counts array; here we use SQL COUNT(*) - faster)
     unless params[:rows].nil? || @organizations.blank? # finally paginate
-      @organizations = Kaminari.paginate_array(@organizations).page(params[:start]).per(params[:rows])
+      @organizations = Kaminari.paginate_array(@organizations).page(searchParams[:start]).per(searchParams[:rows])
     end
   end
 
-  def get_match resultOrgs
+  def searchOrgs searchParams
+    return filterSearch Organization.all_orgs_data(), searchParams # get complete resultset
+  end
+
+  def get_match resultOrgs, searchParams
     matches_to_accept = 'country,processing_status'
     matches_to_accept.split(",").each do |filter|
-      resultOrgs = resultOrgs.matches(filter, params[filter].gsub(/\\/,'\&\&') ) if params[filter].present?
+      resultOrgs = resultOrgs.matches(filter, searchParams[filter].gsub(/\\/,'\&\&') ) if searchParams[filter].present?
     end
-    resultOrgs = resultOrgs.matches('ctrp_id', params[:ctrp_id]) if params[:ctrp_id].present?
+    resultOrgs = resultOrgs.matches('ctrp_id', searchParams[:ctrp_id]) if searchParams[:ctrp_id].present?
     return resultOrgs
   end
 
-  def get_match_wc resultOrgs
+  def get_match_wc resultOrgs, searchParams
     wc_matches_to_accept = 'address,address2,updated_by,city,state_province,postal_code,email,phone'
     wc_matches_to_accept.split(",").each do |filter|
-      resultOrgs = matches_wc(resultOrgs, filter, params[filter].gsub(/\\/,'\&\&'), params[:wc_search]) if params[filter].present? && params[filter] != '*'
+      resultOrgs = matches_wc(resultOrgs, filter, searchParams[filter].gsub(/\\/,'\&\&'), searchParams[:wc_search]) if searchParams[filter].present? && params[filter] != '*'
     end
     return resultOrgs
   end
 
-  def filter_by_role resultOrgs
+  def filter_by_role resultOrgs, searchParams
     if @current_user && User.org_read_all_access(@current_user)
-      resultOrgs = resultOrgs.where("source_contexts.name" => params[:source_contextfilter]) if params[:source_contextfilter].present?
-      resultOrgs = resultOrgs.matches("source_statuses.name", params[:source_status]) if params[:source_status].present?
-      resultOrgs = resultOrgs.matches("source_contexts.name", params[:source_context]) if params[:source_context].present?
+      resultOrgs = resultOrgs.where("source_contexts.name" => searchParams[:source_contextfilter]) if searchParams[:source_contextfilter].present?
+      resultOrgs = resultOrgs.matches("source_statuses.name", searchParams[:source_status]) if searchParams[:source_status].present?
+      resultOrgs = resultOrgs.matches("source_contexts.name", searchParams[:source_context]) if searchParams[:source_context].present?
     else
       resultOrgs = resultOrgs.matches("source_statuses.code", "ACT").matches("source_contexts.code", "CTRP")
     end
     return resultOrgs
   end
 
-  def modelFilterSearch resultOrgs
+  def modelFilterSearch resultOrgs, searchParams
     # direct from model
-    resultOrgs = filter_by_role resultOrgs
-    resultOrgs = get_match resultOrgs
-    resultOrgs = get_match_wc resultOrgs
+    resultOrgs = filter_by_role resultOrgs, searchParams
+    resultOrgs = get_match resultOrgs, searchParams
+    resultOrgs = get_match_wc resultOrgs, searchParams
     return resultOrgs
   end
 
-  def manilpulatedFilterSearch resultOrgs
+  def manilpulatedFilterSearch resultOrgs, searchParams
     # manipulated filter not direct from model
-    resultOrgs = filterBySourceId resultOrgs
-    resultOrgs = filterByName resultOrgs
-    resultOrgs = filterByDate resultOrgs
-    resultOrgs = filterByFamily resultOrgs
+    resultOrgs = filterBySourceId resultOrgs, searchParams
+    resultOrgs = filterByName resultOrgs, searchParams
+    resultOrgs = filterByDate resultOrgs, searchParams
+    resultOrgs = filterByFamily resultOrgs, searchParams
 
     return resultOrgs
   end
@@ -291,42 +298,42 @@ class OrganizationsController < ApplicationController
     return User.org_read_all_access(@current_user) && !org.blank? && !org.ctrp_id.blank?
   end
 
-  def associatedOrgSingleAccess org
-    return params[:id] && params[:remove_ids].blank? && !org.blank?
+  def associatedOrgSingleAccess org, searchParams
+    return searchParams[:id] && searchParams[:remove_ids].blank? && !org.blank?
   end
 
-  def filterBySourceId resultOrgs
-    resultOrgs = resultOrgs.match_source_id_from_joins(params[:source_id].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:source_id].present?
+  def filterBySourceId resultOrgs, searchParams
+    resultOrgs = resultOrgs.match_source_id_from_joins(searchParams[:source_id].gsub(/\\/,'\&\&'), searchParams[:wc_search]) if searchParams[:source_id].present?
 
     return resultOrgs
   end
 
-  def filterByName resultOrgs
-    resultOrgs = resultOrgs.match_name_from_joins(params[:name].gsub(/\\/,'\&\&'), (params[:alias] == true) , params[:wc_search]) if params[:name].present?
+  def filterByName resultOrgs, searchParams
+    resultOrgs = resultOrgs.match_name_from_joins(searchParams[:name].gsub(/\\/,'\&\&'), (searchParams[:alias] == true) , searchParams[:wc_search]) if searchParams[:name].present?
 
     return resultOrgs
   end
 
-  def filterByDate resultOrgs
-    resultOrgs = resultOrgs.updated_date_range(params[:date_range_arr]) if params[:date_range_arr].present? and params[:date_range_arr].count == 2
+  def filterByDate resultOrgs, searchParams
+    resultOrgs = resultOrgs.updated_date_range(searchParams[:date_range_arr]) if searchParams[:date_range_arr].present? and searchParams[:date_range_arr].count == 2
     return resultOrgs
   end
 
-  def filterByFamily resultOrgs
-    resultOrgs = resultOrgs.with_family(params[:family_name].gsub(/\\/,'\&\&'), params[:wc_search]) if params[:family_name].present? && params[:family_name] != '*'
+  def filterByFamily resultOrgs, searchParams
+    resultOrgs = resultOrgs.with_family(searchParams[:family_name].gsub(/\\/,'\&\&'), searchParams[:wc_search]) if searchParams[:family_name].present? && searchParams[:family_name] != '*'
     return resultOrgs
   end
 
-  def filterSearch resultOrgs
+  def filterSearch resultOrgs, searchParams
     # direct from model
-    resultOrgs = modelFilterSearch resultOrgs
+    resultOrgs = modelFilterSearch resultOrgs, searchParams
 
     # direct from joins
-    resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if params[:no_family].present?
-    resultOrgs = resultOrgs.where("service_requests.name" => params[:service_request_name]) if params[:service_request_name].present?
+    resultOrgs = resultOrgs.where("unexpired_family_membership.family_name" => nil) if searchParams[:no_family].present?
+    resultOrgs = resultOrgs.where("service_requests.name" => searchParams[:service_request_name]) if searchParams[:service_request_name].present?
 
     # manipulated filter not direct from model
-    resultOrgs = manilpulatedFilterSearch resultOrgs
+    resultOrgs = manilpulatedFilterSearch resultOrgs, searchParams
     return resultOrgs
   end
 
@@ -361,7 +368,7 @@ class OrganizationsController < ApplicationController
         old_orgs.update_all(ctrp_id: nil) if !old_orgs.blank?
       end
       if @organization.save
-        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id)
+        @associated_orgs = filterSearch Organization.all_orgs_data().where(:ctrp_id => @organization.ctrp_id), params
         @active_context = 'CTRP'
         format.json { render :associated }
       else
