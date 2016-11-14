@@ -44,7 +44,7 @@ Scenario:#2a  NLM Context will be created for an Imported trial
     When a trial has been imported with a "Sponsor Name" that exists in the NLM Context in CTRP
     And the NLM context is mapped to a CTRP Organization Context
     And the CTRP Organization is "Inactive"
-    And the information type will be NULL until the curated
+    And the CTRP Organization will be used as NULL values for the fields below until curated
     
     |Trial Sponsor: Null|
     |Trial Funding Source: Null|
@@ -57,7 +57,7 @@ Scenario:#2a  NLM Context will be created for an Imported trial
     When a trial has been imported with a "Sponsor Name" that exists in the NLM Context in CTRP
     And there are more than one NLM organization that matches the "Sponsor Name"
     Then the trial will be imported
-    And the information type will be NULL until the curated
+    And the CTRP Organization will be used as NULL values for the fields below until curated
     
     |Trial Sponsor: Null|
     |Trial Funding Source: Null|
@@ -68,7 +68,7 @@ Scenario:#2a  NLM Context will be created for an Imported trial
     Given I am logged into the CTRP
      When a trial has been imported with a "Sponsor Name" that exists in the NLM Context in CTRP
     And the NLM context is not mapped to a CTRP Organization Context
-    Then the information type will be NULL until the NLM Organization context is affiliated to a CTRP Organization Context
+    Then CTRP organization fields below will be NULL until the NLM Organization context is affiliated to a CTRP Organization Context
     
     |Trial Sponsor: Null|
     |Trial Funding Source: Null|
@@ -80,7 +80,7 @@ Scenario:#2a  NLM Context will be created for an Imported trial
      Then an NLM Context with an NLM Context Status of "Active" will be automatically created in CTRP
      And the processing status is "Incomplete"
      And the service Request is "Create"
-     Then the information type will be NULL until the NLM Organization context is affiliated to a CTRP Organization Context
+     Then the CTRP organizaiton fields below will be NULL until the NLM Organization context is affiliated to a CTRP Organization Context
     
     |Trial Sponsor: Null|
     |Trial Funding Source: Null|
