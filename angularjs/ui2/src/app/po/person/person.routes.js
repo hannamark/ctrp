@@ -71,6 +71,9 @@
                         },
                         poAffStatuses : function(PersonService) {
                             return PersonService.getPoAffStatuses();
+                        },
+                        serviceRequests: function(OrgService) {
+                            return OrgService.getServiceRequests();
                         }
                     },
                     ncyBreadcrumb: {
