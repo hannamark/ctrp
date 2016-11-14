@@ -718,16 +718,9 @@
             $scope.$watch(function() {return vm.currentParticipatingSite.contact_type;}, function(newVal, oldVal) {
                 if(newVal === 'PI'){
                     vm.selectedContactTypePI = true;
-                    vm.investigatorArray = [];
-                    /* To resolve property undefined error when participating_site_investigators array does not exist */
-                    if (vm.currentParticipatingSite.hasOwnProperty('participating_site_investigators')) {
-                        for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
-                            var id = vm.currentParticipatingSite.participating_site_investigators[i].id;
-                            var name = PersonService.extractFullName(vm.currentParticipatingSite.participating_site_investigators[i].person);
 
-                            vm.investigatorArray.push({"id": id, "name": name});
-                        }
-                    }
+                    updateInvestigatorArray();
+
                     if(vm.persisted_contact.contact_type === 'PI' && vm.currentParticipatingSite.id){
                         setPsCommonContactProps();
                         vm.currentParticipatingSite.person_id = vm.persisted_contact.person_id;
