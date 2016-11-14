@@ -71,7 +71,6 @@
                     });
                 } else if (contextName === 'CTRP') {
                     // CTRP is the default tab
-                    console.info('after removal: ', vm.curPerson);
                     _populatePOAff();
                     _prepAssociationGrid(vm.curPerson.associated_persons);
                 }
@@ -284,7 +283,6 @@
             vm.sourceContextArr = sourceContextObj;
             delete serviceRequests.server_response;
             vm.serviceRequests = serviceRequests;
-            console.info("vm.serviceRequests: ", vm.serviceRequests);
             vm.savedSelection = [];
             vm.associatedPersonContexts = [];
             vm.orgsArrayReceiver = []; //receive selected organizations from the modal
