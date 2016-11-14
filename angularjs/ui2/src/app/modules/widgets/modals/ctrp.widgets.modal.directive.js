@@ -5,7 +5,7 @@
     .directive('modal', function ($parse) {
         return {
             template: '<div class="modal fade {{ modal_id }}">' +
-            '<div class="modal-dialog">' +
+            '<div class="modal-dialog {{ modal_size }}">' +
             '<div class="modal-content">' +
             '<div class="modal-header">' +
             '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
@@ -21,6 +21,7 @@
             scope:true,
             link: function postLink(scope, element, attrs) {
                 scope.modal_id = attrs.id;
+                scope.modal_size = attrs.size ? 'modal-' + attrs.size : '';
 
                 scope.title = attrs.title;
 
