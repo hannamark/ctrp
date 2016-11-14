@@ -82,36 +82,23 @@ class Person < ActiveRecord::Base
 
   end
 
-
-  # Get an array of maps of the people with the same ctrp_id
-  # def cluster
-  #   tmp_arr = []
-  #   if self.ctrp_id.present? && (self.source_status.nil? || self.source_status.code != 'NULLIFIED')
-  #     join_clause = "LEFT JOIN source_contexts ON source_contexts.id = people.source_context_id LEFT JOIN source_statuses ON source_statuses.id = people.source_status_id"
-  #     tmp_arr = Person.joins(join_clause).where("ctrp_id = ? AND (source_statuses.code <> ? OR source_statuses IS NULL)", self.ctrp_id, "NULLIFIED").order(:id).pluck(:id, :"source_contexts.name")
-  #   else
-  #     tmp_arr.push([self.id, self.source_context ? self.source_context.name : ''])
-  #   end
-  #
-  #   cluster_arr = []
-  #   tmp_arr.each do |person|
-  #     cluster_arr.push({"id": person[0], "context": person[1]})
-  #   end
-  #
-  #   return cluster_arr
-  # end
-
   def nullifiable
-    isNullifiable =true;
-    source_status_arr = []
-    source_status_arr = Person.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:"source_status_id") if self.ctrp_id.present?
-    source_status_arr.each_with_index { |e, i|
-      if e.present? && SourceStatus.ctrp_context_source_statuses.find_by_id(e).code == "ACT"
-        isNullifiable = false;
-      end
-    }
-    return isNullifiable
+    return Person.joins(:source_context, :source_status)
+               .where("ctrp_id = ? AND source_contexts.code = ? AND source_statuses.code = ?", self.ctrp_id, "CTEP", "ACT")
+               .blank?
   end
+
+  # def nullifiable
+  #   isNullifiable =true;
+  #   source_status_arr = []
+  #   source_status_arr = Person.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:"source_status_id") if self.ctrp_id.present?
+  #   source_status_arr.each_with_index { |e, i|
+  #     if e.present? && SourceStatus.ctrp_context_source_statuses.find_by_id(e).code == "ACT"
+  #       isNullifiable = false;
+  #     end
+  #   }
+  #   return isNullifiable
+  # end
 
   private
 
