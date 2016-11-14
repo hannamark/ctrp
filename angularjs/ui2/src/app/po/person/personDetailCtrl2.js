@@ -534,7 +534,7 @@
                         field: 'mname',
                         enableSorting: false,
                         displayName: 'Middle Name',
-                        minWidth: '100'
+                        minWidth: '125'
                     },
                     {
                         field: 'lname',
@@ -570,13 +570,13 @@
                         field: 'email',
                         enableSorting: true,
                         displayName: 'Email',
-                        minWidth: '100'
+                        minWidth: '200'
                     },
                     {
                         field: 'phone',
                         enableSorting: true,
                         displayName: 'Phone',
-                        minWidth: '100'
+                        minWidth: '125'
                     },
                     // TODO: list orgs
 
