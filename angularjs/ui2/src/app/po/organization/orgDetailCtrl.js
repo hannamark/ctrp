@@ -1,6 +1,4 @@
-/**
- * Created by wangg5 on 6/1/15.
- */
+
 
 (function () {
     'use strict';
@@ -223,7 +221,7 @@
              });
          }
 
-        function setScopeMethods() {
+         function setScopeMethods() {
             vm.updateOrg = function () {
                 vm.disableBtn = true;
                 if (vm.addedNameAliases.length > 0) {
@@ -431,40 +429,7 @@
             };
         }
 
-        function saveAndRenderOrg(savedOrgObj) {
-            OrgService.upsertOrg(savedOrgObj).then(function (response) {
-                var status = response.server_response.status;
-                if (status >= 200 && status <= 210) {
-                    if (savedOrgObj.new && status === 201) {
-                        $state.go('main.orgDetail', {orgId: response.id});
-                    } else if (status === 200) {
-                        if (savedOrgObj.organization.source_context_code === 'CTRP') {
-                            vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
-                            vm.ctrpOrg.name_aliases = response.name_aliases;
-                            vm.addedNameAliases = [];
-                            appendNameAliases();
-                        } else if (savedOrgObj.organization.source_context_code === 'CTEP') {
-                            vm.ctepOrgCopy = angular.copy(vm.ctepOrg);
-                        }
-                    }
-                    showToastr(savedOrgObj.organization.name);
-                    savedOrgObj.new = false;
-                    savedOrgObj.organization.updated_at = response.updated_at;
-                    setFormToPristine();
-                }
-            }).catch(function (err) {
-                console.log("error in updating organization: ", err);
-            }).finally(function() {
-                vm.disableBtn = false;
-            });
-        }
-
-        function showToastr(orgName) {
-            toastr.clear();
-            toastr.success('Organization ' + orgName + ' has been recorded', 'Operation Successful!');
-        }
-
-        function initiateOrgs() {
+         function initiateOrgs() {
             //set orgs and default tab
             if (associatedOrgsObj) {
                 vm.associatedOrgs = associatedOrgsObj.associated_orgs;
@@ -493,9 +458,42 @@
                 };
                 vm.defaultTab = 'CTRP';
             }
+         }
+
+         function saveAndRenderOrg(savedOrgObj) {
+            OrgService.upsertOrg(savedOrgObj).then(function (response) {
+                var status = response.server_response.status;
+                if (status >= 200 && status <= 210) {
+                    if (savedOrgObj.new && status === 201) {
+                        $state.go('main.orgDetail', {orgId: response.id});
+                    } else if (status === 200) {
+                        if (savedOrgObj.organization.source_context_code === 'CTRP') {
+                            vm.ctrpOrgCopy = angular.copy(vm.ctrpOrg);
+                            vm.ctrpOrg.name_aliases = response.name_aliases;
+                            vm.addedNameAliases = [];
+                            appendNameAliases();
+                        } else if (savedOrgObj.organization.source_context_code === 'CTEP') {
+                            vm.ctepOrgCopy = angular.copy(vm.ctepOrg);
+                        }
+                    }
+                    showToastr(savedOrgObj.organization.name);
+                    savedOrgObj.new = false;
+                    savedOrgObj.organization.updated_at = response.updated_at;
+                    setFormToPristine();
+                }
+            }).catch(function (err) {
+                console.log("error in updating organization: ", err);
+            }).finally(function() {
+                vm.disableBtn = false;
+            });
         }
 
-        function filterOutCTRPOrg() {
+         function showToastr(orgName) {
+            toastr.clear();
+            toastr.success('Organization ' + orgName + ' has been recorded', 'Operation Successful!');
+        }
+
+         function filterOutCTRPOrg() {
             vm.ctrpOrgsArr = getOrgByContext(vm.associatedOrgs, 'CTRP');
             if (vm.ctrpOrgsArr.length < 2) {
                 return vm.ctrpOrgsArr[0];
@@ -509,19 +507,19 @@
             }
         }
 
-        function checkToDisableClone() {
+         function checkToDisableClone() {
             vm.disableClone = vm.ctrpOrg && vm.ctepOrg && vm.ctepOrg.ctrp_id;
         }
 
-        function getOrgByContext(orgsArr, context){
+         function getOrgByContext(orgsArr, context){
             var ve = _.filter(orgsArr, function (item) {
                 return _.contains(context, item.source_context_name);
             });
             return ve;
         }
 
-        // Append aliases for existing CTRP org
-        function appendNameAliases() {
+         // Append aliases for existing CTRP org
+         function appendNameAliases() {
             for (var i = 0; i < vm.ctrpOrg.name_aliases.length; i++) {
                 vm.addedNameAliases.push({
                     id:         vm.ctrpOrg.name_aliases[i].id,
@@ -531,11 +529,11 @@
             }
         }
 
-        /**
-         * Watch for the global write mode changes in the header
-         * @return {[type]}
+         /**
+          * Watch for the global write mode changes in the header
+          * @return {[type]}
          */
-        function watchGlobalWriteModeChanges() {
+         function watchGlobalWriteModeChanges() {
             vm.curOrgEditable = UserService.isCurationModeEnabled();
             //Listen to the write-mode switch
             $scope.$on(MESSAGES.CURATION_MODE_CHANGED, function() {
@@ -550,11 +548,11 @@
             });
         }
 
-        /**
-         * Listen to the message for availability of states or provinces
-         * for the selected country
-         */
-        function listenToStatesProvinces() {
+         /**
+          * Listen to the message for availability of states or provinces
+          * for the selected country
+          */
+         function listenToStatesProvinces() {
             if (vm.ctrpOrg) {
                 if (vm.ctrpOrg.country) {
                     vm.watchCountrySelection(vm.ctrpOrg.country);
@@ -573,7 +571,7 @@
             }
         } //listenToStatesProvinces
 
-        function associateOrgsRefresh(){
+         function associateOrgsRefresh(){
             vm.ctepOrg = getOrgByContext(vm.associatedOrgs, 'CTEP')[0];
             vm.ctepOrgCopy = angular.copy(vm.ctepOrg);
             vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
@@ -587,7 +585,7 @@
             vm.updateTime = Date.now();
         }
 
-        function validateNewAssociation(newValue) {
+         function validateNewAssociation(newValue) {
             var newAssociatedOrg = newValue[0];
             if ( (newValue[0].source_context === 'CTEP' && (!vm.ctepOrg || (vm.ctepOrg && newAssociatedOrg.id !== vm.ctepOrg.id))) ||
                 (newValue[0].source_context === 'NLM' && (!vm.nlmOrg || (vm.nlmOrg && newAssociatedOrg.id !== vm.nlmOrg.id))) ) {
@@ -597,14 +595,14 @@
             }
         }
 
-        function createAssociatedOrgsTable() {
+         function createAssociatedOrgsTable() {
             vm.associatedOrgsOptions.data = _.filter(
                 vm.associatedOrgs, function (item) {
                     return !_.isEqual(vm.ctrpOrgsArr[0].id, item.id);
                 });
         }
 
-        function setFormToPristine() {
+         function setFormToPristine() {
             $timeout(function() {
                 if ($scope.organization_form) {
                     $scope.organization_form.$setPristine();
