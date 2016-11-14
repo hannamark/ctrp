@@ -47,8 +47,7 @@
              vm.processStatusArr = OrgService.getProcessingStatuses();
              vm.cloningCTEP = false;
              vm.nilclose = true;
-
-
+             
              // associated Organization grids
              vm.associatedOrgsOptions = {
                  enableColumnResizing: true,
