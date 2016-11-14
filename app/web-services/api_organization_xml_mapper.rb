@@ -23,25 +23,27 @@ class OrganizationMap
   text_node :source_context_id, "context", :default_value=>nil, :optional=>true,
             :reader=>proc{|obj,xml,default_reader|
               default_reader.call(obj,xml)
-              obj.source_context_id= SourceContext.find_by_name(obj.source_context_id).id if !obj.source_context_id.nil?
-              #p " this is context id " + obj.source_context_id
+              if obj.source_context_id.present?
+                source_context = SourceContext.find_by_name(obj.source_context_id)
+                source_context.present? ? obj.source_context_id = source_context.id :  obj.source_context_id= nil
+              else
+                obj.obj.source_context_id= nil
+              end
+              #obj.source_context_id= SourceContext.find_by_name(obj.source_context_id).id if !obj.source_context_id.nil?
             }
-  #p " outside  context id " + obj.source_context_id
-  #Rails.logger.info " outside source context id #{source_context_id}"
-  #todo map
+
   text_node :source_id, "code", :default_value=>nil, :optional=>true
-  #todo map
+
   text_node :ctep_org_type_id, "type", :default_value=>nil, :optional=>true,
             :reader=>proc{|obj,xml,default_reader|
                default_reader.call(obj,xml)
                if obj.ctep_org_type_id.present?
                  ctep_org_type = CtepOrgType.find_by_name(obj.ctep_org_type_id)
-                 ctep_org_type.present? ? obj.ctep_org_type_id = ctep_org_type.id : obj.ctep_org_type_id = nil
+                 ctep_org_type.present? ? obj.ctep_org_type_id = ctep_org_type.id :  obj.ctep_org_type_id= nil
                else
                  obj.ctep_org_type_id= nil
                end
             }
-
 
   text_node :source_status_id, "status", :default_value=>nil, :optional=>true,
             :reader=>proc{|obj,xml,default_reader|
@@ -88,4 +90,8 @@ class ContactXml
   #include XML::Mapping
   #Rails.logger.info "In Contact"
   #hash_node :contact, "contact", "@type" ,:optional=>true, :class => String,:default_value=>[]
+end
+
+def errors
+  return $errors
 end

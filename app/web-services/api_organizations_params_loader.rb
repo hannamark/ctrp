@@ -35,7 +35,19 @@ class ApiOrganizationsParamsLoader
         #p attr
         p $mapperObject.send(attr)
           $rest_params[attr] = $mapperObject.send(attr)
+      else
+        case attr.id2name
+          when 'source_context_id'
+            errors.store("Context","Is an Invalid Value")
+          when 'source_id'
+            errors.store("Code","Is an Invalid Value")
+          when 'ctep_org_type_id'
+            errors.store("Type","Is an Invalid Value")
+          when 'source_status_id'
+            errors.store("Status","Following are acceptable values ACTIVE,INACTIVE,LEGACY")
+        end
       end
+
     end
 
     [:address,:address2,:address3,:city].each do |attr|
