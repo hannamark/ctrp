@@ -131,7 +131,7 @@ class PeopleController < ApplicationController
 
 
       if @current_user && (@current_user.role == "ROLE_CURATOR" || @current_user.role == "ROLE_SUPER" || @current_user.role == "ROLE_ABSTRACTOR" ||
-          @current_user.role == "ROLE_ADMIN")
+          @current_user.role == "ROLE_ADMIN" || @current_user.role == "ROLE_ABSTRACTOR-SU")
         @people = @people.matches("source_statuses.code", params[:source_status]) if params[:source_status].present?
         @people = @people.matches("source_contexts.code", params[:source_context]) if params[:source_context].present?
       else

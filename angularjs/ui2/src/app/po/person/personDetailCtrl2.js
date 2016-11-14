@@ -298,7 +298,7 @@
             vm.isWritable = UserService.isCurationModeEnabled() || false;
             vm.selectedCtrpPerson = null;
             var personContextCache = {"CTRP": null, "CTEP": null, "NLM": null};
-            var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_RO'];
+            var USER_ROLES_ALLOWED_COMMENT = ['ROLE_CURATOR','ROLE_SUPER','ROLE_ADMIN', 'ROLE_ABSTRACTOR', 'ROLE_ABSTRACTOR-SU', 'ROLE_RO'];
             vm.isAllowedToComment = _.contains(USER_ROLES_ALLOWED_COMMENT, UserService.getUserRole());
 
             if (vm.person.source_context === 'CTRP') {
