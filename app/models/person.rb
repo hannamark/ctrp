@@ -88,17 +88,6 @@ class Person < ActiveRecord::Base
                .blank?
   end
 
-  # def nullifiable
-  #   isNullifiable =true;
-  #   source_status_arr = []
-  #   source_status_arr = Person.joins(:source_context).where("ctrp_id = ? AND source_contexts.code = ?", self.ctrp_id, "CTEP").pluck(:"source_status_id") if self.ctrp_id.present?
-  #   source_status_arr.each_with_index { |e, i|
-  #     if e.present? && SourceStatus.ctrp_context_source_statuses.find_by_id(e).code == "ACT"
-  #       isNullifiable = false;
-  #     end
-  #   }
-  #   return isNullifiable
-  # end
 
   private
 

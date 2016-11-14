@@ -100,9 +100,11 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       if Person.nullify_duplicates(params)
-        format.html { redirect_to people_url, notice: 'Person was successfully curated.' }
+        format.json { render :json => {:nullify_success => true}}
+        # format.html { redirect_to people_url, notice: 'Person was successfully curated.' }
       else
-        format.json { render json: @person.errors, status: :unprocessable_entity  }
+        format.json { render :json => {:nullify_success => false}}
+        # format.json { render json: @person.errors, status: :unprocessable_entity  }
       end
 
     end
