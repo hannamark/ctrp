@@ -84,6 +84,18 @@ class PeopleController < ApplicationController
     end
   end
 
+  def nullifiable
+    nullifiable = false
+    cur_person = Person.find_by_id(params[:id])
+
+    if !cur_person.blank?
+      nullifiable = cur_person.nullifiable
+    end
+    respond_to do |format|
+      format.json {render :json => {:nullifiable => nullifiable}}
+    end
+  end
+
   def curate
 
     respond_to do |format|
