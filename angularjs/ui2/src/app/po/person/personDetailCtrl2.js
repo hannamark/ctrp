@@ -578,8 +578,16 @@
                         displayName: 'Phone',
                         minWidth: '125'
                     },
-                    // TODO: list orgs
-
+                    {
+                        field: 'affiliated_orgs',
+                        displayName: 'Affiliated Orgs',
+                        minWidth: '150',
+                        width: '*',
+                        enableSorting: false,
+                        enableFiltering: false,
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" ng-if="row.entity.affiliated_orgs.length > 0" title="{{COL_FIELD}}">{{COL_FIELD}}</div>' +
+                        '<div class="text-center" ng-show="row.entity.affiliated_orgs.length == 0">--</div>'
+                    },
                     {
                         field: 'context_person_id',
                         displayName: 'Context Person ID',
