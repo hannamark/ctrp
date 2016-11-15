@@ -57,19 +57,10 @@ class ApiOrganizationsParamsLoader
       end
     end
 
-    if $mapperObject.address.country == "USA"
-      [:state_province,:postal_code,:country].each do |attr|
-        if !$mapperObject.address.send(attr).nil?
-          p $mapperObject.address.send(attr)
-          $rest_params[attr] = $mapperObject.address.send(attr)
-        end
-      end
-    else
-      [:country].each do |attr|
-        if !$mapperObject.address.send(attr).nil?
-          p $mapperObject.address.send(attr)
-          $rest_params[attr] = $mapperObject.address.send(attr)
-        end
+    [:state_province,:postal_code,:country].each do |attr|
+      if !$mapperObject.address.send(attr).nil?
+        p $mapperObject.address.send(attr)
+        $rest_params[attr] = $mapperObject.address.send(attr)
       end
     end
 
