@@ -37,7 +37,7 @@
             'SUBMISSION_EXPECT_COMPLETE': '/ctrp/trial_submission_expect_complete.json',
             'PERSON_LIST': '/ctrp/people.json',
             'A_PERSON': '/ctrp/people/',
-            'CURATE_PERSON': '/ctrp/people/curate',
+            'CURATE_PERSON': '/ctrp/people/curate.json',
             'PO_AFF_STATUSES': '/ctrp/po_affiliation_statuses.json',
             'SEARCH_PERSON': '/ctrp/people/search.json',
             'UNIQUE_PERSON': '/ctrp/people/unique.json',
