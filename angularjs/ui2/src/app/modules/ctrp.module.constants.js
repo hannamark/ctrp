@@ -11,7 +11,7 @@
             'ORG_LIST': '/ctrp/organizations.json',
             'AN_ORG': '/ctrp/organizations/',
             'SEARCH_ORG': '/ctrp/organizations/search.json',
-            'CURATE_ORG': '/ctrp/organizations/curate',
+            'CURATE_ORG': '/ctrp/organizations/curate.json',
             'UNIQUE_ORG': '/ctrp/organizations/unique',
             'ASSOCIATED_ORGS': '/ctrp/organizations/associated/',
             'NULLIFIABLE': '/ctrp/organizations/nullifiable',

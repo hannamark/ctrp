@@ -177,7 +177,7 @@ class Person < ActiveRecord::Base
 
       ## Destroy to_be_nullified_person
       ##
-      @toBeNullifiedPerson.source_status_id=SourceStatus.ctrp_context_source_statuses.find_by_code('NULLIFIED').id;
+      @toBeNullifiedPerson.source_status_id=SourceStatus.ctrp_context_source_statuses.find_by_code('NULLIFIED').id
       @toBeNullifiedPerson.save!
     end
   end
