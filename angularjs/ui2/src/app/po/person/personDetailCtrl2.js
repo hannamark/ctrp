@@ -293,6 +293,7 @@
             vm.affiliatedOrgError = true; // flag for empty org affiliations
             vm.matchedCtrpPersons = []; // CTRP persons found from attempt to clone ctep person
             vm.associationForRemoval = []; // object person objects
+            vm.selectedMatchCtrpPersons = [];
             vm.confirm = {}; // messages
             vm.isBtnDisabled = false;
             vm.isWritable = UserService.isCurationModeEnabled() || false;
@@ -461,14 +462,13 @@
 
         // callback function for ui-grid row selection
         function gridRowSelectionCB(row) {
-            // if (row.entity.is_ctrp_context) {
-            //     row.isSelected = false; // CTRP person is not selectable for deletion
-            //     return;
-            // }
+
             if (vm.showMatchedCtrpPerson) {
                 // vm.selectedCtrpPerson = row.isSelected ? row.entity : null;
                 if (row.isSelected) {
-                    vm.selectedCtrpPerson = row.entity;
+                    vm.selectedMatchCtrpPersons = _removeRows(vm.selectedMatchCtrpPersons); // empty rows
+                    vm.selectedMatchCtrpPersons.push(row);
+                    vm.selectedCtrpPerson = vm.selectedMatchCtrpPersons[0].entity; // row.entity
                     vm.associate = _.partial(_associateCtepPerson, vm.curPerson, vm.selectedCtrpPerson, 'CTRP'); // vm.curPerson is CTEP person
                     vm.confirmAssociatePerson = _.partial(_associateCtepPerson, vm.curPerson, vm.selectedCtrpPerson, 'CTRP', true); // vm.curPerson is CTEP person
                 } else {
@@ -477,15 +477,28 @@
                     vm.confirmAssociatePerson = null;
                 }
             } else {
-                while (vm.associationForRemoval.length > 0) {
-                    var del = vm.associationForRemoval.pop();
-                    del.isSelected = false; // visually deselect the row
-                }
+
+                vm.associationForRemoval = _removeRows(vm.associationForRemoval); // empty rows
                 if (row.isSelected && !row.entity.is_ctrp_context) {
                     vm.associationForRemoval.push(row);
                     vm.confirmDisAssociate = _.partial(removePersonAssociation, row.entity); // row.entity.id
                 }
             }
+        }
+
+        /**
+         * Remove ui-grid row and mark each as unselected
+         * @param  {Array} selectedRows [array of ui-grid rows]
+         * @return {Array}              [Empty array]
+         */
+        function _removeRows(selectedRows) {
+            console.info('removing rows: ', selectedRows);
+            if (!angular.isDefined(selectedRows) || !angular.isArray(selectedRows)) return [];
+            while(selectedRows.length > 0) {
+                var del = selectedRows.pop();
+                del.isSelected = false;
+            }
+            return [];
         }
 
         /**
