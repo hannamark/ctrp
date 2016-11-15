@@ -409,9 +409,9 @@
             if (ctepPerson.is_ctrp_context) return; // do not allow deleting CTRP person (???)
             var ctepPersonId = ctepPerson.id;
             PersonService.removePersonAssociation(ctepPersonId).then(function(res) {
-                console.info('res for removal: ', res);
+
                 if (res.is_removed) {
-                    vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, {id: res.removed_person.id}); // remove the ctep from container
+                    vm.curPerson.associated_persons = _.without(vm.curPerson.associated_persons, _.findWhere(vm.curPerson.associated_persons, {id: res.removed_person.id})); // remove the ctep from container
                     vm.ctrpPerson = angular.copy(vm.curPerson);
                     vm.associationForRemoval = [];
                     vm.ctepPerson = null; // deleted
@@ -578,8 +578,16 @@
                         displayName: 'Phone',
                         minWidth: '125'
                     },
-                    // TODO: list orgs
-
+                    {
+                        field: 'affiliated_orgs',
+                        displayName: 'Affiliated Orgs',
+                        minWidth: '150',
+                        width: '*',
+                        enableSorting: false,
+                        enableFiltering: false,
+                        cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" ng-if="row.entity.affiliated_orgs.length > 0" title="{{COL_FIELD}}">{{COL_FIELD}}</div>' +
+                        '<div class="text-center" ng-show="row.entity.affiliated_orgs.length == 0">--</div>'
+                    },
                     {
                         field: 'context_person_id',
                         displayName: 'Context Person ID',

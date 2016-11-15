@@ -57,40 +57,21 @@
 
         return directiveObj;
 
-
         function linkFn(scope, element, attrs) {
             //actions
             scope.searchParams.source_context = scope.sourceContextOnly;
         } //linkFn
 
-
-
         function advPersonSearchDirectiveController($scope, uiGridConstants, UserService, DateService, OrgService, $state) {
 
             var fromStateName = $state.fromState.name || '';
-            $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
-            $scope.searchParams = PersonService.getInitialPersonSearchParams();
-            $scope.sourceContextArr = []; //sourceContextObj;
-            $scope.sourceStatusArr = []; //sourceStatusObj;
-            $scope.curSourceStatuses = []; // subset of source statuses for the selected source context
-            $scope.nullifiedId = '';
-            $scope.warningMessage = '';
-            $scope.selectedRows = [];
-            $scope.curationShown = false;
-            $scope.curationModeEnabled = false;
-            $scope.processingStatuses = OrgService.getProcessingStatuses();
-            $scope.serviceRequests = [];
-            $scope.dateFormat = DateService.getFormats()[1];
-            // console.log('dateFormat: ' + $scope.dateFormat);
-            $scope.dateOptions = DateService.getDateOptions();
-            $scope.startDateOpened = ''; //false;
-            $scope.endDateOpened = ''; // false;
-            $scope.searchWarningMessage = '';
-            $scope.searching = false;
-            $scope.scope = $scope;
-            
-            OrgService.setTypeAheadOrgNameSearch($scope.scope);
+            _setupState();
 
+            //actions:
+            $scope.commitNullification = commitNullification;
+            $scope.nullifyEntity = nullifyEntity;
+
+            OrgService.setTypeAheadOrgNameSearch($scope.scope);
             if ($scope.maxRowSelectable > 0) {
                 $scope.curationModeEnabled = true;
             } else {
@@ -112,7 +93,7 @@
                 if (newSearchFlag === 'fromStart') {
                     $scope.searchParams.start = 1;
                 }
-                
+
                 $scope.searchParams.date_range_arr = DateService.getDateRange($scope.searchParams.startDate, $scope.searchParams.endDate);
                 if ($scope.searchParams.date_range_arr.length === 0) {
                     delete $scope.searchParams.date_range_arr;
@@ -240,28 +221,42 @@
                 return isCTEPContext;
             };
 
-            $scope.nullifyEntity = function (rowEntity) {
-                // console.log("chosen to nullify the row: " + JSON.stringify(rowEntity));
-                if (!rowEntity.nullifiable) {
-                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP ID, nullification is prohibited';
-                }
-                else if (rowEntity.source_status && rowEntity.source_status.indexOf('Act') > -1) {
-                    // warning to user for nullifying active entity
-                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is not allowed';
+            function nullifyEntity(rowEntity) {
+                var sourceStatus = rowEntity.source_status || "active";
+                var isActive = sourceStatus.toLowerCase() === 'active';
+                var isNullified = sourceStatus.toLowerCase() === 'nullified';
+
+                // console.log("chosen to nullify the row: ", rowEntity);
+                if (isActive) {
+                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active source status, nullification is prohibited';
                     $scope.nullifiedId = '';
-                    //console.log('cannot nullify this row, because it is active');
+                } else if (isNullified) {
+                    $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' was nullified already, nullification is prohibited';
+                    $scope.nullifiedId = '';
                 } else {
+                    PersonService.isPersonNullifiable(rowEntity.id).then(function(res) {
+                        var status = res.server_response.status;
+                        if (status >= 200 && status <= 210 && res.nullifiable !== true) {
+                            $scope.warningMessage = 'The PO ID: ' + rowEntity.id + ' has an Active CTEP context associated to it, nullification is prohibited';
+                            $scope.nullifiedId = '';
+                        } else {
+                            $scope.warningMessage = '';
+                            $scope.nullifiedId = rowEntity.id || '';
+                        }
+                    }).catch(function(err) {
+                        console.error('Error in nullifiable check: ', err);
+                    });
                     $scope.warningMessage = '';
                     $scope.nullifiedId = rowEntity.id || '';
                 }
             }; //nullifyEntity
 
-            $scope.commitNullification = function() {
+            function commitNullification() {
                 console.log('tobeCurated: ' + JSON.stringify($scope.toBeCurated));
                 PersonService.curatePerson($scope.toBeCurated).then(function(res) {
                     var status = res.server_response.status;
 
-                    if (status >= 200 && status <= 210) {
+                    if (status >= 200 && status <= 210 && res.nullify_success === true) {
                         initCurationObj();
                         clearSelectedRows();
                         $scope.searchPeople();
@@ -272,13 +267,9 @@
                 });
             }; //commitNullification
 
-
-
-
             activate();
 
             /****************************** implementations **************************/
-
             function activate() {
                 getPromisedData();
                 prepareGidOptions();
@@ -452,7 +443,6 @@
                     delete requests.server_response;
                 });
             } //getPromisedData
-
 
 
             /**
@@ -646,6 +636,29 @@
 
                 });
             }
+
+            function _setupState() {
+                $scope.maxRowSelectable = $scope.maxRowSelectable === 'undefined' ? Number.MAX_VALUE : $scope.maxRowSelectable ; //default to MAX_VALUE
+                $scope.searchParams = PersonService.getInitialPersonSearchParams();
+                $scope.sourceContextArr = []; //sourceContextObj;
+                $scope.sourceStatusArr = []; //sourceStatusObj;
+                $scope.curSourceStatuses = []; // subset of source statuses for the selected source context
+                $scope.nullifiedId = '';
+                $scope.warningMessage = '';
+                $scope.selectedRows = [];
+                $scope.curationShown = false;
+                $scope.curationModeEnabled = false;
+                $scope.processingStatuses = OrgService.getProcessingStatuses();
+                $scope.serviceRequests = [];
+                $scope.dateFormat = DateService.getFormats()[1];
+                // console.log('dateFormat: ' + $scope.dateFormat);
+                $scope.dateOptions = DateService.getDateOptions();
+                $scope.startDateOpened = ''; //false;
+                $scope.endDateOpened = ''; // false;
+                $scope.searchWarningMessage = '';
+                $scope.searching = false;
+                $scope.scope = $scope;
+            } // _setupState
 
         } //advPersonSearchDirectiveController
 
