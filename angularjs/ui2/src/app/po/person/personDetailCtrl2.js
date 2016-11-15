@@ -21,7 +21,7 @@
                                         new: true,
                                         processing_status: "Complete"}; //personDetailObj.data;
         vm.person = vm.person.data || vm.person;
-        _setupState();
+        _setupState();        
         console.info('vm.person: ', vm.person);
 
         // actions
