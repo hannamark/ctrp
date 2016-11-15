@@ -118,9 +118,9 @@ class Person < ActiveRecord::Base
   def self.nullify_duplicates(params)
 
     self.transaction do
-      @toBeNullifiedPerson = Person.find_by_id(params[:id_to_be_nullified]);
-      @toBeRetainedPerson =  Person.find_by_id(params[:id_to_be_retained]);
-      #print "hello "+toBeRetainedPerson
+      @toBeNullifiedPerson = Person.find_by_id(params[:id_to_be_nullified])
+      @toBeRetainedPerson =  Person.find_by_id(params[:id_to_be_retained])
+
       raise ActiveRecord::RecordNotFound if @toBeNullifiedPerson.nil? or @toBeRetainedPerson.nil?
 
       @toBeNullifiedPerCtepOrNot=SourceContext.find_by_id(@toBeNullifiedPerson.source_context_id).code == "CTEP"
@@ -132,9 +132,9 @@ class Person < ActiveRecord::Base
         raise "CTEP persons can not be nullified"
       end
 
-      poAffiliationsOfNullifiedPerson = PoAffiliation.where(person_id:@toBeNullifiedPerson.id);
+      poAffiliationsOfNullifiedPerson = PoAffiliation.where(person_id:@toBeNullifiedPerson.id)
 
-      poAffiliationsOfRetainedPerson  = PoAffiliation.where(person_id:@toBeRetainedPerson.id);
+      poAffiliationsOfRetainedPerson  = PoAffiliation.where(person_id:@toBeRetainedPerson.id)
 
       orgs = poAffiliationsOfRetainedPerson.collect{|x| x.organization_id}
 
@@ -143,7 +143,7 @@ class Person < ActiveRecord::Base
       poAffiliationsOfNullifiedPerson.each do |po_affiliation|
         #new_po_aff=po_affiliation.clone;# Should be careful when choosing between dup and clone. See more details in Active Record dup and clone documentation.
         if(!orgs.include?po_affiliation.organization_id)
-          po_affiliation.person_id=@toBeRetainedPerson.id;
+          po_affiliation.person_id=@toBeRetainedPerson.id
           po_affiliation.save!
         else
           po_affiliation.destroy!
@@ -165,12 +165,12 @@ class Person < ActiveRecord::Base
         co_pi.person_id = @toBeRetainedPerson.id
         co_pi.save!
       end
-
-      ## participating site investigators
-      @toBeNullifiedPerson.participating_site_investigators.each do |ps_investigator|
-        ps_investigator.person_id = @toBeRetainedPerson.id
-        ps_investigator.save!
-      end
+      # This below block causes errors on QA
+      # ## participating site investigators
+      # @toBeNullifiedPerson.participating_site_investigators.each do |ps_investigator|
+      #   ps_investigator.person_id = @toBeRetainedPerson.id
+      #   ps_investigator.save!
+      # end
 
       ## Destroy associations of to_be_nullified_person
       ##
