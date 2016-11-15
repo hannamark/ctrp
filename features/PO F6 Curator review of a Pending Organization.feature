@@ -49,16 +49,16 @@ Feature: PO F6 Curator review of a Pending Organization
     When I select one of the organizations to be nullified
     Then all references in CTRP to the nullified organization will reference the retained organization in the field type
     
-    |Lead Organization|  **
-    |Sponsor Organization| **
+    |Lead Organization|
+    |Sponsor Organization|
     |board affiliation (IRB)|
     |Investigator affiliation organization|
-    |CTRP User organization affiliation| **
+    |CTRP User organization affiliation|
     |Trial co-investigator’s organization|
     |funding source|
     |Participating Site|
-    |Person’s affiliated organization| **
-    |Family organization| **
+    |Person’s affiliated organization|
+    |Family organization|
     |Collaborators|
    
     And all accrual submitted in CTRP on the nullified organization as a Participating Site will be transferred to the retained Active organization as a Participating Site

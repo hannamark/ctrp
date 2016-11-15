@@ -198,12 +198,20 @@ class Organization < ActiveRecord::Base
       #All references in CTRP to the nullified organization as Sponsor will reference the retained organization as Sponsor
       @toBeNullifiedOrg.sponsor_trials.update_all(:sponsor_id => @toBeRetainedOrg.id)
 
-      #All references in CTRP to the nullified organization as Participating Site will reference the retained organization as Participating Site
-      ## Future Implementation
-      ParticipatingSite.where(organization_id:@toBeNullifiedOrg.id).update_all(:organization_id => @toBeRetainedOrg.id)
+      participatingSites = ParticipatingSite.where(organization_id:@toBeNullifiedOrg.id)
+      participatingSites.where(organization_id:@toBeRetainedOrg.id).destroy_all
+      # then update remaining
+      participatingSites.update_all(:organization_id => @toBeRetainedOrg.id)
 
-      #All accrual submitted in CTRP on the nullified organization as a Participating Site will be transferred to the retained organization as a Participating Site
-      ## Future Implementation
+      collaborators = Collaborator.where(organization_id:@toBeNullifiedOrg.id)
+      collaborators.where(organization_id:@toBeRetainedOrg.id).destroy_all
+      # then update remaining
+      collaborators.update_all(:organization_id => @toBeRetainedOrg.id)
+
+      familyMemberships = FamilyMembership.where(organization_id:@toBeNullifiedOrg.id)
+      familyMemberships.where(organization_id:@toBeRetainedOrg.id).destroy_all
+      # then update remaining
+      familyMemberships.update_all(:organization_id => @toBeRetainedOrg.id)
 
       # destroy common entries for persons
       userAssociations = User.where(organization_id:@toBeNullifiedOrg.id)
