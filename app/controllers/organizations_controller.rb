@@ -98,7 +98,8 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       if Organization.nullify_duplicates(params)
-        format.json {render :json => {:nullify_success => true}}
+        format.json { render :json => {:nullify_success => true}}
+        format.html { render :json => {:nullify_success => true}}
       else
         format.json { render json: @organization.errors, status: :unprocessable_entity  }
       end
