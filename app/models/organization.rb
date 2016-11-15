@@ -331,7 +331,7 @@ class Organization < ActiveRecord::Base
         name_where_clause = "organizations.name ilike ?", "%#{name_value[1..str_len - 2]}%"
       else
         if !wc_search
-          if !value.match(/\s/).nil?
+          if !name_value.match(/\s/).nil?
             name_value = name_value.gsub!(/\s+/, '%')
           end
           name_where_clause = "organizations.name ilike ?", "%#{name_value}%"
