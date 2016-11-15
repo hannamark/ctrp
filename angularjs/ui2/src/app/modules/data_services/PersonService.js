@@ -216,7 +216,7 @@
             var user_role = !!UserService.getUserRole() ? UserService.getUserRole() : '';
             var options = angular.copy(gridOptions); // make a copy
 
-            if(user_role === 'ROLE_CURATOR') {
+            if (user_role === 'ROLE_CURATOR') {
                 // var updated_at_index = Common.indexOfObjectInJsonArray(options.columnDefs, 'name', 'updated_at');
                 var updatedAtIndex = _.findIndex(options.columnDefs, {name: 'updated_at'});
                 if (updatedAtIndex >= 0)
@@ -232,12 +232,14 @@
                     return !_.contains(filtered, col.name);
                 });
             }
-            if(usedInModal){
+            if (usedInModal === true) {
                 // var nullify_index = Common.indexOfObjectInJsonArray(options.columnDefs, 'name', 'Nullify');
                 var nullifyIndex = _.findIndex(options.columnDefs, {name: 'Nullify'});
-                if (nullifyIndex >= 0)
-                    options.columnDefs.splice(nullifyIndex,1);
+                if (nullifyIndex > -1) {
+                    options.columnDefs.splice(nullifyIndex, 1);
+                }
             }
+
             return options;
         }
 

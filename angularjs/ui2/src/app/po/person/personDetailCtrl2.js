@@ -516,73 +516,72 @@
                         field: 'source_id',
                         enableSorting: true,
                         displayName: 'CTEP ID',
-                        minWidth: '100'
+                        width: '100'
                     },
                     {
                         field: 'prefix',
                         enableSorting: false,
                         displayName: 'Prefix',
-                        minWidth: '100'
+                        width: '100'
                     },
                     {
                         field: 'fname',
                         enableSorting: false,
                         displayName: 'First Name',
-                        minWidth: '100'
+                        width: '100'
                     },
                     {
                         field: 'mname',
                         enableSorting: false,
                         displayName: 'Middle Name',
-                        minWidth: '125'
+                        width: '125'
                     },
                     {
                         field: 'lname',
                         enableSorting: false,
                         displayName: 'Last Name',
-                        minWidth: '100'
+                        width: '100'
                     },
                     {
                         field: 'suffix',
                         enableSorting: false,
                         displayName: 'Suffix',
-                        minWidth: '100'
+                        width: '100'
                     },
                     {
                         field: 'source_status',
                         enableSorting: true,
                         displayName: 'Source Status',
-                        minWidth: '100'
+                        width: '100'
                     },
                     {
                         field: 'source_context',
                         enableSorting: false,
                         displayName: 'Source Context',
-                        minWidth: '100'
+                        width: '100'
                     },
                     {
                         field: 'source_id',
                         enableSorting: true,
                         displayName: 'Source ID',
-                        minWidth: '100'
+                        width: '100'
                     },
                     {
                         field: 'email',
                         enableSorting: true,
                         displayName: 'Email',
-                        minWidth: '200'
+                        width: '200'
                     },
                     {
                         field: 'phone',
                         enableSorting: true,
                         displayName: 'Phone',
-                        minWidth: '125'
+                        width: '150'
                     },
                     {
                         field: 'affiliated_orgs',
                         displayName: 'Affiliated Orgs',
-                        minWidth: '150',
-                        width: '*',
+                        width: '200',
                         enableSorting: false,
                         enableFiltering: false,
                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid" ng-if="row.entity.affiliated_orgs.length > 0" title="{{COL_FIELD}}">{{COL_FIELD}}</div>' +
@@ -592,44 +591,39 @@
                         field: 'context_person_id',
                         displayName: 'Context Person ID',
                         enableSorting: false,
-                        minWidth: '180'
+                        width: '180'
                     },
                     {
                         field: 'processing_status',
                         displayName: 'Processing Status',
                         enableSorting: false,
-                        width: '*',
-                        minWidth: '200'
+                        width: '150',
                     },
                     {
                         field: 'service_request',
                         displayName: 'Service Request',
                         enableSorting: false,
-                        width: '*',
-                        minWidth: '200'
+                        width: '150',
                     },
                     {
                         field: 'updated_at',
                         displayName: 'Last Updated Date',
                         enableSorting: false,
                         cellFilter: 'date:\'dd-MMM-yyyy\'',
-                        width: '*',
-                        minWidth: '200'
+                        width: '200',
                     },
                     {
                         field: 'updated_by',
                         displayName: 'Last Updated By',
                         enableSorting: false,
-                        width: '*',
-                        minWidth: '200'
+                        width: '150',
                     },
                     {
                         field: 'association_start_date',
                         displayName: 'Association Start Date',
                         cellFilter: 'date:\'dd-MMM-yyyy\'',
                         enableSorting: false,
-                        width: '*',
-                        minWidth: '200'
+                        width: '200',
                     }
                 ],
                 enableSelectAll: false,

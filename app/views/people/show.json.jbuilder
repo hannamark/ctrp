@@ -28,6 +28,7 @@ json.associated_persons do
     # json.set! :source_id, nil if p.source_context_id == ctrp_context_id # this seems identifical to CTEP ID in the grid
     json.set! :source_context, SourceContext.find(p.source_context_id).name if p.source_context_id.present?
     json.set! :source_status, SourceStatus.find(p.source_status_id).name if p.source_status_id.present?
+    json.set! :service_request, ServiceRequest.find(p.service_request_id).name if p.service_request_id.present?
     json.set! :affiliated_orgs, p.po_affiliations.map { |po_affiliation| po_affiliation.organization.name }.join("; ")
   end
 end
