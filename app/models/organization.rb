@@ -75,7 +75,7 @@ class Organization < ActiveRecord::Base
 
   validates :phone, length: {maximum: 60}
   validates :extension, length: {maximum: 30}
-  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i},:allow_nil => true
+  validates :email,length: {maximum: 254}, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i},:allow_nil => true
 
 
   before_destroy :check_for_family
