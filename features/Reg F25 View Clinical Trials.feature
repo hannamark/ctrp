@@ -133,7 +133,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
        #All fields should be displayed even when no value exists 
       |Title  |
       |Phase  |
-      |Trial Type  |
+      |Clinical Research Category  |
       |Primary Purpose  |
       |Secondary Purpose  |
       |Accrual Disease Terminology |
