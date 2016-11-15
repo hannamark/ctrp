@@ -76,9 +76,6 @@
                          displayName: 'Name',
                          enableSorting: false,
                          sort: { direction: 'asc', priority: 1},
-                         cellTemplate: '<div class="ui-grid-cell-contents tooltip-uigrid"' +
-                         ' title="{{COL_FIELD}}"> <a ui-sref="main.orgDetail({orgId : row.entity.id })">' +
-                         ' {{COL_FIELD CUSTOM_FILTERS}}</a></div>',
                          minWidth: '300'
                      },
                      {
