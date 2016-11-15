@@ -504,7 +504,7 @@
                 useExternalSorting: false,
                 enableFiltering: false,
                 enableVerticalScrollbar: 2,
-                enableHorizontalScrollbar: 0,
+                enableHorizontalScrollbar: 2,
                 columnDefs: [
                     {
                         field: 'ctrp_id',

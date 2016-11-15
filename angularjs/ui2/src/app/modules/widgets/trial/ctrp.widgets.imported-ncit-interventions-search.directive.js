@@ -97,7 +97,7 @@
               // columns
               gridOptions.columnDefs = getColumnDefs();
               gridOptions.enableVerticalScrollbar = 2;
-              gridOptions.enableHorizontalScrollbar = 0; // allow horizontal scroll
+              gridOptions.enableHorizontalScrollbar = 2; // allow horizontal scroll
               // call backs for events
               gridOptions.onRegisterApi = function(gridApi) {
                   vm.gridApi = gridApi;
