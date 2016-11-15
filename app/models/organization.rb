@@ -213,17 +213,13 @@ class Organization < ActiveRecord::Base
       # then update remaining
       familyMemberships.update_all(:organization_id => @toBeRetainedOrg.id)
 
-      # destroy common entries for persons
-      userAssociations = User.where(organization_id:@toBeNullifiedOrg.id)
-      userAssociations.where(organization_id:@toBeRetainedOrg.id).destroy_all
-      # then update remaining
-      userAssociations.update_all(:organization_id => @toBeRetainedOrg.id)
+      User.where(organization_id:@toBeNullifiedOrg.id).update_all(:organization_id => @toBeRetainedOrg.id)
 
       # destroy common entries for persons
-      nullifiedAssociations = PoAffiliation.where(organization_id:@toBeNullifiedOrg.id)
-      nullifiedAssociations.where(organization_id:@toBeRetainedOrg.id).destroy_all
+      personAssociations = PoAffiliation.where(organization_id:@toBeNullifiedOrg.id)
+      personAssociations.where(organization_id:@toBeRetainedOrg.id).destroy_all
       # then update remaining
-      nullifiedAssociations.update_all(:organization_id => @toBeRetainedOrg.id)
+      personAssociations.update_all(:organization_id => @toBeRetainedOrg.id)
 
       #Name of the Nullified organization will be listed as an alias on the retained organization
       NameAlias.create(organization_id:@toBeRetainedOrg.id,name:@toBeNullifiedOrg.name)
