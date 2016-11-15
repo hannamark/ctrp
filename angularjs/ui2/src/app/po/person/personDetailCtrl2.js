@@ -42,18 +42,18 @@
         }
 
         function selectTab(contextName) {
-            if (!!contextName) {
+            if (angular.isDefined(contextName)) {
                 vm.tabOpen = contextName;
                 vm.curPerson = (contextName === 'CTEP') ? angular.copy(vm.ctepPerson) : angular.copy(vm.ctrpPerson);
-                var sourceContextId = !!vm.curPerson ? vm.curPerson.source_context_id : 2;
+                var sourceContextId = angular.isDefined(vm.curPerson) ? vm.curPerson.source_context_id : 2;
                 vm.sourceStatusArrSelected = _sourceStatusesForContext(sourceContextId);
 
                 // if new person, assign the ctrp source context id to it
-                if (!!vm.curPerson && vm.curPerson.new) {
+                if (angular.isDefined(vm.curPerson) && vm.curPerson.new) {
                     var ctrpContext = _.findWhere(vm.sourceContextArr, {name: 'CTRP'}); // defaulted to CTRP
-                    vm.curPerson.source_context_id = !!ctrpContext ? ctrpContext.id : null;
+                    vm.curPerson.source_context_id = angular.isDefined(ctrpContext) ? ctrpContext.id : null;
                     var actStatus = _.findWhere(vm.sourceStatusArr, {code: 'ACT'}); // defaulted to 'Active' source status
-                    vm.curPerson.source_status_id = !!actStatus ? actStatus.id : null;
+                    vm.curPerson.source_status_id = angular.isDefined(actStatus) ? actStatus.id : null;
                 }
                 //  && !angular.isDefined(vm.ctrpPerson.associated_persons)
                 if (contextName === 'CTRP' && contextName !== vm.defaultTab) {
@@ -110,7 +110,7 @@
                     } else if (aff.expiration_date) {
                         affStatusIndex = _.findIndex(poAffStatuses, {'name': 'Inactive'});
                     }
-                    aff.po_affiliation_status_id = affStatusIndex == -1 ? '' : poAffStatuses[affStatusIndex].id;
+                    aff.po_affiliation_status_id = affStatusIndex === -1 ? '' : poAffStatuses[affStatusIndex].id;
                     vm.curPerson.po_affiliations_attributes[idx] = aff; //update the po_affiliation with the correct data format
                 });
             } else {
@@ -184,7 +184,7 @@
 
             $scope.$watch(function() {return vm.savedSelection;},
             function(newVal, oldVal) {
-                if (!!newVal && angular.isArray(newVal) && newVal.length !== oldVal.length) {
+                if (angular.isDefined(newVal) && angular.isArray(newVal) && newVal.length !== oldVal.length) {
                     vm.validOrgsCount += newVal.length - (oldVal.length || 0);
                 }
             }, true);
@@ -206,7 +206,7 @@
             $scope.$watchCollection(function() {
                 return vm.associatedPersonContexts;
             }, function(newVal, oldVal) {
-                if (!!newVal && angular.isArray(newVal) && newVal.length > 0) {
+                if (angular.isDefined(newVal) && angular.isArray(newVal) && newVal.length > 0) {
                     var ctepPerson = newVal[0];
                     if (angular.isDefined(ctepPerson.ctrp_id) && ctepPerson.ctrp_id !== vm.curPerson.ctrp_id) {
                         vm.isConfirmOpen = true;
@@ -293,6 +293,7 @@
             vm.affiliatedOrgError = true; // flag for empty org affiliations
             vm.matchedCtrpPersons = []; // CTRP persons found from attempt to clone ctep person
             vm.associationForRemoval = []; // object person objects
+            vm.selectedMatchCtrpPersons = [];
             vm.confirm = {}; // messages
             vm.isBtnDisabled = false;
             vm.isWritable = UserService.isCurationModeEnabled() || false;
@@ -323,9 +324,9 @@
                     var status = organization.server_response.status;
                     if (status >= 200 && status <= 210) {
                         var curOrg = {"id" : poAff.organization_id, "name": organization.name};
-                        var effectiveDate = !!poAff.effective_date ? moment(poAff.effective_date).toDate() : null;
+                        var effectiveDate = angular.isDefined(poAff.effective_date) ? moment(poAff.effective_date).toDate() : null;
                         curOrg.effective_date = effectiveDate; //DateService.convertISODateToLocaleDateStr(poAff.effective_date);
-                        var expDate = !!poAff.expiration_date ? moment(poAff.expiration_date).toDate() : null; //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
+                        var expDate = angular.isDefined(poAff.expiration_date) ? moment(poAff.expiration_date).toDate() : null; //DateService.convertISODateToLocaleDateStr(poAff.expiration_date);
                         curOrg.expiration_date = expDate;
                         curOrg.po_affiliation_status_id = poAff.po_affiliation_status_id;
                         curOrg.po_affiliation_id = poAff.id; //po affiliation id
@@ -359,14 +360,14 @@
             vm.savedSelection = [];
             _populatePOAff();
             setFormToPristine();
-        };
+        }
 
         function clearForm() {
             setFormToPristine();
             var excludedKeys = ['new', 'po_affiliations', 'source_status_id', 'source_context_id', 'associated_persons'];
             console.info('clearning form: ', vm.curPerson);
             Object.keys(vm.curPerson).forEach(function(key) {
-                if (excludedKeys.indexOf(key) == -1) {
+                if (excludedKeys.indexOf(key) === -1) {
                     vm.curPerson[key] = angular.isArray(vm.curPerson[key]) ? [] : '';
                 }
             });
@@ -374,7 +375,7 @@
             // vm.curPerson.source_context_id = OrgService.findContextId(vm.sourceContextArr, 'name', 'CTRP');
             vm.savedSelection = [];
             _populatePOAff();
-        };
+        }
 
         /* handle PO affiliations below */
         function toggleSelection(index) {
@@ -397,7 +398,7 @@
         function openCalendar($event, index, type) {
             $event.preventDefault();
             $event.stopPropagation();
-            if (type == "effective") {
+            if (type === "effective") {
                 vm.savedSelection[index].opened_effective = !vm.savedSelection[index].opened_effective;
             } else {
                 vm.savedSelection[index].opened_expiration = !vm.savedSelection[index].opened_expiration;
@@ -461,14 +462,13 @@
 
         // callback function for ui-grid row selection
         function gridRowSelectionCB(row) {
-            // if (row.entity.is_ctrp_context) {
-            //     row.isSelected = false; // CTRP person is not selectable for deletion
-            //     return;
-            // }
+
             if (vm.showMatchedCtrpPerson) {
                 // vm.selectedCtrpPerson = row.isSelected ? row.entity : null;
                 if (row.isSelected) {
-                    vm.selectedCtrpPerson = row.entity;
+                    vm.selectedMatchCtrpPersons = _removeRows(vm.selectedMatchCtrpPersons); // empty rows
+                    vm.selectedMatchCtrpPersons.push(row);
+                    vm.selectedCtrpPerson = vm.selectedMatchCtrpPersons[0].entity; // row.entity
                     vm.associate = _.partial(_associateCtepPerson, vm.curPerson, vm.selectedCtrpPerson, 'CTRP'); // vm.curPerson is CTEP person
                     vm.confirmAssociatePerson = _.partial(_associateCtepPerson, vm.curPerson, vm.selectedCtrpPerson, 'CTRP', true); // vm.curPerson is CTEP person
                 } else {
@@ -477,15 +477,28 @@
                     vm.confirmAssociatePerson = null;
                 }
             } else {
-                while (vm.associationForRemoval.length > 0) {
-                    var del = vm.associationForRemoval.pop();
-                    del.isSelected = false; // visually deselect the row
-                }
+
+                vm.associationForRemoval = _removeRows(vm.associationForRemoval); // empty rows
                 if (row.isSelected && !row.entity.is_ctrp_context) {
                     vm.associationForRemoval.push(row);
                     vm.confirmDisAssociate = _.partial(removePersonAssociation, row.entity); // row.entity.id
                 }
             }
+        }
+
+        /**
+         * Remove ui-grid row and mark each as unselected
+         * @param  {Array} selectedRows [array of ui-grid rows]
+         * @return {Array}              [Empty array]
+         */
+        function _removeRows(selectedRows) {
+            console.info('removing rows: ', selectedRows);
+            if (!angular.isDefined(selectedRows) || !angular.isArray(selectedRows)) return [];
+            while(selectedRows.length > 0) {
+                var del = selectedRows.pop();
+                del.isSelected = false;
+            }
+            return [];
         }
 
         /**
@@ -597,33 +610,33 @@
                         field: 'processing_status',
                         displayName: 'Processing Status',
                         enableSorting: false,
-                        width: '150',
+                        width: '150'
                     },
                     {
                         field: 'service_request',
                         displayName: 'Service Request',
                         enableSorting: false,
-                        width: '150',
+                        width: '150'
                     },
                     {
                         field: 'updated_at',
                         displayName: 'Last Updated Date',
                         enableSorting: false,
                         cellFilter: 'date:\'dd-MMM-yyyy\'',
-                        width: '200',
+                        width: '200'
                     },
                     {
                         field: 'updated_by',
                         displayName: 'Last Updated By',
                         enableSorting: false,
-                        width: '150',
+                        width: '150'
                     },
                     {
                         field: 'association_start_date',
                         displayName: 'Association Start Date',
                         cellFilter: 'date:\'dd-MMM-yyyy\'',
                         enableSorting: false,
-                        width: '200',
+                        width: '200'
                     }
                 ],
                 enableSelectAll: false,

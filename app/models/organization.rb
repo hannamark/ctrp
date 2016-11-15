@@ -177,12 +177,12 @@ class Organization < ActiveRecord::Base
 
   def self.nullify_duplicates(params)
     self.transaction do
-      @toBeNullifiedOrg = Organization.find_by_id(params[:id_to_be_nullified]);
-      @toBeRetainedOrg =  Organization.find_by_id(params[:id_to_be_retained]);
+      @toBeNullifiedOrg = Organization.find_by_id(params[:id_to_be_nullified])
+      @toBeRetainedOrg =  Organization.find_by_id(params[:id_to_be_retained])
       raise ActiveRecord::RecordNotFound if @toBeNullifiedOrg.nil? or @toBeRetainedOrg.nil?
 
-      @toBeNullifiedOrgCtepOrNot=SourceContext.find_by_id(@toBeNullifiedOrg.source_context_id).code == "CTEP"
-      @toBeRetainedOrgCtepOrNot=SourceContext.find_by_id(@toBeRetainedOrg.source_context_id).code == "CTEP"
+      @toBeNullifiedOrgCtepOrNot = SourceContext.find_by_id(@toBeNullifiedOrg.source_context_id).code == "CTEP"
+      @toBeRetainedOrgCtepOrNot = SourceContext.find_by_id(@toBeRetainedOrg.source_context_id).code == "CTEP"
       #p @toBeNullifiedOrgCtepOrNot
       #p @toBeRetainedOrgCtepOrNot
 
@@ -193,54 +193,35 @@ class Organization < ActiveRecord::Base
       #sleep(2.minutes);
 
       #All references in CTRP to the nullified organization as Lead Organization will reference the retained organization as Lead Organization
-      @toBeNullifiedOrg.lo_trials.each do |trial|
-        trial.lead_org_id=@toBeRetainedOrg.id
-        trial.save!
-      end
+      @toBeNullifiedOrg.lo_trials.update_all(:lead_org_id => @toBeRetainedOrg.id)
+
       #All references in CTRP to the nullified organization as Sponsor will reference the retained organization as Sponsor
-      @toBeNullifiedOrg.sponsor_trials.each do |trial|
-        trial.sponsor_id=@toBeRetainedOrg.id
-        trial.save!
-      end
+      @toBeNullifiedOrg.sponsor_trials.update_all(:sponsor_id => @toBeRetainedOrg.id)
 
       #All references in CTRP to the nullified organization as Participating Site will reference the retained organization as Participating Site
       ## Future Implementation
+      ParticipatingSite.where(organization_id:@toBeNullifiedOrg.id).update_all(:organization_id => @toBeRetainedOrg.id)
 
       #All accrual submitted in CTRP on the nullified organization as a Participating Site will be transferred to the retained organization as a Participating Site
       ## Future Implementation
 
-      #All persons affiliated with the nullified organization will be affiliated with the retained organization
-      ##
-      poAffiliationsOfNullifiedOrganization = PoAffiliation.where(organization_id:@toBeNullifiedOrg.id)
+      # destroy common entries for persons
+      userAssociations = User.where(organization_id:@toBeNullifiedOrg.id)
+      userAssociations.where(organization_id:@toBeRetainedOrg.id).destroy_all
+      # then update remaining
+      userAssociations.update_all(:organization_id => @toBeRetainedOrg.id)
 
-      poAffiliationsOfRetainedOrganization = PoAffiliation.where(organization_id:@toBeRetainedOrg.id)
-
-      persons = poAffiliationsOfRetainedOrganization.collect{|x| x.person_id}
-
-      poAffiliationsOfNullifiedOrganization.each do |po_affiliation|
-        #new_po_aff=po_affiliation.clone;# Should be careful when choosing between dup and clone. See more details in Active Record dup and clone documentation.
-        if(!persons.include?po_affiliation.person_id)
-          po_affiliation.organization_id=@toBeRetainedOrg.id
-          po_affiliation.save!
-        else
-          po_affiliation.destroy!
-        end
-      end
+      # destroy common entries for persons
+      nullifiedAssociations = PoAffiliation.where(organization_id:@toBeNullifiedOrg.id)
+      nullifiedAssociations.where(organization_id:@toBeRetainedOrg.id).destroy_all
+      # then update remaining
+      nullifiedAssociations.update_all(:organization_id => @toBeRetainedOrg.id)
 
       #Name of the Nullified organization will be listed as an alias on the retained organization
       NameAlias.create(organization_id:@toBeRetainedOrg.id,name:@toBeNullifiedOrg.name)
+
       ## Aliases of nullified organizations will be moved to aliases of the retained organization
-      aliasesOfNullifiedOrganization = NameAlias.where(organization_id: @toBeNullifiedOrg.id)
-      aliasesOfRetainedOrganization = NameAlias.where(organization_id: @toBeRetainedOrg.id)
-      aliasesNamesOfRetainedOrganization = aliasesOfRetainedOrganization.collect{|x| x.name.upcase}
-      aliasesOfNullifiedOrganization.each do |al|
-        if(!aliasesNamesOfRetainedOrganization.include?al.name.upcase)
-          al.organization_id=@toBeRetainedOrg.id
-          al.save!
-        else
-          al.destroy!
-        end
-      end
+      NameAlias.where(organization_id: @toBeNullifiedOrg.id).update_all(:organization_id => @toBeRetainedOrg.id)
 
       #If both organizations had CTEP IDs only the retained organization CTEP ID will be associated with the retained organization
       #The status of the organization to be nullified will be "Nullified"
@@ -331,7 +312,7 @@ class Organization < ActiveRecord::Base
         name_where_clause = "organizations.name ilike ?", "%#{name_value[1..str_len - 2]}%"
       else
         if !wc_search
-          if !value.match(/\s/).nil?
+          if !name_value.match(/\s/).nil?
             name_value = name_value.gsub!(/\s+/, '%')
           end
           name_where_clause = "organizations.name ilike ?", "%#{name_value}%"
@@ -453,13 +434,3 @@ class Organization < ActiveRecord::Base
     joins(join_clause).select(select_clause)
   }
 end
-
-
-#   class EmailValidator < ActiveModel::EachValidator
-#     def validate_each(record, attribute, value)
-#       record.errors.add attribute, (options[:message] || "is not an email") unless
-#         value =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
-#     end
-#   end
-
-

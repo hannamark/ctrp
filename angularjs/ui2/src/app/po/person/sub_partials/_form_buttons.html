@@ -4,7 +4,7 @@
         <button type="button" class="btn btn-primary pull-left btn-no-left-margin" id="person_search_modal" person-search-modal-button2 source-context-only="'CTEP'"
             ng-model="personDetailView.associatedPersonContexts"
             restriction-field="ROLE_CURATOR,ROLE_SUPER,ROLE_ADMIN"
-            ng-hide="personDetailView.curPerson.source_context !== 'CTRP'"
+            ng-hide="personDetailView.curPerson.source_context !== 'CTRP' || personDetailView.curPerson.new"
             ng-disabled="personDetailView.curPerson.associated_persons.length > 0">
             <i class="glyphicon glyphicon-search"></i> Associate Person Context
         </button>

@@ -4,15 +4,15 @@
       angular.module('ctrpApp.widgets')
       .directive('toggleVisibility', toggleVisibility);
 
-      toggleVisibility.$inject = ['$compile'];
+      toggleVisibility.$inject = ['$compile', '$window'];
 
-      function toggleVisibility($compile) {
+      function toggleVisibility($compile, $window) {
           var directive = {
             restrict: 'E',
             templateUrl: 'app/modules/widgets/visibility/ctrp.widgets.toggleVisibility.tpl.html',
             link: function(scope, element, attrs) {
-
                 var elementToToggle = attrs.elementToToggle.split(',');
+                scope.windowElem = angular.element($window);
                 scope.isHidden = attrs.toggleVisibilityDefault ? attrs.toggleVisibilityDefault : false;
                 scope.label = attrs.elementLabel ? ' ' + attrs.elementLabel : '';
 
@@ -38,6 +38,9 @@
                     _.each(elementToToggle, function(elem) {
                         $(elem).slideDown();
                     });
+
+                    /* Manually trigger a window resize event to resolve grid rendering issues */
+                    scope.windowElem.resize();
                 }
 
                 function hide() {

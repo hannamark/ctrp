@@ -39,6 +39,8 @@ Scenario:#1 CTEP Context of a new Organization record can be created in CTRP
     |Context Organization ID |
     |Service Request |
     |Processing Status|
+    |Created By|
+    |Updated By|
    
     
   
