@@ -23,6 +23,7 @@
             if (vm.ctrpOrg && !vm.ctrpOrg.new) {
                 appendNameAliases();
                 createAssociatedOrgsTable();
+                vm.ctepAssociationExists = vm.ctepOrg && vm.ctepOrg.ctrp_id;
             }
 
             setFormToPristine();
@@ -45,6 +46,7 @@
              vm.processStatusArr = OrgService.getProcessingStatuses();
              vm.cloningCTEP = false;
              vm.nilclose = true;
+             vm.ctepAssociationExists = false;
              
              // associated Organization grids
              vm.associatedOrgsOptions = {
@@ -399,7 +401,6 @@
             };
 
             vm.cloneCtepOrg = function() {
-                vm.disableCloneFresh = true;
                 OrgService.cloneCtepOrg(vm.ctepOrg.id).then(function(response) {
                     var status = response.server_response.status;
                     if (status >= 200 && status <= 210) {
@@ -581,6 +582,7 @@
                 // but we are not doing this in case the user is in the middle of editing CTRP when association
                 // that way previous edits to CTRP are not lost.
                 vm.ctrpOrg.ctep_id = vm.ctepOrg.ctep_id;
+                vm.ctepAssociationExists = true;
             }
             vm.updateTime = Date.now();
         }
