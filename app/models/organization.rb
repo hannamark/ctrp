@@ -200,6 +200,7 @@ class Organization < ActiveRecord::Base
 
       #All references in CTRP to the nullified organization as Participating Site will reference the retained organization as Participating Site
       ## Future Implementation
+      ParticipatingSite.where(organization_id:@toBeNullifiedOrg.id).update_all(:organization_id => @toBeRetainedOrg.id)
 
       #All accrual submitted in CTRP on the nullified organization as a Participating Site will be transferred to the retained organization as a Participating Site
       ## Future Implementation
