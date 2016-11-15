@@ -19,6 +19,10 @@
 
         /****************** implementations below ***************/
         function _initializeModelProps() {
+            // injected objects
+            vm.curTrial = trialDetailObj;
+            vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
+
             /* Too many properties, define in arrays grouped by common default value */
             var propNullArray = ['city', 'state_province', 'country', 'postal', 'selectedInvestigator']; // ex: common default value = null
             var propFalseArray = ['selectedContactTypePI', 'showInvestigatorRoleError', 'invDeleteException', 'srStatusDeleteException', 'duplicateParticipatingSite', 'addEditMode', 'isSaved', 'disableBtn'];
@@ -26,15 +30,11 @@
             var objTypeProps = ['currentParticipatingSite', 'current_site_recruitment', 'current_investigator', 'persisted_contact', 'persistedOrganization'];
             var complexObjTypeProps = ['selOrganization', 'principalInvestigator', 'selectedPerson'];
 
-            initArrayProps(propNullArray, null);
-            initArrayProps(propFalseArray, false);
-            initArrayProps(arrayTypeProps, []);
             initArrayProps(objTypeProps, {});
             initArrayProps(complexObjTypeProps, {name: '', array: []});
-
-            // injected objects
-            vm.curTrial = trialDetailObj;
-            vm.siteRecruitmentStatusesArr = siteRecruitmentStatusesObj;
+            initArrayProps(arrayTypeProps, []);
+            initArrayProps(propNullArray, null);
+            initArrayProps(propFalseArray, false);
 
             // custom initializations
             vm.currentParticipatingSite.site_rec_status_wrappers_attributes=[];
@@ -80,6 +80,8 @@
             _initializeModelProps();
             _assignActions();
 
+            console.log('vm is now: ', vm);
+
             getTrialDetailCopy();
             watchTrialDetailObj();
             watchOrganization();
@@ -98,11 +100,20 @@
         /* Takes array of properties and initializes to a specified default value */
         function initArrayProps(props, val) {
             var propsArray = props;
-            var defaultVal = val;
+            var initialVal;
 
-            _.each(propsArray, function(prop) {
-                vm[prop] = defaultVal;
-            });
+            if (typeof val === 'object') {
+                _.each(propsArray, function(prop) {
+                    /* copy so a reference to same object isn't assigned to different variables */
+                    initialVal = angular.copy(val);
+                    vm[prop] = initialVal;
+                });
+            } else {
+                _.each(propsArray, function(prop) {
+                    initialVal = val;
+                    vm[prop] = initialVal;
+                });
+            }
         }
 
         vm.checkAllSites = function () {
@@ -133,6 +144,7 @@
         }
 
         vm.validateParticipatingSite = function() {
+            console.log('vm inv grid 7: ', vm.investigatorGrid);
             var isPrimaryContactMarkedForDeletion = false;
 
             _.each(vm.investigatorGrid, function(inv) {
@@ -147,6 +159,8 @@
             } else {
                 vm.saveParticipatingSite();
             }
+
+            console.log('vm inv grid 8: ', vm.investigatorGrid);
         };
 
         vm.saveParticipatingSite = function(callBackString){
@@ -212,6 +226,7 @@
 
 
         function prepPsForSave() {
+            console.log('vm inv grid 9: ', vm.investigatorGrid);
             var invGrid = angular.copy(vm.investigatorGrid);
 
             /* Validation to pre-empt deletion if only one site recruitment status or investigator remains */
@@ -382,6 +397,7 @@
          *  Initialize Investigator Grid
          */
         vm.initInvestigatorGrid = function (){
+            console.log('vm inv grid 10: ', vm.investigatorGrid);
             vm.investigatorGrid = [];
             for (var i = 0; i < vm.currentParticipatingSite.participating_site_investigators.length; i++) {
                 var invObj = vm.currentParticipatingSite.participating_site_investigators[i];
@@ -410,6 +426,7 @@
             }
 
             vm.investigatorGridOrig = angular.copy(vm.investigatorGrid);
+            console.log('vm inv grid 11: ', vm.investigatorGrid);
         };
 
         function openCalendar ($event, type) {
@@ -521,6 +538,7 @@
          */
         function watchPISelection() {
             $scope.$watchCollection(function() {return vm.principalInvestigator.array;}, function(newVal, oldVal) {
+                console.log('vm inv grid 12: ', vm.investigatorGrid);
                 if (angular.isArray(newVal) && newVal.length > 0) {
                     vm.principalInvestigator.name = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
                     vm.principalInvestigator.pi = vm.principalInvestigator.array[0];
@@ -551,6 +569,7 @@
 
                     $scope.ps_inv_form.$setDirty();
                 }
+                console.log('vm inv grid 13: ', vm.investigatorGrid);
             });
         }
 
@@ -688,6 +707,7 @@
 
         function watchContactType() {
             $scope.$watch(function() {return vm.currentParticipatingSite.contact_type;}, function(newVal, oldVal) {
+                console.log('vm inv grid 3: ', vm.investigatorGrid);
                 if(newVal === 'PI'){
                     vm.selectedContactTypePI = true;
 
@@ -739,6 +759,7 @@
                     }
 
                     vm.selectedInvestigator = null;
+                    console.log('vm inv grid 4: ', vm.investigatorGrid);
                 }
             });
         }
@@ -773,6 +794,7 @@
          */
         function watchPersonSelection() {
             $scope.$watchCollection(function() {return vm.selectedPerson.array;}, function(newVal, oldVal) {
+                console.log('vm inv grid 1: ', vm.investigatorGrid);
                 if (angular.isArray(newVal) && newVal.length > 0) {
                     vm.currentParticipatingSite.contact_name = PersonService.extractFullName(newVal[0]); // firstName + ' ' + middleName + ' ' + lastName;
                     var personAsContact = {};
@@ -788,6 +810,7 @@
 
                     $scope.ps_contact_form.$setDirty();
                 }
+                console.log('vm inv grid 2: ', vm.investigatorGrid);
             });
         }
 
@@ -1022,6 +1045,7 @@
 
         /* Updates array prior to Save */
         function updateSiteInvestigatorAttrArray(invGrid) {
+            console.log('vm inv grid 5: ', vm.investigatorGrid);
             vm.currentParticipatingSite.participating_site_investigators_attributes = [];
             for (var k = 0; k < invGrid.length; k++) {
                 var invObj = invGrid[k];
@@ -1042,6 +1066,7 @@
                     }
                 }
             }
+            console.log('vm inv grid 6: ', vm.investigatorGrid);
         }
 
         /* Updates PS after Save */
