@@ -81,7 +81,7 @@
             <label for="phone" class="control-label col-xs-12 col-sm-1">Phone:</label>
             <div class="col-xs-12 col-sm-2 form-text" ng-if="!personDetailView.curPersonEditable">
                 <span ng-bind="personDetailView.curPerson.phone | maskPhoneNumber"></span>
-                <span ng-show="personDetailView.curPerson.phone && personDetailView.curPerson.extension" ng-bind="' | ' + personDetailView.curPerson.extension"></span>
+                <span ng-show="personDetailView.curPerson.phone && personDetailView.curPerson.extension" ng-bind="' Ext: ' + personDetailView.curPerson.extension"></span>
             </div>
         </div>
     </div>
