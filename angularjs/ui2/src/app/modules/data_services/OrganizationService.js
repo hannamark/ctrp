@@ -266,21 +266,22 @@
         function getGridOptions(usedInModal) {
             var allowedROLES= ['ROLE_ADMIN', 'ROLE_SUPER', 'ROLE_ABSTRACTOR', 'ROLE_CURATOR'];
             var user_role = UserService.getUserRole() ? UserService.getUserRole().toUpperCase() : '';
+            var modifiedGridOptions = angular.copy(gridOptions);
 
             if(!_.contains(allowedROLES, user_role)) {
-                gridOptions.columnDefs = _.filter(
-                    gridOptions.columnDefs, function (item) {
-                    return !_.contains(['ctep_id', 'updated_at', 'updated_by', 'processing_status', 'id', 'service_request_name'], item.name);
-                });
+                modifiedGridOptions.columnDefs = _.filter(
+                    modifiedGridOptions.columnDefs, function (item) {
+                        return !_.contains(['ctep_id', 'updated_at', 'updated_by', 'processing_status', 'id', 'service_request_name'], item.name);
+                    });
             }
 
             if(usedInModal || !_.contains(allowedROLES, user_role)){
-                gridOptions.columnDefs = _.filter(
-                    gridOptions.columnDefs, function (item) {
+                modifiedGridOptions.columnDefs = _.filter(
+                    modifiedGridOptions.columnDefs, function (item) {
                         return !_.contains(['Nullify'], item.name);
                     });
             }
-            return gridOptions;
+            return modifiedGridOptions;
         }
 
         function setTypeAheadOrg (searchObj) {
@@ -456,21 +457,7 @@
                 {id: 2, name: 'Incomplete'}
             ];
         }
-        
-        var requestServicesArr = [];
 
-        (function getRequestServices() {
-            OrgService.getServiceRequests().then(function (requests) {
-                var status = requests.server_response.status;
-                if (status >= 200 && status <= 210) {
-                    requestServicesArr = requests;
-                }
-            });
-        }());
-
-        function getRequestServicesArr() {
-            return requestServicesArr;
-        }
 
         /**
          * Check if targetOrgsArr contains orgObj by checking the 'id' field
