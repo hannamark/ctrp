@@ -118,9 +118,9 @@ class Person < ActiveRecord::Base
   def self.nullify_duplicates(params)
 
     self.transaction do
-      @toBeNullifiedPerson = Person.find_by_id(params[:id_to_be_nullified]);
-      @toBeRetainedPerson =  Person.find_by_id(params[:id_to_be_retained]);
-      #print "hello "+toBeRetainedPerson
+      @toBeNullifiedPerson = Person.find_by_id(params[:id_to_be_nullified])
+      @toBeRetainedPerson =  Person.find_by_id(params[:id_to_be_retained])
+
       raise ActiveRecord::RecordNotFound if @toBeNullifiedPerson.nil? or @toBeRetainedPerson.nil?
 
       @toBeNullifiedPerCtepOrNot=SourceContext.find_by_id(@toBeNullifiedPerson.source_context_id).code == "CTEP"
@@ -132,9 +132,9 @@ class Person < ActiveRecord::Base
         raise "CTEP persons can not be nullified"
       end
 
-      poAffiliationsOfNullifiedPerson = PoAffiliation.where(person_id:@toBeNullifiedPerson.id);
+      poAffiliationsOfNullifiedPerson = PoAffiliation.where(person_id:@toBeNullifiedPerson.id)
 
-      poAffiliationsOfRetainedPerson  = PoAffiliation.where(person_id:@toBeRetainedPerson.id);
+      poAffiliationsOfRetainedPerson  = PoAffiliation.where(person_id:@toBeRetainedPerson.id)
 
       orgs = poAffiliationsOfRetainedPerson.collect{|x| x.organization_id}
 
@@ -143,7 +143,7 @@ class Person < ActiveRecord::Base
       poAffiliationsOfNullifiedPerson.each do |po_affiliation|
         #new_po_aff=po_affiliation.clone;# Should be careful when choosing between dup and clone. See more details in Active Record dup and clone documentation.
         if(!orgs.include?po_affiliation.organization_id)
-          po_affiliation.person_id=@toBeRetainedPerson.id;
+          po_affiliation.person_id=@toBeRetainedPerson.id
           po_affiliation.save!
         else
           po_affiliation.destroy!
@@ -151,33 +151,40 @@ class Person < ActiveRecord::Base
       end
 
       ## handle trial-related associations
-      @toBeNullifiedPerson.pi_trials.each do |trial|
-        trial.pi_id = @toBeRetainedPerson.id
-        trial.save!
+      if @toBeNullifiedPerson.pi_trials.present?
+        @toBeNullifiedPerson.pi_trials.each do |trial|
+          trial.pi_id = @toBeRetainedPerson.id
+          trial.save!
+        end
       end
 
-      @toBeNullifiedPerson.investigator_trials.each do |trial|
-        trial.investigator_id = @toBeRetainedPerson.id
-        trial.save!
+
+      if @toBeNullifiedPerson.investigator_trials.present?
+        @toBeNullifiedPerson.investigator_trials.each do |trial|
+          trial.investigator_id = @toBeRetainedPerson.id
+          trial.save!
+        end
       end
 
-      @toBeNullifiedPerson.trial_co_pis.each do |co_pi|
-        co_pi.person_id = @toBeRetainedPerson.id
-        co_pi.save!
+
+      if @toBeNullifiedPerson.trial_co_pis.present?
+        @toBeNullifiedPerson.trial_co_pis.each do |co_pi|
+          co_pi.person_id = @toBeRetainedPerson.id
+          co_pi.save!
+        end
       end
 
-      ## participating site investigators
-      @toBeNullifiedPerson.participating_site_investigators.each do |ps_investigator|
-        ps_investigator.person_id = @toBeRetainedPerson.id
-        ps_investigator.save!
+      # ## participating site investigators
+      if @toBeNullifiedPerson.participating_site_investigators.present?
+        @toBeNullifiedPerson.participating_site_investigators.each do |ps_investigator|
+          ps_investigator.person_id = @toBeRetainedPerson.id
+          ps_investigator.save!
+        end
       end
-
-      ## Destroy associations of to_be_nullified_person
-      ##
 
       ## Destroy to_be_nullified_person
       ##
-      @toBeNullifiedPerson.source_status_id=SourceStatus.ctrp_context_source_statuses.find_by_code('NULLIFIED').id;
+      @toBeNullifiedPerson.source_status_id=SourceStatus.ctrp_context_source_statuses.find_by_code('NULLIFIED').id
       @toBeNullifiedPerson.save!
     end
   end

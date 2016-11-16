@@ -36,7 +36,6 @@ class OrganizationsController < ApplicationController
   def create
     return if !@write_access
     @organization = Organization.new(organization_params)
-    @organization.processing_status = 'Incomplete'
     @organization.source_status_id = SourceStatus.ctrp_context_source_statuses.find_by_code('ACT').id
     @organization.source_context_id = SourceContext.find_by_code('CTRP').id
     @organization.created_by = @current_user.username unless @current_user.nil?

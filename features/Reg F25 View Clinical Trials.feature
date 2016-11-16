@@ -133,7 +133,7 @@ As any CTRP User, I can view a CTRP clinical trial record after a Clinical Trial
        #All fields should be displayed even when no value exists 
       |Title  |
       |Phase  |
-      |Trial Type  |
+      |Clinical Research Category  |
       |Primary Purpose  |
       |Secondary Purpose  |
       |Accrual Disease Terminology |
@@ -254,7 +254,7 @@ Then the trial information will be displayed including
 |Data Table 4 Information (Title)|
 |Study Source|
 |Data Table 4 Funding Sponsor/Source|
-And I can select the "Add My Site" function to add my site as a participating site
+
 
 
 
