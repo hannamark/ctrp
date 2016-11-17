@@ -21,6 +21,7 @@ Feature: PO F7 Search Organization Family Name
     Then In the search result for family name <family name> it shall return result <result>
     And the displayed results should have the family parameters type
      
+     #And the membership size will only reflect non expired organization associations in the family
      |FamilyName|
       |FamilyStatus|
       |FamilyType|
@@ -34,6 +35,9 @@ When I select the export to Excel option
 Then the family search results details will be exported to an Excel format spreadsheet 
 And will include the following fields:
 And the result should be sorted by family name
+
+#The export should also only include the non expired organizations associated in the family.
+
 
       |FamilyName|
       |FamilyStatus|
