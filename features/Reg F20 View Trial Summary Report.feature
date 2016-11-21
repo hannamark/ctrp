@@ -165,7 +165,8 @@ And I can view TSR document
       |Trial Design   |Primary purpose                       |Required       |Display "No data available"  |
       |               |Description of Other Primary Purpose  |Not Required   |Field not Displayed          |  
       |               |Trial Phase                           |Required       |Display "No data available"  |  
-      |               |Study Model                           |Required       |Display "No data available"  |  
+      |               |Study Model                           |Required       |Display "No data available"  |
+      |               |Description of Other Study Model      |Required       |Display "No data available"  |
       |               |Time Perspective                      |Required       |Display "No data available"  |  
       |               |Description for Other Time Perspective|Not Required   |Field not Displayed          | 
       |               |Bio-Specimen Retention                |Required       |Display "No data available"  |  
