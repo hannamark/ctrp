@@ -13,6 +13,10 @@ And the Search Studies feature will indicate if a trial with the NCT ID has been
 Scenario: #2 I can import an Industrial or Other trial by NCT ID from ClinicalTrials.gov
 Given I have selected the option to Import an Industrial or Other Trial
 And I am on the Import ClinicalTrials.gov Trials screen
+And the notes below will be displayed on the Import ClinicalTrials.gov Trials Screen
+"To register a trial under the Industrial/Other submission category in CTRP, please enter the ClinicalTrials.gov identifier below and click Search Studies. If you do not have the ClinicalTrials.gov identifier or if the trial does not have one yet then please contact CTRO staff at ncictro@mail.nih.gov."
+"Note: Any trials imported using this feature will be registered as Abbreviated in CTRP system. If the trial should be classified as "Other" then please contact the Clinical Trials Reporting Office staff at ncictro@mail.nih.gov after importing/registering this trial in the CTRP system."
+#Review Mock up:M:\NCICB\CTRP-Refactor\CTRP AUM\Functional\Registration: Import Trial
 When I have entered a NCT Number
 And the Search Studies feature indicates that the trial has not been registered in CTRP
 And the trial NCT ID, Status, and Study Title, Conditions, and Interventions are displayed
