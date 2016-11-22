@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <title>CTRP User Portal</title>
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">CTRP User Portal</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+
+
+        <% if local_user_signed_in? %><li><a class="navbar-brand" href="#">Current Local User is <%= current_local_user.username %></a><li/> <% end %>
+
+            <li><%= link_to 'Sign out', destroy_session_path, method: :delete %></li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3 col-md-2">
+      <ul class="nav nav-stacked">
+        <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+        <br/><br/>
+        <li><a href="/ctrp/ui#/main/sign_in">CTRP Main</a></li>
+        <% if local_user_signed_in? %>
+            <% if current_local_user.user_status.code == 'ACT' %>
+                <li><%= link_to "List Users", users_path %></li>
+                <% if current_local_user.role == "ROLE_SUPER"  && current_local_user.organization_id.nil? %>
+                    <li><%= link_to "BackOffice", backoffice_path %></li>
+                <% end %>
+            <% end %>
+            <li><%= link_to "Assign Organization", search_organizations_path %></li>
+        <% end %>
+        <% if ldap_user_signed_in? %>
+            <% if current_ldap_user.user_status.code == 'ACT' %>
+                <li><%= link_to "List Users", users_path %></li>
+                <% if current_ldap_user.role == "ROLE_SUPER" && current_ldap_user.organization_id.nil? %>
+                    <li><%= link_to "BackOffice", backoffice_path %></li>
+                <% end %>
+            <% end %>
+            <li><%= link_to "Assign Organization", search_organizations_path %></li>
+        <% end %>
+        <% if !local_user_signed_in? &&  !ldap_user_signed_in? %>
+            <li><%= link_to "Sign In", new_session_path %></li>
+            <li><a href="/ctrp/local_users/sign_up">Sign Up</a></li>
+        <% end %>
+        <% if local_user_signed_in? %>
+            <li><%= link_to "Change your password", edit_registration_path %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-md-10">
+      <h3 class="header">
+        <% if local_user_signed_in?  %>
+
+            <b>Current User: <%= current_local_user.username %> </b>
+            , Role: <%= current_local_user.role %>
+            <% unless current_local_user.organization_id.blank? %>
+                , Organization: <%= current_local_user.organization.name %>
+            <% end %>
+            <br/>
+        <% end %>
+        <% if  ldap_user_signed_in? %>
+
+            <b>Current User: <%= current_ldap_user.username %> </b>
+            , Role: <%= current_ldap_user.role %>
+            <% unless current_ldap_user.organization_id.blank? %>
+                , Organization: <%= current_ldap_user.organization.name %>
+            <% end %>
+            <br/>
+        <% end %>
+      </h3>
+
+      <% unless @users.blank? %>
+              <h3>List CTRP Users</h3>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead>
+              <tr>
+              <tr>
+                <th colspan="2">Username</th>
+                <th colspan="3">Type</th>
+                <th colspan="3">Role</th>
+                <th colspan="3">Organization</th>
+              </tr>
+              </tr>
+              </thead>
+              <tbody>
+
+              <% @users.each do |user| %>
+                  <tr>
+                    <td colspan="2"><%= user.username %></td>
+                    <td colspan="3"><%= user.type %></td>
+                    <td colspan="3"><%= user.role %></td>
+                    <% unless user.organization_id.blank? %>
+                        <td colspan="3" class="info"><%= user.organization.name %>&nbsp; </td>
+                    <% else %>
+                        <td colspan="3"> &nbsp; </td>
+                    <% end %>
+                  </tr>
+              <% end %>
+           <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+<script src="../../assets/js/vendor/holder.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>

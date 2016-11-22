@@ -1,1 +1,32 @@
-json.extract! @organization, :id, :po_id, :source_id, :name, :address, :address2, :city, :state_province, :postal_code, :country, :email, :phone, :fax, :created_at, :updated_at
+
+  json.extract! @organization,
+              :id,
+              :source_id,
+              :name,
+              :address,
+              :address2,
+              :address3,
+              :processing_status,
+              :city,
+              :state_province,
+              :postal_code,
+              :country,
+              :email,
+              :phone,
+              :extension,
+              :ctrp_id,
+              :source_context_id,
+              :source_status_id,
+              :families,
+              :name_aliases,
+              :ctep_id,
+              :lock_version,
+              :uuid,
+              :updated_by,
+              :created_by,
+              :created_at,
+              :updated_at,
+              :association_date
+              :service_request_id
+
+

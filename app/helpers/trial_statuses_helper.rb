@@ -1,0 +1,2 @@
+module TrialStatusesHelper
+end

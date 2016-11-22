@@ -1,0 +1,31 @@
+<div class="container">
+    <!-- <div class="row">
+        <strong>Examples of Ag-Grid Trial Search</strong>
+        <ctrp-pa-trial-search show-grid="true" max-row-selectable="2" curation-mode="true"></ctrp-pa-trial-search>
+    </div> -->
+    <div class="row">
+        <strong>NCIt Interventions Search</strong>
+        <ctrp-ncit-interventions-search max-row-selectable="1" ng-model="personSearchView.selection"></ctrp-ncit-interventions-search>
+    </div>
+    <div class="row">
+        <button class="btn btn-primary" id="person_search_modal" person-search-modal-button2 ng-model="personSearchView.selectedPersons" restriction-field>Search Person</button>
+    </div>
+    <div class="row" ng-hide="personSearchView.selectedPersons.length == 0">
+        <p ng-repeat="p in personSearchView.selectedPersons">
+            name: {{p.fname}} {{p.lname}}
+        </p>
+    </div>
+
+    <!--
+    <div class="row">
+        <ctrp-advanced-person-search-form show-grid="true" max-row-selectable="2" curation-mode="true"></ctrp-advanced-person-search-form>
+    </div>
+    -->
+    <!--
+    <div class="row">
+        <ctrp-advanced-org-search-form2 show-grid="true" max-row-selectable="2" curation-mode="true"></ctrp-advanced-org-search-form2>
+    </div>
+    -->
+
+
+</div>

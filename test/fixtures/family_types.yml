@@ -2,12 +2,13 @@
 #
 # Table name: family_types
 #
-#  id         :integer          not null, primary key
-#  code       :string(255)
-#  name       :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  uuid       :string(255)
+#  id           :integer          not null, primary key
+#  code         :string(255)
+#  name         :string(255)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  uuid         :string(255)
+#  lock_version :integer          default(0)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
@@ -16,8 +17,19 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+
+one:
+  code: 'CANCERCENTER'
+  name: 'Cancer Center'
+
+two:
+  code: 'NCTN'
+  name: 'NCTN'
+
+three:
+  code: 'NIH'
+  name: 'NIH'
+
+four:
+  code: 'RESEARCHCENTER'
+  name: 'Research Cancer Center'

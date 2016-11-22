@@ -1,5 +1,8 @@
 class FamilyTypesController < ApplicationController
   before_action :set_family_type, only: [:show, :edit, :update, :destroy]
+  ## Please comment the next two lines if you donot want the Authorization checks
+  before_filter :wrapper_authenticate_user unless Rails.env.test?
+  load_and_authorize_resource unless Rails.env.test?
 
   # GET /family_types
   # GET /family_types.json

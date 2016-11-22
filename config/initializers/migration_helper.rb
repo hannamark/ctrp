@@ -1,6 +1,7 @@
 module MigrationHelper
   def ctrp_base_columns
     column :uuid, :string, :limit => 255
+    column :lock_version, :integer, default: 0
   end
 
   def static_member_base_columns

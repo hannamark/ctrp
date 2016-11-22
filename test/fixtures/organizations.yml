@@ -3,7 +3,6 @@
 # Table name: organizations
 #
 #  id                :integer          not null, primary key
-#  po_id             :integer
 #  source_id         :string(255)
 #  name              :string(255)
 #  address           :string(255)
@@ -17,14 +16,17 @@
 #  fax               :string(255)
 #  source_status_id  :integer
 #  source_context_id :integer
-#  source_cluster_id :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
+#  lock_version      :integer          default(0)
+#  ctrp_id           :integer
+#  created_by        :string
+#  updated_by        :string
+#  extension         :string(255)
 #
 # Indexes
 #
-#  index_organizations_on_source_cluster_id  (source_cluster_id)
 #  index_organizations_on_source_context_id  (source_context_id)
 #  index_organizations_on_source_status_id   (source_status_id)
 #
@@ -32,7 +34,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  po_id: MyString
   source_id: MyString
   name: MyString
   address: MyString
@@ -43,10 +44,9 @@ one:
   country: MyString
   email: MyString
   phone: MyString
-  fax: MyString
+  #fax: MyString
 
 two:
-  po_id: MyString
   source_id: MyString
   name: MyString
   address: MyString
@@ -57,4 +57,26 @@ two:
   country: MyString
   email: MyString
   phone: MyString
-  fax: MyString
+  #fax: MyString
+
+three:
+  source_id: MD134
+  name: Test Org 3
+  address: 123 A St
+  city: Rockville
+  state_province: Maryland
+  country: United States
+  email: 12@123
+  phone: 19834567
+  #fax: 9826745
+
+four:
+  source_id: VA167
+  name: Test Org 4
+  address: 456 B St
+  city: Arlington
+  state_province: Virginia
+  country: United States
+  email: w5@2345
+  phone: 92873456
+  #fax: 23467

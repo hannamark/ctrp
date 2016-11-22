@@ -4,12 +4,13 @@
 #
 #  id               :integer          not null, primary key
 #  name             :string(255)
-#  description      :text
 #  family_status_id :integer
 #  family_type_id   :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  uuid             :string(255)
+#  lock_version     :integer          default(0)
+#  ctrp_id          :integer
 #
 # Indexes
 #

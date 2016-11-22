@@ -3,7 +3,6 @@
 # Table name: organizations
 #
 #  id                :integer          not null, primary key
-#  po_id             :integer
 #  source_id         :string(255)
 #  name              :string(255)
 #  address           :string(255)
@@ -17,14 +16,17 @@
 #  fax               :string(255)
 #  source_status_id  :integer
 #  source_context_id :integer
-#  source_cluster_id :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  uuid              :string(255)
+#  lock_version      :integer          default(0)
+#  ctrp_id           :integer
+#  created_by        :string
+#  updated_by        :string
+#  extension         :string(255)
 #
 # Indexes
 #
-#  index_organizations_on_source_cluster_id  (source_cluster_id)
 #  index_organizations_on_source_context_id  (source_context_id)
 #  index_organizations_on_source_status_id   (source_status_id)
 #
