@@ -27,12 +27,15 @@
 
                 scope.$watch(attrs.id, function(value){
                     if (value == true) {
+
                         scope.modal_id = attrs.id;
                     }
                 });
 
                 scope.$watch(attrs.visible, function(value){
+
                     if(value == true) {
+
                         $(element).modal('show');
                     } else {
                         $(element).modal('hide');

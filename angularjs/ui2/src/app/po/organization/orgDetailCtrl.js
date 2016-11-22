@@ -444,7 +444,6 @@
                     vm.ctepOrgCopy = angular.copy(vm.ctepOrg);
                     vm.ctrpAssociable = associatedOrgsObj.associable;
                 }
-                checkToDisableClone();
             } else {
                 vm.ctrpOrg = {
                     new:                true,
@@ -503,10 +502,6 @@
                 )[0];
                 return vm.ctrpOrg
             }
-        }
-
-         function checkToDisableClone() {
-            vm.disableClone = vm.ctrpOrg && vm.ctepOrg && vm.ctepOrg.ctrp_id;
         }
 
          function getOrgByContext(orgsArr, context){
@@ -575,13 +570,13 @@
             vm.nlmOrg = getOrgByContext(vm.associatedOrgs,'NLM')[0];
             createAssociatedOrgsTable();
             if (vm.ctepOrg && vm.ctrpOrg) {
-                //note that we we could simply do ** vm.ctrpUpdateTime = Date.now() ** to update whole CTRP
-                // but we are not doing this in case the user is in the middle of editing CTRP when association
+                //note that we could simply do ** vm.ctrpUpdateTime = Date.now() ** to update whole CTRP
+                // but we are not doing this in case the user is in the middle of editing CTRP during association
                 // that way previous edits to CTRP are not lost.
                 vm.ctrpOrg.ctep_id = vm.ctepOrg.ctep_id;
                 vm.ctepAssociationExists = true;
             }
-            vm.updateTime = Date.now();
+            vm.updateTime = Date.now(); // forces dom refresh
         }
 
          function validateNewAssociation(newValue) {

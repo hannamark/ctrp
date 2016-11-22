@@ -151,29 +151,36 @@ class Person < ActiveRecord::Base
       end
 
       ## handle trial-related associations
-      @toBeNullifiedPerson.pi_trials.each do |trial|
-        trial.pi_id = @toBeRetainedPerson.id
-        trial.save!
+      if @toBeNullifiedPerson.pi_trials.present?
+        @toBeNullifiedPerson.pi_trials.each do |trial|
+          trial.pi_id = @toBeRetainedPerson.id
+          trial.save!
+        end
       end
 
-      @toBeNullifiedPerson.investigator_trials.each do |trial|
-        trial.investigator_id = @toBeRetainedPerson.id
-        trial.save!
+
+      if @toBeNullifiedPerson.investigator_trials.present?
+        @toBeNullifiedPerson.investigator_trials.each do |trial|
+          trial.investigator_id = @toBeRetainedPerson.id
+          trial.save!
+        end
       end
 
-      @toBeNullifiedPerson.trial_co_pis.each do |co_pi|
-        co_pi.person_id = @toBeRetainedPerson.id
-        co_pi.save!
+
+      if @toBeNullifiedPerson.trial_co_pis.present?
+        @toBeNullifiedPerson.trial_co_pis.each do |co_pi|
+          co_pi.person_id = @toBeRetainedPerson.id
+          co_pi.save!
+        end
       end
-      # This below block causes errors on QA
+
       # ## participating site investigators
-      # @toBeNullifiedPerson.participating_site_investigators.each do |ps_investigator|
-      #   ps_investigator.person_id = @toBeRetainedPerson.id
-      #   ps_investigator.save!
-      # end
-
-      ## Destroy associations of to_be_nullified_person
-      ##
+      if @toBeNullifiedPerson.participating_site_investigators.present?
+        @toBeNullifiedPerson.participating_site_investigators.each do |ps_investigator|
+          ps_investigator.person_id = @toBeRetainedPerson.id
+          ps_investigator.save!
+        end
+      end
 
       ## Destroy to_be_nullified_person
       ##
